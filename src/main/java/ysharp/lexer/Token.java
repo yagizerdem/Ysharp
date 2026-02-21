@@ -16,81 +16,81 @@ public class Token {
 
     public enum TokenType {
         // basic arithmetic operators
-        PLUS, MINUS, MULTIPLY, DIVIDE, MODULO,
+        PLUS, MINUS, MULTIPLY, DIVIDE, MODULO, // + - * / %
 
         // logic
-        LOGICAL_AND, LOGICAL_OR,
+        LOGICAL_AND, LOGICAL_OR, // && ||
 
         // bitwise
-        BITWISE_AND, BITWISE_OR, BITWISE_XOR,
-        LEFT_SHIFT, RIGHT_SHIFT, BITWISE_NOT,
+        BITWISE_AND, BITWISE_OR, BITWISE_XOR, // & | ^
+        LEFT_SHIFT, RIGHT_SHIFT, BITWISE_NOT, // >> << ~
 
         // unary
-        BANG,
+        BANG, // !
 
         // unary postfix / prefix
-        PLUS_PLUS,
-        MINUS_MINUS,
+        PLUS_PLUS, // ++
+        MINUS_MINUS, // --
 
         // other
-        QUESTION_MARK,
-        COLON,
-        SEMI_COLON,
-        COMMA,
-        DOT,
+        QUESTION_MARK, // ?
+        COLON, // ;
+        SEMI_COLON, // ;
+        COMMA, // ,
+        DOT, // .
 
         // equality / comparison
-        EQUAL_EQUAL, BANG_EQUAL,
-        GREATER_THAN, LESS_THAN, GREATER_OR_EQUAL, LESS_OR_EQUAL,
+        EQUAL_EQUAL, BANG_EQUAL, // == !=
+        GREATER_THAN, LESS_THAN, GREATER_OR_EQUAL, LESS_OR_EQUAL, // > < >= <=
 
         // assignment
-        ASSIGN, PLUS_ASSIGN, MINUS_ASSIGN, DIVIDE_ASSIGN, MULTIPLY_ASSIGN,
-        MODULO_ASSIGN, LEFT_SHIFT_ASSIGN, RIGHT_SHIFT_ASSIGN,
-        BITWISE_AND_ASSIGN, BITWISE_OR_ASSIGN, BITWISE_XOR_ASSIGN,
+        ASSIGN, PLUS_ASSIGN, MINUS_ASSIGN, DIVIDE_ASSIGN, MULTIPLY_ASSIGN, // + += -= /= *=
+        MODULO_ASSIGN, LEFT_SHIFT_ASSIGN, RIGHT_SHIFT_ASSIGN, // %= <<= >>=
+        BITWISE_AND_ASSIGN, BITWISE_OR_ASSIGN, BITWISE_XOR_ASSIGN, // &= |= ^=
 
         // literals
         IDENTIFIER, INT, DOUBLE, STRING,
         TRUE_, FALSE_, NULL_,
 
         // grouping
-        LEFT_PAREN, RIGHT_PAREN, LEFT_BRACKET,
-        RIGHT_BRACKET, LEFT_CURLY_BRACE, RIGHT_CURLY_BRACE,
+        LEFT_PAREN, RIGHT_PAREN, LEFT_BRACKET, // ( ) [
+        RIGHT_BRACKET, LEFT_CURLY_BRACE, RIGHT_CURLY_BRACE, // ] { }
 
         END_OF_FILE,
 
         // reserved keywords
-        FOR,
-        WHILE,
-        DO,
-        END_,
-        IF,
-        ELIF,
-        ELSE,
-        SWITCH,
-        CASE,
-        DEFAULT,
-        THEN,
-        RETURN,
-        FUNCTION,
-        CLASS,
-        EXTENDS,
-        BREAK,
-        CONTINUE,
-        VAR,
-        CONST_,
-        TRY,
-        CATCH,
-        FINALLY,
-        PRINT,
-        PRINTLN,
-        USE,
+        FOR, // for
+        WHILE, // while
+        DO, // do
+        END_, // end
+        IF, // if
+        ELIF, // elif
+        ELSE, // else
+        SWITCH, // switch
+        CASE, // case
+        DEFAULT, // default
+        THEN, // then
+        RETURN, // return
+        FUNCTION, // function
+        CLASS, // class
+        EXTENDS, // extends
+        BREAK, // break
+        CONTINUE, // continue
+        VAR, // var
+        CONST_, // const
+        TRY, // try
+        CATCH, // catch
+        FINALLY, // finally
+        PRINT, // print
+        PRINTLN, // println
+        USE, // use
 
         // type declaration keywords
-        TYPE_INT,
-        TYPE_DOUBLE,
-        TYPE_STRING,
-        TYPE_BOOL,
-        TYPE_FUN,
+        TYPE_INT, // int
+        TYPE_DOUBLE, // double
+        TYPE_STRING, // string
+        TYPE_BOOL, // bool
+        TYPE_FUN, // fun
     }
 
 
