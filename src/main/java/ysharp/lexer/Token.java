@@ -49,7 +49,7 @@ public class Token {
         BITWISE_AND_ASSIGN, BITWISE_OR_ASSIGN, BITWISE_XOR_ASSIGN, // &= |= ^=
 
         // literals
-        IDENTIFIER, INT, DOUBLE, STRING,
+        IDENTIFIER, INT, DOUBLE, STRING, CHAR,
         TRUE_, FALSE_, NULL_,
 
         // grouping
@@ -91,6 +91,7 @@ public class Token {
         TYPE_STRING, // string
         TYPE_BOOL, // bool
         TYPE_FUN, // fun
+        TYPE_CHAR,
     }
 
 
