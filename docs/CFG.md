@@ -23,6 +23,7 @@
 IDENTIFIER |
 NUMBER |
 STRING |
+CHAR |
 true |
 false |
 null |
@@ -55,6 +56,7 @@ forStmt |
 whileStmt |
 tryStmt |
 ifStmt |
+switchStmt |
 printStmt |
 printlnStmt |
 returnStmt |
@@ -83,6 +85,18 @@ statement
 ( "elif"  expression  "then" block )*
 ( "else" block )?
 
+- switchStmt &rarr;
+    "switch" expression "do"
+    caseClause*
+    defaultClause?
+    "end"
+
+- caseClause &rarr;
+  "case" expression ":" block
+
+- defaultClause &rarr;
+  "default" ":" block
+
 - printStmt &rarr; "print" expression ";"
 - printlnStmt &rarr; "println" expression ";"
 - returnStmt &rarr; "return" expression? ";"
@@ -106,6 +120,6 @@ function
 - type = "int" | 
 "double" | 
 "string" | 
-"array" | 
-"map" |
+"char" |
+"fun" |
 IDENTIFIER
