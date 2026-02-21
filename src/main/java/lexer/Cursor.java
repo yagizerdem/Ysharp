@@ -243,4 +243,33 @@ public class Cursor {
     public static void printPBuffer(List<Pchar> buf) {
         for (Pchar p : buf) System.out.print(p.c);
     }
+
+    public static boolean isEscaped(String text, int charIndex, char escapeCharacter) {
+        int i = charIndex - 1;
+        int counter = 0;
+        while (i >= 0 && text.charAt(i) == escapeCharacter) {
+            i--;
+            counter++;
+        }
+        return counter % 2 == 1;
+    }
+
+    public static boolean isEscapedBackslash(String text, int charIndex) {
+        return isEscaped(text, charIndex, '\\');
+    }
+
+    public static boolean isEscaped(List<Cursor.Pchar> buf, int charIndex, char escapeCharacter) {
+        int i = charIndex - 1;
+        int counter = 0;
+        while (i >= 0 && buf.get(i).c == escapeCharacter) {
+            i--;
+            counter++;
+        }
+        return counter % 2 == 1;
+    }
+
+    public static boolean isEscapedBackslash(List<Cursor.Pchar> buf, int charIndex) {
+        return isEscaped(buf, charIndex, '\\');
+    }
+
 }
