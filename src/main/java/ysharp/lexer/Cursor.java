@@ -20,44 +20,52 @@ public class Cursor {
 
 
     public enum CharMask {
-        End             (1 << 1),
-        Blank           (1 << 2),
-        Newline         (1 << 3),
-        Comment         (1 << 4),
-        Semi            (1 << 5),
-        Equals          (1 << 6),
-        Colon           (1 << 7),
-        Percent         (1 << 8),
-        Pipe            (1 << 9),
-        Dot             (1 << 10),
-        Comma           (1 << 11),
-        Escape          (1 << 12),
-        Plus            (1 << 13),
-        Minus           (1 << 14),
-        Asterisk        (1 << 15),
-        Slash           (1 << 16),
-        DoubleQuote     (1 << 17),
-        SingleQuote     (1 << 18),
-        LeftBrace       (1 << 19),
-        RightBrace      (1 << 20),
-        LeftParen       (1 << 21),
-        RightParen      (1 << 22),
-        LeftCurlyBrace  (1 << 23),
-        RightCurlyBrace (1 << 24);
+        End             (1L << 1), // \0
+        Blank           (1L << 2), //
+        Newline         (1L << 3), // \n
+        Semi            (1L << 5), // ;
+        Equals          (1L << 6), // =
+        Colon           (1L << 7), // :
+        Percent         (1L << 8), // %
+        Pipe            (1L << 9), // |
+        Dot             (1L << 10), // .
+        Comma           (1L << 11), // ,
+        Escape          (1L << 12), //
+        Plus            (1L << 13), // +
+        Minus           (1L << 14), // -
+        Asterisk        (1L << 15), // *
+        Slash           (1L << 16), // /
+        DoubleQuote     (1L << 17), // ;
+        SingleQuote     (1L << 18), // '
+        LeftBracket      (1L << 19), // [
+        RightBracket     (1L << 20), // ]
+        LeftParen       (1L << 21), //(
+        RightParen      (1L << 22), // )
+        LeftCurlyBrace  (1L << 23), // {
+        RightCurlyBrace (1L << 24), // }
+        UnderScore      (1L << 25), // _
+        Hash            (1L << 26), // #
+        Greater         (1L << 27), // >
+        Less            (1L << 28), // <
+        Bang            (1L << 29), // !
+        Ampersand       (1L << 30), // &
+        Caret           (1L << 31), // ^
+        Question        (1L << 32), // ?
+        Tilde           (1L << 33), // ~
+        BackTick        (1L << 34); // `
 
-        public final int value;
-        CharMask(int value) { this.value = value; }
+        public final long value;
+        CharMask(long value) { this.value = value; }
     }
 
 
-    private static final Map<Character, Integer> STOPCHAR_MAP = new HashMap<>();
+    private static final Map<Character, Long> STOPCHAR_MAP = new HashMap<>();
 
     static {
         STOPCHAR_MAP.put('\0', CharMask.End.value);
         STOPCHAR_MAP.put(' ',  CharMask.Blank.value);
         STOPCHAR_MAP.put('\t', CharMask.Blank.value);
         STOPCHAR_MAP.put('\n', CharMask.Newline.value);
-        STOPCHAR_MAP.put('#',  CharMask.Comment.value);
         STOPCHAR_MAP.put(';',  CharMask.Semi.value);
         STOPCHAR_MAP.put('=',  CharMask.Equals.value);
         STOPCHAR_MAP.put(':',  CharMask.Colon.value);
@@ -72,28 +80,39 @@ public class Cursor {
         STOPCHAR_MAP.put('/',  CharMask.Slash.value);
         STOPCHAR_MAP.put('"',  CharMask.DoubleQuote.value);
         STOPCHAR_MAP.put('\'', CharMask.SingleQuote.value);
-        STOPCHAR_MAP.put('[',  CharMask.LeftBrace.value);
-        STOPCHAR_MAP.put(']',  CharMask.RightBrace.value);
+        STOPCHAR_MAP.put('[',  CharMask.LeftBracket.value);
+        STOPCHAR_MAP.put(']',  CharMask.RightBracket.value);
         STOPCHAR_MAP.put('(',  CharMask.LeftParen.value);
         STOPCHAR_MAP.put(')',  CharMask.RightParen.value);
         STOPCHAR_MAP.put('{',  CharMask.LeftCurlyBrace.value);
         STOPCHAR_MAP.put('}',  CharMask.RightCurlyBrace.value);
+        STOPCHAR_MAP.put('_',  CharMask.UnderScore.value);
+        STOPCHAR_MAP.put('#',  CharMask.Hash.value);
+        STOPCHAR_MAP.put('>',  CharMask.Greater.value);
+        STOPCHAR_MAP.put('<',  CharMask.Less.value);
+        STOPCHAR_MAP.put('!',  CharMask.Bang.value);
+        STOPCHAR_MAP.put('&',  CharMask.Ampersand.value);
+        STOPCHAR_MAP.put('^',  CharMask.Caret.value);
+        STOPCHAR_MAP.put('?',  CharMask.Question.value);
+        STOPCHAR_MAP.put('~',  CharMask.Tilde.value);
+        STOPCHAR_MAP.put('`',  CharMask.BackTick.value);
+
     }
 
-    public static int getStopcharMask(char key) {
-        return STOPCHAR_MAP.getOrDefault(key, 0);
+    public static long getStopcharMask(char key) {
+        return STOPCHAR_MAP.getOrDefault(key, (long)0);
     }
 
 
-    public static int maskOr(CharMask a, CharMask b) {
+    public static long maskOr(CharMask a, CharMask b) {
         return a.value | b.value;
     }
 
-    public static boolean anySet(int v, CharMask m) {
+    public static boolean anySet(long v, CharMask m) {
         return (v & m.value) != 0;
     }
 
-    public static boolean anySet(int v, int mask) {
+    public static boolean anySet(long v, long mask) {
         return (v & mask) != 0;
     }
 
@@ -105,7 +124,7 @@ public class Cursor {
         return anySet(getStopcharMask(c), m);
     }
 
-    public static boolean stopSet(char c, int mask) {
+    public static boolean stopSet(char c, long mask) {
         return anySet(getStopcharMask(c), mask);
     }
 

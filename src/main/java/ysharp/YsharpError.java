@@ -2,7 +2,6 @@ package ysharp;
 
 public class YsharpError extends Exception {
 
-    // ── YsharpErrorType ───────────────────────────────────────────────────────────
 
     public enum YsharpErrorType {
         SYNTAX,

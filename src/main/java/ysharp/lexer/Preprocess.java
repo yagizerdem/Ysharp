@@ -168,7 +168,7 @@ public class Preprocess {
             } else if (Cursor.stopSet(Cursor.peek(program, cursor), Cursor.CharMask.Escape)
                     && !Cursor.isEscapedBackslash(program, cursor.current)) {
 
-                int nextMask = Cursor.getStopcharMask(next(program, cursor.current));
+                long nextMask = Cursor.getStopcharMask(next(program, cursor.current));
                 boolean nextIsNewlineOrBlank =
                         Cursor.anySet(nextMask, Cursor.CharMask.Newline)
                                 || Cursor.anySet(nextMask, Cursor.CharMask.Blank);

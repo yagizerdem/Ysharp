@@ -54,7 +54,7 @@ public class Token {
 
         // grouping
         LEFT_PAREN, RIGHT_PAREN, LEFT_BRACKET,
-        RIGHT_BRACKET, LEFT_BRACE, RIGHT_BRACE,
+        RIGHT_BRACKET, LEFT_CURLY_BRACE, RIGHT_CURLY_BRACE,
 
         END_OF_FILE,
 
@@ -90,6 +90,7 @@ public class Token {
         TYPE_DOUBLE,
         TYPE_STRING,
         TYPE_BOOL,
+        TYPE_FUN,
     }
 
 
