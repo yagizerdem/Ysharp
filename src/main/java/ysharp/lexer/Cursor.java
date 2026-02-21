@@ -1,8 +1,19 @@
-package lexer;
+package ysharp.lexer;
 
 import java.util.*;
 
 public class Cursor {
+
+    public static class CursorState {
+        int current;
+    }
+
+    public static class Floc {
+        public int line;
+        public Floc() { this.line = 0; }
+        public Floc(int line) { this.line = line; }
+    }
+
 
 
     public static final char END = '\0';
@@ -107,45 +118,37 @@ public class Cursor {
     }
 
 
-    public static char peek(String text, int[] current) {
-        if (current[0] >= text.length()) return END;
-        return text.charAt(current[0]);
+    public static char peek(String text, CursorState cursor) {
+        if (cursor.current >= text.length()) return END;
+        return text.charAt(cursor.current);
     }
 
-    public static char advance(String text, int[] current) {
-        if (current[0] >= text.length()) return END;
-        return text.charAt(current[0]++);
+    public static char advance(String text, CursorState cursor) {
+        if (cursor.current >= text.length()) return END;
+        return text.charAt(cursor.current++);
     }
 
-    public static char peekNext(String text, int[] current) {
-        if (current[0] + 1 >= text.length()) return END;
-        return text.charAt(current[0] + 1);
+    public static char peekNext(String text, CursorState cursor) {
+        if (cursor.current + 1 >= text.length()) return END;
+        return text.charAt(cursor.current + 1);
     }
 
-    public static boolean match(String text, int[] current, char expected) {
-        if (current[0] >= text.length()) return false;
-        if (text.charAt(current[0]) == expected) {
-            current[0]++;
+    public static boolean match(String text, CursorState cursor, char expected) {
+        if (cursor.current >= text.length()) return false;
+        if (text.charAt(cursor.current) == expected) {
+            cursor.current++;
             return true;
         }
         return false;
     }
 
-    public static void consumeBlank(String text, int[] current) {
-        while (isBlank(peek(text, current))) current[0]++;
+    public static void consumeBlank(String text, CursorState cursor) {
+        while (isBlank(peek(text, cursor))) cursor.current++;
     }
 
-    public static void consumeSpace(String text, int[] current) {
-        while (isSpace(peek(text, current))) current[0]++;
+    public static void consumeSpace(String text, CursorState cursor) {
+        while (isSpace(peek(text, cursor))) cursor.current++;
     }
-
-
-    public static class Floc {
-        public int line;
-        public Floc() { this.line = 0; }
-        public Floc(int line) { this.line = line; }
-    }
-
 
     public static class Pchar {
         public char c;
@@ -182,9 +185,9 @@ public class Cursor {
         return buf.get(current + 1);
     }
 
-    public static Pchar advance(List<Pchar> buf, int[] current) {
-        Pchar p = peek(buf, current[0]);
-        if (current[0] < buf.size()) current[0]++;
+    public static Pchar advance(List<Pchar> buf, CursorState cursor) {
+        Pchar p = peek(buf, cursor.current);
+        if (cursor.current < buf.size()) cursor.current++;
         return p;
     }
 
@@ -196,24 +199,24 @@ public class Cursor {
         return peekNext(buf, current).c;
     }
 
-    public static char advanceChar(List<Pchar> buf, int[] current) {
-        return advance(buf, current).c;
+    public static char advanceChar(List<Pchar> buf, CursorState cursor) {
+        return advance(buf, cursor).c;
     }
 
-    public static boolean match(List<Pchar> buf, int[] current, char expected) {
-        if (peek(buf, current[0]).c == expected) {
-            current[0]++;
+    public static boolean match(List<Pchar> buf, CursorState cursor, char expected) {
+        if (peek(buf, cursor.current).c == expected) {
+            cursor.current++;
             return true;
         }
         return false;
     }
 
-    public static void consumeBlank(List<Pchar> buf, int[] current) {
-        while (isBlank(peek(buf, current[0]))) current[0]++;
+    public static void consumeBlank(List<Pchar> buf, CursorState cursor) {
+        while (isBlank(peek(buf, cursor.current))) cursor.current++;
     }
 
-    public static void consumeSpace(List<Pchar> buf, int[] current) {
-        while (isSpace(peek(buf, current[0]))) current[0]++;
+    public static void consumeSpace(List<Pchar> buf, CursorState cursor) {
+        while (isSpace(peek(buf, cursor.current))) cursor.current++;
     }
 
 

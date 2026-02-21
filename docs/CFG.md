@@ -120,8 +120,6 @@ function
 - type = "int" | 
 "double" | 
 "string" | 
-"array" | 
-"map" |
 "char" |
 "fun" |
 IDENTIFIER

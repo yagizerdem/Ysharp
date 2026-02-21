@@ -1,4 +1,4 @@
-package lexer;
+package ysharp.lexer;
 
 public class Lexer {
 
