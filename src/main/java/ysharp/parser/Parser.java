@@ -145,17 +145,19 @@ public class Parser {
         Expr expr = parseLogicalAnd();
 
         if(match(peek(), Token.TokenType.LOGICAL_OR)) {
+            Token op = previous();
             Expr logicalAnd = parseLogicalAnd();
             Expr.LogicalExpr logicalExpr = new Expr.LogicalExpr(
                     expr,
-                    previous(),
+                    op,
                     logicalAnd
                     );
             while (match(peek(), Token.TokenType.LOGICAL_OR)) {
+                op = previous();
                 logicalAnd = parseLogicalAnd();
                  Expr.LogicalExpr logicalExpr_ = new Expr.LogicalExpr(
                          logicalExpr,
-                        previous(),
+                        op,
                         logicalAnd
                 );
                  logicalExpr = logicalExpr_;
@@ -171,17 +173,19 @@ public class Parser {
         Expr expr = parseBitwiseOr();
 
         if(match(peek(), Token.TokenType.LOGICAL_AND)) {
+            Token op = previous();
             Expr bitwiseOr = parseBitwiseOr();
             Expr.LogicalExpr logicalExpr = new Expr.LogicalExpr(
                     expr,
-                    previous(),
+                    op,
                     bitwiseOr
             );
             while (match(peek(), Token.TokenType.LOGICAL_AND)) {
+                op = previous();
                 bitwiseOr = parseBitwiseOr();
                 Expr.LogicalExpr logicalExpr_ = new Expr.LogicalExpr(
                         logicalExpr,
-                        previous(),
+                        op,
                         bitwiseOr
                 );
                 logicalExpr = logicalExpr_;
@@ -197,17 +201,19 @@ public class Parser {
         Expr expr = parseBitwiseXor();
 
         if(match(peek(), Token.TokenType.BITWISE_OR)) {
+            Token op = previous();
             Expr bitwiseXOr = parseBitwiseXor();
             Expr.BinaryExpr binaryExpr = new Expr.BinaryExpr(
                     expr,
-                    previous(),
+                    op,
                     bitwiseXOr
             );
             while (match(peek(), Token.TokenType.BITWISE_OR)) {
+                op = previous();
                 bitwiseXOr = parseBitwiseXor();
                 Expr.BinaryExpr binaryExpr_ = new Expr.BinaryExpr(
                         binaryExpr,
-                        previous(),
+                        op,
                         bitwiseXOr
                 );
                 binaryExpr = binaryExpr_;
@@ -223,17 +229,19 @@ public class Parser {
         Expr expr = parseBitwiseAnd();
 
         if(match(peek(), Token.TokenType.BITWISE_XOR)) {
+            Token op = previous();
             Expr bitwiseAnd = parseBitwiseAnd();
             Expr.BinaryExpr binaryExpr = new Expr.BinaryExpr(
                     expr,
-                    previous(),
+                    op,
                     bitwiseAnd
             );
             while (match(peek(), Token.TokenType.BITWISE_XOR)) {
+                op = previous();
                 bitwiseAnd = parseBitwiseAnd();
                 Expr.BinaryExpr binaryExpr_ = new Expr.BinaryExpr(
                         binaryExpr,
-                        previous(),
+                         op,
                         bitwiseAnd
                 );
                 binaryExpr = binaryExpr_;
@@ -249,17 +257,19 @@ public class Parser {
         Expr expr = parseEquality();
 
         if(match(peek(), Token.TokenType.BITWISE_AND)) {
+            Token op = previous();
             Expr equality = parseEquality();
             Expr.BinaryExpr binaryExpr = new Expr.BinaryExpr(
                     expr,
-                    previous(),
+                    op,
                     equality
             );
             while (match(peek(), Token.TokenType.BITWISE_AND)) {
+                op = previous();
                 equality = parseEquality();
                 Expr.BinaryExpr binaryExpr_ = new Expr.BinaryExpr(
                         binaryExpr,
-                        previous(),
+                        op,
                         equality
                 );
                 binaryExpr = binaryExpr_;
@@ -278,10 +288,12 @@ public class Parser {
                 Token.TokenType.EQUAL_EQUAL,
                 Token.TokenType.BANG_EQUAL)) {
 
+            Token op = previous();
+
             Expr comparison = parseComparison();
             Expr.BinaryExpr binaryExpr = new Expr.BinaryExpr(
                     expr,
-                    previous(),
+                    op,
                     comparison
             );
 
@@ -289,10 +301,12 @@ public class Parser {
                     Token.TokenType.EQUAL_EQUAL,
                     Token.TokenType.BANG_EQUAL)) {
 
+                op = previous();
+
                 comparison = parseComparison();
                 Expr.BinaryExpr binaryExpr_ = new Expr.BinaryExpr(
                         binaryExpr,
-                        previous(),
+                        op,
                         comparison
                 );
 
@@ -314,10 +328,12 @@ public class Parser {
                 Token.TokenType.LESS_THAN,
                 Token.TokenType.LESS_OR_EQUAL)) {
 
+            Token op = previous();
+
             Expr right = parseBitwiseShift();
             Expr.BinaryExpr binaryExpr = new Expr.BinaryExpr(
                     expr,
-                    previous(),
+                    op,
                     right
             );
 
@@ -327,10 +343,12 @@ public class Parser {
                     Token.TokenType.LESS_THAN,
                     Token.TokenType.LESS_OR_EQUAL)) {
 
+                op = previous();
+
                 right = parseBitwiseShift();
                 Expr.BinaryExpr binaryExpr_ = new Expr.BinaryExpr(
                         binaryExpr,
-                        previous(),
+                        op,
                         right
                 );
 
@@ -350,10 +368,12 @@ public class Parser {
                 Token.TokenType.RIGHT_SHIFT,
                 Token.TokenType.LEFT_SHIFT)) {
 
+            Token op = previous();
+
             Expr term = parseTerm();
             Expr.BinaryExpr binaryExpr = new Expr.BinaryExpr(
                     expr,
-                    previous(),
+                    op,
                     term
             );
 
@@ -361,10 +381,12 @@ public class Parser {
                     Token.TokenType.RIGHT_SHIFT,
                     Token.TokenType.LEFT_SHIFT)) {
 
+                op = previous();
+
                 term = parseTerm();
                 Expr.BinaryExpr binaryExpr_ = new Expr.BinaryExpr(
                         binaryExpr,
-                        previous(),
+                        op,
                         term
                 );
 
@@ -384,10 +406,12 @@ public class Parser {
                 Token.TokenType.PLUS,
                 Token.TokenType.MINUS)) {
 
+            Token op = previous();
+
             Expr factor = parseFactor();
             Expr.BinaryExpr binaryExpr = new Expr.BinaryExpr(
                     expr,
-                    previous(),
+                    op,
                     factor
             );
 
@@ -419,10 +443,12 @@ public class Parser {
                 Token.TokenType.MULTIPLY,
                 Token.TokenType.MODULO)) {
 
+            Token op = previous();
+
             Expr unary = parseUnary();
             Expr.BinaryExpr binaryExpr = new Expr.BinaryExpr(
                     expr,
-                    previous(),
+                    op,
                     unary
             );
 
@@ -431,10 +457,12 @@ public class Parser {
                     Token.TokenType.MULTIPLY,
                     Token.TokenType.MODULO)) {
 
+                op = previous();
+
                 unary = parseUnary();
                 Expr.BinaryExpr binaryExpr_ = new Expr.BinaryExpr(
                         binaryExpr,
-                        previous(),
+                        op,
                         unary
                 );
 
