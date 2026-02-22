@@ -4,9 +4,11 @@ import ysharp.YsharpError;
 import ysharp.lexer.Token;
 
 import javax.print.DocFlavor;
+import java.security.CryptoPrimitive;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentNavigableMap;
+import java.util.concurrent.RecursiveTask;
 
 public class Parser {
 
@@ -700,6 +702,8 @@ public class Parser {
         if(match(peek(), Token.TokenType.IF)) return parseIfStmt();
         if(match(peek(), Token.TokenType.WHILE)) return parseWhileStmt();
         if(match(peek(), Token.TokenType.FOR)) return parseForStmt();
+        if(match(peek(), Token.TokenType.BREAK)) return parseBreakStmt();
+        if(match(peek(), Token.TokenType.CONTINUE)) return parseContinueStmt();
 
         return  parseExprStmt();
     }
@@ -840,6 +844,18 @@ public class Parser {
                 increment,
                 body
         );
+    }
+
+    private Stmt parseBreakStmt() throws YsharpError {
+        consume(Token.TokenType.SEMI_COLON,
+                "Expected ';' after 'break'.");
+        return new Stmt.BreakStmt();
+    }
+
+    private Stmt parseContinueStmt() throws YsharpError {
+        consume(Token.TokenType.SEMI_COLON,
+                "Expected ';' after 'continue'.");
+        return new Stmt.ContinueStmt();
     }
 
     // declaration parser

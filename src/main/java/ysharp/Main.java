@@ -17,6 +17,8 @@ public class Main {
         String program = """
                 var i = 0;
                 for ; i < 10 ; i += 1  do
+                    println \"hit\";
+                    if i > 5 then do break ; end
                     println i ;
                     end
 

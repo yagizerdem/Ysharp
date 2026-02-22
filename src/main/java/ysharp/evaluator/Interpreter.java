@@ -471,10 +471,14 @@ public class Interpreter implements
 
     @Override
     public void visitWhileStmt(Stmt.WhileStmt stmt) {
-        Variable.Variant flag = this.evaluate(stmt.condition);
-        while (flag.isTruthy()) {
-            this.execute(stmt.stmt);
-            flag = this.evaluate(stmt.condition);
+        while (evaluate(stmt.condition).isTruthy()) {
+            try {
+                this.execute(stmt.stmt);
+            } catch (Signal.ContinueSignal c) {
+                continue;
+            } catch (Signal.BreakSignal b) {
+                break;
+            }
         }
     }
 
@@ -498,7 +502,13 @@ public class Interpreter implements
             while (stmt.condition == null ||
                     evaluate(stmt.condition).isTruthy()) {
 
-                stmt.body.accept(this);
+                try {
+                    stmt.body.accept(this);
+                } catch (Signal.ContinueSignal c) {
+                    // continue loop
+                } catch (Signal.BreakSignal b) {
+                    break;
+                }
 
                 if (stmt.increment != null) {
                     evaluate(stmt.increment);
@@ -508,6 +518,16 @@ public class Interpreter implements
         } finally {
             this.curEnv = previous;
         }
+    }
+
+    @Override
+    public void visitBreakStmt(Stmt.BreakStmt stmt) throws Signal.BreakSignal {
+        throw new Signal.BreakSignal();
+    }
+
+    @Override
+    public void visitContinueStmt(Stmt.ContinueStmt stmt) throws Signal.ContinueSignal {
+        throw new Signal.ContinueSignal();
     }
 
     // declaration visitor
