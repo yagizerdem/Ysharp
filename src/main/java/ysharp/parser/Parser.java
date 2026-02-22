@@ -24,7 +24,7 @@ public class Parser {
 
     private Token advance(){
         if(current + 1 >= tokenStream.size()) return tokenStream.getLast();
-        var token = tokenStream.get(current + 1);
+        var token = tokenStream.get(current);
         current++;
         return token;
     }
@@ -419,10 +419,11 @@ public class Parser {
                     Token.TokenType.PLUS,
                     Token.TokenType.MINUS)) {
 
+                op = previous();
                 factor = parseFactor();
                 Expr.BinaryExpr binaryExpr_ = new Expr.BinaryExpr(
                         binaryExpr,
-                        previous(),
+                        op,
                         factor
                 );
 

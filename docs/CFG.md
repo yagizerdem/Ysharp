@@ -118,6 +118,7 @@ function
 | constDecl
 
 - type = "int" | 
+"bool" |
 "double" | 
 "string" | 
 "char" |

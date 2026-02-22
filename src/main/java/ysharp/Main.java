@@ -1,11 +1,14 @@
 package ysharp;
 
-import ysharp.lexer.Cursor;
+import ysharp.evaluator.Interpreter;
+import ysharp.evaluator.Variable;
 import ysharp.lexer.Lexer;
 import ysharp.lexer.Preprocess;
+import ysharp.parser.Expr;
 import ysharp.parser.Parser;
 
 import java.util.List;
+
 
 public class Main {
     public static void main(String[] args) throws  Exception {
@@ -17,9 +20,12 @@ public class Main {
 
         Parser parser = new Parser(stream);
 
-        var parseTree = parser.parse();
+        List<Expr> parseTree = parser.parse();
 
-        int a =10;
+        Interpreter interpreter = new Interpreter();
+        Variable.Variant v = interpreter.evaluate(parseTree.get(0));
+
+        int a = 10;
 
     }
 }
