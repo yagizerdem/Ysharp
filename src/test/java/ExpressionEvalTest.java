@@ -13,7 +13,7 @@ class ExpressionEvalTest {
         var buf = Preprocess.mergeContinuation(program);
         buf = Preprocess.removeComments(buf);
         var stream = new Lexer(buf).scanTokens();
-        var exprVec = new Parser(stream).parse();
+        var exprVec = new Parser(stream).parseExprGrammer();
         var node = exprVec.get(0);
         Interpreter interpreter = new Interpreter();
         return node.accept(interpreter);

@@ -6,6 +6,7 @@ import ysharp.lexer.Lexer;
 import ysharp.lexer.Preprocess;
 import ysharp.parser.Expr;
 import ysharp.parser.Parser;
+import ysharp.parser.Stmt;
 
 import java.util.List;
 
@@ -13,17 +14,28 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) throws  Exception {
 
-        String program = "4 + 3";
+        String program = """
+                var i = 0;
+                for ; i < 10 ; i += 1  do
+                    println i ;
+                    end
+
+                """;
+
         var buf = Preprocess.removeComments(Preprocess.mergeContinuation(program));
         Lexer lexer = new Lexer(buf);
         var stream = lexer.scanTokens();
 
         Parser parser = new Parser(stream);
 
-        List<Expr> parseTree = parser.parse();
+        List<Stmt> parseTree = parser.parse();
 
         Interpreter interpreter = new Interpreter();
-        Variable.Variant v = interpreter.evaluate(parseTree.get(0));
+
+        for(Stmt s : parseTree){
+            interpreter.execute(s);
+        }
+
 
         int a = 10;
 

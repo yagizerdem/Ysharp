@@ -3,11 +3,28 @@ package ysharp.evaluator;
 import ysharp.YsharpError;
 import ysharp.lexer.Token;
 import ysharp.parser.Expr;
+import ysharp.parser.Stmt;
 
-public class Interpreter implements Expr.Visitor<Variable.Variant> {
+import java.util.concurrent.RecursiveTask;
+
+public class Interpreter implements
+        Expr.Visitor<Variable.Variant>,
+        Stmt.Visitor {
+
+    private Environment global;
+    private Environment curEnv;
+
+    public Interpreter() {
+        this.global = new Environment();
+        this.curEnv = global;
+    }
 
     public Variable.Variant evaluate(Expr expr) {
         return expr.accept(this);
+    }
+
+    public void execute(Stmt stmt){
+        stmt.accept(this);
     }
 
     private void requireIntegerOperands(Variable.Variant left,
@@ -274,6 +291,45 @@ public class Interpreter implements Expr.Visitor<Variable.Variant> {
 
     @Override
     public Variable.Variant visitAssignmentExpr(Expr.AssignmentExpr expr) {
+        try {
+            if(expr.target instanceof Expr.VariableExpr) {
+                Token lvalue = ((Expr.VariableExpr) expr.target).name;
+                Variable.Variant right = this.evaluate(expr.value);
+
+                switch (expr.op.type) {
+                    case Token.TokenType.ASSIGN ->  {
+                        this.curEnv.assign(lvalue, right);
+                    }
+                    case Token.TokenType.PLUS_ASSIGN -> {
+                        Variable left = this.curEnv.getValue(lvalue);
+
+                        if(left.value.isNumber() && right.isNumber()) {
+                            Variable.Variant result;
+                            if(left.value.isInt() && right.isInt())
+                                result = new Variable.Variant(left.value.asInt() + right.asInt());
+                            else
+                                result = new Variable.Variant(left.value.asDouble() + right.asDouble());
+
+                            curEnv.assign(lvalue, result);
+                            return result;
+                        }
+
+                        throw new YsharpError(
+                                YsharpError.YsharpErrorType.PROCESS,
+                                expr.op.line,
+                                "Operator '+=' cannot be applied to types '"
+                                        + left.value.getType() + "' and '" + right.getType() + "'."
+                        );
+                    }
+                }
+            }
+            else {
+                // throw error
+            }
+        }   catch (YsharpError err) {
+            // throw error
+        }
+
         return null;
     }
 
@@ -350,6 +406,11 @@ public class Interpreter implements Expr.Visitor<Variable.Variant> {
 
     @Override
     public Variable.Variant visitVariableExpr(Expr.VariableExpr expr) {
+        try {
+           return ((Variable)this.curEnv.getValue(expr.name)).value;
+        }catch (YsharpError err) {
+            // throw error
+        }
         return null;
     }
 
@@ -362,4 +423,112 @@ public class Interpreter implements Expr.Visitor<Variable.Variant> {
     public Variable.Variant visitMapInitializerExpr(Expr.MapInitializerExpr expr) {
         return null;
     }
+
+    // stmt visitor
+
+
+    @Override
+    public void visitPrintStmt(Stmt.PrintStmt stmt) {
+        Variable.Variant value = evaluate(stmt.expr);
+        if(value == null || value.isNull()) System.out.print("null");
+        else System.out.print(value.toString());
+    }
+
+    @Override
+    public void visitPrintlnStmt(Stmt.PrintlnStmt stmt) {
+        Variable.Variant value = evaluate(stmt.expr);
+        if(value == null || value.isNull()) System.out.println("null");
+        else System.out.println(value.toString());
+    }
+
+    @Override
+    public void visitBlockStmt(Stmt.BlockStmt stmt) {
+        for(int i = 0; i < stmt.stmtList.size(); i++) {
+            this.execute(stmt.stmtList.get(i));
+        }
+    }
+
+    @Override
+    public void visitIfStmt(Stmt.IfStmt stmt) {
+        Variable.Variant condition= this.evaluate(stmt.condition);
+        if(condition.isTruthy()) {
+            this.execute(stmt.then);
+            return;
+        }
+
+        for(int i = 0; i < stmt.elifStmtList.size(); i++) {
+            condition = this.evaluate(stmt.elifStmtList.get(i).condition);
+            if(condition.isTruthy()) {
+                this.execute(stmt.elifStmtList.get(i).then);
+                return;
+            }
+        }
+
+        if(stmt.else_ != null) {
+            this.execute(stmt.else_);
+        }
+    }
+
+    @Override
+    public void visitWhileStmt(Stmt.WhileStmt stmt) {
+        Variable.Variant flag = this.evaluate(stmt.condition);
+        while (flag.isTruthy()) {
+            this.execute(stmt.stmt);
+            flag = this.evaluate(stmt.condition);
+        }
+    }
+
+    @Override
+    public void visitExprStmt(Stmt.ExprStmt stmt) {
+        this.evaluate(stmt.expr);
+    }
+
+    @Override
+    public void visitForStmt(Stmt.ForStmt stmt) {
+
+        Environment previous = this.curEnv;
+        this.curEnv = new Environment(previous);
+
+        try {
+
+            if (stmt.initializer != null) {
+                stmt.initializer.accept(this);
+            }
+
+            while (stmt.condition == null ||
+                    evaluate(stmt.condition).isTruthy()) {
+
+                stmt.body.accept(this);
+
+                if (stmt.increment != null) {
+                    evaluate(stmt.increment);
+                }
+            }
+
+        } finally {
+            this.curEnv = previous;
+        }
+    }
+
+    // declaration visitor
+
+    @Override
+    public void visitVarDeclaration(Stmt.VarDeclaration stmt) {
+        try {
+            Variable.Variant value = stmt.initializer != null ?
+                    this.evaluate(stmt.initializer) : null;
+
+            String typeTag = stmt.typeTag != null ? stmt.typeTag.lexeme : "any";
+
+            Variable var = new Variable(
+                    value,
+                    false,
+                    typeTag);
+
+            this.curEnv.define(stmt.identifier.lexeme, var);
+        } catch (YsharpError err) {
+            // throw error
+        }
+    }
+
 }

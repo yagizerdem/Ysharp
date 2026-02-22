@@ -3,8 +3,10 @@ package ysharp.parser;
 import ysharp.YsharpError;
 import ysharp.lexer.Token;
 
+import javax.print.DocFlavor;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentNavigableMap;
 
 public class Parser {
 
@@ -56,7 +58,6 @@ public class Parser {
         advance();
     }
 
-
     public Parser(List<Token> tokenStream) {
         this.tokenStream = tokenStream;
     }
@@ -65,7 +66,8 @@ public class Parser {
 
     }
 
-    public List<Expr> parse() {
+    // for debugging
+    public List<Expr> parseExprGrammer() {
         List<Expr> list = new ArrayList<>();
         while (peek().type != Token.TokenType.END_OF_FILE) {
             try {
@@ -77,6 +79,20 @@ public class Parser {
 
         return list;
     }
+
+    public List<Stmt> parse() {
+        List<Stmt> list = new ArrayList<>();
+        while (peek().type != Token.TokenType.END_OF_FILE) {
+            try {
+                list.add(parseDeclaration());
+            }catch (YsharpError err) {
+                sync();
+            }
+        }
+
+        return list;
+    }
+
 
     // expression parser
 
@@ -675,5 +691,203 @@ public class Parser {
     }
 
     // stmt parser
+
+    private Stmt parseStmt() throws YsharpError {
+
+        if(match(peek(), Token.TokenType.PRINT)) return parsePrint();
+        if(match(peek(), Token.TokenType.PRINTLN)) return parsePrintln();
+        if(peek().type == Token.TokenType.DO) return parseBlockStmt();
+        if(match(peek(), Token.TokenType.IF)) return parseIfStmt();
+        if(match(peek(), Token.TokenType.WHILE)) return parseWhileStmt();
+        if(match(peek(), Token.TokenType.FOR)) return parseForStmt();
+
+        return  parseExprStmt();
+    }
+
+    private Stmt parseExprStmt() throws YsharpError {
+        Expr expr = parseAssignment();
+        consume(Token.TokenType.SEMI_COLON,
+                "Expected ';' after expression.");
+
+        return new Stmt.ExprStmt(expr);
+    }
+
+    private Stmt parsePrint() throws YsharpError {
+        Expr expr = parseAssignment();
+        consume(Token.TokenType.SEMI_COLON,
+                "expected ';' after print statement");
+
+        return new Stmt.PrintStmt(expr);
+    }
+
+    private Stmt parsePrintln() throws YsharpError {
+        Expr expr = parseAssignment();
+        consume(Token.TokenType.SEMI_COLON,
+                "expected ';' after println statement");
+
+        return new Stmt.PrintlnStmt(expr);
+    }
+
+    private Stmt parseBlockStmt() throws YsharpError {
+        consume(Token.TokenType.DO,
+                "Expected 'do' to start block.");
+
+        List<Stmt> stmtList = new ArrayList<>();
+        while (peek().type != Token.TokenType.END_ &&
+                peek().type != Token.TokenType.END_OF_FILE) {
+            stmtList.add(parseDeclaration());
+        }
+
+        consume(Token.TokenType.END_,
+                "Expected 'end' to close block.");
+        return new Stmt.BlockStmt(stmtList);
+    }
+
+    private Stmt parseIfStmt() throws YsharpError {
+        Expr condition = parseAssignment();
+        consume(Token.TokenType.THEN,
+                "Expected 'then' after if condition.");
+        Stmt then = parseBlockStmt();
+        List<Stmt.IfStmt.ElifStmt> elifStmtList = new ArrayList<>();
+
+
+        while (match(peek(), Token.TokenType.ELIF)) {
+            Expr condition_ = parseAssignment();
+            consume(Token.TokenType.THEN,
+                    "Expected 'then' after elif condition.");
+            Stmt then_ = parseBlockStmt();
+
+            elifStmtList.add(new Stmt.IfStmt.ElifStmt(condition_, then_));
+        }
+
+        Stmt else_ = null;
+        if(match(peek(), Token.TokenType.ELSE)) {
+            else_ = parseBlockStmt();
+        }
+
+        return new Stmt.IfStmt(condition,
+                then,
+                else_,
+                elifStmtList);
+
+    }
+
+    private Stmt parseWhileStmt() throws YsharpError {
+
+        Expr condition = parseAssignment();
+
+        if (peek().type == Token.TokenType.END_OF_FILE) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.SYNTAX,
+                    peek().line,
+                    "Expected statement after while condition."
+            );
+        }
+
+        Stmt body = parseStmt();
+
+        return new Stmt.WhileStmt(condition, body);
+    }
+
+    private Stmt parseForStmt() throws YsharpError {
+
+        // initializer
+        Stmt initializer = null;
+
+        if (match(peek(), Token.TokenType.SEMI_COLON)) {
+            initializer = null;
+        }
+        else if (match(peek(), Token.TokenType.VAR)) {
+            initializer = parseVarDeclaration();
+        }
+        else {
+            initializer = parseExprStmt();
+        }
+
+        // condition
+        Expr condition = null;
+        if (peek().type != Token.TokenType.SEMI_COLON) {
+            condition = parseAssignment();
+        }
+
+        consume(Token.TokenType.SEMI_COLON,
+                "Expected ';' after loop condition.");
+
+        // increment
+        Expr increment = null;
+        if (peek().type != Token.TokenType.DO) {
+            increment = parseAssignment();
+        }
+
+        consume(Token.TokenType.DO,
+                "Expected 'do' after for clauses.");
+
+        // body
+        List<Stmt> bodyStatements = new ArrayList<>();
+        while (peek().type != Token.TokenType.END_ &&
+                peek().type != Token.TokenType.END_OF_FILE) {
+            bodyStatements.add(parseDeclaration());
+        }
+
+        consume(Token.TokenType.END_,
+                "Expected 'end' after for block.");
+
+        Stmt body = new Stmt.BlockStmt(bodyStatements);
+
+        return new Stmt.ForStmt(
+                initializer,
+                condition,
+                increment,
+                body
+        );
+    }
+
+    // declaration parser
+
+    private Stmt parseDeclaration() throws YsharpError {
+        if(match(peek(), Token.TokenType.VAR)) return parseVarDeclaration();
+        return  parseStmt();
+    }
+
+    private Stmt parseVarDeclaration() throws YsharpError {
+        Token identifier = advance();
+        Token typeTag = null;
+        Expr initializer = null;
+
+        if (identifier.type != Token.TokenType.IDENTIFIER) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.SYNTAX,
+                    identifier.line,
+                    "Expected variable name after 'var'."
+            );
+        }
+
+        if (match(peek(), Token.TokenType.COLON)) {
+            if (peek().type == Token.TokenType.END_OF_FILE) {
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.SYNTAX,
+                        peek().line,
+                        "Expected type after ':'."
+                );
+            }
+            typeTag = advance();
+        }
+
+        if (match(peek(), Token.TokenType.ASSIGN)) {
+            if (peek().type == Token.TokenType.END_OF_FILE) {
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.SYNTAX,
+                        peek().line,
+                        "Expected initializer expression after '='."
+                );
+            }
+            initializer = parseAssignment();
+        }
+
+        consume(Token.TokenType.SEMI_COLON, "Expected ';' after variable declaration.");
+
+        return new Stmt.VarDeclaration(identifier, typeTag, initializer);
+    }
+
 }
 

@@ -7,7 +7,7 @@ import java.util.concurrent.RecursiveTask;
 
 public class Variable {
 
-    final Variant value;
+    Variant value;
     final boolean isConst;
     final String typeTag;
 
@@ -177,6 +177,12 @@ public class Variable {
 
             return this.value.equals(other.value);
         }
+
+        @Override
+        public String toString() {
+            return this.value.toString();
+        }
+
     }
 
 }

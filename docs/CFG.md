@@ -40,7 +40,8 @@ null |
 - declaration &rarr; classDecl | 
 funDecl | 
 varDecl | 
-constDecl | 
+constDecl |
+useDecl |
 statement 
 
 - classDecl &rarr; "class" IDENTIFIER ( "extends" IDENTIFIER )?
@@ -48,6 +49,7 @@ statement
 - funDecl &rarr; "function" function
 - varDecl &rarr; "var" IDENTIFIER (":" type )? ("=" expression)? ";"
 - constDecl &rarr; "const" IDENTIFIER (":" type )? "=" expression ";"
+- useDecl &rarr; "use" STRING ";"
 
 ### statement grammar
 - statement &rarr; 
@@ -62,21 +64,19 @@ printlnStmt |
 returnStmt |
 breakStmt |
 continueStmt |
-useStmt |
 block
 
 - block &rarr; "do" declaration* "end"
 - exprStmt &rarr; expression ";"
 - forStmt &rarr;
-"for" "("
+"for" 
 ( varDecl | exprStmt | ";" )
 expression? ";"
 expression?
-")"
 statement
 
 - whileStmt &rarr;
-"while" "(" expression ")" statement 
+"while"  expression  statement 
 
 - tryStmt &rarr;
 "try" block "catch" "(" IDENTIFIER ")" block  ( "finally" block )?
@@ -102,7 +102,6 @@ statement
 - returnStmt &rarr; "return" expression? ";"
 - breakStmt &rarr; "break" ";"
 - continueStmt &rarr; "continue" ";"
-- useStmt &rarr; "use" STRING ";"
 
 ### utility
 - NUMBER &rarr; INT | DOUBLE
@@ -123,4 +122,9 @@ function
 "string" | 
 "char" |
 "fun" |
+"any" |
 IDENTIFIER
+
+### program
+``this is the start point of program``
+- program  &rarr; useDecl* declaration* EOF
