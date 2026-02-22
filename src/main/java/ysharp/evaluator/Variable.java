@@ -177,6 +177,12 @@ public class Variable {
 
             return this.value.equals(other.value);
         }
+
+        @Override
+        public String toString() {
+            return this.value.toString();
+        }
+
     }
 
 }

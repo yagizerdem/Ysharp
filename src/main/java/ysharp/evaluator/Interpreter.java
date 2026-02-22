@@ -3,11 +3,20 @@ package ysharp.evaluator;
 import ysharp.YsharpError;
 import ysharp.lexer.Token;
 import ysharp.parser.Expr;
+import ysharp.parser.Stmt;
 
-public class Interpreter implements Expr.Visitor<Variable.Variant> {
+import java.sql.SQLOutput;
+
+public class Interpreter implements
+        Expr.Visitor<Variable.Variant>,
+        Stmt.Visitor {
 
     public Variable.Variant evaluate(Expr expr) {
         return expr.accept(this);
+    }
+
+    public void execute(Stmt stmt){
+        stmt.accept(this);
     }
 
     private void requireIntegerOperands(Variable.Variant left,
@@ -362,4 +371,59 @@ public class Interpreter implements Expr.Visitor<Variable.Variant> {
     public Variable.Variant visitMapInitializerExpr(Expr.MapInitializerExpr expr) {
         return null;
     }
+
+    // stmt visitor
+
+
+    @Override
+    public void visitPrintStmt(Stmt.PrintStmt stmt) {
+        Variable.Variant value = evaluate(stmt.expr);
+        if(value == null || value.isNull()) System.out.print("null");
+        else System.out.print(value.toString());
+    }
+
+    @Override
+    public void visitPrintlnStmt(Stmt.PrintlnStmt stmt) {
+        Variable.Variant value = evaluate(stmt.expr);
+        if(value == null || value.isNull()) System.out.println("null");
+        else System.out.println(value.toString());
+    }
+
+    @Override
+    public void visitBlockStmt(Stmt.BlockStmt stmt) {
+        for(int i = 0; i < stmt.stmtList.size(); i++) {
+            this.execute(stmt.stmtList.get(i));
+        }
+    }
+
+    @Override
+    public void visitIfStmt(Stmt.IfStmt stmt) {
+        Variable.Variant condition= this.evaluate(stmt.condition);
+        if(condition.isTruthy()) {
+            this.execute(stmt.then);
+            return;
+        }
+
+        for(int i = 0; i < stmt.elifStmtList.size(); i++) {
+            condition = this.evaluate(stmt.elifStmtList.get(i).condition);
+            if(condition.isTruthy()) {
+                this.execute(stmt.elifStmtList.get(i).then);
+                return;
+            }
+        }
+
+        if(stmt.else_ != null) {
+            this.execute(stmt.else_);
+        }
+    }
+
+    @Override
+    public void visitWhileStmt(Stmt.WhileStmt stmt) {
+        Variable.Variant flag = this.evaluate(stmt.condition);
+        while (flag.isTruthy()) {
+            this.execute(stmt.stmt);
+            flag = this.evaluate(stmt.condition);
+        }
+    }
+
 }

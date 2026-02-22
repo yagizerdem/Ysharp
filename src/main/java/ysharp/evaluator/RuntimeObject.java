@@ -6,6 +6,7 @@ public abstract class RuntimeObject {
 
     abstract String getType();
 
+
     public static class StringObject extends RuntimeObject {
         final String data;
 
@@ -23,6 +24,10 @@ public abstract class RuntimeObject {
             return "string";
         }
 
+        @Override
+        public String toString() {
+            return this.data;
+        }
     }
 
     public static class FunctionObject extends RuntimeObject {
@@ -36,6 +41,11 @@ public abstract class RuntimeObject {
         String getType() {
             return "function";
         }
+
+        @Override
+        public String toString() {
+            return "function";
+        }
     }
 
     public static class ClassObject extends RuntimeObject {
@@ -47,6 +57,11 @@ public abstract class RuntimeObject {
 
         @Override
         String getType() {
+            return "class";
+        }
+
+        @Override
+        public String toString() {
             return "class";
         }
     }
