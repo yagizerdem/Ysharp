@@ -5,21 +5,25 @@ import ysharp.lexer.Lexer;
 import ysharp.lexer.Preprocess;
 import ysharp.parser.Parser;
 
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws  Exception {
 
-        String program = "4 + 3";
-        var buf = Preprocess.removeComments(Preprocess.mergeContinuation(program));
-        Lexer lexer = new Lexer(buf);
-        var stream = lexer.scanTokens();
+//        String program = "4 + 3";
+//        var buf = Preprocess.removeComments(Preprocess.mergeContinuation(program));
+//        Lexer lexer = new Lexer(buf);
+//        var stream = lexer.scanTokens();
+//
+//        Parser parser = new Parser(stream);
+//
+//        var parseTree = parser.parse();
 
-        Parser parser = new Parser(stream);
+        Object a = 10.5;
 
-        var parseTree = parser.parse();
+        double b = (Double)a;
 
-        int a =10;
+        System.out.println(b);
+
 
     }
 }
