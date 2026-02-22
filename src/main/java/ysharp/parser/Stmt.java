@@ -1,5 +1,7 @@
 package ysharp.parser;
 
+import ysharp.lexer.Token;
+
 import java.util.List;
 
 public abstract class Stmt {
@@ -14,8 +16,14 @@ public abstract class Stmt {
         void visitBlockStmt(Stmt.BlockStmt stmt);
         void visitIfStmt(Stmt.IfStmt stmt);
         void visitWhileStmt(Stmt.WhileStmt stmt);
+        void visitExprStmt(Stmt.ExprStmt stmt);
+        void visitForStmt(Stmt.ForStmt stmt);
+
+        void visitVarDeclaration(Stmt.VarDeclaration stmt);
     }
 
+
+    // stmt
 
     public static class PrintStmt extends Stmt {
         public final Expr expr;
@@ -101,6 +109,65 @@ public abstract class Stmt {
         @Override
         public void accept(Visitor visitor) {
             visitor.visitWhileStmt(this);
+        }
+    }
+
+    public static class ExprStmt extends Stmt {
+        public final Expr expr;
+
+        public ExprStmt(Expr expr){
+            this.expr = expr;
+        }
+
+        @Override
+        public void accept(Visitor visitor) {
+            visitor.visitExprStmt(this);
+        }
+    }
+
+    public static class ForStmt extends Stmt {
+
+        public final Stmt initializer;
+        public final Expr condition;
+        public final Expr increment;
+        public final Stmt body;
+
+        public ForStmt(Stmt initializer,
+                       Expr condition,
+                       Expr increment,
+                       Stmt body) {
+            this.initializer = initializer;
+            this.condition = condition;
+            this.increment = increment;
+            this.body = body;
+        }
+
+        @Override
+        public void accept(Visitor visitor) {
+            visitor.visitForStmt(this);
+        }
+    }
+
+    // declaration
+
+    public static class VarDeclaration extends Stmt {
+        public final Token identifier;
+        public final Token typeTag;
+        public final Expr initializer;
+
+        public VarDeclaration(
+                Token identifier,
+                Token typeTag,
+                Expr initializer
+        ) {
+            this.identifier = identifier;
+            this.typeTag = typeTag;
+            this.initializer = initializer;
+        }
+
+        @Override
+        public void accept(Visitor visitor) {
+            visitor.visitVarDeclaration(this);
         }
     }
 

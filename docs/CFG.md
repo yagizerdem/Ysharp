@@ -69,11 +69,10 @@ block
 - block &rarr; "do" declaration* "end"
 - exprStmt &rarr; expression ";"
 - forStmt &rarr;
-"for" "("
+"for" 
 ( varDecl | exprStmt | ";" )
 expression? ";"
 expression?
-")"
 statement
 
 - whileStmt &rarr;
@@ -123,6 +122,7 @@ function
 "string" | 
 "char" |
 "fun" |
+"any" |
 IDENTIFIER
 
 ### program

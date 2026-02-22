@@ -7,7 +7,7 @@ import java.util.concurrent.RecursiveTask;
 
 public class Variable {
 
-    final Variant value;
+    Variant value;
     final boolean isConst;
     final String typeTag;
 

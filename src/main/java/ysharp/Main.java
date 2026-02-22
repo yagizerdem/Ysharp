@@ -15,7 +15,13 @@ public class Main {
     public static void main(String[] args) throws  Exception {
 
         String program = """
+                var i = 0;
+                for ; i < 10 ; i += 1  do
+                    println i ;
+                    end
+
                 """;
+
         var buf = Preprocess.removeComments(Preprocess.mergeContinuation(program));
         Lexer lexer = new Lexer(buf);
         var stream = lexer.scanTokens();
