@@ -4,6 +4,8 @@ public abstract class RuntimeObject {
 
     abstract boolean isTruthy();
 
+    abstract String getType();
+
     public static class StringObject extends RuntimeObject {
         final String data;
 
@@ -15,6 +17,12 @@ public abstract class RuntimeObject {
         boolean isTruthy() {
             return  !this.data.isEmpty();
         }
+
+        @Override
+        String getType() {
+            return "string";
+        }
+
     }
 
     public static class FunctionObject extends RuntimeObject {
@@ -23,6 +31,11 @@ public abstract class RuntimeObject {
         boolean isTruthy() {
             return true;
         }
+
+        @Override
+        String getType() {
+            return "function";
+        }
     }
 
     public static class ClassObject extends RuntimeObject {
@@ -30,6 +43,11 @@ public abstract class RuntimeObject {
         @Override
         boolean isTruthy() {
             return true;
+        }
+
+        @Override
+        String getType() {
+            return "class";
         }
     }
 

@@ -1,6 +1,9 @@
 package ysharp.evaluator;
 
+import ysharp.lexer.Token;
+
 import java.util.Objects;
+import java.util.concurrent.RecursiveTask;
 
 public class Variable {
 
@@ -23,20 +26,29 @@ public class Variable {
             this.value = value;
         }
 
+        public String getType() {
+            return switch (value) {
+                case Integer i        -> "int";
+                case Double d         -> "double";
+                case Boolean b        -> "bool";
+                case Character c      -> "char";
+                case RuntimeObject o  -> o.getType();
+                case null             -> "null";
+                default               -> "unknown";
+            };
+        }
+
         // primitives
         public  boolean isInt(){
-            Class<?> type = this.value.getClass();
-            return type == Integer.class;
+            return  this.value instanceof Integer;
         }
 
         public boolean isDouble(){
-            Class<?> type = this.value.getClass();
-            return type == Double.class;
+            return this.value instanceof Double;
         }
 
         public boolean isChar() {
-            Class<?> type = this.value.getClass();
-            return type == Character.class;
+            return  this.value instanceof Character;
         }
 
         public boolean isNull(){
@@ -44,12 +56,17 @@ public class Variable {
         }
 
         public boolean isBoolean(){
-            Class<?> type = this.value.getClass();
-            return type == Boolean.class;
+            return  this.value instanceof Boolean;
         }
 
         public  boolean isNumber(){
             return this.isInt() || this.isDouble();
+        }
+
+        public boolean canImplicitlyConvertNumber(){
+            return this.isNumber() ||
+                    this.isChar() ||
+                    this.isBoolean();
         }
 
         // runtime objects
@@ -59,18 +76,15 @@ public class Variable {
         }
 
         public boolean isString(){
-            Class<?> type = this.value.getClass();
-            return type == RuntimeObject.StringObject.class;
+            return this.value instanceof RuntimeObject.StringObject;
         }
 
         public boolean isFunction(){
-            Class<?> type = this.value.getClass();
-            return type == RuntimeObject.FunctionObject.class;
+            return this.value instanceof RuntimeObject.FunctionObject;
         }
 
         public boolean isClass(){
-            Class<?> type = this.value.getClass();
-            return type == RuntimeObject.ClassObject.class;
+            return  this.value instanceof RuntimeObject.ClassObject;
         }
 
         // cast
@@ -87,7 +101,17 @@ public class Variable {
             if(this.isInt()) {
                 return this.asInt().doubleValue();
             }
+
             return this.asDouble();
+        }
+
+        public double implicitlyConvertNumber(){
+            if(this.isInt()) return this.asInt().doubleValue();
+            if(this.isDouble()) return this.asDouble();
+            if(this.isBoolean()) return this.asBoolean() ? 1.0 : 0;
+            if(this.isChar()) return (double) this.asCharacter();
+
+            return 0;
         }
 
 
@@ -135,6 +159,23 @@ public class Variable {
             }
 
             return false;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (!(obj instanceof Variant other)) return false;
+
+            if (this.value == null || other.value == null)
+                return this.value == other.value;
+
+            if (this.isNumber() && other.isNumber()) {
+                double a = this.implicitlyConvertNumber();
+                double b = other.implicitlyConvertNumber();
+                return Math.abs(a - b) < 1e-9;
+            }
+
+            return this.value.equals(other.value);
         }
     }
 

@@ -1,6 +1,7 @@
 package ysharp.parser;
 
 
+import ysharp.YsharpError;
 import ysharp.lexer.Token;
 
 import java.util.List;
@@ -27,11 +28,11 @@ abstract public class Expr {
 
     public abstract <R> R accept(Visitor<R> visitor);
 
-    static final class BinaryExpr extends Expr {
+    public static final class BinaryExpr extends Expr {
 
-        final Expr left;
-        final Token op;
-        final Expr right;
+        public final Expr left;
+        public final Token op;
+        public final Expr right;
 
         BinaryExpr(Expr left, Token op, Expr right) {
             this.left = left;
@@ -45,10 +46,10 @@ abstract public class Expr {
         }
     }
 
-    static final class UnaryExpr extends Expr {
+    public static final class UnaryExpr extends Expr {
 
-        final Token op;
-        final Expr expr;
+        public final Token op;
+        public final Expr expr;
 
         UnaryExpr(Token op, Expr expr) {
             this.op = op;
@@ -61,11 +62,11 @@ abstract public class Expr {
         }
     }
 
-    static final class TernaryExpr extends Expr {
+    public  static final class TernaryExpr extends Expr {
 
-        final Expr condition;
-        final Expr thenBranch;
-        final Expr elseBranch;
+        public final Expr condition;
+        public final Expr thenBranch;
+        public final Expr elseBranch;
 
         TernaryExpr(Expr condition, Expr thenBranch, Expr elseBranch) {
             this.condition = condition;
@@ -79,10 +80,10 @@ abstract public class Expr {
         }
     }
 
-    static final class PostfixExpr extends Expr {
+    public static final class PostfixExpr extends Expr {
 
-        final Expr operand;
-        final Token op;
+        public final Expr operand;
+        public final Token op;
 
         PostfixExpr(Expr operand, Token op) {
             this.operand = operand;
@@ -95,11 +96,11 @@ abstract public class Expr {
         }
     }
 
-    static final class AssignmentExpr extends Expr {
+    public  static final class AssignmentExpr extends Expr {
 
-        final Expr target;
-        final Token op;
-        final Expr value;
+        public final Expr target;
+        public final Token op;
+        public final Expr value;
 
         AssignmentExpr(Expr target, Token op, Expr value) {
             this.target = target;
@@ -113,11 +114,11 @@ abstract public class Expr {
         }
     }
 
-    static final class LogicalExpr extends Expr {
+    public static final class LogicalExpr extends Expr {
 
-        final Expr left;
-        final Token op;
-        final Expr right;
+        public final Expr left;
+        public final Token op;
+        public final Expr right;
 
         LogicalExpr(Expr left, Token op, Expr right) {
             this.left = left;
@@ -131,9 +132,9 @@ abstract public class Expr {
         }
     }
 
-    static final class GroupingExpr extends Expr {
+    public  static final class GroupingExpr extends Expr {
 
-        final Expr expression;
+        public final Expr expression;
 
         GroupingExpr(Expr expression) {
             this.expression = expression;
@@ -145,9 +146,9 @@ abstract public class Expr {
         }
     }
 
-    static class GetExpr extends Expr {
-        final Expr object;
-        final Token name;
+    public static class GetExpr extends Expr {
+        public final Expr object;
+        public final Token name;
 
         GetExpr(Expr object, Token name) {
             this.object = object;
@@ -159,10 +160,10 @@ abstract public class Expr {
         }
     }
 
-    static class SetExpr extends Expr {
-        final Expr object;
-        final Token name;
-        final Expr value;
+    public static class SetExpr extends Expr {
+        public final Expr object;
+        public final Token name;
+        public final Expr value;
 
         SetExpr(Expr object, Token name, Expr value) {
             this.object = object;
@@ -176,7 +177,7 @@ abstract public class Expr {
         }
     }
 
-    static class CallExpr extends Expr {
+    public static class CallExpr extends Expr {
         final Expr callee;
         final List<Expr> arguments;
 
@@ -190,9 +191,9 @@ abstract public class Expr {
         }
     }
 
-    static final class LiteralExpr extends Expr {
+    public static final class LiteralExpr extends Expr {
 
-        final Token token;
+        public final Token token;
 
         LiteralExpr(Token token) {
             this.token = token;
@@ -204,9 +205,9 @@ abstract public class Expr {
         }
     }
 
-    static final class VariableExpr extends Expr {
+    public static final class VariableExpr extends Expr {
 
-        final Token name;
+        public final Token name;
 
         VariableExpr(Token name) {
             this.name = name;
@@ -218,9 +219,9 @@ abstract public class Expr {
         }
     }
 
-    static final class ArrayInitializerExpr extends Expr {
+    public static final class ArrayInitializerExpr extends Expr {
 
-        final List<Expr> elements;
+        public final List<Expr> elements;
 
         ArrayInitializerExpr(List<Expr> elements) {
             this.elements = elements;
@@ -232,11 +233,11 @@ abstract public class Expr {
         }
     }
 
-    static final class MapInitializerExpr extends Expr {
+    public static final class MapInitializerExpr extends Expr {
 
         static final class Entry {
-            final Token key;
-            final Expr value;
+            public final Token key;
+            public final Expr value;
 
             Entry(Token key, Expr value) {
                 this.key = key;
