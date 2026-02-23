@@ -2,6 +2,7 @@ package ysharp.lexer;
 
 import ysharp.YsharpError;
 
+import javax.swing.plaf.PanelUI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,10 +15,16 @@ public class Lexer {
     private int start   = 0;
     private final Cursor.CursorState cursor = new Cursor.CursorState();
     private int line    = 1;
+    public List<YsharpError> errors;
+
+    public boolean hadErrors(){
+        return !errors.isEmpty();
+    }
 
     public Lexer(List<Cursor.Pchar> source) {
         this.source = source;
         this.cursor.current = 0;
+        this.errors = new ArrayList<>();
     }
 
 
@@ -40,6 +47,7 @@ public class Lexer {
         KEYWORD_MAP.put("default", Token.TokenType.DEFAULT);
         KEYWORD_MAP.put("then", Token.TokenType.THEN);
         KEYWORD_MAP.put("return", Token.TokenType.RETURN);
+        KEYWORD_MAP.put("new", Token.TokenType.NEW);
         KEYWORD_MAP.put("function", Token.TokenType.FUNCTION);
         KEYWORD_MAP.put("class", Token.TokenType.CLASS);
         KEYWORD_MAP.put("break", Token.TokenType.BREAK);
@@ -111,13 +119,18 @@ public class Lexer {
     }
 
     public List<Token> scanTokens() throws Exception {
-        while (!isAtEnd()) {
+        try {
+            while (!isAtEnd()) {
+                start = cursor.current;
+                scanToken();
+            }
             start = cursor.current;
-            scanToken();
+            addToken(Token.TokenType.END_OF_FILE);
+            return tokens;
+        }catch (YsharpError err) {
+            errors.add(err);
         }
-        start = cursor.current;
-        addToken(Token.TokenType.END_OF_FILE);
-        return tokens;
+        return null;
     }
 
     private void collectNumber() throws YsharpError {

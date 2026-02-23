@@ -688,4 +688,22 @@ public class Interpreter implements
             // throw error
         }
     }
+
+    @Override
+    public void visitConstDeclaration(Stmt.ConstDeclaration stmt) {
+        try {
+            Variable.Variant value = this.evaluate(stmt.initializer);
+
+            String typeTag = stmt.type != null ? stmt.type.lexeme : "any";
+
+            Variable var = new Variable(
+                    value,
+                    true,
+                    TypeTag.fromString(typeTag));
+
+            this.curEnv.define(stmt.identifier.lexeme, var);
+        } catch (YsharpError err) {
+            // throw error
+        }
+    }
 }

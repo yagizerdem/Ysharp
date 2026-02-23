@@ -14,6 +14,12 @@ import java.util.concurrent.RecursiveTask;
 
 public class Parser {
 
+    public List<YsharpError> errors;
+
+    public boolean hadErrors (){
+        return !errors.isEmpty();
+    }
+
     private final List<Token> tokenStream;
 
     private int current = 0;
@@ -64,10 +70,41 @@ public class Parser {
 
     public Parser(List<Token> tokenStream) {
         this.tokenStream = tokenStream;
+        this.errors = new ArrayList<>();
     }
 
-    private void sync(){
+    private void sync() {
 
+        while (peek().type != Token.TokenType.END_OF_FILE) {
+
+            if (previous().type == Token.TokenType.SEMI_COLON) {
+                return;
+            }
+
+            switch (peek().type) {
+                case VAR:
+                case CONST_:
+                case IF:
+                case ELIF:
+                case ELSE:
+                case TRY:
+                case CATCH:
+                case FINALLY:
+                case USE:
+                case WHILE:
+                case FOR:
+                case RETURN:
+                case SWITCH:
+                case BREAK:
+                case CONTINUE:
+                case DO:
+                case PRINT:
+                case PRINTLN:
+                    return;
+            }
+
+            advance();
+        }
     }
 
     // for debugging
@@ -90,6 +127,7 @@ public class Parser {
             try {
                 list.add(parseDeclaration());
             }catch (YsharpError err) {
+                errors.add(err);
                 sync();
             }
         }
@@ -933,6 +971,7 @@ public class Parser {
 
     private Stmt parseDeclaration() throws YsharpError {
         if(match(peek(), Token.TokenType.VAR)) return parseVarDeclaration();
+        if(match(peek(), Token.TokenType.CONST_)) return parseConstDeclaration();
         return  parseStmt();
     }
 
@@ -1052,5 +1091,43 @@ public class Parser {
         return new Stmt.FunctionDeclaration(name, params, returnType, body);
     }
 
+    private Stmt parseConstDeclaration() throws YsharpError {
+        Token identifier = advance();
+        Token typeTag = null;
+        Expr initializer = null;
+
+        if (identifier.type != Token.TokenType.IDENTIFIER) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.SYNTAX,
+                    identifier.line,
+                    "Expected variable name after 'const'."
+            );
+        }
+
+        if (match(peek(), Token.TokenType.COLON)) {
+            if (peek().type == Token.TokenType.END_OF_FILE) {
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.SYNTAX,
+                        peek().line,
+                        "Expected type after ':'."
+                );
+            }
+            typeTag = advance();
+        }
+
+        if(peek().type != Token.TokenType.ASSIGN) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.SYNTAX,
+                    peek().line,
+                    "Expected initializer expression after const declaration."
+            );
+        }
+        advance(); // consume =
+        initializer = parseAssignment();
+
+        consume(Token.TokenType.SEMI_COLON, "Expected ';' after variable declaration.");
+
+        return new Stmt.VarDeclaration(identifier, typeTag, initializer);
+    }
 }
 
