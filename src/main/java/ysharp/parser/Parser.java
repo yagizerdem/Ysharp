@@ -53,6 +53,7 @@ public class Parser {
     }
 
     private Token previous(){
+        if(current - 1 < 0) return null;
         return tokenStream.get(current - 1);
     }
 
@@ -77,7 +78,13 @@ public class Parser {
 
         while (peek().type != Token.TokenType.END_OF_FILE) {
 
+            if(previous() == null) {
+                advance();
+                return;
+            }
+
             if (previous().type == Token.TokenType.SEMI_COLON) {
+                advance();
                 return;
             }
 

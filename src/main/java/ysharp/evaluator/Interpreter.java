@@ -15,10 +15,16 @@ public class Interpreter implements
 
     private Environment global;
     private Environment curEnv;
+    public List<YsharpError> errors;
+
+    public boolean hadErrors() {
+        return !errors.isEmpty();
+    }
 
     public Interpreter() {
         this.global = new Environment();
         this.curEnv = global;
+        errors = new ArrayList<>();
     }
 
     public void defineGlobal(String key, Variable variable) throws Exception {
@@ -26,6 +32,16 @@ public class Interpreter implements
             this.global.define(key, variable);
         }catch (YsharpError err) {
             throw new Exception("[Programmatic error] defining natives should not throw error");
+        }
+    }
+
+    public void interpret(List<Stmt> statements) {
+        try {
+            for (Stmt stmt : statements) {
+                execute(stmt);
+            }
+        } catch (YsharpError err) {
+            this.errors.add(err);
         }
     }
 
@@ -39,9 +55,7 @@ public class Interpreter implements
 
     public void executeBlock(Stmt.BlockStmt blockStmt,
                              Environment newEnv) {
-
         Environment previous = this.curEnv;
-
         try {
             this.curEnv = newEnv;
 
@@ -49,7 +63,8 @@ public class Interpreter implements
                 execute(stmt);
             }
 
-        } finally {
+        }
+        finally {
             this.curEnv = previous;
         }
     }
@@ -73,226 +88,219 @@ public class Interpreter implements
     // expr visitor
     @Override
     public Variable.Variant visitBinaryExpr(Expr.BinaryExpr expr) {
-        try {
+        switch (expr.op.type) {
+            case Token.TokenType.PLUS -> {
+                Variable.Variant left = evaluate(expr.left);
+                Variable.Variant right = evaluate(expr.right);
+                if(left.canImplicitlyConvertNumber() && right.canImplicitlyConvertNumber()) {
+                    if(left.isInt() && right.isInt()) return new Variable.Variant(left.asInt() + right.asInt());
+                    double sum = left.implicitlyConvertNumber() + right.implicitlyConvertNumber();
+                    return new Variable.Variant(sum);
+                }
 
-            switch (expr.op.type) {
-                case Token.TokenType.PLUS -> {
-                    Variable.Variant left = evaluate(expr.left);
-                    Variable.Variant right = evaluate(expr.right);
-                    if(left.canImplicitlyConvertNumber() && right.canImplicitlyConvertNumber()) {
-                        if(left.isInt() && right.isInt()) return new Variable.Variant(left.asInt() + right.asInt());
-                        double sum = left.implicitlyConvertNumber() + right.implicitlyConvertNumber();
-                        return new Variable.Variant(sum);
-                    }
-
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            expr.op.line,
-                            "Operator '+' cannot be applied to types '"
-                                    + left.getType() + "' and '" + right.getType() + "'."
-                    );
-                }
-                case Token.TokenType.MINUS -> {
-                    Variable.Variant left = evaluate(expr.left);
-                    Variable.Variant right = evaluate(expr.right);
-
-                    if(left.canImplicitlyConvertNumber() && right.canImplicitlyConvertNumber()) {
-                        if(left.isInt() && right.isInt()) return new Variable.Variant(left.asInt() - right.asInt());
-                        double diff = left.implicitlyConvertNumber() - right.implicitlyConvertNumber();
-                        return new Variable.Variant(diff);
-                    }
-
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            expr.op.line,
-                            "Operator '-' cannot be applied to types '"
-                                    + left.getType() + "' and '" + right.getType() + "'."
-                    );
-                }
-                case Token.TokenType.MULTIPLY -> {
-                    Variable.Variant left = evaluate(expr.left);
-                    Variable.Variant right = evaluate(expr.right);
-                    if(left.canImplicitlyConvertNumber() && right.canImplicitlyConvertNumber()) {
-                        if(left.isInt() && right.isInt()) return new Variable.Variant(left.asInt() * right.asInt());
-
-                        double mul = left.implicitlyConvertNumber() * right.implicitlyConvertNumber();
-                        return new Variable.Variant(mul);
-                    }
-
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            expr.op.line,
-                            "Operator '*' cannot be applied to types '"
-                                    + left.getType() + "' and '" + right.getType() + "'."
-                    );
-                }
-                case Token.TokenType.DIVIDE -> {
-                    Variable.Variant left = evaluate(expr.left);
-                    Variable.Variant right = evaluate(expr.right);
-                    if(left.canImplicitlyConvertNumber() && right.canImplicitlyConvertNumber()) {
-                        if(left.isInt() && right.isInt()) return new Variable.Variant(left.asInt() / right.asInt());
-                        double div = left.implicitlyConvertNumber() / right.implicitlyConvertNumber();
-                        return new Variable.Variant(div);
-                    }
-
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            expr.op.line,
-                            "Operator '/' cannot be applied to types '"
-                                    + left.getType() + "' and '" + right.getType() + "'."
-                    );
-                }
-                case Token.TokenType.MODULO -> {
-                    Variable.Variant left = evaluate(expr.left);
-                    Variable.Variant right = evaluate(expr.right);
-                    if(left.canImplicitlyConvertNumber() && right.canImplicitlyConvertNumber()) {
-                        if (left.isInt() && right.isInt()) {
-                            return new Variable.Variant(
-                                    left.asInt() % right.asInt()
-                            );
-                        }
-                        double mod = left.implicitlyConvertNumber() % right.implicitlyConvertNumber();
-                        return new Variable.Variant(mod);
-                    }
-
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            expr.op.line,
-                            "Operator '%' cannot be applied to types '"
-                                    + left.getType() + "' and '" + right.getType() + "'."
-                    );
-                }
-                case Token.TokenType.BITWISE_AND -> {
-                    Variable.Variant left = evaluate(expr.left);
-                    Variable.Variant right = evaluate(expr.right);
-                    requireIntegerOperands(left, right, expr.op);
-                    int result = left.asInt() & right.asInt();
-                    return new Variable.Variant(result);
-                }
-                case Token.TokenType.BITWISE_OR -> {
-                    Variable.Variant left = evaluate(expr.left);
-                    Variable.Variant right = evaluate(expr.right);
-                    requireIntegerOperands(left, right, expr.op);
-                    int result = left.asInt() | right.asInt();
-                    return new Variable.Variant(result);
-                }
-                case Token.TokenType.BITWISE_XOR -> {
-                    Variable.Variant left = evaluate(expr.left);
-                    Variable.Variant right = evaluate(expr.right);
-                    requireIntegerOperands(left, right, expr.op);
-                    int result = left.asInt() ^ right.asInt();
-                    return new Variable.Variant(result);
-                }
-                case Token.TokenType.LEFT_SHIFT -> {
-                    Variable.Variant left = evaluate(expr.left);
-                    Variable.Variant right = evaluate(expr.right);
-                    requireIntegerOperands(left, right, expr.op);
-                    int result = left.asInt() << right.asInt();
-                    return new Variable.Variant(result);
-                }
-                case Token.TokenType.RIGHT_SHIFT -> {
-                    Variable.Variant left = evaluate(expr.left);
-                    Variable.Variant right = evaluate(expr.right);
-                    requireIntegerOperands(left, right, expr.op);
-                    int result = left.asInt() >> right.asInt();
-                    return new Variable.Variant(result);
-                }
-                case Token.TokenType.GREATER_THAN -> {
-                    Variable.Variant left = evaluate(expr.left);
-                    Variable.Variant right = evaluate(expr.right);
-                    if(left.canImplicitlyConvertNumber() && right.canImplicitlyConvertNumber()) {
-                        return new Variable.Variant(
-                                left.implicitlyConvertNumber() >
-                                        right.implicitlyConvertNumber()
-                        );
-                    }
-
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            expr.op.line,
-                            "Operator '>' requires numeric operands. Found '" +
-                                    left.getType() + "' and '" +
-                                    right.getType() + "'."
-                    );
-                }
-                case Token.TokenType.GREATER_OR_EQUAL -> {
-                    Variable.Variant left = evaluate(expr.left);
-                    Variable.Variant right = evaluate(expr.right);
-                    if(left.canImplicitlyConvertNumber() && right.canImplicitlyConvertNumber()) {
-                        return new Variable.Variant(
-                                left.implicitlyConvertNumber() >=
-                                        right.implicitlyConvertNumber()
-                        );
-                    }
-
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            expr.op.line,
-                            "Operator '>=' requires numeric operands. Found '" +
-                                    left.getType() + "' and '" +
-                                    right.getType() + "'."
-                    );
-                }
-                case Token.TokenType.LESS_THAN -> {
-                    Variable.Variant left = evaluate(expr.left);
-                    Variable.Variant right = evaluate(expr.right);
-                    if(left.canImplicitlyConvertNumber() && right.canImplicitlyConvertNumber()) {
-                        return new Variable.Variant(
-                                left.implicitlyConvertNumber() <
-                                        right.implicitlyConvertNumber()
-                        );
-                    }
-
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            expr.op.line,
-                            "Operator '<' requires numeric operands. Found '" +
-                                    left.getType() + "' and '" +
-                                    right.getType() + "'."
-                    );
-                }
-                case Token.TokenType.LESS_OR_EQUAL -> {
-                    Variable.Variant left = evaluate(expr.left);
-                    Variable.Variant right = evaluate(expr.right);
-                    if(left.canImplicitlyConvertNumber() && right.canImplicitlyConvertNumber()) {
-                        return new Variable.Variant(
-                                left.implicitlyConvertNumber() <=
-                                        right.implicitlyConvertNumber()
-                        );
-                    }
-
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            expr.op.line,
-                            "Operator '<=' requires numeric operands. Found '" +
-                                    left.getType() + "' and '" +
-                                    right.getType() + "'."
-                    );
-                }
-                case Token.TokenType.EQUAL_EQUAL -> {
-                    Variable.Variant left = evaluate(expr.left);
-                    Variable.Variant right = evaluate(expr.right);
-                    return new Variable.Variant(
-                            left.equals(right)
-                    );
-                }
-                case Token.TokenType.BANG_EQUAL -> {
-                    Variable.Variant left = evaluate(expr.left);
-                    Variable.Variant right = evaluate(expr.right);
-                    return new Variable.Variant(
-                            !left.equals(right)
-                    );
-                }
-                default -> {
-                    throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
-                            expr.op.line, "unsupported op");
-                }
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.PROCESS,
+                        expr.op.line,
+                        "Operator '+' cannot be applied to types '"
+                                + left.getType() + "' and '" + right.getType() + "'."
+                );
             }
+            case Token.TokenType.MINUS -> {
+                Variable.Variant left = evaluate(expr.left);
+                Variable.Variant right = evaluate(expr.right);
 
-        }catch (YsharpError err) {
-            int a = 120;
+                if(left.canImplicitlyConvertNumber() && right.canImplicitlyConvertNumber()) {
+                    if(left.isInt() && right.isInt()) return new Variable.Variant(left.asInt() - right.asInt());
+                    double diff = left.implicitlyConvertNumber() - right.implicitlyConvertNumber();
+                    return new Variable.Variant(diff);
+                }
+
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.PROCESS,
+                        expr.op.line,
+                        "Operator '-' cannot be applied to types '"
+                                + left.getType() + "' and '" + right.getType() + "'."
+                );
+            }
+            case Token.TokenType.MULTIPLY -> {
+                Variable.Variant left = evaluate(expr.left);
+                Variable.Variant right = evaluate(expr.right);
+                if(left.canImplicitlyConvertNumber() && right.canImplicitlyConvertNumber()) {
+                    if(left.isInt() && right.isInt()) return new Variable.Variant(left.asInt() * right.asInt());
+
+                    double mul = left.implicitlyConvertNumber() * right.implicitlyConvertNumber();
+                    return new Variable.Variant(mul);
+                }
+
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.PROCESS,
+                        expr.op.line,
+                        "Operator '*' cannot be applied to types '"
+                                + left.getType() + "' and '" + right.getType() + "'."
+                );
+            }
+            case Token.TokenType.DIVIDE -> {
+                Variable.Variant left = evaluate(expr.left);
+                Variable.Variant right = evaluate(expr.right);
+                if(left.canImplicitlyConvertNumber() && right.canImplicitlyConvertNumber()) {
+                    if(left.isInt() && right.isInt()) return new Variable.Variant(left.asInt() / right.asInt());
+                    double div = left.implicitlyConvertNumber() / right.implicitlyConvertNumber();
+                    return new Variable.Variant(div);
+                }
+
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.PROCESS,
+                        expr.op.line,
+                        "Operator '/' cannot be applied to types '"
+                                + left.getType() + "' and '" + right.getType() + "'."
+                );
+            }
+            case Token.TokenType.MODULO -> {
+                Variable.Variant left = evaluate(expr.left);
+                Variable.Variant right = evaluate(expr.right);
+                if(left.canImplicitlyConvertNumber() && right.canImplicitlyConvertNumber()) {
+                    if (left.isInt() && right.isInt()) {
+                        return new Variable.Variant(
+                                left.asInt() % right.asInt()
+                        );
+                    }
+                    double mod = left.implicitlyConvertNumber() % right.implicitlyConvertNumber();
+                    return new Variable.Variant(mod);
+                }
+
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.PROCESS,
+                        expr.op.line,
+                        "Operator '%' cannot be applied to types '"
+                                + left.getType() + "' and '" + right.getType() + "'."
+                );
+            }
+            case Token.TokenType.BITWISE_AND -> {
+                Variable.Variant left = evaluate(expr.left);
+                Variable.Variant right = evaluate(expr.right);
+                requireIntegerOperands(left, right, expr.op);
+                int result = left.asInt() & right.asInt();
+                return new Variable.Variant(result);
+            }
+            case Token.TokenType.BITWISE_OR -> {
+                Variable.Variant left = evaluate(expr.left);
+                Variable.Variant right = evaluate(expr.right);
+                requireIntegerOperands(left, right, expr.op);
+                int result = left.asInt() | right.asInt();
+                return new Variable.Variant(result);
+            }
+            case Token.TokenType.BITWISE_XOR -> {
+                Variable.Variant left = evaluate(expr.left);
+                Variable.Variant right = evaluate(expr.right);
+                requireIntegerOperands(left, right, expr.op);
+                int result = left.asInt() ^ right.asInt();
+                return new Variable.Variant(result);
+            }
+            case Token.TokenType.LEFT_SHIFT -> {
+                Variable.Variant left = evaluate(expr.left);
+                Variable.Variant right = evaluate(expr.right);
+                requireIntegerOperands(left, right, expr.op);
+                int result = left.asInt() << right.asInt();
+                return new Variable.Variant(result);
+            }
+            case Token.TokenType.RIGHT_SHIFT -> {
+                Variable.Variant left = evaluate(expr.left);
+                Variable.Variant right = evaluate(expr.right);
+                requireIntegerOperands(left, right, expr.op);
+                int result = left.asInt() >> right.asInt();
+                return new Variable.Variant(result);
+            }
+            case Token.TokenType.GREATER_THAN -> {
+                Variable.Variant left = evaluate(expr.left);
+                Variable.Variant right = evaluate(expr.right);
+                if(left.canImplicitlyConvertNumber() && right.canImplicitlyConvertNumber()) {
+                    return new Variable.Variant(
+                            left.implicitlyConvertNumber() >
+                                    right.implicitlyConvertNumber()
+                    );
+                }
+
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.PROCESS,
+                        expr.op.line,
+                        "Operator '>' requires numeric operands. Found '" +
+                                left.getType() + "' and '" +
+                                right.getType() + "'."
+                );
+            }
+            case Token.TokenType.GREATER_OR_EQUAL -> {
+                Variable.Variant left = evaluate(expr.left);
+                Variable.Variant right = evaluate(expr.right);
+                if(left.canImplicitlyConvertNumber() && right.canImplicitlyConvertNumber()) {
+                    return new Variable.Variant(
+                            left.implicitlyConvertNumber() >=
+                                    right.implicitlyConvertNumber()
+                    );
+                }
+
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.PROCESS,
+                        expr.op.line,
+                        "Operator '>=' requires numeric operands. Found '" +
+                                left.getType() + "' and '" +
+                                right.getType() + "'."
+                );
+            }
+            case Token.TokenType.LESS_THAN -> {
+                Variable.Variant left = evaluate(expr.left);
+                Variable.Variant right = evaluate(expr.right);
+                if(left.canImplicitlyConvertNumber() && right.canImplicitlyConvertNumber()) {
+                    return new Variable.Variant(
+                            left.implicitlyConvertNumber() <
+                                    right.implicitlyConvertNumber()
+                    );
+                }
+
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.PROCESS,
+                        expr.op.line,
+                        "Operator '<' requires numeric operands. Found '" +
+                                left.getType() + "' and '" +
+                                right.getType() + "'."
+                );
+            }
+            case Token.TokenType.LESS_OR_EQUAL -> {
+                Variable.Variant left = evaluate(expr.left);
+                Variable.Variant right = evaluate(expr.right);
+                if(left.canImplicitlyConvertNumber() && right.canImplicitlyConvertNumber()) {
+                    return new Variable.Variant(
+                            left.implicitlyConvertNumber() <=
+                                    right.implicitlyConvertNumber()
+                    );
+                }
+
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.PROCESS,
+                        expr.op.line,
+                        "Operator '<=' requires numeric operands. Found '" +
+                                left.getType() + "' and '" +
+                                right.getType() + "'."
+                );
+            }
+            case Token.TokenType.EQUAL_EQUAL -> {
+                Variable.Variant left = evaluate(expr.left);
+                Variable.Variant right = evaluate(expr.right);
+                return new Variable.Variant(
+                        left.equals(right)
+                );
+            }
+            case Token.TokenType.BANG_EQUAL -> {
+                Variable.Variant left = evaluate(expr.left);
+                Variable.Variant right = evaluate(expr.right);
+                return new Variable.Variant(
+                        !left.equals(right)
+                );
+            }
+            default -> {
+                throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                        expr.op.line, "unsupported op");
+            }
         }
-        return new Variable.Variant(null);
     }
 
     @Override
@@ -354,46 +362,52 @@ public class Interpreter implements
 
     @Override
     public Variable.Variant visitAssignmentExpr(Expr.AssignmentExpr expr) {
-        try {
-            if(expr.target instanceof Expr.VariableExpr) {
-                Token lvalue = ((Expr.VariableExpr) expr.target).name;
-                Variable.Variant right = this.evaluate(expr.value);
+        if(expr.target instanceof Expr.VariableExpr) {
+            Token lvalue = ((Expr.VariableExpr) expr.target).name;
+            Variable.Variant right = this.evaluate(expr.value);
 
-                switch (expr.op.type) {
-                    case Token.TokenType.ASSIGN ->  {
-                        this.curEnv.assign(lvalue, right);
+            switch (expr.op.type) {
+                case Token.TokenType.ASSIGN ->  {
+                    this.curEnv.assign(lvalue, right);
+                    return right;
+                }
+                case Token.TokenType.PLUS_ASSIGN -> {
+                    Variable left = this.curEnv.getValue(lvalue);
+
+                    if(left.value.isNumber() && right.isNumber()) {
+                        Variable.Variant result;
+                        if(left.value.isInt() && right.isInt())
+                            result = new Variable.Variant(left.value.asInt() + right.asInt());
+                        else
+                            result = new Variable.Variant(left.value.asDouble() + right.asDouble());
+
+                        curEnv.assign(lvalue, result);
+                        return result;
                     }
-                    case Token.TokenType.PLUS_ASSIGN -> {
-                        Variable left = this.curEnv.getValue(lvalue);
 
-                        if(left.value.isNumber() && right.isNumber()) {
-                            Variable.Variant result;
-                            if(left.value.isInt() && right.isInt())
-                                result = new Variable.Variant(left.value.asInt() + right.asInt());
-                            else
-                                result = new Variable.Variant(left.value.asDouble() + right.asDouble());
-
-                            curEnv.assign(lvalue, result);
-                            return result;
-                        }
-
-                        throw new YsharpError(
-                                YsharpError.YsharpErrorType.PROCESS,
-                                expr.op.line,
-                                "Operator '+=' cannot be applied to types '"
-                                        + left.value.getType() + "' and '" + right.getType() + "'."
-                        );
-                    }
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            expr.op.line,
+                            "Operator '+=' cannot be applied to types '"
+                                    + left.value.getType() + "' and '" + right.getType() + "'."
+                    );
+                }
+                default -> {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            expr.op.line,
+                            "Unsupported assignment operator '" + expr.op.lexeme + "'."
+                    );
                 }
             }
-            else {
-                // throw error
-            }
-        }   catch (YsharpError err) {
-            // throw error
         }
-
-        return null;
+        else {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    expr.op.line,
+                    "Invalid assignment target. Left-hand side of assignment must be a variable."
+            );
+        }
     }
 
     @Override
@@ -449,13 +463,7 @@ public class Interpreter implements
             args.add(evaluate(expr_));
         }
 
-        try {
-            return calee.asCallable().call(this, args);
-        }catch (YsharpError err) {
-            // throw error
-        }
-
-        return null;
+        return calee.asCallable().call(this, args);
     }
 
     @Override
@@ -481,18 +489,14 @@ public class Interpreter implements
         if (lit instanceof Token.Literal.Str s)
             return new Variable.Variant(s.value());
 
-        // throw error here
-        return  new  Variable.Variant(null);
+        throw new IllegalStateException(
+                "Unknown literal type: " + expr.token.literal
+        );
     }
 
     @Override
     public Variable.Variant visitVariableExpr(Expr.VariableExpr expr) {
-        try {
-           return ((Variable)this.curEnv.getValue(expr.name)).value;
-        }catch (YsharpError err) {
-            // throw error
-        }
-        return null;
+        return ((Variable)this.curEnv.getValue(expr.name)).value;
     }
 
     @Override
@@ -653,57 +657,44 @@ public class Interpreter implements
 
     @Override
     public void visitVarDeclaration(Stmt.VarDeclaration stmt) {
-        try {
-            Variable.Variant value = stmt.initializer != null ?
-                    this.evaluate(stmt.initializer) : null;
+        Variable.Variant value = stmt.initializer != null ?
+                this.evaluate(stmt.initializer) : null;
 
-            String typeTag = stmt.type != null ? stmt.type.lexeme : "any";
+        String typeTag = stmt.type != null ? stmt.type.lexeme : "any";
 
-            Variable var = new Variable(
-                    value,
-                    false,
-                    TypeTag.fromString(typeTag));
+        Variable var = new Variable(
+                value,
+                false,
+                TypeTag.fromString(typeTag));
 
-            this.curEnv.define(stmt.identifier.lexeme, var);
-        } catch (YsharpError err) {
-            // throw error
-        }
+        this.curEnv.define(stmt.identifier.lexeme, var);
     }
 
     @Override
     public void visitFunctionDeclaration(Stmt.FunctionDeclaration stmt) {
+        RuntimeObject.FunctionObject funObj =
+                new RuntimeObject.FunctionObject(
+                        stmt,
+                        curEnv); // take recursive deep copy to handle closures
 
-        try {
-            RuntimeObject.FunctionObject funObj =
-                    new RuntimeObject.FunctionObject(
-                            stmt,
-                            curEnv); // take recursive deep copy to handle closures
+        Variable var = new Variable(new Variable.Variant(funObj),
+                false,
+                TypeTag.OBJECT);
 
-            Variable var = new Variable(new Variable.Variant(funObj),
-                    false,
-                    TypeTag.OBJECT);
-
-            this.curEnv.define(funObj.declaration.name.lexeme,  var);
-        }catch (YsharpError err) {
-            // throw error
-        }
+        this.curEnv.define(funObj.declaration.name.lexeme,  var);
     }
 
     @Override
     public void visitConstDeclaration(Stmt.ConstDeclaration stmt) {
-        try {
-            Variable.Variant value = this.evaluate(stmt.initializer);
+        Variable.Variant value = this.evaluate(stmt.initializer);
 
-            String typeTag = stmt.type != null ? stmt.type.lexeme : "any";
+        String typeTag = stmt.type != null ? stmt.type.lexeme : "any";
 
-            Variable var = new Variable(
-                    value,
-                    true,
-                    TypeTag.fromString(typeTag));
+        Variable var = new Variable(
+                value,
+                true,
+                TypeTag.fromString(typeTag));
 
-            this.curEnv.define(stmt.identifier.lexeme, var);
-        } catch (YsharpError err) {
-            // throw error
-        }
+        this.curEnv.define(stmt.identifier.lexeme, var);
     }
 }

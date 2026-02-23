@@ -17,7 +17,8 @@ public class Core {
 
     public void start() throws Exception{
         String program = """
-                   var a =  1 + "fck";
+                   var a = 10 + 'A';
+                   print a;
                 """;
 
 
@@ -52,8 +53,10 @@ public class Core {
         interpreter.defineGlobal(sleep.getFnName(), var);
 
 
-        for(Stmt s : parseTree){
-            interpreter.execute(s);
+        interpreter.interpret(parseTree);
+        if(interpreter.hadErrors()) {
+            printStdErr(interpreter.errors);
+            return;
         }
 
 

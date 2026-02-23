@@ -1,6 +1,6 @@
 package ysharp;
 
-public class YsharpError extends Exception {
+public class YsharpError extends RuntimeException {
 
 
     public enum YsharpErrorType {
