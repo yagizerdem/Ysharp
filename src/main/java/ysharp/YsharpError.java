@@ -29,9 +29,10 @@ public class YsharpError extends RuntimeException {
 
     @Override
     public String toString() {
-        if (type == YsharpErrorType.PROCESS) {
+        if(line < 1) {
             return message;
         }
+
         return errorTypeToString(type)
                 + " error at Line : "
                 + line

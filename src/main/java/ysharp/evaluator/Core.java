@@ -17,8 +17,21 @@ public class Core {
 
     public void start() throws Exception{
         String program = """
-                   var a = 10 + 'A';
-                   print a;
+                
+                    function test() do 
+                        const a = 22;
+                        return a ;
+                       end
+                    const a = test();
+                        
+                        do 
+                            println a;
+                            a = 44;
+                            println a;
+                        end
+                
+                
+                    println a;
                 """;
 
 
