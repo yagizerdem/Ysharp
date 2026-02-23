@@ -84,6 +84,7 @@ public class Token {
         PRINT, // print
         PRINTLN, // println
         USE, // use
+        NEW, // create new object
 
         // type declaration keywords
 //        TYPE_INT, // int

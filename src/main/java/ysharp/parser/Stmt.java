@@ -25,6 +25,7 @@ public abstract class Stmt {
 
         void visitVarDeclaration(Stmt.VarDeclaration stmt);
         void visitFunctionDeclaration(Stmt.FunctionDeclaration stmt);
+        void visitConstDeclaration(Stmt.ConstDeclaration stmt);
     }
 
 
@@ -233,6 +234,27 @@ public abstract class Stmt {
         @Override
         public void accept(Visitor visitor) {
             visitor.visitVarDeclaration(this);
+        }
+    }
+
+    public static class ConstDeclaration extends Stmt {
+        public final Token identifier;
+        public final Token type;
+        public final Expr initializer;
+
+        public ConstDeclaration(
+                Token identifier,
+                Token type,
+                Expr initializer
+        ) {
+            this.identifier = identifier;
+            this.type = type;
+            this.initializer = initializer;
+        }
+
+        @Override
+        public void accept(Visitor visitor) {
+            visitor.visitConstDeclaration(this);
         }
     }
 

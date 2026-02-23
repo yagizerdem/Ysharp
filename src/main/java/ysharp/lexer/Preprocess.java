@@ -200,7 +200,6 @@ public class Preprocess {
         return programResult;
     }
 
-
     public static List<Cursor.Pchar> removeComments(List<Cursor.Pchar> program) {
         List<Cursor.Pchar> programResult = new ArrayList<>();
         Cursor.CursorState cursor = new Cursor.CursorState();
@@ -247,5 +246,24 @@ public class Preprocess {
         }
 
         return programResult;
+    }
+
+    public List<YsharpError> errors;
+
+    public boolean hadErrors (){
+        return  !errors.isEmpty();
+    }
+
+    public Preprocess(){
+        this.errors = new ArrayList<>();
+    }
+
+    public List<Cursor.Pchar> process(String program) {
+        try {
+            return removeComments(mergeContinuation(program));
+        }catch (YsharpError err) {
+            this.errors.add(err);
+        }
+        return null;
     }
 }
