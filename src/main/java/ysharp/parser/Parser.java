@@ -978,6 +978,7 @@ public class Parser {
 
     private Stmt parseDeclaration() throws YsharpError {
         if(match(peek(), Token.TokenType.VAR)) return parseVarDeclaration();
+        if(match(peek(), Token.TokenType.FUNCTION)) return parseFunctionDeclaration();
         if(match(peek(), Token.TokenType.CONST_)) return parseConstDeclaration();
         return  parseStmt();
     }
@@ -1134,7 +1135,7 @@ public class Parser {
 
         consume(Token.TokenType.SEMI_COLON, "Expected ';' after variable declaration.");
 
-        return new Stmt.VarDeclaration(identifier, typeTag, initializer);
+        return new Stmt.ConstDeclaration(identifier, typeTag, initializer);
     }
 }
 

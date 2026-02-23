@@ -366,6 +366,15 @@ public class Interpreter implements
             Token lvalue = ((Expr.VariableExpr) expr.target).name;
             Variable.Variant right = this.evaluate(expr.value);
 
+            Variable identifier = this.curEnv.getValue(lvalue);
+            if(identifier.isConst) {
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.PROCESS,
+                        expr.op.line,
+                        "Cannot assign to constant variable '" + lvalue.lexeme + "'."
+                );
+            }
+
             switch (expr.op.type) {
                 case Token.TokenType.ASSIGN ->  {
                     this.curEnv.assign(lvalue, right);
