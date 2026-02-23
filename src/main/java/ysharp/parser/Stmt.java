@@ -20,6 +20,7 @@ public abstract class Stmt {
         void visitForStmt(Stmt.ForStmt stmt);
         void visitBreakStmt(Stmt.BreakStmt stmt);
         void visitContinueStmt(Stmt.ContinueStmt stmt);
+        void visitReturnStmt(Stmt.ReturnStmt stmt);
         void visitSwitchStmt(Stmt.SwitchStmt stmt);
 
         void visitVarDeclaration(Stmt.VarDeclaration stmt);
@@ -165,6 +166,19 @@ public abstract class Stmt {
         @Override
         public void accept(Visitor visitor) {
             visitor.visitContinueStmt(this);
+        }
+    }
+
+    public static class ReturnStmt extends Stmt {
+        public final Expr expr;
+
+        public ReturnStmt(Expr expr){
+            this.expr = expr;
+        }
+
+        @Override
+        public void accept(Visitor visitor) {
+            visitor.visitReturnStmt(this);
         }
     }
 

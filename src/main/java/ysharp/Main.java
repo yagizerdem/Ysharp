@@ -15,9 +15,13 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) throws  Exception {
         String program = """
-                    function test(a : int , b )  do 
-                        println 345;
+                    function test(a : int, b : string)  do 
+                        println a;
+                        println b;
+                        return \"yagiz erdem\";
                     end
+                    var s = test(12, 56.5);
+                    println s;
                 """;
 
 
@@ -33,7 +37,7 @@ public class Main {
 
         Clock.Sleep sleep = new Clock.Sleep();
         Variable.Variant variant = new Variable.Variant(sleep);
-        Variable var = new Variable(variant, false, TypeTag.IDENTIFIER);
+        Variable var = new Variable(variant, false, TypeTag.OBJECT);
         interpreter.defineGlobal(sleep.getFnName(), var);
 
         for(Stmt s : parseTree){

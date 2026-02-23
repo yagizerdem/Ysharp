@@ -9,7 +9,7 @@ public enum TypeTag {
     NULL,
     ANY, // matches all types
 
-    IDENTIFIER; // runtime object such as user defined classes
+    OBJECT; // runtime object such as user defined classes
 
     public static TypeTag fromString(String tag) {
         return switch (tag) {
@@ -19,7 +19,7 @@ public enum TypeTag {
             case "char" -> CHAR;
             case "null" -> NULL;
             case "any" -> ANY;
-            default -> IDENTIFIER;
+            default -> OBJECT;
         };
     }
 }

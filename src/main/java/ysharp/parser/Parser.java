@@ -706,6 +706,7 @@ public class Parser {
         if(match(peek(), Token.TokenType.FOR)) return parseForStmt();
         if(match(peek(), Token.TokenType.BREAK)) return parseBreakStmt();
         if(match(peek(), Token.TokenType.CONTINUE)) return parseContinueStmt();
+        if(match(peek(), Token.TokenType.RETURN)) return parseReturnStmt();
         if(match(peek(), Token.TokenType.SWITCH)) return parseSwitchStmt();
         if(match(peek(), Token.TokenType.FUNCTION)) return parseFunctionDeclaration();
 
@@ -860,6 +861,15 @@ public class Parser {
         consume(Token.TokenType.SEMI_COLON,
                 "Expected ';' after 'continue'.");
         return new Stmt.ContinueStmt();
+    }
+
+    private Stmt parseReturnStmt() throws YsharpError {
+        Expr expr = parseAssignment();
+
+        consume(Token.TokenType.SEMI_COLON,
+                "Expected ';' after 'return'.");
+
+        return new Stmt.ReturnStmt(expr);
     }
 
     private Stmt parseSwitchStmt() throws YsharpError {
