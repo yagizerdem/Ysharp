@@ -1,6 +1,11 @@
 package ysharp.evaluator;
 
+import ysharp.YsharpError;
+import ysharp.parser.Stmt;
+import ysharp.parser.TypeTag;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class RuntimeObject {
@@ -60,7 +65,16 @@ public abstract class RuntimeObject {
         }
     }
 
-    public static class FunctionObject extends RuntimeObject {
+    public static class FunctionObject extends RuntimeObject implements Callable {
+        public final Stmt.FunctionDeclaration declaration;
+        private Environment closure;
+
+        public FunctionObject(Stmt.FunctionDeclaration declaration,
+                              Environment closure) {
+            this.declaration = declaration;
+            this.closure = closure;
+        }
+
 
         @Override
         public boolean isTruthy() {
@@ -74,7 +88,57 @@ public abstract class RuntimeObject {
 
         @Override
         public String toString() {
-            return "function";
+            return "<fn:" + this.declaration.name.lexeme + ">" ;
+        }
+
+        @Override
+        public int arity() {
+            return this.declaration.params.size();
+        }
+
+        @Override
+        public Variable.Variant call(Interpreter interpreter,
+                                     List<Variable.Variant> arguments)
+                throws YsharpError {
+
+            Environment newEnv = new Environment(this.closure);
+
+            if (arguments.size() != declaration.params.size()) {
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.PROCESS,
+                        declaration.name.line,
+                        "Expected " + declaration.params.size() +
+                                " arguments but got " + arguments.size()
+                );
+            }
+
+            for (int i = 0; i < declaration.params.size(); i++) {
+
+                Stmt.FunctionDeclaration.Param param =
+                        declaration.params.get(i);
+
+                Variable.Variant arg = arguments.get(i);
+
+                TypeTag typeTag = null;
+                if (param.type != null) {
+                    typeTag = TypeTag.fromString(param.type.lexeme);
+                }
+
+                Variable newVar = new Variable(arg, true, typeTag);
+
+                newEnv.define(param.name.lexeme, newVar);
+            }
+
+            try {
+                interpreter.executeBlock(
+                        (Stmt.BlockStmt)declaration.body,
+                        newEnv
+                );
+            } catch (Signal.ReturnSignal returnValue) {
+                return returnValue.value;
+            }
+
+            return new Variable.Variant(null);
         }
     }
 

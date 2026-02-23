@@ -37,6 +37,23 @@ public class Interpreter implements
         stmt.accept(this);
     }
 
+    public void executeBlock(Stmt.BlockStmt blockStmt,
+                             Environment newEnv) {
+
+        Environment previous = this.curEnv;
+
+        try {
+            this.curEnv = newEnv;
+
+            for (Stmt stmt : blockStmt.stmtList) {
+                execute(stmt);
+            }
+
+        } finally {
+            this.curEnv = previous;
+        }
+    }
+
     private void requireIntegerOperands(Variable.Variant left,
                                         Variable.Variant right,
                                         Token op) throws YsharpError {
@@ -507,9 +524,7 @@ public class Interpreter implements
 
     @Override
     public void visitBlockStmt(Stmt.BlockStmt stmt) {
-        for(int i = 0; i < stmt.stmtList.size(); i++) {
-            this.execute(stmt.stmtList.get(i));
-        }
+        executeBlock(stmt, new Environment(curEnv));
     }
 
     @Override
@@ -595,6 +610,12 @@ public class Interpreter implements
     }
 
     @Override
+    public void visitReturnStmt(Stmt.ReturnStmt stmt) {
+        Variable.Variant value = this.evaluate(stmt.expr);
+        throw new Signal.ReturnSignal(value);
+    }
+
+    @Override
     public void visitSwitchStmt(Stmt.SwitchStmt stmt) {
 
         Variable.Variant switchValue = evaluate(stmt.condition);
@@ -652,5 +673,19 @@ public class Interpreter implements
     @Override
     public void visitFunctionDeclaration(Stmt.FunctionDeclaration stmt) {
 
+        try {
+            RuntimeObject.FunctionObject funObj =
+                    new RuntimeObject.FunctionObject(
+                            stmt,
+                            curEnv); // take recursive deep copy to handle closures
+
+            Variable var = new Variable(new Variable.Variant(funObj),
+                    false,
+                    TypeTag.OBJECT);
+
+            this.curEnv.define(funObj.declaration.name.lexeme,  var);
+        }catch (YsharpError err) {
+            // throw error
+        }
     }
 }
