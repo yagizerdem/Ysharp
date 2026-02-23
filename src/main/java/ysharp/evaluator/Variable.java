@@ -1,6 +1,7 @@
 package ysharp.evaluator;
 
 import ysharp.lexer.Token;
+import ysharp.parser.TypeTag;
 
 import java.util.Objects;
 import java.util.concurrent.RecursiveTask;
@@ -9,11 +10,11 @@ public class Variable {
 
     public Variant value;
     public final boolean isConst;
-    public final String typeTag;
+    public final TypeTag typeTag;
 
     public Variable(Variant value,
                     boolean isConst,
-                    String typeTag) {
+                    TypeTag typeTag) {
         this.value = value;
         this.isConst = isConst;
         this.typeTag = typeTag;

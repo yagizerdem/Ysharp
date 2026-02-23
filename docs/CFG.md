@@ -107,8 +107,8 @@ statement
 - NUMBER &rarr; INT | DOUBLE
 - INT &rarr; [0-9]+
 - DOUBLE &rarr; [0-9]+.[0-9]+
-- function &rarr; IDENTIFIER "(" parameters? ")" block 
-- parameters &rarr; IDENTIFIER ( "," IDENTIFIER )* 
+- function &rarr; IDENTIFIER "(" parameters? ")" ( ":" type )? block 
+- parameters &rarr; IDENTIFIER ( ":" type)? ( "," IDENTIFIER ( ":" type)? )* 
 - arguments &rarr; expression ( "," expression )*
 
 - classMember &rarr;

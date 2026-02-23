@@ -51,12 +51,12 @@ public class Lexer {
         KEYWORD_MAP.put("use", Token.TokenType.USE);
 
         // type keywords
-        KEYWORD_MAP.put("int", Token.TokenType.TYPE_INT);
-        KEYWORD_MAP.put("double", Token.TokenType.TYPE_DOUBLE);
-        KEYWORD_MAP.put("string", Token.TokenType.TYPE_STRING);
-        KEYWORD_MAP.put("bool", Token.TokenType.TYPE_BOOL);
-        KEYWORD_MAP.put("fun", Token.TokenType.TYPE_FUN);
-        KEYWORD_MAP.put("char", Token.TokenType.TYPE_CHAR);
+//        KEYWORD_MAP.put("int", Token.TokenType.TYPE_INT);
+//        KEYWORD_MAP.put("double", Token.TokenType.TYPE_DOUBLE);
+//        KEYWORD_MAP.put("string", Token.TokenType.TYPE_STRING);
+//        KEYWORD_MAP.put("bool", Token.TokenType.TYPE_BOOL);
+//        KEYWORD_MAP.put("fun", Token.TokenType.TYPE_FUN);
+//        KEYWORD_MAP.put("char", Token.TokenType.TYPE_CHAR);
 
         // literal keywords
         KEYWORD_MAP.put("true", Token.TokenType.TRUE_);
