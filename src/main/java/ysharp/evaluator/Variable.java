@@ -7,9 +7,9 @@ import java.util.concurrent.RecursiveTask;
 
 public class Variable {
 
-    Variant value;
-    final boolean isConst;
-    final String typeTag;
+    public Variant value;
+    public final boolean isConst;
+    public final String typeTag;
 
     public Variable(Variant value,
                     boolean isConst,
@@ -139,6 +139,9 @@ public class Variable {
             return (RuntimeObject.StringObject) this.value;
         }
 
+        public Callable asCallable(){
+            return (Callable) this.value;
+        }
 
         public boolean isTruthy() {
 
@@ -159,6 +162,10 @@ public class Variable {
             }
 
             return false;
+        }
+
+        public boolean isCallable(){
+            return this.value instanceof Callable;
         }
 
         @Override
