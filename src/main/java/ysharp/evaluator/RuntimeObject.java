@@ -5,14 +5,14 @@ import java.util.Map;
 
 public abstract class RuntimeObject {
 
-    protected Map<String, Variable.Variant> fields = new HashMap<>();
+    protected Map<String, Variable> fields = new HashMap<>();
     protected RuntimeObject prototype;
 
-    public void set(String name, Variable.Variant value) {
+    public void set(String name, Variable value) {
         fields.put(name, value);
     }
 
-    public Variable.Variant get(String name) {
+    public Variable get(String name) {
         if (fields.containsKey(name)) {
             return fields.get(name);
         }

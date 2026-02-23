@@ -86,12 +86,12 @@ public class Token {
         USE, // use
 
         // type declaration keywords
-        TYPE_INT, // int
-        TYPE_DOUBLE, // double
-        TYPE_STRING, // string
-        TYPE_BOOL, // bool
-        TYPE_FUN, // fun
-        TYPE_CHAR,
+//        TYPE_INT, // int
+//        TYPE_DOUBLE, // double
+//        TYPE_STRING, // string
+//        TYPE_BOOL, // bool
+//        TYPE_FUN, // fun
+//        TYPE_CHAR,
     }
 
 

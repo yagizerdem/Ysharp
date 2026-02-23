@@ -4,7 +4,9 @@ import ysharp.YsharpError;
 import ysharp.lexer.Token;
 
 import javax.print.DocFlavor;
+import javax.swing.*;
 import java.security.CryptoPrimitive;
+import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentNavigableMap;
@@ -704,6 +706,8 @@ public class Parser {
         if(match(peek(), Token.TokenType.FOR)) return parseForStmt();
         if(match(peek(), Token.TokenType.BREAK)) return parseBreakStmt();
         if(match(peek(), Token.TokenType.CONTINUE)) return parseContinueStmt();
+        if(match(peek(), Token.TokenType.SWITCH)) return parseSwitchStmt();
+        if(match(peek(), Token.TokenType.FUNCTION)) return parseFunctionDeclaration();
 
         return  parseExprStmt();
     }
@@ -858,6 +862,63 @@ public class Parser {
         return new Stmt.ContinueStmt();
     }
 
+    private Stmt parseSwitchStmt() throws YsharpError {
+
+        Expr condition = parseAssignment();
+
+        consume(Token.TokenType.DO,
+                "Expected 'do' after switch expression.");
+
+        List<Stmt.SwitchStmt.CaseClause> cases = new ArrayList<>();
+        Stmt defaultClause = null;
+
+        while (peek().type != Token.TokenType.END_ &&
+                peek().type != Token.TokenType.END_OF_FILE) {
+
+            if (match(peek(), Token.TokenType.CASE)) {
+
+                Expr matchExpr = parseAssignment();
+
+                consume(Token.TokenType.COLON,
+                        "Expected ':' after case expression.");
+
+                Stmt block = parseBlockStmt();
+
+                cases.add(
+                        new Stmt.SwitchStmt.CaseClause(matchExpr, block)
+                );
+
+            }
+            else if (match(peek(), Token.TokenType.DEFAULT)) {
+
+                if (defaultClause != null) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.SYNTAX,
+                            peek().line,
+                            "Multiple default clauses in switch."
+                    );
+                }
+
+                consume(Token.TokenType.COLON,
+                        "Expected ':' after default.");
+
+                defaultClause = parseBlockStmt();
+            }
+            else {
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.SYNTAX,
+                        peek().line,
+                        "Expected 'case', 'default' or 'end' inside switch."
+                );
+            }
+        }
+
+        consume(Token.TokenType.END_,
+                "Expected 'end' after switch statement.");
+
+        return new Stmt.SwitchStmt(condition, cases, defaultClause);
+    }
+
     // declaration parser
 
     private Stmt parseDeclaration() throws YsharpError {
@@ -903,6 +964,82 @@ public class Parser {
         consume(Token.TokenType.SEMI_COLON, "Expected ';' after variable declaration.");
 
         return new Stmt.VarDeclaration(identifier, typeTag, initializer);
+    }
+
+    private Stmt parseFunctionDeclaration() throws YsharpError {
+
+        Token name = advance();
+        if (name.type != Token.TokenType.IDENTIFIER) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.SYNTAX,
+                    name.line,
+                    "Expected function name identifier."
+            );
+        }
+
+        consume(Token.TokenType.LEFT_PAREN,
+                "Expected '(' after function name.");
+
+        List<Stmt.FunctionDeclaration.Param> params = new ArrayList<>();
+
+        if (peek().type != Token.TokenType.RIGHT_PAREN) {
+
+            do {
+
+                Token paramName = advance();
+                if (paramName.type != Token.TokenType.IDENTIFIER) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.SYNTAX,
+                            paramName.line,
+                            "Expected parameter name identifier."
+                    );
+                }
+
+                Token typeToken = null;
+
+                if (peek().type == Token.TokenType.COLON) {
+
+                    advance(); // consume ':'
+
+                    typeToken = advance();
+                    if (typeToken.type != Token.TokenType.IDENTIFIER) {
+                        throw new YsharpError(
+                                YsharpError.YsharpErrorType.SYNTAX,
+                                typeToken.line,
+                                "Expected type identifier after ':'."
+                        );
+                    }
+                }
+
+                params.add(
+                        new Stmt.FunctionDeclaration.Param(paramName, typeToken)
+                );
+
+            } while (match(peek(), Token.TokenType.COMMA));
+        }
+
+        consume(Token.TokenType.RIGHT_PAREN,
+                "Expected ')' after parameters.");
+
+        Token returnType = null;
+
+        if (peek().type == Token.TokenType.COLON) {
+
+            advance(); // consume ':'
+
+            returnType = advance();
+            if (returnType.type != Token.TokenType.IDENTIFIER) {
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.SYNTAX,
+                        returnType.line,
+                        "Expected return type identifier after ':'."
+                );
+            }
+        }
+
+        Stmt body = parseBlockStmt();
+
+        return new Stmt.FunctionDeclaration(name, params, returnType, body);
     }
 
 }

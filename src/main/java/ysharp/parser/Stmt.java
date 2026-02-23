@@ -20,8 +20,10 @@ public abstract class Stmt {
         void visitForStmt(Stmt.ForStmt stmt);
         void visitBreakStmt(Stmt.BreakStmt stmt);
         void visitContinueStmt(Stmt.ContinueStmt stmt);
+        void visitSwitchStmt(Stmt.SwitchStmt stmt);
 
         void visitVarDeclaration(Stmt.VarDeclaration stmt);
+        void visitFunctionDeclaration(Stmt.FunctionDeclaration stmt);
     }
 
 
@@ -166,26 +168,91 @@ public abstract class Stmt {
         }
     }
 
+    public static class SwitchStmt extends Stmt {
+
+        public final Expr condition;
+        public final List<CaseClause> cases;
+        public final Stmt defaultClause;
+
+        public static class CaseClause {
+
+            public final Expr matchExpr;
+            public final Stmt block;
+
+            public CaseClause(Expr matchExpr, Stmt block) {
+                this.matchExpr = matchExpr;
+                this.block = block;
+            }
+        }
+
+        public SwitchStmt(Expr condition,
+                          List<CaseClause> cases,
+                          Stmt defaultClause) {
+            this.condition = condition;
+            this.cases = cases;
+            this.defaultClause = defaultClause;
+        }
+
+        @Override
+        public void accept(Visitor visitor) {
+            visitor.visitSwitchStmt(this);
+        }
+    }
+
     // declaration
 
     public static class VarDeclaration extends Stmt {
         public final Token identifier;
-        public final Token typeTag;
+        public final Token type;
         public final Expr initializer;
 
         public VarDeclaration(
                 Token identifier,
-                Token typeTag,
+                Token type,
                 Expr initializer
         ) {
             this.identifier = identifier;
-            this.typeTag = typeTag;
+            this.type = type;
             this.initializer = initializer;
         }
 
         @Override
         public void accept(Visitor visitor) {
             visitor.visitVarDeclaration(this);
+        }
+    }
+
+    public static class FunctionDeclaration extends Stmt {
+
+        public final Token name;
+        public final List<Param> params;
+        public final Token returnType; // nullable
+        public final Stmt body;
+
+        public FunctionDeclaration(Token name,
+                            List<Param> params,
+                            Token returnType,
+                            Stmt body) {
+            this.name = name;
+            this.params = params;
+            this.returnType = returnType;
+            this.body = body;
+        }
+
+        public static class Param {
+
+            public final Token name;
+            public final Token type;
+
+            public Param(Token name, Token type) {
+                this.name = name;
+                this.type = type;
+            }
+        }
+
+        @Override
+        public void accept(Visitor visitor) {
+            visitor.visitFunctionDeclaration(this);
         }
     }
 

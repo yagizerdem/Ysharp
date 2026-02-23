@@ -4,10 +4,10 @@ import ysharp.YsharpError;
 import ysharp.lexer.Token;
 import ysharp.parser.Expr;
 import ysharp.parser.Stmt;
+import ysharp.parser.TypeTag;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.RecursiveTask;
 
 public class Interpreter implements
         Expr.Visitor<Variable.Variant>,
@@ -594,6 +594,40 @@ public class Interpreter implements
         throw new Signal.ContinueSignal();
     }
 
+    @Override
+    public void visitSwitchStmt(Stmt.SwitchStmt stmt) {
+
+        Variable.Variant switchValue = evaluate(stmt.condition);
+
+        boolean executing = false;
+
+        try {
+
+            for (Stmt.SwitchStmt.CaseClause caseClause : stmt.cases) {
+
+                if (!executing) {
+                    Variable.Variant caseValue = evaluate(caseClause.matchExpr);
+
+                    if (switchValue.equals(caseValue)) {
+                        executing = true;
+                    }
+                }
+
+                if (executing) {
+                    execute(caseClause.block);
+                }
+            }
+
+            // default case
+            if (!executing && stmt.defaultClause != null) {
+                execute(stmt.defaultClause);
+            }
+
+        } catch (Signal.BreakSignal signal) {
+            // break Fallthrough
+        }
+    }
+
     // declaration visitor
 
     @Override
@@ -602,12 +636,12 @@ public class Interpreter implements
             Variable.Variant value = stmt.initializer != null ?
                     this.evaluate(stmt.initializer) : null;
 
-            String typeTag = stmt.typeTag != null ? stmt.typeTag.lexeme : "any";
+            String typeTag = stmt.type != null ? stmt.type.lexeme : "any";
 
             Variable var = new Variable(
                     value,
                     false,
-                    typeTag);
+                    TypeTag.fromString(typeTag));
 
             this.curEnv.define(stmt.identifier.lexeme, var);
         } catch (YsharpError err) {
@@ -615,4 +649,8 @@ public class Interpreter implements
         }
     }
 
+    @Override
+    public void visitFunctionDeclaration(Stmt.FunctionDeclaration stmt) {
+
+    }
 }
