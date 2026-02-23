@@ -20,6 +20,7 @@ public abstract class Stmt {
         void visitForStmt(Stmt.ForStmt stmt);
         void visitBreakStmt(Stmt.BreakStmt stmt);
         void visitContinueStmt(Stmt.ContinueStmt stmt);
+        void visitSwitchStmt(Stmt.SwitchStmt stmt);
 
         void visitVarDeclaration(Stmt.VarDeclaration stmt);
     }
@@ -163,6 +164,37 @@ public abstract class Stmt {
         @Override
         public void accept(Visitor visitor) {
             visitor.visitContinueStmt(this);
+        }
+    }
+
+    public static class SwitchStmt extends Stmt {
+
+        public final Expr condition;
+        public final List<CaseClause> cases;
+        public final Stmt defaultClause;
+
+        public static class CaseClause {
+
+            public final Expr matchExpr;
+            public final Stmt block;
+
+            public CaseClause(Expr matchExpr, Stmt block) {
+                this.matchExpr = matchExpr;
+                this.block = block;
+            }
+        }
+
+        public SwitchStmt(Expr condition,
+                          List<CaseClause> cases,
+                          Stmt defaultClause) {
+            this.condition = condition;
+            this.cases = cases;
+            this.defaultClause = defaultClause;
+        }
+
+        @Override
+        public void accept(Visitor visitor) {
+            visitor.visitSwitchStmt(this);
         }
     }
 

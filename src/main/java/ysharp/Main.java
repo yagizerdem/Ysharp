@@ -2,7 +2,6 @@ package ysharp;
 
 import ysharp.evaluator.Interpreter;
 import ysharp.evaluator.Native.function.core.Clock;
-import ysharp.evaluator.Native.function.core.Debug;
 import ysharp.evaluator.Variable;
 import ysharp.lexer.Lexer;
 import ysharp.lexer.Preprocess;
@@ -14,13 +13,31 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws  Exception {
-
         String program = """
-                while true do 
-                    println \"hit\";
-                    sleep(3000);
-                    end
+                    var a = 10;
+                    switch a % 3 do
+                        case 1 : do 
+                            println \"yagiz\";
+                            break;
+                         end
+                        case 2 : do 
+                            println \"arzu\";
+                            break;
+                         end
+                         case 1 : do 
+                            println \"erdem\";
+                            break;
+                         end
+                         case 1 : do 
+                            println \"test\";
+                            break;
+                         end
+                         default : do 
+                            println \"default\";
+                         end
+                       end
                 """;
+
 
         var buf = Preprocess.removeComments(Preprocess.mergeContinuation(program));
         Lexer lexer = new Lexer(buf);

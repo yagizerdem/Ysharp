@@ -7,7 +7,6 @@ import ysharp.parser.Stmt;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.RecursiveTask;
 
 public class Interpreter implements
         Expr.Visitor<Variable.Variant>,
@@ -592,6 +591,40 @@ public class Interpreter implements
     @Override
     public void visitContinueStmt(Stmt.ContinueStmt stmt) throws Signal.ContinueSignal {
         throw new Signal.ContinueSignal();
+    }
+
+    @Override
+    public void visitSwitchStmt(Stmt.SwitchStmt stmt) {
+
+        Variable.Variant switchValue = evaluate(stmt.condition);
+
+        boolean executing = false;
+
+        try {
+
+            for (Stmt.SwitchStmt.CaseClause caseClause : stmt.cases) {
+
+                if (!executing) {
+                    Variable.Variant caseValue = evaluate(caseClause.matchExpr);
+
+                    if (switchValue.equals(caseValue)) {
+                        executing = true;
+                    }
+                }
+
+                if (executing) {
+                    execute(caseClause.block);
+                }
+            }
+
+            // default case
+            if (!executing && stmt.defaultClause != null) {
+                execute(stmt.defaultClause);
+            }
+
+        } catch (Signal.BreakSignal signal) {
+            // break Fallthrough
+        }
     }
 
     // declaration visitor

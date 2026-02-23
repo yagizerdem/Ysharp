@@ -704,6 +704,7 @@ public class Parser {
         if(match(peek(), Token.TokenType.FOR)) return parseForStmt();
         if(match(peek(), Token.TokenType.BREAK)) return parseBreakStmt();
         if(match(peek(), Token.TokenType.CONTINUE)) return parseContinueStmt();
+        if(match(peek(), Token.TokenType.SWITCH)) return parseSwitchStmt();
 
         return  parseExprStmt();
     }
@@ -856,6 +857,63 @@ public class Parser {
         consume(Token.TokenType.SEMI_COLON,
                 "Expected ';' after 'continue'.");
         return new Stmt.ContinueStmt();
+    }
+
+    private Stmt parseSwitchStmt() throws YsharpError {
+
+        Expr condition = parseAssignment();
+
+        consume(Token.TokenType.DO,
+                "Expected 'do' after switch expression.");
+
+        List<Stmt.SwitchStmt.CaseClause> cases = new ArrayList<>();
+        Stmt defaultClause = null;
+
+        while (peek().type != Token.TokenType.END_ &&
+                peek().type != Token.TokenType.END_OF_FILE) {
+
+            if (match(peek(), Token.TokenType.CASE)) {
+
+                Expr matchExpr = parseAssignment();
+
+                consume(Token.TokenType.COLON,
+                        "Expected ':' after case expression.");
+
+                Stmt block = parseBlockStmt();
+
+                cases.add(
+                        new Stmt.SwitchStmt.CaseClause(matchExpr, block)
+                );
+
+            }
+            else if (match(peek(), Token.TokenType.DEFAULT)) {
+
+                if (defaultClause != null) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.SYNTAX,
+                            peek().line,
+                            "Multiple default clauses in switch."
+                    );
+                }
+
+                consume(Token.TokenType.COLON,
+                        "Expected ':' after default.");
+
+                defaultClause = parseBlockStmt();
+            }
+            else {
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.SYNTAX,
+                        peek().line,
+                        "Expected 'case', 'default' or 'end' inside switch."
+                );
+            }
+        }
+
+        consume(Token.TokenType.END_,
+                "Expected 'end' after switch statement.");
+
+        return new Stmt.SwitchStmt(condition, cases, defaultClause);
     }
 
     // declaration parser
