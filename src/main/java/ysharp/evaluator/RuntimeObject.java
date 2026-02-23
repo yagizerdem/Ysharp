@@ -1,10 +1,40 @@
 package ysharp.evaluator;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public abstract class RuntimeObject {
 
-    abstract boolean isTruthy();
+    protected Map<String, Variable.Variant> fields = new HashMap<>();
+    protected RuntimeObject prototype;
 
-    abstract String getType();
+    public void set(String name, Variable.Variant value) {
+        fields.put(name, value);
+    }
+
+    public Variable.Variant get(String name) {
+        if (fields.containsKey(name)) {
+            return fields.get(name);
+        }
+
+        if (prototype != null) {
+            return prototype.get(name);
+        }
+
+        return null;
+    }
+
+    public void setPrototype(RuntimeObject proto) {
+        this.prototype = proto;
+    }
+
+    public RuntimeObject getPrototype() {
+        return prototype;
+    }
+
+    public abstract boolean isTruthy();
+
+    public abstract String getType();
 
 
     public static class StringObject extends RuntimeObject {
@@ -15,12 +45,12 @@ public abstract class RuntimeObject {
         }
 
         @Override
-        boolean isTruthy() {
+        public boolean isTruthy() {
             return  !this.data.isEmpty();
         }
 
         @Override
-        String getType() {
+        public String getType() {
             return "string";
         }
 
@@ -33,12 +63,12 @@ public abstract class RuntimeObject {
     public static class FunctionObject extends RuntimeObject {
 
         @Override
-        boolean isTruthy() {
+        public boolean isTruthy() {
             return true;
         }
 
         @Override
-        String getType() {
+        public String getType() {
             return "function";
         }
 
@@ -51,12 +81,12 @@ public abstract class RuntimeObject {
     public static class ClassObject extends RuntimeObject {
 
         @Override
-        boolean isTruthy() {
+        public boolean isTruthy() {
             return true;
         }
 
         @Override
-        String getType() {
+        public String getType() {
             return "class";
         }
 

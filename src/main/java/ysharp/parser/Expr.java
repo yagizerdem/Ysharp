@@ -178,8 +178,8 @@ abstract public class Expr {
     }
 
     public static class CallExpr extends Expr {
-        final Expr callee;
-        final List<Expr> arguments;
+        public final Expr callee;
+        public final List<Expr> arguments;
 
         CallExpr(Expr callee, List<Expr> arguments) {
             this.callee = callee;

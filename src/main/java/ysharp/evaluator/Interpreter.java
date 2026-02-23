@@ -5,6 +5,8 @@ import ysharp.lexer.Token;
 import ysharp.parser.Expr;
 import ysharp.parser.Stmt;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.RecursiveTask;
 
 public class Interpreter implements
@@ -17,6 +19,14 @@ public class Interpreter implements
     public Interpreter() {
         this.global = new Environment();
         this.curEnv = global;
+    }
+
+    public void defineGlobal(String key, Variable variable) throws Exception {
+        try {
+            this.global.define(key, variable);
+        }catch (YsharpError err) {
+            throw new Exception("[Programmatic error] defining natives should not throw error");
+        }
     }
 
     public Variable.Variant evaluate(Expr expr) {
@@ -270,6 +280,42 @@ public class Interpreter implements
 
     @Override
     public Variable.Variant visitUnaryExpr(Expr.UnaryExpr expr) {
+        switch (expr.op.type) {
+            case Token.TokenType.PLUS -> {
+                Variable.Variant var = this.evaluate(expr.expr);
+                if(!var.isNumber()) {
+                    // throw error
+                    return null;
+                }
+                return var;
+            }
+            case Token.TokenType.MINUS -> {
+                Variable.Variant var = this.evaluate(expr.expr);
+                if(var.isInt()) {
+                    return new Variable.Variant(var.asInt() * -1);
+                }
+                if(var.isDouble()) {
+                    return new Variable.Variant(var.asDouble() * -1);
+                }
+
+                // throw error
+
+                return null;
+            }
+            case Token.TokenType.BANG -> {
+                Variable.Variant var = this.evaluate(expr.expr);
+                return new Variable.Variant(!var.isTruthy());
+            }
+            case Token.TokenType.BITWISE_NOT -> {
+                Variable.Variant var = this.evaluate(expr.expr);
+                if(var.isInt()) {
+                    return new Variable.Variant(~var.asInt());
+                }
+                // throw error
+                return  null;
+            }
+        }
+
         return null;
     }
 
@@ -374,6 +420,24 @@ public class Interpreter implements
 
     @Override
     public Variable.Variant visitCallExpr(Expr.CallExpr expr) {
+        Variable.Variant calee = this.evaluate(expr.callee);
+
+        if(!calee.isCallable()) {
+            // throw error
+            return null;
+        }
+
+        List<Variable.Variant> args = new ArrayList<>();
+        for(Expr expr_ : expr.arguments) {
+            args.add(evaluate(expr_));
+        }
+
+        try {
+            return calee.asCallable().call(this, args);
+        }catch (YsharpError err) {
+            // throw error
+        }
+
         return null;
     }
 
