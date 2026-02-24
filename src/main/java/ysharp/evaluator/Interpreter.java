@@ -727,4 +727,9 @@ public class Interpreter implements
 
         this.curEnv.define(stmt.identifier.lexeme, var);
     }
+
+    @Override
+    public void visitClassDeclaration(Stmt.ClassDeclaration stmt) {
+
+    }
 }

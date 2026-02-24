@@ -15,11 +15,13 @@ public class Core {
 
     public void start() throws Exception{
         String program = """
-                    var a ;
-                    a  =  (a : int, b: double ) => a + b;
-                    
-                    print a(1,2);
-                    
+                    class Matrix {
+                        var first_name;
+                        matrix_mul() do 
+                            println "hit method body";
+                        end
+                    }
+                            
                 """;
 
 

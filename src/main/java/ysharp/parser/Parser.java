@@ -860,6 +860,7 @@ public class Parser {
         if(match(peek(), Token.TokenType.RETURN)) return parseReturnStmt();
         if(match(peek(), Token.TokenType.SWITCH)) return parseSwitchStmt();
         if(match(peek(), Token.TokenType.FUNCTION)) return parseFunctionDeclaration();
+        if(match(peek(), Token.TokenType.CLASS)) return parseClassDeclaration();
 
         return  parseExprStmt();
     }
@@ -1243,5 +1244,170 @@ public class Parser {
 
         return new Stmt.ConstDeclaration(identifier, typeTag, initializer);
     }
+
+    private Stmt parseClassDeclaration() throws YsharpError {
+
+        Token name = advance();
+        if (name.type != Token.TokenType.IDENTIFIER) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.SYNTAX,
+                    name.line,
+                    "Expected class name after 'class'."
+            );
+        }
+
+        Token extend = null;
+
+        if (match(peek(), Token.TokenType.EXTENDS)) {
+            extend = advance();
+            if (extend.type != Token.TokenType.IDENTIFIER) {
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.SYNTAX,
+                        extend.line,
+                        "Expected superclass name after 'extends'."
+                );
+            }
+        }
+
+        consume(Token.TokenType.LEFT_CURLY_BRACE,
+                "Expected '{' after class declaration.");
+
+        List<Stmt.ClassDeclaration.Method> methods = new ArrayList<>();
+        List<Stmt.ClassDeclaration.Property> properties = new ArrayList<>();
+
+        while (peek().type != Token.TokenType.RIGHT_CURLY_BRACE &&
+                peek().type != Token.TokenType.END_OF_FILE) {
+
+            // method
+            if (peek().type == Token.TokenType.IDENTIFIER &&
+                    peekNext().type == Token.TokenType.LEFT_PAREN) {
+
+                // method name
+                Token methodName = advance(); // IDENTIFIER
+
+                consume(Token.TokenType.LEFT_PAREN,
+                        "Expected '(' after method name.");
+
+                List<Stmt.ClassDeclaration.Method.Param> params = new ArrayList<>();
+
+                if (peek().type != Token.TokenType.RIGHT_PAREN) {
+
+                    do {
+                        Token paramName = advance();
+
+                        if (paramName.type != Token.TokenType.IDENTIFIER) {
+                            throw new YsharpError(
+                                    YsharpError.YsharpErrorType.SYNTAX,
+                                    paramName.line,
+                                    "Expected parameter name."
+                            );
+                        }
+
+                        Token typeToken = null;
+
+                        if (match(peek(), Token.TokenType.COLON)) {
+
+                            typeToken = advance();
+
+                            if (typeToken.type != Token.TokenType.IDENTIFIER) {
+                                throw new YsharpError(
+                                        YsharpError.YsharpErrorType.SYNTAX,
+                                        typeToken.line,
+                                        "Expected type identifier after ':'."
+                                );
+                            }
+                        }
+
+                        params.add(
+                                new Stmt.ClassDeclaration.Method.Param(
+                                        paramName,
+                                        typeToken
+                                )
+                        );
+
+                    } while (match(peek(), Token.TokenType.COMMA));
+                }
+
+                consume(Token.TokenType.RIGHT_PAREN,
+                        "Expected ')' after parameters.");
+
+                Token returnType = null;
+
+                if (match(peek(), Token.TokenType.COLON)) {
+                    returnType = advance();
+
+                    if (returnType.type != Token.TokenType.IDENTIFIER) {
+                        throw new YsharpError(
+                                YsharpError.YsharpErrorType.SYNTAX,
+                                returnType.line,
+                                "Expected return type identifier."
+                        );
+                    }
+                }
+
+                Stmt body = parseBlockStmt();
+
+                methods.add(
+                        new Stmt.ClassDeclaration.Method(
+                                methodName,
+                                params,
+                                returnType,
+                                body
+                        )
+                );
+            }
+
+            // var property
+            else if (match(peek(), Token.TokenType.VAR)) {
+
+                Stmt.VarDeclaration varDecl =
+                        (Stmt.VarDeclaration) parseVarDeclaration();
+
+                properties.add(
+                        new Stmt.ClassDeclaration.Property(
+                                varDecl.identifier,
+                                varDecl.type,
+                                varDecl.initializer,
+                                false
+                        )
+                );
+            }
+
+            // const property
+            else if (match(peek(), Token.TokenType.CONST_)) {
+
+                Stmt.ConstDeclaration constDecl =
+                        (Stmt.ConstDeclaration) parseConstDeclaration();
+
+                properties.add(
+                        new Stmt.ClassDeclaration.Property(
+                                constDecl.identifier,
+                                constDecl.type,
+                                constDecl.initializer,
+                                true
+                        )
+                );
+            }
+
+            else {
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.SYNTAX,
+                        peek().line,
+                        "Expected class member (function, var, const)."
+                );
+            }
+        }
+
+        consume(Token.TokenType.RIGHT_CURLY_BRACE,
+                "Expected '}' after class body.");
+
+        return new Stmt.ClassDeclaration(
+                name,
+                extend,
+                methods,
+                properties
+        );
+    }
+
 }
 
