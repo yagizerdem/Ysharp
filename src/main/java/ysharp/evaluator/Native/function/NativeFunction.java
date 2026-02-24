@@ -98,6 +98,10 @@ public abstract class NativeFunction extends RuntimeObject implements Callable {
 
     public abstract String getFnName();
 
+    public NativeFunction(){
+        this.prototype = null;
+    }
+
     @Override
     public String toString() {
         return "native-function";

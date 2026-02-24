@@ -12,6 +12,7 @@ import java.util.Map;
 public abstract class RuntimeObject {
 
     protected Map<String, Variable> fields = new HashMap<>();
+    // function native function and lambda do not need prototype chain, their behaviour is fixed
     protected RuntimeObject prototype;
 
     public void set(String name, Variable value) {
@@ -70,10 +71,12 @@ public abstract class RuntimeObject {
         public final Stmt.FunctionDeclaration declaration;
         private Environment closure;
 
+
         public FunctionObject(Stmt.FunctionDeclaration declaration,
                               Environment closure) {
             this.declaration = declaration;
             this.closure = closure;
+            this.prototype = null;
         }
 
 
@@ -151,6 +154,7 @@ public abstract class RuntimeObject {
                               Environment closure) {
             this.lambdaExpr = lambdaExpr;
             this.closure = closure;
+            this.prototype = null;
         }
 
 
