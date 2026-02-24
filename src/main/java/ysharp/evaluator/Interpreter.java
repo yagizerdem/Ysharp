@@ -49,6 +49,17 @@ public class Interpreter implements
         return expr.accept(this);
     }
 
+    public Variable.Variant evaluate(Expr expr, Environment newEnv) {
+        Environment previous = this.curEnv;
+        try {
+            this.curEnv = newEnv;
+            return expr.accept(this);
+        }
+        finally {
+            this.curEnv = previous;
+        }
+    }
+
     public void execute(Stmt stmt){
         stmt.accept(this);
     }
@@ -463,8 +474,12 @@ public class Interpreter implements
         Variable.Variant calee = this.evaluate(expr.callee);
 
         if(!calee.isCallable()) {
-            // throw error
-            return null;
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    expr.leftParen.line,
+                    "Attempted to call a non-callable value of type '"
+                            + calee.getType() + "'."
+            );
         }
 
         List<Variable.Variant> args = new ArrayList<>();
@@ -516,6 +531,12 @@ public class Interpreter implements
     @Override
     public Variable.Variant visitMapInitializerExpr(Expr.MapInitializerExpr expr) {
         return null;
+    }
+
+    @Override
+    public Variable.Variant visitLambdaExpr(Expr.LambdaExpr expr) {
+        RuntimeObject.LambdaObject lambdaObject = new RuntimeObject.LambdaObject(expr, curEnv);
+        return new Variable.Variant(lambdaObject);
     }
 
     // stmt visitor

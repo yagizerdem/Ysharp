@@ -24,6 +24,7 @@ abstract public class Expr {
         R visitVariableExpr(VariableExpr expr);
         R visitArrayInitializerExpr(ArrayInitializerExpr expr);
         R visitMapInitializerExpr(MapInitializerExpr expr);
+        R visitLambdaExpr(LambdaExpr expr);
     }
 
     public abstract <R> R accept(Visitor<R> visitor);
@@ -180,10 +181,14 @@ abstract public class Expr {
     public static class CallExpr extends Expr {
         public final Expr callee;
         public final List<Expr> arguments;
+        public final Token leftParen;
 
-        CallExpr(Expr callee, List<Expr> arguments) {
+        CallExpr(Expr callee,
+                 List<Expr> arguments,
+                 Token leftParen) {
             this.callee = callee;
             this.arguments = arguments;
+            this.leftParen = leftParen;
         }
 
         public <R> R accept(Visitor<R> visitor) {
@@ -254,6 +259,52 @@ abstract public class Expr {
         @Override
         public <R> R accept(Visitor<R> visitor) {
             return visitor.visitMapInitializerExpr(this);
+        }
+    }
+
+    public static final class LambdaExpr extends Expr {
+        public final List<Expr.LambdaExpr.Param> params;
+        public final Token returnType; // nullable
+        public final Stmt body;
+        public final Expr expr;
+        public final Token leftParen;
+
+        public LambdaExpr(List<Expr.LambdaExpr.Param> params,
+                            Token returnType,
+                          Stmt body,
+                          Token leftParen) {
+            this.params = params;
+            this.returnType = returnType;
+            this.body = body;
+            this.expr = null;
+            this.leftParen = leftParen;
+        }
+
+        public LambdaExpr(List<Expr.LambdaExpr.Param> params,
+                          Token returnType,
+                          Expr expr,
+                          Token leftParen) {
+            this.params = params;
+            this.returnType = returnType;
+            this.expr = expr;
+            this.body = null;
+            this.leftParen = leftParen;
+        }
+
+        public static class Param {
+
+            public final Token name;
+            public final Token type;
+
+            public Param(Token name, Token type) {
+                this.name = name;
+                this.type = type;
+            }
+        }
+
+        @Override
+        public <R> R accept(Visitor<R> visitor) {
+            return visitor.visitLambdaExpr(this);
         }
     }
 
