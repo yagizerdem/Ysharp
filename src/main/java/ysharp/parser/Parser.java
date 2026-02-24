@@ -142,10 +142,46 @@ public class Parser {
         return list;
     }
 
+    private boolean isLambdaAhead() {
+
+        if (peek().type != Token.TokenType.LEFT_PAREN)
+            return false;
+
+        int cursor = current;
+        int depth = 0;
+
+        while (cursor < tokenStream.size()) {
+
+            Token t = tokenStream.get(cursor);
+
+            if (t.type == Token.TokenType.LEFT_PAREN)
+                depth++;
+
+            else if (t.type == Token.TokenType.RIGHT_PAREN) {
+                depth--;
+                if (depth == 0) {
+                    cursor++;
+                    break;
+                }
+            }
+
+            cursor++;
+        }
+
+        if (cursor >= tokenStream.size())
+            return false;
+
+        return tokenStream.get(cursor).type == Token.TokenType.RIGHT_ARROW;
+    }
 
     // expression parser
 
     private Expr parseAssignment() throws YsharpError{
+
+        if(peek().type == Token.TokenType.LEFT_PAREN && isLambdaAhead()) {
+            return parseLambda();
+        }
+
         Expr expr = parseTernary();
 
         if (match(peek(),
@@ -580,6 +616,7 @@ public class Parser {
 
 
             if(match(peek(), Token.TokenType.LEFT_PAREN)) {
+                Token leftParen = previous();
                 List<Expr> args = new ArrayList<>();
 
                 if(match(peek(), Token.TokenType.RIGHT_PAREN)) {
@@ -598,7 +635,8 @@ public class Parser {
 
                 Expr.CallExpr callExpr = new Expr.CallExpr(
                         calee,
-                        args
+                        args,
+                        leftParen
                 );
 
                 calee = callExpr;
@@ -633,6 +671,7 @@ public class Parser {
         else if(match(peek(), Token.TokenType.LEFT_CURLY_BRACE)) {
             return parseMapInitializer();
         }
+
         return  parseAtom();
     }
 
@@ -737,6 +776,73 @@ public class Parser {
                 peek().line,
                 "Expected expression."
         );
+    }
+
+    private Expr parseLambda() throws YsharpError {
+
+        Token leftParen = peek();
+        consume(Token.TokenType.LEFT_PAREN,
+                "Expected '(' to start lambda parameter list.");
+
+        List<Expr.LambdaExpr.Param> params = new ArrayList<>();
+
+        if (peek().type != Token.TokenType.RIGHT_PAREN) {
+
+            do {
+                Token identifier = advance();
+
+                if (identifier.type != Token.TokenType.IDENTIFIER) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.SYNTAX,
+                            identifier.line,
+                            "Expected parameter name in lambda."
+                    );
+                }
+
+                Token typeTag = null;
+
+                if (match(peek(), Token.TokenType.COLON)) {
+
+                    typeTag = advance();
+
+                    if (typeTag.type != Token.TokenType.IDENTIFIER) {
+                        throw new YsharpError(
+                                YsharpError.YsharpErrorType.SYNTAX,
+                                typeTag.line,
+                                "Expected type identifier after ':' in lambda parameter."
+                        );
+                    }
+                }
+
+                params.add(new Expr.LambdaExpr.Param(identifier, typeTag));
+
+            } while (match(peek(), Token.TokenType.COMMA));
+        }
+
+        consume(Token.TokenType.RIGHT_PAREN,
+                "Expected ')' after lambda parameter list.");
+
+        Token returnType = null;
+        if(match(peek(), Token.TokenType.COLON)) {
+            advance(); // consume :
+            returnType = advance();
+            if(returnType.type != Token.TokenType.IDENTIFIER) {
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.SYNTAX,
+                        peek().line,
+                        "Expected return type identifier after ':' in lambda."
+                );
+            }
+        }
+
+        consume(Token.TokenType.RIGHT_ARROW,
+                "Expected '=>' after lambda parameter list.");
+
+        if(peek().type == Token.TokenType.DO) {
+            return new Expr.LambdaExpr(params, returnType, parseBlockStmt(), leftParen);
+        }
+
+        return new Expr.LambdaExpr(params, returnType, parseAssignment(), leftParen);
     }
 
     // stmt parser

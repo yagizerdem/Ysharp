@@ -336,6 +336,7 @@ public class Lexer {
             }
             case '=' -> {
                 if (Cursor.match(source, cursor, '=')) { addToken(Token.TokenType.EQUAL_EQUAL); return; }
+                if (Cursor.match(source, cursor, '>')) { addToken(Token.TokenType.RIGHT_ARROW); return; }
                 addToken(Token.TokenType.ASSIGN);
             }
             case '!' -> {

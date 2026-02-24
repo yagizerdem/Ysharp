@@ -1,9 +1,7 @@
 package ysharp.evaluator;
 
 import ysharp.YsharpError;
-import ysharp.evaluator.Interpreter;
 import ysharp.evaluator.Native.function.core.Clock;
-import ysharp.evaluator.Variable;
 import ysharp.lexer.Cursor;
 import ysharp.lexer.Lexer;
 import ysharp.lexer.Preprocess;
@@ -17,21 +15,11 @@ public class Core {
 
     public void start() throws Exception{
         String program = """
-                
-                    function test() do 
-                        const a = 22;
-                        return a ;
-                       end
-                    const a = test();
-                        
-                        do 
-                            println a;
-                            a = 44;
-                            println a;
-                        end
-                
-                
-                    println a;
+                    var a ;
+                    a  =  (a : int, b: double ) => a + b;
+                    
+                    print a(1,2);
+                    
                 """;
 
 

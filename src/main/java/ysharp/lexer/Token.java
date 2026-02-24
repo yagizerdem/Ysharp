@@ -56,6 +56,8 @@ public class Token {
         LEFT_PAREN, RIGHT_PAREN, LEFT_BRACKET, // ( ) [
         RIGHT_BRACKET, LEFT_CURLY_BRACE, RIGHT_CURLY_BRACE, // ] { }
 
+        RIGHT_ARROW, // =>
+
         END_OF_FILE,
 
         // reserved keywords
