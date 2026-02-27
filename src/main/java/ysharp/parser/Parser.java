@@ -671,6 +671,9 @@ public class Parser {
         else if(match(peek(), Token.TokenType.LEFT_CURLY_BRACE)) {
             return parseMapInitializer();
         }
+        else if(match(peek(), Token.TokenType.NEW)) {
+            return parseNewExpr();
+        }
 
         return  parseAtom();
     }
@@ -843,6 +846,52 @@ public class Parser {
         }
 
         return new Expr.LambdaExpr(params, returnType, parseAssignment(), leftParen);
+    }
+
+    private Expr parseNewExpr() throws YsharpError {
+
+        Token identifier = peek();
+        advance(); //consume constructor name
+
+        if(identifier.type != Token.TokenType.IDENTIFIER) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.SYNTAX,
+                    identifier.line,
+                    "Expected class name after 'new'."
+            );
+        }
+
+        List<Expr> args = new ArrayList<>();
+
+        consume(Token.TokenType.LEFT_PAREN,
+                "Expected '(' after constructor name in 'new' expression.");
+
+        if (match(peek(), Token.TokenType.RIGHT_PAREN)) {
+            return new Expr.NewExpr(identifier, args);
+        }
+
+        while (peek().type != Token.TokenType.RIGHT_PAREN) {
+
+            if (peek().type == Token.TokenType.END_OF_FILE) {
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.SYNTAX,
+                        peek().line,
+                        "Unterminated argument list in 'new' expression. Expected ')'."
+                );
+            }
+
+            args.add(parseAssignment());
+
+            if (peek().type != Token.TokenType.RIGHT_PAREN) {
+                consume(Token.TokenType.COMMA,
+                        "Expected ',' between constructor arguments.");
+            }
+        }
+
+        consume(Token.TokenType.RIGHT_PAREN,
+                "Expected ')' after constructor arguments.");
+
+        return new Expr.NewExpr(identifier, args);
     }
 
     // stmt parser

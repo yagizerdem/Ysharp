@@ -2,7 +2,9 @@
 
 ### expression grammar
 - expression &rarr; assignment
-- assignment &rarr;  lvalue assignment_op assignment | ternary_conditional | lambda
+- assignment &rarr;  lvalue assignment_op assignment | 
+ternary_conditional | 
+lambda 
 - ternary_conditional &rarr; logical_or "?" expression  ":" ternary_conditional 
  | logical_or
 - logical_or &rarr; logical_and ( "||" logical_and )*
@@ -18,7 +20,7 @@
 - unary &rarr;  ( "!" | "-" | "+" | "~" | "++" | "--" ) unary | postfix 
 - postfix &rarr; call ( "++" | "--" )*
 - call &rarr; primary ( "(" arguments? ")"  | "." IDENTIFIER )*
-- primary &rarr; array | map | atom
+- primary &rarr; array | map | atom | newExpr
 - atom &rarr;
 IDENTIFIER |
 NUMBER |
@@ -36,6 +38,7 @@ null |
   | "&=" | "^=" | "|="
 - lvalue &rarr; postfix
 - lambda &rarr; "(" parameters? ")" ( ":" type )? "=>" ( block | expr )
+- newExpr &rarr; "new" IDENTIFIER "(" arguments? ")"
 
 ### declaration grammar
 - declaration &rarr; classDecl | 

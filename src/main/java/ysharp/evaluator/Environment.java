@@ -30,6 +30,17 @@ public class Environment {
                 "Undefined variable name" + name.lexeme + ".");
     }
 
+    public Variable getValue(String name) throws YsharpError {
+        if (values.containsKey(name)) {
+            return values.get(name);
+        }
+
+        if (enclosing != null) return enclosing.getValue(name);
+
+        throw new YsharpError(YsharpError.YsharpErrorType.PROCESS, -1,
+                "Undefined variable name" + name + ".");
+    }
+
     private Environment ancestor(int distance) throws YsharpError {
         Environment env = this;
         for (int i = 0; i < distance; i++) {

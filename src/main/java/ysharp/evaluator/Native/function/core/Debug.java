@@ -1,13 +1,13 @@
 package ysharp.evaluator.Native.function.core;
 
 import ysharp.YsharpError;
+import ysharp.evaluator.Function;
 import ysharp.evaluator.Interpreter;
-import ysharp.evaluator.Native.function.NativeFunction;
 import ysharp.evaluator.Variable;
 
 import java.util.List;
 
-public abstract class Debug  extends NativeFunction  {
+public abstract class Debug  extends Function.NativeFunction {
 
 
     // typeOf(x)

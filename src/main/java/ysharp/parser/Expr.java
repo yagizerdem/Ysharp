@@ -1,7 +1,5 @@
 package ysharp.parser;
 
-
-import ysharp.YsharpError;
 import ysharp.lexer.Token;
 
 import java.util.List;
@@ -25,6 +23,7 @@ abstract public class Expr {
         R visitArrayInitializerExpr(ArrayInitializerExpr expr);
         R visitMapInitializerExpr(MapInitializerExpr expr);
         R visitLambdaExpr(LambdaExpr expr);
+        R visitNexExpr(NewExpr expr);
     }
 
     public abstract <R> R accept(Visitor<R> visitor);
@@ -305,6 +304,23 @@ abstract public class Expr {
         @Override
         public <R> R accept(Visitor<R> visitor) {
             return visitor.visitLambdaExpr(this);
+        }
+    }
+
+    public static final class NewExpr extends Expr {
+
+        public final Token name;
+        public final List<Expr> arguments;
+
+        public NewExpr(Token name,
+                       List<Expr> arguments) {
+            this.name = name;
+            this.arguments = arguments;
+        }
+
+        @Override
+        public <R> R accept(Visitor<R> visitor) {
+            return visitor.visitNexExpr(this);
         }
     }
 
