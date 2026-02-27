@@ -1,6 +1,7 @@
 package ysharp.evaluator;
 
 import ysharp.YsharpError;
+import ysharp.evaluator.Native.function.binding.BoundNativeFunction;
 import ysharp.lexer.Token;
 import ysharp.parser.Expr;
 import ysharp.parser.Stmt;
@@ -13,8 +14,8 @@ public class Interpreter implements
         Expr.Visitor<Variable.Variant>,
         Stmt.Visitor {
 
-    private Environment global;
-    private Environment curEnv;
+    public Environment global;
+    public Environment curEnv;
     public List<YsharpError> errors;
 
     public boolean hadErrors() {
@@ -461,7 +462,39 @@ public class Interpreter implements
 
     @Override
     public Variable.Variant visitGetExpr(Expr.GetExpr expr) {
-        return null;
+
+        Variable.Variant object = evaluate(expr.object);
+
+        if (!object.isRuntimeObject()) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    expr.name.line,
+                    "Only objects have properties."
+            );
+        }
+
+        RuntimeObject instance = object.asRuntimeObject();
+
+        Variable field = instance.get(expr.name.lexeme);
+
+        if (field == null) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    expr.name.line,
+                    "Undefined property '" + expr.name.lexeme + "'."
+            );
+        }
+
+        if (field.value.isNativeFunction()) {
+            Function.NativeFunction fn = field.value.asNativeFunction();
+
+            BoundNativeFunction bound =
+                    new BoundNativeFunction(fn, instance);
+
+            return new Variable.Variant(bound);
+        }
+
+        return field.value;
     }
 
     @Override
@@ -510,8 +543,10 @@ public class Interpreter implements
         if (lit instanceof Token.Literal.Chr c)
             return new Variable.Variant(c.value());
 
-        if (lit instanceof Token.Literal.Str s)
-            return new Variable.Variant(s.value());
+        if (lit instanceof Token.Literal.Str s) {
+            Y_String.Y_StringObject object = new Y_String.Y_StringObject(s.value());
+            return new Variable.Variant(object);
+        }
 
         throw new IllegalStateException(
                 "Unknown literal type: " + expr.token.literal
@@ -535,8 +570,29 @@ public class Interpreter implements
 
     @Override
     public Variable.Variant visitLambdaExpr(Expr.LambdaExpr expr) {
-        RuntimeObject.LambdaObject lambdaObject = new RuntimeObject.LambdaObject(expr, curEnv);
+        Function.LambdaObject lambdaObject = new Function.LambdaObject(expr, curEnv);
         return new Variable.Variant(lambdaObject);
+    }
+
+    @Override
+    public Variable.Variant visitNexExpr(Expr.NewExpr expr) {
+        Variable.Variant calee = this.curEnv.getValue(expr.name).value;
+
+        if(!calee.isCallable()) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    expr.name.line,
+                    "Attempted to call a non-callable value of type '"
+                            + calee.getType() + "'."
+            );
+        }
+
+        List<Variable.Variant> args = new ArrayList<>();
+        for(Expr expr_ : expr.arguments) {
+            args.add(evaluate(expr_));
+        }
+
+        return calee.asCallable().call(this, args);
     }
 
     // stmt visitor
@@ -702,8 +758,8 @@ public class Interpreter implements
 
     @Override
     public void visitFunctionDeclaration(Stmt.FunctionDeclaration stmt) {
-        RuntimeObject.FunctionObject funObj =
-                new RuntimeObject.FunctionObject(
+        Function.FunctionObject funObj =
+                new Function.FunctionObject(
                         stmt,
                         curEnv); // take recursive deep copy to handle closures
 
@@ -726,5 +782,10 @@ public class Interpreter implements
                 TypeTag.fromString(typeTag));
 
         this.curEnv.define(stmt.identifier.lexeme, var);
+    }
+
+    @Override
+    public void visitClassDeclaration(Stmt.ClassDeclaration stmt) {
+
     }
 }

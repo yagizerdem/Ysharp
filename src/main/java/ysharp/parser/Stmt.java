@@ -2,6 +2,9 @@ package ysharp.parser;
 
 import ysharp.lexer.Token;
 
+import javax.print.attribute.standard.Finishings;
+import java.security.PublicKey;
+import java.security.spec.DSAPublicKeySpec;
 import java.util.List;
 
 public abstract class Stmt {
@@ -26,6 +29,7 @@ public abstract class Stmt {
         void visitVarDeclaration(Stmt.VarDeclaration stmt);
         void visitFunctionDeclaration(Stmt.FunctionDeclaration stmt);
         void visitConstDeclaration(Stmt.ConstDeclaration stmt);
+        void visitClassDeclaration(Stmt.ClassDeclaration stmt);
     }
 
 
@@ -289,6 +293,75 @@ public abstract class Stmt {
         @Override
         public void accept(Visitor visitor) {
             visitor.visitFunctionDeclaration(this);
+        }
+    }
+
+    public static class ClassDeclaration extends Stmt {
+
+        public final Token name;
+        public final Token superName;
+        public final List<Method> methods;
+        public final List<Property> properties;
+
+        public ClassDeclaration (Token name,
+                                Token superName,
+                                List<Method> methods,
+                                List<Property> properties) {
+                this.name = name;
+                this.superName = superName;
+                this.methods = methods;
+                this.properties = properties;
+        }
+
+        public static class Method {
+
+            public final Token name;
+            public final List<Param> params;
+            public final Token returnType; // nullable
+            public final Stmt body;
+
+            public Method(Token name, List<ClassDeclaration.Method.Param> params,
+                           Token returnType, Stmt body) {
+                this.name = name;
+                this.params = params;
+                this.returnType = returnType;
+                this.body = body;
+            }
+
+            public static class Param {
+
+                public final Token name;
+                public final Token type;
+
+                public Param(Token name, Token type) {
+                    this.name = name;
+                    this.type = type;
+                }
+            }
+
+        }
+
+        public static class Property {
+
+            public final Token name;
+            public final Token type;
+            public final Expr initializer;
+            public final boolean isConst;
+
+            public Property(Token name,
+                            Token type,
+                            Expr initializer,
+                            boolean isConst) {
+                this.name = name;
+                this.type = type;
+                this.initializer = initializer;
+                this.isConst = isConst;
+            }
+        }
+
+        @Override
+        public void accept(Visitor visitor) {
+            visitor.visitClassDeclaration(this);
         }
     }
 

@@ -1,8 +1,8 @@
 package ysharp.evaluator.Native.function.core;
 
 import ysharp.YsharpError;
+import ysharp.evaluator.Function;
 import ysharp.evaluator.Interpreter;
-import ysharp.evaluator.Native.function.NativeFunction;
 import ysharp.evaluator.Variable;
 
 import java.time.Instant;
@@ -11,7 +11,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public abstract class Clock extends NativeFunction {
+public abstract class Clock extends Function.NativeFunction {
 
     // now() -> epoch milliseconds
     public static class Now extends Clock {

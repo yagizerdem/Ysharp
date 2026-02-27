@@ -3,6 +3,7 @@ package ysharp.evaluator;
 import ysharp.lexer.Token;
 import ysharp.parser.TypeTag;
 
+import java.security.PublicKey;
 import java.util.Objects;
 import java.util.concurrent.RecursiveTask;
 
@@ -21,7 +22,7 @@ public class Variable {
     }
 
     public static class Variant {
-        private final Object value;
+        public final Object value;
 
         public Variant(Object value){
             this.value = value;
@@ -64,6 +65,16 @@ public class Variable {
             return this.isInt() || this.isDouble();
         }
 
+        public boolean isString() {return this.value instanceof String; }
+
+        public boolean isFunction() {
+            return this.value instanceof Function.FunctionObject;
+        }
+
+        public boolean isNativeFunction() {
+            return this.value instanceof Function.NativeFunction;
+        }
+
         public boolean canImplicitlyConvertNumber(){
             return this.isNumber() ||
                     this.isChar() ||
@@ -74,18 +85,6 @@ public class Variable {
 
         public boolean isRuntimeObject() {
             return value instanceof RuntimeObject;
-        }
-
-        public boolean isString(){
-            return this.value instanceof RuntimeObject.StringObject;
-        }
-
-        public boolean isFunction(){
-            return this.value instanceof RuntimeObject.FunctionObject;
-        }
-
-        public boolean isClass(){
-            return  this.value instanceof RuntimeObject.ClassObject;
         }
 
         // cast
@@ -128,16 +127,14 @@ public class Variable {
             return (RuntimeObject) this.value;
         }
 
-        public RuntimeObject.FunctionObject asFunction() {
-            return (RuntimeObject.FunctionObject) this.value;
+        public String asString() { return (String) this.value; }
+
+        public Function.FunctionObject asFunction() {
+            return (Function.FunctionObject) this.value;
         }
 
-        public RuntimeObject.ClassObject asClass() {
-            return (RuntimeObject.ClassObject) this.value;
-        }
-
-        public RuntimeObject.StringObject asString() {
-            return (RuntimeObject.StringObject) this.value;
+        public Function.NativeFunction asNativeFunction() {
+            return (Function.NativeFunction) this.value;
         }
 
         public Callable asCallable(){

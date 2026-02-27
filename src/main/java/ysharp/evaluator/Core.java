@@ -15,11 +15,8 @@ public class Core {
 
     public void start() throws Exception{
         String program = """
-                    var a ;
-                    a  =  (a : int, b: double ) => a + b;
-                    
-                    print a(1,2);
-                    
+                    var a = "yagiz erdem";
+                    print a.capitalize();
                 """;
 
 
@@ -48,10 +45,10 @@ public class Core {
 
         Interpreter interpreter = new Interpreter();
 
-        Clock.Sleep sleep = new Clock.Sleep();
-        Variable.Variant variant = new Variable.Variant(sleep);
+        Y_String.Y_StringInit stringCtor = new Y_String.Y_StringInit();
+        Variable.Variant variant = new Variable.Variant(stringCtor);
         Variable var = new Variable(variant, false, TypeTag.OBJECT);
-        interpreter.defineGlobal(sleep.getFnName(), var);
+        interpreter.defineGlobal(stringCtor.getFnName(), var);
 
 
         interpreter.interpret(parseTree);
