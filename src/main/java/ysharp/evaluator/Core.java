@@ -14,6 +14,9 @@ import java.util.List;
 public class Core {
 
     public void start() throws Exception{
+        Interpreter interpreter = new Interpreter();
+        Register(interpreter);
+
         String program = """
                     var a = "yagiz erdem";
                     print a.capitalize();
@@ -43,14 +46,6 @@ public class Core {
         }
 
 
-        Interpreter interpreter = new Interpreter();
-
-        Y_String.Y_StringInit stringCtor = new Y_String.Y_StringInit();
-        Variable.Variant variant = new Variable.Variant(stringCtor);
-        Variable var = new Variable(variant, false, TypeTag.OBJECT);
-        interpreter.defineGlobal(stringCtor.getFnName(), var);
-
-
         interpreter.interpret(parseTree);
         if(interpreter.hadErrors()) {
             printStdErr(interpreter.errors);
@@ -68,4 +63,7 @@ public class Core {
         }
     }
 
+    private static void Register(Interpreter interpreter) throws Exception {
+        Y_String.Register(interpreter);
+    }
 }

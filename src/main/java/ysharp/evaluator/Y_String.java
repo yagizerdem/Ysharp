@@ -1476,5 +1476,13 @@ public class Y_String  {
             return "String";
         }
     }
+
+    public static void Register(Interpreter interpreter) throws Exception {
+        Y_String.Y_StringInit stringCtor = new Y_String.Y_StringInit();
+        Variable.Variant variant = new Variable.Variant(stringCtor);
+        Variable var = new Variable(variant, false, TypeTag.OBJECT);
+        interpreter.defineGlobal(stringCtor.getFnName(), var);
+    }
+
 }
 
