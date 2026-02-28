@@ -2,13 +2,13 @@ package ysharp.evaluator;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.Native.Collections.Y_Array;
-import ysharp.evaluator.Native.function.core.Clock;
+import ysharp.evaluator.Native.Collections.Y_Queue;
+import ysharp.evaluator.Native.Collections.Y_Stack;
 import ysharp.lexer.Cursor;
 import ysharp.lexer.Lexer;
 import ysharp.lexer.Preprocess;
 import ysharp.parser.Parser;
 import ysharp.parser.Stmt;
-import ysharp.parser.TypeTag;
 
 import java.util.List;
 
@@ -19,15 +19,16 @@ public class Core {
         Register(interpreter);
 
         String program = """
-                    var a = new Array();
-                    for var i = 0; i < 10 ; i += 1 do 
-                        a.add(i);
-                    end
-            
-                    a.ensureCapacity(1000);
-                    a.set(1, "test");            
-
-                    println b.toString();    
+                    var a = new Queue();
+                    
+                    a.add(1);
+                       a.add(2);
+                          a.add(3);
+                    
+                    a.remove();
+                    a.remove();
+                    a.remove();
+                    
                 """;
 
 
@@ -76,5 +77,7 @@ public class Core {
 
         // collections
         Y_Array.Register(interpreter);
+        Y_Stack.Register(interpreter);
+        Y_Queue.Register(interpreter);
     }
 }

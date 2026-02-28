@@ -549,6 +549,10 @@ public class Interpreter implements
             return new Variable.Variant(object);
         }
 
+        if (lit instanceof Token.Literal.Null n) {
+            return new Variable.Variant(null);
+        }
+
         throw new IllegalStateException(
                 "Unknown literal type: " + expr.token.literal
         );
