@@ -589,17 +589,17 @@ public class Y_Array {
 
         @Override
         public boolean isTruthy() {
-            return !data.isEmpty();
+            return true;
         }
 
         @Override
         public String getType() {
-            return "array";
+            return "Array";
         }
 
         @Override
         public String toString() {
-            return "array";
+            return "<class:array>";
         }
     }
 
