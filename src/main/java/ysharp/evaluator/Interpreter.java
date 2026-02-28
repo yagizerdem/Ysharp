@@ -1,6 +1,7 @@
 package ysharp.evaluator;
 
 import ysharp.YsharpError;
+import ysharp.evaluator.Native.Collections.Y_Array;
 import ysharp.evaluator.Native.function.binding.BoundNativeFunction;
 import ysharp.lexer.Token;
 import ysharp.parser.Expr;
@@ -560,7 +561,13 @@ public class Interpreter implements
 
     @Override
     public Variable.Variant visitArrayInitializerExpr(Expr.ArrayInitializerExpr expr) {
-        return null;
+        ArrayList<Variable.Variant> data = new ArrayList<>();
+        for(int i = 0; i < expr.elements.size(); i++) {
+            data.add(evaluate(expr.elements.get(i)));
+        }
+        Y_Array.Y_ArrayObject y_array = new Y_Array.Y_ArrayObject(data);
+
+        return new Variable.Variant(y_array);
     }
 
     @Override

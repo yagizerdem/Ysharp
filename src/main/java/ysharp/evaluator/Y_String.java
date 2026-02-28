@@ -1490,6 +1490,13 @@ public class Y_String  {
         public String toString() {
             return data;
         }
+
+        @Override
+        public boolean equals(Object obj) {
+            if(!(obj instanceof Y_StringObject)) return false;
+            Y_StringObject other = (Y_StringObject) obj;
+            return other.data.equals(this.data);
+        }
     }
 
 
@@ -1518,7 +1525,6 @@ public class Y_String  {
             }
 
             Y_StringObject newString = new Y_StringObject(value);
-            newString.prototype = Y_String_Prototype;
 
             return new Variable.Variant(newString);
         }
