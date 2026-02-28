@@ -23,11 +23,11 @@ public class Core {
                     for var i = 0; i < 10 ; i += 1 do 
                         a.add(i);
                     end
-                    const b = new Array();
-                    b.add("yagiz erdem");
-                    a.add(b);
-                    
-                    print a.toString();
+            
+                    a.ensureCapacity(1000);
+                    a.set(1, "test");            
+
+                    println b.toString();    
                 """;
 
 
