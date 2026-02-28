@@ -5,9 +5,9 @@ import java.util.Map;
 
 public abstract class RuntimeObject {
 
-    protected Map<String, Variable> fields = new HashMap<>();
+    public Map<String, Variable> fields = new HashMap<>();
     // function native function and lambda do not need prototype chain, their behaviour is fixed
-    protected RuntimeObject prototype;
+    public RuntimeObject prototype;
 
     public void set(String name, Variable value) {
         fields.put(name, value);

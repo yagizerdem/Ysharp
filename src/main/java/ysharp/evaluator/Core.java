@@ -1,6 +1,7 @@
 package ysharp.evaluator;
 
 import ysharp.YsharpError;
+import ysharp.evaluator.Native.Collections.Y_Array;
 import ysharp.evaluator.Native.function.core.Clock;
 import ysharp.lexer.Cursor;
 import ysharp.lexer.Lexer;
@@ -18,8 +19,15 @@ public class Core {
         Register(interpreter);
 
         String program = """
-                    var a = "yagiz erdem";
-                    print a.capitalize();
+                    var a = new Array();
+                    for var i = 0; i < 10 ; i += 1 do 
+                        a.add(i);
+                    end
+                    const b = new Array();
+                    b.add("yagiz erdem");
+                    a.add(b);
+                    
+                    print a.toString();
                 """;
 
 
@@ -65,5 +73,8 @@ public class Core {
 
     private static void Register(Interpreter interpreter) throws Exception {
         Y_String.Register(interpreter);
+
+        // collections
+        Y_Array.Register(interpreter);
     }
 }

@@ -1,8 +1,11 @@
 package ysharp.evaluator;
 
 import ysharp.YsharpError;
+import ysharp.evaluator.Native.Collections.Y_Array;
+import ysharp.evaluator.Native.function.binding.BoundNativeFunction;
 import ysharp.parser.TypeTag;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Y_String  {
@@ -1412,6 +1415,55 @@ public class Y_String  {
                 true,
                 TypeTag.OBJECT);
         Y_String_Prototype.set(capitalize.getFnName(), capitalizeVar);
+
+        // str.toString()
+        class ToStringFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 0;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+
+                Variable thisVar = interpreter.curEnv.getValue("this");
+
+                if (thisVar == null) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            0,
+                            "Method 'compareTo' called without a valid 'this' context."
+                    );
+                }
+
+                RuntimeObject obj = thisVar.value.asRuntimeObject();
+
+                if (!(obj instanceof Y_StringObject)) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            0,
+                            "'compareTo' can only be called on string objects."
+                    );
+                }
+
+                Y_StringObject instance = (Y_StringObject) obj;
+
+                return new Variable.Variant("\"" + instance.data + "\"");
+            }
+
+            @Override
+            public String getFnName() {
+                return "toString";
+            }
+        }
+
+        ToStringFn toString = new ToStringFn();
+        Variable toStringVar = new Variable(
+                new Variable.Variant(toString),
+                true,
+                TypeTag.OBJECT);
+        Y_String_Prototype.set(toString.getFnName(), toStringVar);
     }
 
     public static class Y_StringObject extends RuntimeObject {
