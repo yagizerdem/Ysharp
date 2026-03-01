@@ -574,7 +574,7 @@ public class Y_Array {
 
     public static class Y_ArrayObject extends RuntimeObject {
 
-        private final ArrayList<Variable.Variant> data;
+        public final ArrayList<Variable.Variant> data;
 
         public Y_ArrayObject(ArrayList<Variable.Variant> data) {
             this.data = data;
