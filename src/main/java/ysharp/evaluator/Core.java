@@ -20,12 +20,16 @@ public class Core {
           Register(interpreter);
 
           String program = """
-                var l = new ArrayDeque();
-                l.addFirst(10);
-                l.addFirst(20);
-        
-                println l.toString();
-                     
+                var l = new TreeSet();
+                
+                for var i = 0 ; i < 10 ; i += 1 do 
+                    l.add(i);
+                end
+                
+                
+                println l.first();
+                    
+                    
                 """;
 
 
@@ -83,6 +87,11 @@ public class Core {
         Y_LinkedList.Register(interpreter);
         Y_PriorityQueue.Register(interpreter);
         Y_ArrayDeque.Register(interpreter);
+        Y_TreeMap.Register(interpreter);
+        Y_HashMap.Register(interpreter);
+        Y_TreeSet.Register(interpreter);
+        Y_WeakHashMap.Register(interpreter);
+        Y_IdentityHashMap.Register(interpreter);
 
         //forms
         Y_Frame.Register(interpreter);
