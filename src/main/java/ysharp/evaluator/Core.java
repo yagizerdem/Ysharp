@@ -1,9 +1,9 @@
 package ysharp.evaluator;
 
 import ysharp.YsharpError;
-import ysharp.evaluator.Native.Collections.Y_Array;
-import ysharp.evaluator.Native.Collections.Y_Queue;
-import ysharp.evaluator.Native.Collections.Y_Stack;
+import ysharp.evaluator.Native.Collections.*;
+import ysharp.evaluator.Native.Form.Y_Button;
+import ysharp.evaluator.Native.Form.Y_Frame;
 import ysharp.lexer.Cursor;
 import ysharp.lexer.Lexer;
 import ysharp.lexer.Preprocess;
@@ -15,54 +15,53 @@ import java.util.List;
 public class Core {
 
     public void start() throws Exception{
-        Interpreter interpreter = new Interpreter();
-        Register(interpreter);
+      try {
+          Interpreter interpreter = new Interpreter();
+          Register(interpreter);
 
-        String program = """
-                    var a = new Queue();
-                    
-                    a.add(1);
-                       a.add(2);
-                          a.add(3);
-                    
-                    a.remove();
-                    a.remove();
-                    a.remove();
-                    
+          String program = """
+                var l = new ArrayDeque();
+                l.addFirst(10);
+                l.addFirst(20);
+        
+                println l.toString();
+                     
                 """;
 
 
+          Preprocess preprocess = new Preprocess();
+          List<Cursor.Pchar> buf = preprocess.process(program);
+          if(preprocess.hadErrors()){
+              printStdErr(preprocess.errors);
+              return;
+          }
 
-        Preprocess preprocess = new Preprocess();
-        List<Cursor.Pchar> buf = preprocess.process(program);
-        if(preprocess.hadErrors()){
-            printStdErr(preprocess.errors);
-            return;
-        }
+          Lexer lexer = new Lexer(buf);
+          var stream = lexer.scanTokens();
+          if(lexer.hadErrors()) {
+              printStdErr(lexer.errors);
+              return;
+          }
 
-        Lexer lexer = new Lexer(buf);
-        var stream = lexer.scanTokens();
-        if(lexer.hadErrors()) {
-            printStdErr(lexer.errors);
-            return;
-        }
-
-        Parser parser = new Parser(stream);
-        List<Stmt> parseTree = parser.parse();
-        if(parser.hadErrors()) {
-            printStdErr(parser.errors);
-            return;
-        }
-
-
-        interpreter.interpret(parseTree);
-        if(interpreter.hadErrors()) {
-            printStdErr(interpreter.errors);
-            return;
-        }
+          Parser parser = new Parser(stream);
+          List<Stmt> parseTree = parser.parse();
+          if(parser.hadErrors()) {
+              printStdErr(parser.errors);
+              return;
+          }
 
 
-        int a = 10;
+          interpreter.interpret(parseTree);
+          if(interpreter.hadErrors()) {
+              printStdErr(interpreter.errors);
+              return;
+          }
+
+
+          int a = 10;
+      }catch (YsharpError err) {
+          System.out.println(err.toString());
+      }
 
     }
 
@@ -79,5 +78,14 @@ public class Core {
         Y_Array.Register(interpreter);
         Y_Stack.Register(interpreter);
         Y_Queue.Register(interpreter);
+        Y_Set.Register(interpreter);
+        Y_HashTable.Register(interpreter);
+        Y_LinkedList.Register(interpreter);
+        Y_PriorityQueue.Register(interpreter);
+        Y_ArrayDeque.Register(interpreter);
+
+        //forms
+        Y_Frame.Register(interpreter);
+        Y_Button.Register(interpreter);
     }
 }

@@ -698,6 +698,8 @@ public class Parser {
 
     private Expr parseMapInitializer() throws YsharpError {
 
+        Token leftCurlyBrace = previous();
+
         List<Expr.MapInitializerExpr.Entry> entries = new ArrayList<>();
 
         if (peek().type != Token.TokenType.RIGHT_CURLY_BRACE) {
@@ -741,12 +743,12 @@ public class Parser {
             consume(Token.TokenType.RIGHT_CURLY_BRACE,
                     "Expected '}' after map initializer.");
 
-            return new Expr.MapInitializerExpr(entries);
+            return new Expr.MapInitializerExpr(entries, leftCurlyBrace);
         }
 
         consume(Token.TokenType.RIGHT_CURLY_BRACE,
                 "Expected '}' after map initializer.");
-        return new Expr.MapInitializerExpr(entries);
+        return new Expr.MapInitializerExpr(entries, leftCurlyBrace);
     }
 
     private Expr parseAtom() throws YsharpError {

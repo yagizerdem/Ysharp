@@ -239,7 +239,9 @@ abstract public class Expr {
 
     public static final class MapInitializerExpr extends Expr {
 
-        static final class Entry {
+        public final Token leftCurlyBrace;
+
+        public static final class Entry {
             public final Token key;
             public final Expr value;
 
@@ -249,10 +251,11 @@ abstract public class Expr {
             }
         }
 
-        final List<Entry> entries;
+        public final List<Entry> entries;
 
-        MapInitializerExpr(List<Entry> entries) {
+        MapInitializerExpr(List<Entry> entries, Token leftCurlyBrace) {
             this.entries = entries;
+            this.leftCurlyBrace = leftCurlyBrace;
         }
 
         @Override

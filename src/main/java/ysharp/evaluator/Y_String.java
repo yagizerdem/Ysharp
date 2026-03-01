@@ -1468,7 +1468,7 @@ public class Y_String  {
 
     public static class Y_StringObject extends RuntimeObject {
 
-        private final String data;
+        public final String data;
 
         public Y_StringObject(String data) {
             this.data = data;
@@ -1496,6 +1496,11 @@ public class Y_String  {
             if(!(obj instanceof Y_StringObject)) return false;
             Y_StringObject other = (Y_StringObject) obj;
             return other.data.equals(this.data);
+        }
+
+        @Override
+        public int hashCode() {
+            return data.hashCode();
         }
     }
 

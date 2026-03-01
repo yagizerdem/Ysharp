@@ -2,6 +2,7 @@ package ysharp.evaluator;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.Native.Collections.Y_Array;
+import ysharp.evaluator.Native.Collections.Y_HashTable;
 import ysharp.evaluator.Native.function.binding.BoundNativeFunction;
 import ysharp.lexer.Token;
 import ysharp.parser.Expr;
@@ -9,7 +10,9 @@ import ysharp.parser.Stmt;
 import ysharp.parser.TypeTag;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Stack;
 
 public class Interpreter implements
         Expr.Visitor<Variable.Variant>,
@@ -576,7 +579,22 @@ public class Interpreter implements
 
     @Override
     public Variable.Variant visitMapInitializerExpr(Expr.MapInitializerExpr expr) {
-        return null;
+        Hashtable<Variable.Variant, Variable.Variant> hashTable = new Hashtable<>();
+        for(Expr.MapInitializerExpr.Entry entry : expr.entries) {
+            if(entry.key.literal  instanceof Token.Literal.Str) {
+                String key = ((Token.Literal.Str) entry.key.literal).value();
+                Y_String.Y_StringObject stringObj = new Y_String.Y_StringObject(key);
+                hashTable.put(new Variable.Variant(stringObj), evaluate(entry.value));
+            }
+            else {
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.SYNTAX,
+                        expr.leftCurlyBrace.line,
+                        "HashTable initializer shortcut only support string keys.");
+            }
+        }
+
+        return new Variable.Variant(new Y_HashTable.Y_MapObject(hashTable));
     }
 
     @Override
