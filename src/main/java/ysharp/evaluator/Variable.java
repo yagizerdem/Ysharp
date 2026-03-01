@@ -65,7 +65,7 @@ public class Variable {
             return this.isInt() || this.isDouble();
         }
 
-        public boolean isString() {return this.value instanceof String; }
+        public boolean isString() {return this.value instanceof Y_String.Y_StringObject; }
 
         public boolean isFunction() {
             return this.value instanceof Function.FunctionObject;
@@ -127,7 +127,7 @@ public class Variable {
             return (RuntimeObject) this.value;
         }
 
-        public String asString() { return (String) this.value; }
+        public String asString() { return ((Y_String.Y_StringObject) this.value).data; }
 
         public Function.FunctionObject asFunction() {
             return (Function.FunctionObject) this.value;
@@ -181,6 +181,11 @@ public class Variable {
             }
 
             return this.value.equals(other.value);
+        }
+
+        @Override
+        public int hashCode() {
+            return value == null ? 0 : value.hashCode();
         }
 
         @Override
