@@ -668,7 +668,7 @@ public class Y_ArrayDeque {
 
     public static class Y_ArrayDequeObject extends RuntimeObject {
 
-        final ArrayDeque<Variable.Variant> data;
+        public final ArrayDeque<Variable.Variant> data;
 
         public Y_ArrayDequeObject() {
             this.data = new ArrayDeque<>();

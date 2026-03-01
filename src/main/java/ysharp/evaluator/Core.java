@@ -2,6 +2,9 @@ package ysharp.evaluator;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.Native.Collections.*;
+import ysharp.evaluator.Native.Collections.Trie.Y_MapTrie;
+import ysharp.evaluator.Native.Collections.Trie.Y_SortedMapTrie;
+import ysharp.evaluator.Native.Collections.Trie.Y_T9Trie;
 import ysharp.evaluator.Native.Form.Y_Button;
 import ysharp.evaluator.Native.Form.Y_Frame;
 import ysharp.lexer.Cursor;
@@ -20,14 +23,14 @@ public class Core {
           Register(interpreter);
 
           String program = """
-                var l = new TreeSet();
+                var l = new MapTrie();
                 
-                for var i = 0 ; i < 10 ; i += 1 do 
-                    l.add(i);
-                end
+                l.insert("ca" , "test1");
+                l.insert("cat" , "test2");
+                                
                 
-                
-                println l.first();
+                println l.toString();
+                println l.getValueSuggestions("f").toString();
                     
                     
                 """;
@@ -92,6 +95,9 @@ public class Core {
         Y_TreeSet.Register(interpreter);
         Y_WeakHashMap.Register(interpreter);
         Y_IdentityHashMap.Register(interpreter);
+        Y_MapTrie.Register(interpreter);
+        Y_SortedMapTrie.Register(interpreter);
+        Y_T9Trie.Register(interpreter);
 
         //forms
         Y_Frame.Register(interpreter);
