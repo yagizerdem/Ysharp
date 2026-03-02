@@ -7,6 +7,7 @@ import ysharp.evaluator.Native.Collections.Trie.Y_SortedMapTrie;
 import ysharp.evaluator.Native.Collections.Trie.Y_T9Trie;
 import ysharp.evaluator.Native.Form.Y_Button;
 import ysharp.evaluator.Native.Form.Y_Frame;
+import ysharp.evaluator.Native.Threading.Y_Thread;
 import ysharp.lexer.Cursor;
 import ysharp.lexer.Lexer;
 import ysharp.lexer.Preprocess;
@@ -23,16 +24,23 @@ public class Core {
           Register(interpreter);
 
           String program = """
-                var l = new MapTrie();
+                var t = new Thread((a) => do 
+                    for var i = 0; i < 999 ; i += 1 do
+                        println i;
+                       end 
+                    end
+                , "test");
                 
-                l.insert("ca" , "test1");
-                l.insert("cat" , "test2");
+                t.start();
+        
+                for var i = 0; i < 999 ; i += 1 do
+                        println i;
+                
+                        if(i > 100) then do t.interrupt(); end
+                
+                end 
+        
                                 
-                
-                println l.toString();
-                println l.getValueSuggestions("f").toString();
-                    
-                    
                 """;
 
 
@@ -102,5 +110,8 @@ public class Core {
         //forms
         Y_Frame.Register(interpreter);
         Y_Button.Register(interpreter);
+
+        // threading
+        Y_Thread.Register(interpreter);
     }
 }

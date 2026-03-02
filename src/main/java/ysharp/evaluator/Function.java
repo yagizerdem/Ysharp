@@ -97,6 +97,20 @@ public abstract class Function extends RuntimeObject {
         return v.asDouble();
     }
 
+    protected Callable requireCallable(Variable.Variant v,
+                                   String fn,
+                                   int index) throws YsharpError {
+
+        if (!v.isCallable()) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    -1,
+                    fn + " argument " + index + " must be a function."
+            );
+        }
+
+        return v.asCallable();
+    }
 
 
     // function prototype chain is closed

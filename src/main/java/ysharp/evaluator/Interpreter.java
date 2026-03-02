@@ -66,6 +66,14 @@ public class Interpreter implements
     }
 
     public void execute(Stmt stmt){
+        if (Thread.currentThread().isInterrupted()) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    -1,
+                    "Thread interrupted."
+            );
+        }
+
         stmt.accept(this);
     }
 
