@@ -145,6 +145,36 @@ public abstract class RuntimeObject {
         return v.asDouble();
     }
 
+    protected String requireString(Variable.Variant v,
+                                   String fn,
+                                   int index) throws YsharpError {
+
+        if (!v.isString()) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    -1,
+                    fn + " argument " + index + " must be a string."
+            );
+        }
+
+        return v.asString();
+    }
+
+    protected Y_String.Y_StringObject requireStringObject(Variable.Variant v,
+                                   String fn,
+                                   int index) throws YsharpError {
+
+        if (!v.isString()) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    -1,
+                    fn + " argument " + index + " must be a string."
+            );
+        }
+
+        return v.asStringObject();
+    }
+
     protected Callable requireCallable(Variable.Variant v,
                                        String fn,
                                        int index) throws YsharpError {

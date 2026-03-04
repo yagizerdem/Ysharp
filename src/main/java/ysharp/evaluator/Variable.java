@@ -129,6 +129,8 @@ public class Variable {
 
         public String asString() { return ((Y_String.Y_StringObject) this.value).data; }
 
+        public Y_String.Y_StringObject asStringObject() { return ((Y_String.Y_StringObject) this.value); }
+
         public Function.FunctionObject asFunction() {
             return (Function.FunctionObject) this.value;
         }

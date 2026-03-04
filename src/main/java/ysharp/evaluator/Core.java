@@ -1,6 +1,5 @@
 package ysharp.evaluator;
 
-import ysharp.Main;
 import ysharp.YsharpError;
 import ysharp.evaluator.Native.Collections.*;
 import ysharp.evaluator.Native.Collections.Trie.Y_MapTrie;
@@ -9,13 +8,15 @@ import ysharp.evaluator.Native.Collections.Trie.Y_T9Trie;
 import ysharp.evaluator.Native.Form.Y_Button;
 import ysharp.evaluator.Native.Form.Y_Frame;
 import ysharp.evaluator.Native.Threading.Y_Thread;
+import ysharp.evaluator.Native.Util.Y_File;
 import ysharp.evaluator.Native.Util.Y_Math;
+import ysharp.evaluator.Native.Util.Y_Time;
+import ysharp.evaluator.Native.Util.Y_UUID;
 import ysharp.lexer.Cursor;
 import ysharp.lexer.Lexer;
 import ysharp.lexer.Preprocess;
 import ysharp.parser.Parser;
 import ysharp.parser.Stmt;
-import ysharp.parser.TypeTag;
 
 import java.util.List;
 
@@ -28,8 +29,8 @@ public class Core {
 
           String program = """
                 
-                println Math.PI;
-                                
+                    
+                
                 """;
 
 
@@ -108,5 +109,8 @@ public class Core {
 
         // utils
         Y_Math.Register(interpreter);
+        Y_UUID.Register(interpreter);
+        Y_Time.Register(interpreter);
+        Y_File.Register(interpreter);
     }
 }

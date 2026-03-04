@@ -2,16 +2,13 @@ package ysharp.evaluator.Native.Util;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.evaluator.Native.Threading.Y_Thread;
 import ysharp.parser.TypeTag;
 
-import javax.lang.model.element.TypeElement;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Y_Math {
 
-    public static RuntimeObject Y_Math_Prototype;
+    public static RuntimeObject Y_Math_Instance_Prototype;
 
     static {
         // all the methods in math class should be static because i want so !
@@ -1059,13 +1056,15 @@ public class Y_Math {
 
         @Override
         public int arity() {
-            return 1; // expect callable for argument
+            return 0;
         }
 
         @Override
         public Variable.Variant call(Interpreter interpreter,
                                      List<Variable.Variant> arguments)
                 throws YsharpError {
+
+            requireArity(arguments,0, getClassName());
 
             Y_MathInstance instance = new Y_MathInstance();
             return new Variable.Variant(instance);
