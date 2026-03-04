@@ -7,115 +7,11 @@ import ysharp.parser.TypeTag;
 
 import java.util.List;
 
-public abstract class Function extends RuntimeObject {
-
-    // helper functions
-
-    protected void requireArity(List<?> args, int expected, String fn)
-            throws YsharpError {
-
-        if (args.size() != expected) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
-                    -1,
-                    fn + " expects exactly " + expected + " arguments."
-            );
-        }
-    }
-
-    protected double requireNumber(Variable.Variant v, String fn, int index)
-            throws YsharpError {
-
-        if (!v.isNumber()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
-                    -1,
-                    fn + " argument " + index + " must be numeric."
-            );
-        }
-
-        return v.asNumber();
-    }
-
-    protected int requireInt(Variable.Variant v,
-                             String fn,
-                             int index) throws YsharpError {
-
-        if (!v.isInt()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
-                    -1,
-                    fn + " argument " + index + " must be an integer."
-            );
-        }
-
-        return v.asInt();
-    }
-
-    protected char requireChar(Variable.Variant v,
-                               String fn,
-                               int index) throws YsharpError {
-
-        if (!v.isChar()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
-                    -1,
-                    fn + " argument " + index + " must be a character."
-            );
-        }
-
-        return v.asCharacter();
-    }
-
-    protected boolean requireBoolean(Variable.Variant v,
-                                     String fn,
-                                     int index) throws YsharpError {
-
-        if (!v.isBoolean()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
-                    -1,
-                    fn + " argument " + index + " must be a boolean."
-            );
-        }
-
-        return v.asBoolean();
-    }
-
-    protected double requireDouble(Variable.Variant v,
-                                   String fn,
-                                   int index) throws YsharpError {
-
-        if (!v.isDouble()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
-                    -1,
-                    fn + " argument " + index + " must be a double."
-            );
-        }
-
-        return v.asDouble();
-    }
-
-    protected Callable requireCallable(Variable.Variant v,
-                                   String fn,
-                                   int index) throws YsharpError {
-
-        if (!v.isCallable()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
-                    -1,
-                    fn + " argument " + index + " must be a function."
-            );
-        }
-
-        return v.asCallable();
-    }
-
+public abstract class Function extends RuntimeObject implements Callable {
 
     // function prototype chain is closed
 
-    public static class FunctionObject extends Function implements Callable {
+    public static class FunctionObject extends Function {
         public final Stmt.FunctionDeclaration declaration;
         private Environment closure;
 
@@ -194,7 +90,7 @@ public abstract class Function extends RuntimeObject {
         }
     }
 
-    public static class LambdaObject extends Function implements Callable {
+    public static class LambdaObject extends Function {
         public final Expr.LambdaExpr lambdaExpr;
         private Environment closure;
 
@@ -284,7 +180,7 @@ public abstract class Function extends RuntimeObject {
         }
     }
 
-    public static abstract class NativeFunction extends Function implements Callable {
+    public static abstract class NativeFunction extends Function {
 
         public abstract String getFnName();
 

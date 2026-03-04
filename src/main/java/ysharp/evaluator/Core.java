@@ -1,5 +1,6 @@
 package ysharp.evaluator;
 
+import ysharp.Main;
 import ysharp.YsharpError;
 import ysharp.evaluator.Native.Collections.*;
 import ysharp.evaluator.Native.Collections.Trie.Y_MapTrie;
@@ -8,11 +9,13 @@ import ysharp.evaluator.Native.Collections.Trie.Y_T9Trie;
 import ysharp.evaluator.Native.Form.Y_Button;
 import ysharp.evaluator.Native.Form.Y_Frame;
 import ysharp.evaluator.Native.Threading.Y_Thread;
+import ysharp.evaluator.Native.Util.Y_Math;
 import ysharp.lexer.Cursor;
 import ysharp.lexer.Lexer;
 import ysharp.lexer.Preprocess;
 import ysharp.parser.Parser;
 import ysharp.parser.Stmt;
+import ysharp.parser.TypeTag;
 
 import java.util.List;
 
@@ -24,22 +27,8 @@ public class Core {
           Register(interpreter);
 
           String program = """
-                var t = new Thread((a) => do 
-                    for var i = 0; i < 999 ; i += 1 do
-                        println i;
-                       end 
-                    end
-                , "test");
                 
-                t.start();
-        
-                for var i = 0; i < 999 ; i += 1 do
-                        println i;
-                
-                        if(i > 100) then do t.interrupt(); end
-                
-                end 
-        
+                println Math.PI;
                                 
                 """;
 
@@ -74,6 +63,8 @@ public class Core {
 
 
           int a = 10;
+
+
       }catch (YsharpError err) {
           System.out.println(err.toString());
       }
@@ -113,5 +104,9 @@ public class Core {
 
         // threading
         Y_Thread.Register(interpreter);
+
+
+        // utils
+        Y_Math.Register(interpreter);
     }
 }
