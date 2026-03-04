@@ -10,6 +10,7 @@ import ysharp.evaluator.Native.Form.Y_Button;
 import ysharp.evaluator.Native.Form.Y_Frame;
 import ysharp.evaluator.Native.Threading.Y_Thread;
 import ysharp.evaluator.Native.Util.Y_Math;
+import ysharp.evaluator.Native.Util.Y_UUID;
 import ysharp.lexer.Cursor;
 import ysharp.lexer.Lexer;
 import ysharp.lexer.Preprocess;
@@ -27,8 +28,7 @@ public class Core {
           Register(interpreter);
 
           String program = """
-                
-                println Math.PI;
+                println UUID.nil();
                                 
                 """;
 
@@ -108,5 +108,6 @@ public class Core {
 
         // utils
         Y_Math.Register(interpreter);
+        Y_UUID.Register(interpreter);
     }
 }
