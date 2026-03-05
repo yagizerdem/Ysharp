@@ -29,8 +29,15 @@ public class Core {
 
           String program = """
                 
+                    sealed class Matrix {
+                        static foo() do 
+                            println "foo";
+                        end
+                        
+                        static var PI = 3.3;
+                    }
                     
-                
+                    
                 """;
 
 

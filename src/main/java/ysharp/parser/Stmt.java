@@ -302,15 +302,18 @@ public abstract class Stmt {
         public final Token superName;
         public final List<Method> methods;
         public final List<Property> properties;
+        public final boolean isSealed;
 
         public ClassDeclaration (Token name,
                                 Token superName,
                                 List<Method> methods,
-                                List<Property> properties) {
+                                List<Property> properties,
+                                 boolean isSealed) {
                 this.name = name;
                 this.superName = superName;
                 this.methods = methods;
                 this.properties = properties;
+                this.isSealed = isSealed;
         }
 
         public static class Method {
@@ -319,13 +322,21 @@ public abstract class Stmt {
             public final List<Param> params;
             public final Token returnType; // nullable
             public final Stmt body;
+            public final boolean isStatic;
+            public final boolean isConstructor;
 
-            public Method(Token name, List<ClassDeclaration.Method.Param> params,
-                           Token returnType, Stmt body) {
+            public Method(Token name,
+                          List<ClassDeclaration.Method.Param> params,
+                           Token returnType,
+                          Stmt body,
+                          boolean isStatic,
+                          boolean isConstructor) {
                 this.name = name;
                 this.params = params;
                 this.returnType = returnType;
                 this.body = body;
+                this.isStatic = isStatic;
+                this.isConstructor = isConstructor;
             }
 
             public static class Param {
@@ -347,15 +358,18 @@ public abstract class Stmt {
             public final Token type;
             public final Expr initializer;
             public final boolean isConst;
+            public final  boolean isStatic;
 
             public Property(Token name,
                             Token type,
                             Expr initializer,
-                            boolean isConst) {
+                            boolean isConst,
+                            boolean isStatic) {
                 this.name = name;
                 this.type = type;
                 this.initializer = initializer;
                 this.isConst = isConst;
+                this.isStatic = isStatic;
             }
         }
 

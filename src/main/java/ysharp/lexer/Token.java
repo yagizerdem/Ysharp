@@ -75,7 +75,11 @@ public class Token {
         RETURN, // return
         FUNCTION, // function
         CLASS, // class
+        STATIC, // static
+        SEALED, // sealed
         EXTENDS, // extends
+        CONSTRUCTOR, // constructor
+        SUPER, // super
         BREAK, // break
         CONTINUE, // continue
         VAR, // var

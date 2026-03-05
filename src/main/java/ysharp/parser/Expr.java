@@ -18,6 +18,7 @@ abstract public class Expr {
         R visitGetExpr(GetExpr expr);
         R visitSetExpr(SetExpr expr);
         R visitCallExpr(CallExpr expr);
+        R visitSuperCallExpr(SuperCallExpr expr);
         R visitLiteralExpr(LiteralExpr expr);
         R visitVariableExpr(VariableExpr expr);
         R visitArrayInitializerExpr(ArrayInitializerExpr expr);
@@ -192,6 +193,24 @@ abstract public class Expr {
 
         public <R> R accept(Visitor<R> visitor) {
             return visitor.visitCallExpr(this);
+        }
+    }
+
+    public static class SuperCallExpr extends Expr {
+        public final Expr callee;
+        public final List<Expr> arguments;
+        public final Token leftParen;
+
+        SuperCallExpr(Expr callee,
+                 List<Expr> arguments,
+                 Token leftParen) {
+            this.callee = callee;
+            this.arguments = arguments;
+            this.leftParen = leftParen;
+        }
+
+        public <R> R accept(Visitor<R> visitor) {
+            return visitor.visitSuperCallExpr(this);
         }
     }
 
