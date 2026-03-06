@@ -511,7 +511,17 @@ public class Interpreter implements
 
     @Override
     public Variable.Variant visitSetExpr(Expr.SetExpr expr) {
-        return null;
+        Variable.Variant variant = this.evaluate(expr.object);
+        if(!(variant.isClass() || variant.isClassInstance())) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    expr.name.line,
+                    "Only objects and class instances can have fields assigned."
+            );
+        }
+
+        Variable var = variant.asRuntimeObject().assign(expr.name.lexeme, this.evaluate(expr.value));
+        return var.value;
     }
 
     @Override
@@ -530,6 +540,14 @@ public class Interpreter implements
         List<Variable.Variant> args = new ArrayList<>();
         for(Expr expr_ : expr.arguments) {
             args.add(evaluate(expr_));
+        }
+
+        if(!calee.isFunctionLike()) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    expr.leftParen.line,
+                    "Value of type '" + calee.getType() + "' cannot be invoked like a function."
+            );
         }
 
         return calee.asCallable().call(this, args);
@@ -623,6 +641,16 @@ public class Interpreter implements
                             + calee.getType() + "'."
             );
         }
+
+        if(!calee.isClass()) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    expr.name.line,
+                    "Attempted to instantiate a non-class value of type '"
+                            + calee.getType() + "'."
+            );
+        }
+
 
         List<Variable.Variant> args = new ArrayList<>();
         for(Expr expr_ : expr.arguments) {
@@ -896,8 +924,17 @@ public class Interpreter implements
 
                 // instance props reside in instance itself
                 for(Stmt.ClassDeclaration.Property prop : instanceProperty) {
+
+                    if(prop.isConst && prop.initializer == null) {
+                        throw new YsharpError(
+                                YsharpError.YsharpErrorType.SEMANTIC,
+                                prop.name.line,
+                                "Constant field '" + prop.name.lexeme + "' must be initialized."
+                        );
+                    }
+
                     instance.set(prop.name.lexeme, new Variable(
-                            interpreter.evaluate(prop.initializer),
+                            prop.initializer == null ? new Variable.Variant(null) : interpreter.evaluate(prop.initializer),
                             prop.isConst,
                             prop.type == null ? TypeTag.ANY : TypeTag.fromString(prop.type.lexeme)
                     ));
@@ -927,8 +964,17 @@ public class Interpreter implements
 
         // static props reside in class constructor itself
         for(Stmt.ClassDeclaration.Property prop : staticProperty) {
+
+            if(prop.isConst && prop.initializer == null) {
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.SEMANTIC,
+                        prop.name.line,
+                        "Constant field '" + prop.name.lexeme + "' must be initialized."
+                );
+            }
+
             klass.set(prop.name.lexeme, new Variable(
-                    this.evaluate(prop.initializer),
+                    prop.initializer == null ? new Variable.Variant(null) : this.evaluate(prop.initializer),
                     prop.isConst,
                     prop.type == null ? TypeTag.ANY : TypeTag.fromString(prop.type.lexeme)
             ));
