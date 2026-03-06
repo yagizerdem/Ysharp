@@ -71,7 +71,7 @@ public class Y_Array {
                     if(var.value instanceof RuntimeObject) {
                         Variable toStringFn = ((RuntimeObject) var.value).get("toString");
                         if(toStringFn != null && toStringFn.value.isNativeFunction()) {
-                            BoundNativeFunction bound = new BoundNativeFunction(toStringFn.value.asNativeFunction(), var.asRuntimeObject());
+                            BoundNativeFunction bound = new BoundNativeFunction(toStringFn.value.asNativeFunction(), var.asRuntimeObject(), "this");
                             List<Variable.Variant> args = new ArrayList<>();
                             builder.append(bound.call(interpreter, args));
                         }

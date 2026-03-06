@@ -1,6 +1,7 @@
 package ysharp.evaluator;
 
 import ysharp.YsharpError;
+import ysharp.lexer.Token;
 import ysharp.parser.TypeTag;
 
 import java.util.List;
@@ -71,6 +72,8 @@ public class Y_Class {
         public abstract boolean isSealed();
 
         public abstract String getClassName();
+
+        public Token superClassName;
 
         public RuntimeObject InstancePrototype;
 

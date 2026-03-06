@@ -9,13 +9,16 @@ import java.util.List;
 
 public class BoundNativeFunction extends Function.NativeFunction {
 
-    private final Function.NativeFunction original;
+    private final Callable original;
     private final RuntimeObject thisObj;
+    private final String key;
 
-    public BoundNativeFunction(Function.NativeFunction original,
-                               RuntimeObject thisObj) {
+    public BoundNativeFunction(Callable original,
+                               RuntimeObject thisObj,
+                               String key) {
         this.original = original;
         this.thisObj = thisObj;
+        this.key = key;
     }
 
     @Override
@@ -38,7 +41,7 @@ public class BoundNativeFunction extends Function.NativeFunction {
                     true,
                     TypeTag.OBJECT);
 
-            env.define("this", variable);
+            env.define(key, variable);
 
             interpreter.curEnv = env;
 
@@ -49,8 +52,9 @@ public class BoundNativeFunction extends Function.NativeFunction {
         }
     }
 
+
     @Override
     public String getFnName() {
-        return original.getFnName();
+        return "bound";
     }
 }

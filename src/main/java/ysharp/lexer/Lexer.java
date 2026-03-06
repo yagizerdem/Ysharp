@@ -49,6 +49,7 @@ public class Lexer {
         KEYWORD_MAP.put("new", Token.TokenType.NEW);
         KEYWORD_MAP.put("function", Token.TokenType.FUNCTION);
         KEYWORD_MAP.put("class", Token.TokenType.CLASS);
+        KEYWORD_MAP.put("super", Token.TokenType.SUPER);
         KEYWORD_MAP.put("static", Token.TokenType.STATIC);
         KEYWORD_MAP.put("sealed", Token.TokenType.SEALED);
         KEYWORD_MAP.put("break", Token.TokenType.BREAK);
