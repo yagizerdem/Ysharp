@@ -197,14 +197,14 @@ abstract public class Expr {
     }
 
     public static class SuperCallExpr extends Expr {
-        public final Expr callee;
+        public final Token superToken;
         public final List<Expr> arguments;
         public final Token leftParen;
 
-        SuperCallExpr(Expr callee,
+        SuperCallExpr(Token superToken,
                  List<Expr> arguments,
                  Token leftParen) {
-            this.callee = callee;
+            this.superToken = superToken;
             this.arguments = arguments;
             this.leftParen = leftParen;
         }

@@ -611,14 +611,6 @@ public class Parser {
     private Expr parseCall() throws YsharpError {
         Expr calee = parsePrimary();
 
-        if(!(calee instanceof Expr.VariableExpr)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.SYNTAX,
-                    peek().line,
-                    "Invalid method call, target method must be identifier to call"
-            );
-        }
-
         while (peek().type == Token.TokenType.LEFT_PAREN ||
                 peek().type == Token.TokenType.DOT) {
 
@@ -641,25 +633,13 @@ public class Parser {
 
                 }
 
-                if(((Expr.VariableExpr) calee).name.type == Token.TokenType.SUPER) {
+                Expr.CallExpr callExpr = new Expr.CallExpr(
+                        calee,
+                        args,
+                        leftParen
+                );
 
-                    Expr.SuperCallExpr superCallExpr = new Expr.SuperCallExpr(
-                            calee,
-                            args,
-                            leftParen
-                    );
-
-                    calee = superCallExpr;
-                }
-                else {
-                    Expr.CallExpr callExpr = new Expr.CallExpr(
-                            calee,
-                            args,
-                            leftParen
-                    );
-
-                    calee = callExpr;
-                }
+                calee = callExpr;
 
             }
             else if(match(peek(), Token.TokenType.DOT)) {
@@ -684,6 +664,44 @@ public class Parser {
         return  calee;
     }
 
+    private Expr parseSuperCall() throws YsharpError {
+
+        Token superToken = previous();
+
+        if (match(peek(), Token.TokenType.LEFT_PAREN)) {
+            Token leftParen = previous();
+            List<Expr> args = new ArrayList<>();
+
+            if (match(peek(), Token.TokenType.RIGHT_PAREN)) {
+                // empty arguments
+            } else {
+                args.add(parseAssignment());
+                while (match(peek(), Token.TokenType.COMMA)) {
+                    args.add(parseAssignment());
+                }
+
+                consume(Token.TokenType.RIGHT_PAREN,
+                        "Expected ')' after arguments.");
+
+            }
+
+            Expr.SuperCallExpr superCallExpr = new Expr.SuperCallExpr(
+                    superToken,
+                    args,
+                    leftParen
+            );
+
+            return superCallExpr;
+        }
+        else {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.SYNTAX,
+                    superToken.line,
+                    "Expected '(' after 'super'."
+            );
+        }
+    }
+
     private Expr parsePrimary() throws YsharpError {
         if(match(peek(), Token.TokenType.LEFT_BRACKET)) {
             return parseArrayInitializer();
@@ -694,6 +712,10 @@ public class Parser {
         else if(match(peek(), Token.TokenType.NEW)) {
             return parseNewExpr();
         }
+        else if(match(peek(), Token.TokenType.SUPER)) {
+            return parseSuperCall();
+        }
+
 
         return  parseAtom();
     }

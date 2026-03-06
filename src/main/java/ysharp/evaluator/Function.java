@@ -204,5 +204,4 @@ public abstract class Function extends RuntimeObject implements Callable {
         }
     }
 
-    public static abstract class ConstructorFunction extends NativeFunction {}
 }
