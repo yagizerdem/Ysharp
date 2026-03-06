@@ -205,11 +205,11 @@ public class Parser {
                 return new Expr.AssignmentExpr(expr, op, value);
             }
 
-//            if (expr instanceof GetExpr) {
-//                GetExpr get = (GetExpr) expr;
-//                return new SetExpr(get.object, get.name, value);
-//            }
-//
+            if (expr instanceof Expr.GetExpr) {
+                Expr.GetExpr get = (Expr.GetExpr) expr;
+                return new Expr.SetExpr(get.object, get.name, value);
+            }
+
 
             throw new YsharpError(
                     YsharpError.YsharpErrorType.SYNTAX,

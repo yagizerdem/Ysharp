@@ -50,6 +50,7 @@ public class Core {
                         
                         var PI = 3.3;
                         var math = new MyMath();
+                        const k = 10;
                     }
                                         
                     var m  = new Matrix();
@@ -58,9 +59,12 @@ public class Core {
                     Matrix.foo();
                     
                     println m.PI;
-                    
+                   
                     
                     m.test();
+                   
+                    
+                    println m.k;
                     
                 """;
 

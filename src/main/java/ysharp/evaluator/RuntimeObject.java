@@ -28,6 +28,31 @@ public abstract class RuntimeObject {
         return null;
     }
 
+    public Variable assign(String name, Variable.Variant value) {
+
+        Variable var = this.get(name);
+
+        if (var == null) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.SEMANTIC,
+                    -1,
+                    "Type '" + this.getType() + "' has no field named '" + name + "'."
+            );
+        }
+
+        if (var.isConst) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.SEMANTIC,
+                    -1,
+                    "Cannot assign to constant field '" + name + "' in type '" + this.getType() + "'."
+            );
+        }
+
+        var.value = value;
+
+        return var;
+    }
+
     public void setPrototype(RuntimeObject proto) {
         this.prototype = proto;
     }

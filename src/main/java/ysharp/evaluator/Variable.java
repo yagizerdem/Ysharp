@@ -76,6 +76,10 @@ public class Variable {
             return this.value instanceof Function.NativeFunction;
         }
 
+        public boolean isLambda() { return this.value instanceof Function.LambdaObject;}
+
+        public boolean isFunctionLike() {return isLambda() || isNativeFunction() || isFunction();}
+
         public boolean isClass() {
             return this.value instanceof Y_Class.ClassObject;
         }
