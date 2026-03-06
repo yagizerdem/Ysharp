@@ -34,12 +34,12 @@ public class Core {
                             return a + b;
                         end
                         
-                        static test() do 
+                        test() do 
                             println "test";
                         end 
                     }
                 
-                    sealed class Matrix {
+                    sealed class Matrix extends MyMath {
                         static foo() do 
                             println "foo";
                         end
@@ -60,7 +60,7 @@ public class Core {
                     println m.PI;
                     
                     
-                    println ;
+                    m.test();
                     
                 """;
 

@@ -3,6 +3,7 @@ package ysharp.evaluator;
 import ysharp.lexer.Token;
 import ysharp.parser.TypeTag;
 
+import javax.swing.*;
 import java.security.PublicKey;
 import java.util.Objects;
 import java.util.concurrent.RecursiveTask;
@@ -75,6 +76,14 @@ public class Variable {
             return this.value instanceof Function.NativeFunction;
         }
 
+        public boolean isClass() {
+            return this.value instanceof Y_Class.ClassObject;
+        }
+
+        public boolean isClassInstance() {
+            return this.value instanceof Y_Class.ClassObjectInstance;
+        }
+
         public boolean canImplicitlyConvertNumber(){
             return this.isNumber() ||
                     this.isChar() ||
@@ -141,6 +150,14 @@ public class Variable {
 
         public Callable asCallable(){
             return (Callable) this.value;
+        }
+
+        public Y_Class.ClassObject asClass() {
+            return (Y_Class.ClassObject) this.value;
+        }
+
+        Y_Class.ClassObjectInstance asClassInstance() {
+            return (Y_Class.ClassObjectInstance) this.value;
         }
 
         public boolean isTruthy() {
