@@ -37,6 +37,8 @@ public class Core {
                         test() do 
                             println "test";
                         end 
+                        
+                        var testProp = 55;
                     }
                 
                     sealed class Matrix extends MyMath {
@@ -47,24 +49,20 @@ public class Core {
                             println a;
                         end
                        
+                       constructor(pii) do
+                            println this.PI;
+                            println "--".repeat(4);
+                            this.PI = pii;
+                        end
                         
                         var PI = 3.3;
                         var math = new MyMath();
                         const k = 10;
                     }
                                         
-                    var m  = new Matrix();
-                    
-                    m.bar(999);
-                    Matrix.foo();
+                    var m  = new Matrix(12);
                     
                     println m.PI;
-                   
-                    
-                    m.test();
-                   
-                    
-                    println m.k;
                     
                 """;
 

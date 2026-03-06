@@ -942,6 +942,23 @@ public class Interpreter implements
 
                 instance.prototype = this.InstancePrototype;
 
+                if(constructorFn != null) {
+                    Environment newEnv = new Environment(curEnv);
+                    for(int i = 0 ; i < this.arity(); i++) {
+                        newEnv.define(constructorFn.params.get(i).name.lexeme, new Variable(
+                                new Variable.Variant(arguments.get(i)),
+                                true,
+                                constructorFn.params.get(i).type == null ? TypeTag.ANY : TypeTag.fromString(constructorFn.params.get(i).type.lexeme)
+                        ));
+                    }
+
+                    Function.NativeFunction nativeConstructorFn = methodToNativeFn(constructorFn);
+                    // binding this keyword to instance
+                    BoundNativeFunction bound =
+                        new BoundNativeFunction(nativeConstructorFn, instance);
+
+                    bound.call(interpreter, arguments);
+                }
 
                 return new Variable.Variant(instance);
             }
