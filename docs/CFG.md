@@ -48,7 +48,7 @@ constDecl |
 useDecl |
 statement 
 
-- classDecl &rarr; "class" IDENTIFIER ( "extends" IDENTIFIER )?
+- classDecl &rarr; ("sealed")? "class" IDENTIFIER ( "extends" IDENTIFIER )?
   "{" classMember* "}"
 - funDecl &rarr; "function" function
 - varDecl &rarr; "var" IDENTIFIER (":" type )? ("=" expression)? ";"
@@ -116,9 +116,13 @@ statement
 - arguments &rarr; expression ( "," expression )*
 
 - classMember &rarr;
-function
-| varDecl
-| constDecl
+  constructor
+|  ("static")? function
+|  ("static")? varDecl
+|  ("static")? constDecl
+
+- constructor &rarr;
+"init" "(" parameters? ")" block
 
 - type = "int" | 
 "bool" |

@@ -29,8 +29,39 @@ public class Core {
 
           String program = """
                 
-                    
+                    class MyMath {
+                        sum(a,b) do 
+                            return a + b;
+                        end
+                        
+                        static test() do 
+                            println "test";
+                        end 
+                    }
                 
+                    sealed class Matrix {
+                        static foo() do 
+                            println "foo";
+                        end
+                        bar(a) do 
+                            println a;
+                        end
+                       
+                        
+                        var PI = 3.3;
+                        var math = new MyMath();
+                    }
+                                        
+                    var m  = new Matrix();
+                    
+                    m.bar(999);
+                    Matrix.foo();
+                    
+                    println m.PI;
+                    
+                    
+                    println ;
+                    
                 """;
 
 
@@ -68,6 +99,9 @@ public class Core {
 
       }catch (YsharpError err) {
           System.out.println(err.toString());
+      }
+      catch (Exception ex) {
+          System.out.println(ex.getMessage());
       }
 
     }

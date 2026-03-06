@@ -8,7 +8,6 @@ import java.util.List;
 
 public class Y_Math {
 
-    public static RuntimeObject Y_Math_Instance_Prototype;
 
     static {
         // all the methods in math class should be static because i want so !

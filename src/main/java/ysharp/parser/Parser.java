@@ -664,6 +664,44 @@ public class Parser {
         return  calee;
     }
 
+    private Expr parseSuperCall() throws YsharpError {
+
+        Token superToken = previous();
+
+        if (match(peek(), Token.TokenType.LEFT_PAREN)) {
+            Token leftParen = previous();
+            List<Expr> args = new ArrayList<>();
+
+            if (match(peek(), Token.TokenType.RIGHT_PAREN)) {
+                // empty arguments
+            } else {
+                args.add(parseAssignment());
+                while (match(peek(), Token.TokenType.COMMA)) {
+                    args.add(parseAssignment());
+                }
+
+                consume(Token.TokenType.RIGHT_PAREN,
+                        "Expected ')' after arguments.");
+
+            }
+
+            Expr.SuperCallExpr superCallExpr = new Expr.SuperCallExpr(
+                    superToken,
+                    args,
+                    leftParen
+            );
+
+            return superCallExpr;
+        }
+        else {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.SYNTAX,
+                    superToken.line,
+                    "Expected '(' after 'super'."
+            );
+        }
+    }
+
     private Expr parsePrimary() throws YsharpError {
         if(match(peek(), Token.TokenType.LEFT_BRACKET)) {
             return parseArrayInitializer();
@@ -674,6 +712,10 @@ public class Parser {
         else if(match(peek(), Token.TokenType.NEW)) {
             return parseNewExpr();
         }
+        else if(match(peek(), Token.TokenType.SUPER)) {
+            return parseSuperCall();
+        }
+
 
         return  parseAtom();
     }
@@ -911,7 +953,14 @@ public class Parser {
         if(match(peek(), Token.TokenType.RETURN)) return parseReturnStmt();
         if(match(peek(), Token.TokenType.SWITCH)) return parseSwitchStmt();
         if(match(peek(), Token.TokenType.FUNCTION)) return parseFunctionDeclaration();
-        if(match(peek(), Token.TokenType.CLASS)) return parseClassDeclaration();
+        if(match(peek(), Token.TokenType.SEALED)) {
+            consume(Token.TokenType.CLASS,
+                    "Expected 'class' after 'sealed'.");
+            return parseClassDeclaration(true);
+        }
+        if(match(peek(), Token.TokenType.CLASS)) {
+            return parseClassDeclaration(false);
+        }
 
         return  parseExprStmt();
     }
@@ -1296,7 +1345,7 @@ public class Parser {
         return new Stmt.ConstDeclaration(identifier, typeTag, initializer);
     }
 
-    private Stmt parseClassDeclaration() throws YsharpError {
+    private Stmt parseClassDeclaration(boolean isSealed) throws YsharpError {
 
         Token name = advance();
         if (name.type != Token.TokenType.IDENTIFIER) {
@@ -1329,8 +1378,96 @@ public class Parser {
         while (peek().type != Token.TokenType.RIGHT_CURLY_BRACE &&
                 peek().type != Token.TokenType.END_OF_FILE) {
 
-            // method
-            if (peek().type == Token.TokenType.IDENTIFIER &&
+            boolean isStatic = match(peek(), Token.TokenType.STATIC);
+
+            // constructor
+            if (peek().type == Token.TokenType.CONSTRUCTOR ) {
+                Token ctorToken = advance(); // consume constructor
+                consume(Token.TokenType.LEFT_PAREN,
+                        "Expected '(' after constructor.");
+                if (isStatic) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.SYNTAX,
+                            ctorToken.line,
+                            "Constructor cannot be static."
+                    );
+                }
+
+                List<Stmt.ClassDeclaration.Method.Param> params = new ArrayList<>();
+
+                if (peek().type != Token.TokenType.RIGHT_PAREN) {
+
+                    do {
+                        Token paramName = advance();
+
+                        if (paramName.type != Token.TokenType.IDENTIFIER) {
+                            throw new YsharpError(
+                                    YsharpError.YsharpErrorType.SYNTAX,
+                                    paramName.line,
+                                    "Expected parameter name."
+                            );
+                        }
+
+                        Token typeToken = null;
+
+                        if (match(peek(), Token.TokenType.COLON)) {
+
+                            typeToken = advance();
+
+                            if (typeToken.type != Token.TokenType.IDENTIFIER) {
+                                throw new YsharpError(
+                                        YsharpError.YsharpErrorType.SYNTAX,
+                                        typeToken.line,
+                                        "Expected type identifier after ':'."
+                                );
+                            }
+                        }
+
+                        params.add(
+                                new Stmt.ClassDeclaration.Method.Param(
+                                        paramName,
+                                        typeToken
+                                )
+                        );
+
+                    } while (match(peek(), Token.TokenType.COMMA));
+                }
+
+                consume(Token.TokenType.RIGHT_PAREN,
+                        "Expected ')' after parameters.");
+
+                Token returnType = null;
+
+                if (match(peek(), Token.TokenType.COLON)) {
+                    returnType = advance();
+
+                    if (returnType.type != Token.TokenType.IDENTIFIER) {
+                        throw new YsharpError(
+                                YsharpError.YsharpErrorType.SYNTAX,
+                                returnType.line,
+                                "Expected return type identifier."
+                        );
+                    }
+                }
+
+                Stmt body = parseBlockStmt();
+
+                methods.add(
+                        new Stmt.ClassDeclaration.Method(
+                                ctorToken,
+                                params,
+                                returnType,
+                                body,
+                                isStatic,
+                                false
+                        )
+                );
+
+
+            }
+
+                // method
+            else if (peek().type == Token.TokenType.IDENTIFIER &&
                     peekNext().type == Token.TokenType.LEFT_PAREN) {
 
                 // method name
@@ -1403,7 +1540,9 @@ public class Parser {
                                 methodName,
                                 params,
                                 returnType,
-                                body
+                                body,
+                                isStatic,
+                                false
                         )
                 );
             }
@@ -1419,7 +1558,8 @@ public class Parser {
                                 varDecl.identifier,
                                 varDecl.type,
                                 varDecl.initializer,
-                                false
+                                false,
+                                isStatic
                         )
                 );
             }
@@ -1435,7 +1575,8 @@ public class Parser {
                                 constDecl.identifier,
                                 constDecl.type,
                                 constDecl.initializer,
-                                true
+                                true,
+                                isStatic
                         )
                 );
             }
@@ -1456,7 +1597,8 @@ public class Parser {
                 name,
                 extend,
                 methods,
-                properties
+                properties,
+                isSealed
         );
     }
 

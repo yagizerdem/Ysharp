@@ -632,6 +632,11 @@ public class Interpreter implements
         return calee.asCallable().call(this, args);
     }
 
+    @Override
+    public Variable.Variant visitSuperCallExpr(Expr.SuperCallExpr expr) {
+        return null;
+    }
+
     // stmt visitor
 
 
@@ -824,5 +829,176 @@ public class Interpreter implements
     @Override
     public void visitClassDeclaration(Stmt.ClassDeclaration stmt) {
 
+        if(stmt.methods.stream().filter(m -> m.name.lexeme.equals("constructor")).count() > 1) {
+            throw  new YsharpError(YsharpError.YsharpErrorType.SYNTAX, -1,
+                    "class : " +
+                    stmt.name.lexeme + " cannot have more than one constructor.");
+        }
+
+        Stmt.ClassDeclaration.Method constructorFn =
+                stmt.methods.stream()
+                        .filter(m -> m.name.lexeme.equals("constructor"))
+                        .findFirst()
+                        .orElse(null);
+
+        List<Stmt.ClassDeclaration.Method> staticMethods =
+                    stmt.methods.stream().filter(m -> !m.name.lexeme.equals("constructor") &&
+                            m.isStatic).toList();
+
+        List<Stmt.ClassDeclaration.Method> instanceMethods =
+                stmt.methods.stream().filter(m -> !m.name.lexeme.equals("constructor") &&
+                        !m.isStatic).toList();
+
+        List<Stmt.ClassDeclaration.Property> staticProperty =
+                stmt.properties.stream().filter(m -> m.isStatic).toList();
+
+        List<Stmt.ClassDeclaration.Property> instanceProperty =
+                stmt.properties.stream().filter(m -> !m.isStatic).toList();
+
+
+        Y_Class.ClassObject  klass = new Y_Class.ClassObject() {
+            @Override
+            public boolean isSealed() {
+                return stmt.isSealed;
+            }
+
+            @Override
+            public String getClassName() {
+                return stmt.name.lexeme;
+            }
+
+            @Override
+            public int arity() {
+                if(constructorFn == null) return 0;
+                return constructorFn.params.size();
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+
+                this.requireArity(
+                        arguments,
+                        this.arity(),
+                        "Constructor called with incorrect number of arguments. Expected " + this.arity() + "."
+                );
+
+                Y_Class.ClassObjectInstance instance = new Y_Class.ClassObjectInstance() {
+                    @Override
+                    public boolean isTruthy() {
+                        return true;
+                    }
+
+                    @Override
+                    public String getType() {
+                        return stmt.name.lexeme;
+                    }
+                };
+
+                // instance props reside in instance itself
+                for(Stmt.ClassDeclaration.Property prop : instanceProperty) {
+                    instance.set(prop.name.lexeme, new Variable(
+                            interpreter.evaluate(prop.initializer),
+                            prop.isConst,
+                            prop.type == null ? TypeTag.ANY : TypeTag.fromString(prop.type.lexeme)
+                    ));
+                }
+
+                instance.prototype = this.InstancePrototype;
+
+
+                return new Variable.Variant(instance);
+            }
+
+            @Override
+            public String getType() {
+                return stmt.name.lexeme;
+            }
+        };
+
+
+        // static methods reside in class constructor itself
+        for(Stmt.ClassDeclaration.Method method : staticMethods) {
+            klass.set(method.name.lexeme, new Variable(
+                    new Variable.Variant(methodToNativeFn(method)),
+                    true,
+                    TypeTag.OBJECT
+            ));
+        }
+
+        // static props reside in class constructor itself
+        for(Stmt.ClassDeclaration.Property prop : staticProperty) {
+            klass.set(prop.name.lexeme, new Variable(
+                    this.evaluate(prop.initializer),
+                    prop.isConst,
+                    prop.type == null ? TypeTag.ANY : TypeTag.fromString(prop.type.lexeme)
+            ));
+        }
+
+        klass.InstancePrototype = new RuntimeObject() {
+            @Override
+            public boolean isTruthy() {
+                return true;
+            }
+
+            @Override
+            public String getType() {
+                return "__" + stmt.name.lexeme + "__";
+            }
+        };
+
+        // instance methods reside in instance prototype
+        for(Stmt.ClassDeclaration.Method method : instanceMethods) {
+            klass.InstancePrototype .set(method.name.lexeme, new Variable(
+                    new Variable.Variant(methodToNativeFn(method)),
+                    true,
+                    TypeTag.OBJECT
+            ));
+        }
+
+        if(constructorFn != null) {
+            klass.constructor = methodToNativeFn(constructorFn);
+        }
+
+        klass.InstancePrototype.prototype = Y_Class.ClassPrototype; // root prototype
+
+
+        curEnv.define(klass.getClassName(), new Variable(new Variable.Variant(klass), true, TypeTag.OBJECT));
     }
+
+    private Function.NativeFunction methodToNativeFn(Stmt.ClassDeclaration.Method method){
+
+        return new Function.NativeFunction() {
+            @Override
+            public int arity() {
+                return method.params.size();
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                try {
+                    Environment newEnv = new Environment(curEnv);
+                    for(int i = 0; i < method.params.size(); i++) {
+                        newEnv.define(method.params.get(i).name.lexeme, new Variable(
+                                arguments.get(i),
+                                true,
+                                method.params.get(i).type == null ? TypeTag.ANY : TypeTag.fromString(method.params.get(i).type.lexeme)
+                        ));
+                    }
+
+                    interpreter.executeBlock((Stmt.BlockStmt) method.body, newEnv);
+                }catch (Signal.ReturnSignal sig) {
+                    return sig.value;
+                }
+
+                return new Variable.Variant(null);
+            }
+
+            @Override
+            public String getFnName() {
+                return method.name.lexeme;
+            }
+        };
+
+    }
+
 }
