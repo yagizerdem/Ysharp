@@ -28,18 +28,25 @@ public class Core {
           Register(interpreter);
 
           String program = """
-                
+                                
                     class MyMath {
                         sum(a,b) do 
                             return a + b;
                         end
                         
+                        constructor(a) do 
+                            this.testProp = a;
+                        end
+                        
                         test() do 
                             println "test";
                         end 
+                        
+                        var testProp = 1;
+                        var f_name = "ahmet";
                     }
-                
-                    sealed class Matrix extends MyMath {
+                                
+                    sealed class Matrix extends Array {
                         static foo() do 
                             println "foo";
                         end
@@ -47,24 +54,24 @@ public class Core {
                             println a;
                         end
                        
+                       constructor(a) do
+                            this.testProp = 12;
+                            super(a);
+                            this.f_name = "yagiz";
+                        end
                         
                         var PI = 3.3;
-                        var math = new MyMath();
                         const k = 10;
                     }
-                                        
-                    var m  = new Matrix();
                     
-                    m.bar(999);
-                    Matrix.foo();
+     
+                                                            
+                    var m  = new Matrix(56);
                     
-                    println m.PI;
-                   
+                    println m.testProp;
+                    println m.f_name;
                     
-                    m.test();
-                   
                     
-                    println m.k;
                     
                 """;
 

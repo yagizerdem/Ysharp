@@ -79,7 +79,8 @@ public class Y_Queue {
                             BoundNativeFunction bound =
                                     new BoundNativeFunction(
                                             toStringFn.value.asNativeFunction(),
-                                            var.asRuntimeObject()
+                                            var.asRuntimeObject(),
+                                            "this"
                                     );
 
                             builder.append(

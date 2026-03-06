@@ -76,7 +76,8 @@ public class Y_Set {
                             BoundNativeFunction bound =
                                     new BoundNativeFunction(
                                             toStringFn.value.asNativeFunction(),
-                                            element.asRuntimeObject());
+                                            element.asRuntimeObject(),
+                                            "this");
 
                             builder.append(bound.call(
                                     interpreter,

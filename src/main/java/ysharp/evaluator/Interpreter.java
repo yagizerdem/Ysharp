@@ -12,7 +12,6 @@ import ysharp.parser.TypeTag;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Stack;
 
 public class Interpreter implements
         Expr.Visitor<Variable.Variant>,
@@ -501,7 +500,7 @@ public class Interpreter implements
             Function.NativeFunction fn = field.value.asNativeFunction();
 
             BoundNativeFunction bound =
-                    new BoundNativeFunction(fn, instance);
+                    new BoundNativeFunction(fn, instance, "this");
 
             return new Variable.Variant(bound);
         }
@@ -631,38 +630,81 @@ public class Interpreter implements
 
     @Override
     public Variable.Variant visitNexExpr(Expr.NewExpr expr) {
-        Variable.Variant calee = this.curEnv.getValue(expr.name).value;
 
-        if(!calee.isCallable()) {
+        Variable.Variant callee = this.curEnv.getValue(expr.name).value;
+
+        if (!callee.isCallable()) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     expr.name.line,
-                    "Attempted to call a non-callable value of type '"
-                            + calee.getType() + "'."
+                    "Attempted to call a non-callable value of type '" +
+                            callee.getType() + "'."
             );
         }
 
-        if(!calee.isClass()) {
+        if (!callee.isClass()) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     expr.name.line,
-                    "Attempted to instantiate a non-class value of type '"
-                            + calee.getType() + "'."
+                    "Attempted to instantiate a non-class value of type '" +
+                            callee.getType() + "'."
             );
         }
-
 
         List<Variable.Variant> args = new ArrayList<>();
-        for(Expr expr_ : expr.arguments) {
-            args.add(evaluate(expr_));
+        for (Expr arg : expr.arguments) {
+            args.add(evaluate(arg));
         }
 
-        return calee.asCallable().call(this, args);
+        return callee.asCallable().call(this, args);
     }
 
     @Override
     public Variable.Variant visitSuperCallExpr(Expr.SuperCallExpr expr) {
-        return null;
+        Variable thisVar = curEnv.getValue("this");
+        Variable superVar = curEnv.getValue("super");
+
+        if (thisVar == null || !thisVar.value.isClassInstance()) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    expr.leftParen.line,
+                    "super() can only be used inside class constructor."
+            );
+        }
+
+        if (superVar == null || !superVar.value.isClass()) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    expr.leftParen.line,
+                    "Class has no superclass."
+            );
+        }
+
+        Y_Class.ClassObjectInstance instance =
+                thisVar.value.asClassInstance();
+
+        Y_Class.ClassObject superConstructor = superVar.value.asClass();
+        List<Variable.Variant> superArgs = new ArrayList<>();
+        for(Expr expr_ : expr.arguments) {
+            superArgs.add(this.evaluate(expr_));
+        }
+
+        Variable.Variant superInstanceVariant = superConstructor.call(this, superArgs);
+        if(!superInstanceVariant.isClassInstance()) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    expr.leftParen.line,
+                    "Superclass constructor did not return a valid class instance."
+            );
+        }
+
+        Y_Class.ClassObjectInstance superInstance = superInstanceVariant.asClassInstance();
+
+        for(var field : superInstance.fields.entrySet()) {
+            instance.set(field.getKey(), field.getValue());
+        }
+
+        return new Variable.Variant(null);
     }
 
     // stmt visitor
@@ -884,6 +926,7 @@ public class Interpreter implements
                 stmt.properties.stream().filter(m -> !m.isStatic).toList();
 
 
+        // class constructor object
         Y_Class.ClassObject  klass = new Y_Class.ClassObject() {
             @Override
             public boolean isSealed() {
@@ -922,26 +965,85 @@ public class Interpreter implements
                     }
                 };
 
-                // instance props reside in instance itself
-                for(Stmt.ClassDeclaration.Property prop : instanceProperty) {
+                instance.prototype = this.InstancePrototype;
 
-                    if(prop.isConst && prop.initializer == null) {
+                // add instance properties of super class to child class
+                if(stmt.superName !=  null) {
+                    Variable parentClassVar = interpreter.curEnv.getValue(stmt.superName);
+                    if(parentClassVar ==  null) {
                         throw new YsharpError(
                                 YsharpError.YsharpErrorType.SEMANTIC,
-                                prop.name.line,
-                                "Constant field '" + prop.name.lexeme + "' must be initialized."
+                                stmt.superName.line,
+                                "Superclass '" + stmt.superName.lexeme + "' is not defined."
                         );
                     }
 
-                    instance.set(prop.name.lexeme, new Variable(
-                            prop.initializer == null ? new Variable.Variant(null) : interpreter.evaluate(prop.initializer),
-                            prop.isConst,
-                            prop.type == null ? TypeTag.ANY : TypeTag.fromString(prop.type.lexeme)
-                    ));
+                    if(!parentClassVar.value.isClass()) {
+                        throw new YsharpError(
+                                YsharpError.YsharpErrorType.SEMANTIC,
+                                stmt.superName.line,
+                                "'" + stmt.superName.lexeme + "' is not a class and cannot be extended."
+                        );
+                    }
+
+                    // get the constructor of super class
+                    Y_Class.ClassObject parentClass = parentClassVar.value.asClass();
+
+                    parentClass.InstancePrototype.fields.forEach((key,  val) ->{
+                        if(!val.value.isFunctionLike()) {
+                            if(!instance.prototype.fields.containsKey(key)) {
+                                instance.set(key, val);
+                            }
+                        }
+                    });
+
                 }
 
-                instance.prototype = this.InstancePrototype;
+                if(constructorFn != null) {
+                    Environment newEnv = new Environment(curEnv);
 
+                    // constructor parameters
+                    for(int i = 0 ; i < this.arity(); i++) {
+                        newEnv.define(constructorFn.params.get(i).name.lexeme, new Variable(
+                                arguments.get(i),
+                                true,
+                                constructorFn.params.get(i).type == null
+                                        ? TypeTag.ANY
+                                        : TypeTag.fromString(constructorFn.params.get(i).type.lexeme)
+                        ));
+                    }
+
+                    // bind this
+                    newEnv.define(
+                            "this",
+                            new Variable(
+                                    new Variable.Variant(instance),
+                                    true,
+                                    TypeTag.OBJECT
+                            )
+                    );
+
+                    // bind super
+                    if(stmt.superName != null) {
+
+                        Variable parentClassVar = interpreter.curEnv.getValue(stmt.superName);
+                        Y_Class.ClassObject parentClass = parentClassVar.value.asClass();
+
+                        newEnv.define(
+                                "super",
+                                new Variable(
+                                        new Variable.Variant(parentClass),
+                                        true,
+                                        TypeTag.OBJECT
+                                )
+                        );
+                    }
+
+                    interpreter.executeBlock(
+                            (Stmt.BlockStmt) constructorFn.body,
+                            newEnv
+                    );
+                }
 
                 return new Variable.Variant(instance);
             }
@@ -952,6 +1054,7 @@ public class Interpreter implements
             }
         };
 
+        klass.superClassName = stmt.superName; // allowed to be null
 
         // static methods reside in class constructor itself
         for(Stmt.ClassDeclaration.Method method : staticMethods) {
@@ -1001,8 +1104,39 @@ public class Interpreter implements
             ));
         }
 
+        // instance props both reside in class instance prototype and class instance itself
+        for(Stmt.ClassDeclaration.Property prop : instanceProperty) {
+
+            if(prop.isConst && prop.initializer == null) {
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.SEMANTIC,
+                        prop.name.line,
+                        "Constant field '" + prop.name.lexeme + "' must be initialized."
+                );
+            }
+
+            Variable.Variant variant = prop.initializer == null ? new Variable.Variant(null) : this.evaluate(prop.initializer);
+
+            klass.InstancePrototype.set(prop.name.lexeme, new Variable(
+                    variant,
+                    prop.isConst,
+                    prop.type == null ? TypeTag.ANY : TypeTag.fromString(prop.type.lexeme)
+            ));
+
+            klass.set(prop.name.lexeme, new Variable(
+                    variant,
+                    prop.isConst,
+                    prop.type == null ? TypeTag.ANY : TypeTag.fromString(prop.type.lexeme)
+            ));
+        }
+
         if(constructorFn != null) {
             klass.constructor = methodToNativeFn(constructorFn);
+            klass.InstancePrototype .set(constructorFn.name.lexeme, new Variable(
+                    new Variable.Variant(methodToNativeFn(constructorFn)),
+                    true,
+                    TypeTag.OBJECT
+            ));
         }
 
         if(stmt.superName != null) {
@@ -1029,7 +1163,6 @@ public class Interpreter implements
             }
 
             klass.InstancePrototype.prototype =  superClass.InstancePrototype;
-
         }
         else {
             klass.InstancePrototype.prototype = Y_Class.ClassPrototype; // root prototype
