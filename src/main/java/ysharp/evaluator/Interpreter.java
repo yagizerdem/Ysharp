@@ -959,8 +959,35 @@ public class Interpreter implements
             klass.constructor = methodToNativeFn(constructorFn);
         }
 
-        klass.InstancePrototype.prototype = Y_Class.ClassPrototype; // root prototype
+        if(stmt.superName != null) {
+            Variable.Variant variant = this.curEnv.getValue(stmt.superName).value;
+            if (!variant.isClass()) {
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.SYNTAX,
+                        stmt.superName.line,
+                        "Class '" + stmt.name.lexeme +
+                                "' cannot extend non-class value '" +
+                                stmt.superName.lexeme + "'."
+                );
+            }
 
+            Y_Class.ClassObject superClass = variant.asClass();
+            if(superClass.isSealed()) {
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.SYNTAX,
+                        stmt.superName.line,
+                        "Class '" + stmt.name.lexeme +
+                                "' cannot extend sealed class '" +
+                                stmt.superName.lexeme + "'."
+                );
+            }
+
+            klass.InstancePrototype.prototype =  superClass.InstancePrototype;
+
+        }
+        else {
+            klass.InstancePrototype.prototype = Y_Class.ClassPrototype; // root prototype
+        }
 
         curEnv.define(klass.getClassName(), new Variable(new Variable.Variant(klass), true, TypeTag.OBJECT));
     }
