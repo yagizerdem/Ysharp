@@ -10,10 +10,10 @@ import java.util.List;
 
 public class Y_String  {
 
-    public static RuntimeObject Y_String_Prototype;
+    public static RuntimeObject Y_String_Instance_Prototype;
 
     static {
-        Y_String_Prototype = new RuntimeObject() {
+        Y_String_Instance_Prototype = new RuntimeObject() {
 
             @Override
             public boolean isTruthy() { return true; }
@@ -21,6 +21,8 @@ public class Y_String  {
             @Override
             public String getType() { return "string_prototype"; }
         };
+        Y_String_Instance_Prototype.prototype = Y_Class.ClassPrototype;
+
 
         // str.length()
         class LengthFn extends Function.NativeFunction implements Callable {
@@ -40,7 +42,7 @@ public class Y_String  {
                     );
 
                 }
-                Y_StringObject instance = (Y_StringObject) thisVar.value.value;
+                Y_StringInstance instance = (Y_StringInstance) thisVar.value.value;
                 return new Variable.Variant((int)instance.data.length());
             }
 
@@ -56,7 +58,7 @@ public class Y_String  {
                 true,
                 TypeTag.OBJECT);
 
-        Y_String_Prototype.set(length.getFnName(), lengthVar);
+        Y_String_Instance_Prototype.set(length.getFnName(), lengthVar);
 
 
         // str.toUpper()
@@ -84,7 +86,7 @@ public class Y_String  {
 
                 RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-                if (!(obj instanceof Y_StringObject)) {
+                if (!(obj instanceof Y_StringInstance)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
@@ -92,11 +94,11 @@ public class Y_String  {
                     );
                 }
 
-                Y_StringObject instance = (Y_StringObject) obj;
+                Y_StringInstance instance = (Y_StringInstance) obj;
 
                 String upper = instance.data.toUpperCase();
 
-                Y_StringObject newStr = new Y_StringObject(upper);
+                Y_StringInstance newStr = new Y_StringInstance(upper);
 
                 return new Variable.Variant(newStr);
             }
@@ -112,7 +114,7 @@ public class Y_String  {
                 new Variable.Variant(toUpper),
                 true,
                 TypeTag.OBJECT);
-        Y_String_Prototype.set(toUpper.getFnName(), toUpperVar);
+        Y_String_Instance_Prototype.set(toUpper.getFnName(), toUpperVar);
 
         // str.toLower()
         class ToLowerFn extends Function.NativeFunction implements Callable {
@@ -139,7 +141,7 @@ public class Y_String  {
 
                 RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-                if (!(obj instanceof Y_StringObject)) {
+                if (!(obj instanceof Y_StringInstance)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
@@ -147,11 +149,11 @@ public class Y_String  {
                     );
                 }
 
-                Y_StringObject instance = (Y_StringObject) obj;
+                Y_StringInstance instance = (Y_StringInstance) obj;
 
                 String lower = instance.data.toLowerCase();
 
-                Y_StringObject newStr = new Y_StringObject(lower);
+                Y_StringInstance newStr = new Y_StringInstance(lower);
 
                 return new Variable.Variant(newStr);
             }
@@ -167,7 +169,7 @@ public class Y_String  {
                 new Variable.Variant(toLower),
                 true,
                 TypeTag.OBJECT);
-        Y_String_Prototype.set(toLower.getFnName(), toLowerVar);
+        Y_String_Instance_Prototype.set(toLower.getFnName(), toLowerVar);
 
         // str.charAt(index)
         class CharAtFn extends Function.NativeFunction implements Callable {
@@ -194,7 +196,7 @@ public class Y_String  {
 
                 RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-                if (!(obj instanceof Y_StringObject)) {
+                if (!(obj instanceof Y_StringInstance)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
@@ -202,7 +204,7 @@ public class Y_String  {
                     );
                 }
 
-                Y_StringObject instance = (Y_StringObject) obj;
+                Y_StringInstance instance = (Y_StringInstance) obj;
 
                 Variable.Variant indexVar = arguments.get(0);
 
@@ -226,7 +228,7 @@ public class Y_String  {
 
                 String ch = String.valueOf(instance.data.charAt(index));
 
-                Y_StringObject newStr = new Y_StringObject(ch);
+                Y_StringInstance newStr = new Y_StringInstance(ch);
 
                 return new Variable.Variant(newStr);
             }
@@ -242,7 +244,7 @@ public class Y_String  {
                 new Variable.Variant(charAt),
                 true,
                 TypeTag.OBJECT);
-        Y_String_Prototype.set(charAt.getFnName(), charAtVar);
+        Y_String_Instance_Prototype.set(charAt.getFnName(), charAtVar);
 
         // str.substring(start, end)
         class SubstringFn extends Function.NativeFunction implements Callable {
@@ -269,7 +271,7 @@ public class Y_String  {
 
                 RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-                if (!(obj instanceof Y_StringObject)) {
+                if (!(obj instanceof Y_StringInstance)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
@@ -277,7 +279,7 @@ public class Y_String  {
                     );
                 }
 
-                Y_StringObject instance = (Y_StringObject) obj;
+                Y_StringInstance instance = (Y_StringInstance) obj;
 
                 Variable.Variant startVar = arguments.get(0);
                 Variable.Variant endVar   = arguments.get(1);
@@ -307,7 +309,7 @@ public class Y_String  {
 
                 String sub = instance.data.substring(start, end);
 
-                Y_StringObject newStr = new Y_StringObject(sub);
+                Y_StringInstance newStr = new Y_StringInstance(sub);
 
                 return new Variable.Variant(newStr);
             }
@@ -323,7 +325,7 @@ public class Y_String  {
                 new Variable.Variant(substring),
                 true,
                 TypeTag.OBJECT);
-        Y_String_Prototype.set(substring.getFnName(), substringVar);
+        Y_String_Instance_Prototype.set(substring.getFnName(), substringVar);
 
         // str.equals(other)
         class EqualsFn extends Function.NativeFunction implements Callable {
@@ -350,7 +352,7 @@ public class Y_String  {
 
                 RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-                if (!(obj instanceof Y_StringObject)) {
+                if (!(obj instanceof Y_StringInstance)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
@@ -358,7 +360,7 @@ public class Y_String  {
                     );
                 }
 
-                Y_StringObject instance = (Y_StringObject) obj;
+                Y_StringInstance instance = (Y_StringInstance) obj;
 
                 Variable.Variant otherVar = arguments.get(0);
 
@@ -368,11 +370,11 @@ public class Y_String  {
 
                 RuntimeObject otherObj = otherVar.asRuntimeObject();
 
-                if (!(otherObj instanceof Y_StringObject)) {
+                if (!(otherObj instanceof Y_StringInstance)) {
                     return new Variable.Variant(false);
                 }
 
-                Y_StringObject otherString = (Y_StringObject) otherObj;
+                Y_StringInstance otherString = (Y_StringInstance) otherObj;
 
                 boolean result = instance.data.equals(otherString.data);
 
@@ -390,7 +392,7 @@ public class Y_String  {
                 new Variable.Variant(equals),
                 true,
                 TypeTag.OBJECT);
-        Y_String_Prototype.set(equals.getFnName(), equalsVar);
+        Y_String_Instance_Prototype.set(equals.getFnName(), equalsVar);
 
         // str.indexOf(other)
         class IndexOfFn extends Function.NativeFunction implements Callable {
@@ -417,7 +419,7 @@ public class Y_String  {
 
                 RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-                if (!(obj instanceof Y_StringObject)) {
+                if (!(obj instanceof Y_StringInstance)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
@@ -425,7 +427,7 @@ public class Y_String  {
                     );
                 }
 
-                Y_StringObject instance = (Y_StringObject) obj;
+                Y_StringInstance instance = (Y_StringInstance) obj;
 
                 Variable.Variant otherVar = arguments.get(0);
 
@@ -439,7 +441,7 @@ public class Y_String  {
 
                 RuntimeObject otherObj = otherVar.asRuntimeObject();
 
-                if (!(otherObj instanceof Y_StringObject)) {
+                if (!(otherObj instanceof Y_StringInstance)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
@@ -447,7 +449,7 @@ public class Y_String  {
                     );
                 }
 
-                Y_StringObject otherString = (Y_StringObject) otherObj;
+                Y_StringInstance otherString = (Y_StringInstance) otherObj;
 
                 int index = instance.data.indexOf(otherString.data);
 
@@ -465,7 +467,7 @@ public class Y_String  {
                 new Variable.Variant(indexOf),
                 true,
                 TypeTag.OBJECT);
-        Y_String_Prototype.set(indexOf.getFnName(), indexOfVar);
+        Y_String_Instance_Prototype.set(indexOf.getFnName(), indexOfVar);
 
         // str.contains(other)
         class ContainsFn extends Function.NativeFunction implements Callable {
@@ -492,7 +494,7 @@ public class Y_String  {
 
                 RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-                if (!(obj instanceof Y_StringObject)) {
+                if (!(obj instanceof Y_StringInstance)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
@@ -500,7 +502,7 @@ public class Y_String  {
                     );
                 }
 
-                Y_StringObject instance = (Y_StringObject) obj;
+                Y_StringInstance instance = (Y_StringInstance) obj;
 
                 Variable.Variant otherVar = arguments.get(0);
 
@@ -514,7 +516,7 @@ public class Y_String  {
 
                 RuntimeObject otherObj = otherVar.asRuntimeObject();
 
-                if (!(otherObj instanceof Y_StringObject)) {
+                if (!(otherObj instanceof Y_StringInstance)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
@@ -522,7 +524,7 @@ public class Y_String  {
                     );
                 }
 
-                Y_StringObject otherString = (Y_StringObject) otherObj;
+                Y_StringInstance otherString = (Y_StringInstance) otherObj;
 
                 boolean result = instance.data.contains(otherString.data);
 
@@ -540,7 +542,7 @@ public class Y_String  {
                 new Variable.Variant(contains),
                 true,
                 TypeTag.OBJECT);
-        Y_String_Prototype.set(contains.getFnName(), containsVar);
+        Y_String_Instance_Prototype.set(contains.getFnName(), containsVar);
 
         // str.trim()
         class TrimFn extends Function.NativeFunction implements Callable {
@@ -567,7 +569,7 @@ public class Y_String  {
 
                 RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-                if (!(obj instanceof Y_StringObject)) {
+                if (!(obj instanceof Y_StringInstance)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
@@ -575,11 +577,11 @@ public class Y_String  {
                     );
                 }
 
-                Y_StringObject instance = (Y_StringObject) obj;
+                Y_StringInstance instance = (Y_StringInstance) obj;
 
                 String trimmed = instance.data.trim();
 
-                return new Variable.Variant(new Y_StringObject(trimmed));
+                return new Variable.Variant(new Y_StringInstance(trimmed));
             }
 
             @Override
@@ -593,7 +595,7 @@ public class Y_String  {
                 new Variable.Variant(trim),
                 true,
                 TypeTag.OBJECT);
-        Y_String_Prototype.set(trim.getFnName(), trimVar);
+        Y_String_Instance_Prototype.set(trim.getFnName(), trimVar);
 
         // str.trimLeft()
         class TrimLeftFn extends Function.NativeFunction implements Callable {
@@ -620,7 +622,7 @@ public class Y_String  {
 
                 RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-                if (!(obj instanceof Y_StringObject)) {
+                if (!(obj instanceof Y_StringInstance)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
@@ -628,11 +630,11 @@ public class Y_String  {
                     );
                 }
 
-                Y_StringObject instance = (Y_StringObject) obj;
+                Y_StringInstance instance = (Y_StringInstance) obj;
 
                 String trimmed = instance.data.replaceAll("^\\s+", "");
 
-                return new Variable.Variant(new Y_StringObject(trimmed));
+                return new Variable.Variant(new Y_StringInstance(trimmed));
             }
 
             @Override
@@ -646,7 +648,7 @@ public class Y_String  {
                 new Variable.Variant(trimLeft),
                 true,
                 TypeTag.OBJECT);
-        Y_String_Prototype.set(trimLeft.getFnName(), trimLeftVar);
+        Y_String_Instance_Prototype.set(trimLeft.getFnName(), trimLeftVar);
 
         // str.trimRight()
         class TrimRightFn extends Function.NativeFunction implements Callable {
@@ -673,7 +675,7 @@ public class Y_String  {
 
                 RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-                if (!(obj instanceof Y_StringObject)) {
+                if (!(obj instanceof Y_StringInstance)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
@@ -681,11 +683,11 @@ public class Y_String  {
                     );
                 }
 
-                Y_StringObject instance = (Y_StringObject) obj;
+                Y_StringInstance instance = (Y_StringInstance) obj;
 
                 String trimmed = instance.data.replaceAll("\\s+$", "");
 
-                return new Variable.Variant(new Y_StringObject(trimmed));
+                return new Variable.Variant(new Y_StringInstance(trimmed));
             }
 
             @Override
@@ -699,7 +701,7 @@ public class Y_String  {
                 new Variable.Variant(trimRight),
                 true,
                 TypeTag.OBJECT);
-        Y_String_Prototype.set(trimRight.getFnName(), trimRightVar);
+        Y_String_Instance_Prototype.set(trimRight.getFnName(), trimRightVar);
 
         // str.repeat(n)
         class RepeatFn extends Function.NativeFunction implements Callable {
@@ -726,7 +728,7 @@ public class Y_String  {
 
                 RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-                if (!(obj instanceof Y_StringObject)) {
+                if (!(obj instanceof Y_StringInstance)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
@@ -734,7 +736,7 @@ public class Y_String  {
                     );
                 }
 
-                Y_StringObject instance = (Y_StringObject) obj;
+                Y_StringInstance instance = (Y_StringInstance) obj;
 
                 Variable.Variant countVar = arguments.get(0);
 
@@ -763,7 +765,7 @@ public class Y_String  {
                 }
 
                 return new Variable.Variant(
-                        new Y_StringObject(sb.toString())
+                        new Y_StringInstance(sb.toString())
                 );
             }
 
@@ -778,7 +780,7 @@ public class Y_String  {
                 new Variable.Variant(repeat),
                 true,
                 TypeTag.OBJECT);
-        Y_String_Prototype.set(repeat.getFnName(), repeatVar);
+        Y_String_Instance_Prototype.set(repeat.getFnName(), repeatVar);
 
         // str.startsWith(other)
         class StartsWithFn extends Function.NativeFunction implements Callable {
@@ -805,7 +807,7 @@ public class Y_String  {
 
                 RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-                if (!(obj instanceof Y_StringObject)) {
+                if (!(obj instanceof Y_StringInstance)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
@@ -813,12 +815,12 @@ public class Y_String  {
                     );
                 }
 
-                Y_StringObject instance = (Y_StringObject) obj;
+                Y_StringInstance instance = (Y_StringInstance) obj;
 
                 Variable.Variant otherVar = arguments.get(0);
 
                 if (!otherVar.isRuntimeObject() ||
-                        !(otherVar.asRuntimeObject() instanceof Y_StringObject)) {
+                        !(otherVar.asRuntimeObject() instanceof Y_StringInstance)) {
 
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
@@ -827,8 +829,8 @@ public class Y_String  {
                     );
                 }
 
-                Y_StringObject other =
-                        (Y_StringObject) otherVar.asRuntimeObject();
+                Y_StringInstance other =
+                        (Y_StringInstance) otherVar.asRuntimeObject();
 
                 boolean result = instance.data.startsWith(other.data);
 
@@ -846,7 +848,7 @@ public class Y_String  {
                 new Variable.Variant(startsWith),
                 true,
                 TypeTag.OBJECT);
-        Y_String_Prototype.set(startsWith.getFnName(), startsWithVar);
+        Y_String_Instance_Prototype.set(startsWith.getFnName(), startsWithVar);
 
         // str.endsWith(other)
         class EndsWithFn extends Function.NativeFunction implements Callable {
@@ -873,7 +875,7 @@ public class Y_String  {
 
                 RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-                if (!(obj instanceof Y_StringObject)) {
+                if (!(obj instanceof Y_StringInstance)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
@@ -881,12 +883,12 @@ public class Y_String  {
                     );
                 }
 
-                Y_StringObject instance = (Y_StringObject) obj;
+                Y_StringInstance instance = (Y_StringInstance) obj;
 
                 Variable.Variant otherVar = arguments.get(0);
 
                 if (!otherVar.isRuntimeObject() ||
-                        !(otherVar.asRuntimeObject() instanceof Y_StringObject)) {
+                        !(otherVar.asRuntimeObject() instanceof Y_StringInstance)) {
 
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
@@ -895,8 +897,8 @@ public class Y_String  {
                     );
                 }
 
-                Y_StringObject other =
-                        (Y_StringObject) otherVar.asRuntimeObject();
+                Y_StringInstance other =
+                        (Y_StringInstance) otherVar.asRuntimeObject();
 
                 boolean result = instance.data.endsWith(other.data);
 
@@ -914,7 +916,7 @@ public class Y_String  {
                 new Variable.Variant(endsWith),
                 true,
                 TypeTag.OBJECT);
-        Y_String_Prototype.set(endsWith.getFnName(), endsWithVar);
+        Y_String_Instance_Prototype.set(endsWith.getFnName(), endsWithVar);
 
         // str.replace(old, new)
         class ReplaceFn extends Function.NativeFunction implements Callable {
@@ -941,7 +943,7 @@ public class Y_String  {
 
                 RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-                if (!(obj instanceof Y_StringObject)) {
+                if (!(obj instanceof Y_StringInstance)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
@@ -949,15 +951,15 @@ public class Y_String  {
                     );
                 }
 
-                Y_StringObject instance = (Y_StringObject) obj;
+                Y_StringInstance instance = (Y_StringInstance) obj;
 
                 Variable.Variant oldVar = arguments.get(0);
                 Variable.Variant newVar = arguments.get(1);
 
                 if (!oldVar.isRuntimeObject() ||
-                        !(oldVar.asRuntimeObject() instanceof Y_StringObject) ||
+                        !(oldVar.asRuntimeObject() instanceof Y_StringInstance) ||
                         !newVar.isRuntimeObject() ||
-                        !(newVar.asRuntimeObject() instanceof Y_StringObject)) {
+                        !(newVar.asRuntimeObject() instanceof Y_StringInstance)) {
 
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
@@ -966,17 +968,17 @@ public class Y_String  {
                     );
                 }
 
-                Y_StringObject oldStr =
-                        (Y_StringObject) oldVar.asRuntimeObject();
+                Y_StringInstance oldStr =
+                        (Y_StringInstance) oldVar.asRuntimeObject();
 
-                Y_StringObject newStr =
-                        (Y_StringObject) newVar.asRuntimeObject();
+                Y_StringInstance newStr =
+                        (Y_StringInstance) newVar.asRuntimeObject();
 
                 String replaced =
                         instance.data.replace(oldStr.data, newStr.data);
 
                 return new Variable.Variant(
-                        new Y_StringObject(replaced)
+                        new Y_StringInstance(replaced)
                 );
             }
 
@@ -991,7 +993,7 @@ public class Y_String  {
                 new Variable.Variant(replace),
                 true,
                 TypeTag.OBJECT);
-        Y_String_Prototype.set(replace.getFnName(), replaceVar);
+        Y_String_Instance_Prototype.set(replace.getFnName(), replaceVar);
 
         // str.isEmpty()
         class IsEmptyFn extends Function.NativeFunction implements Callable {
@@ -1018,7 +1020,7 @@ public class Y_String  {
 
                 RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-                if (!(obj instanceof Y_StringObject)) {
+                if (!(obj instanceof Y_StringInstance)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
@@ -1026,7 +1028,7 @@ public class Y_String  {
                     );
                 }
 
-                Y_StringObject instance = (Y_StringObject) obj;
+                Y_StringInstance instance = (Y_StringInstance) obj;
 
                 return new Variable.Variant(instance.data.isEmpty());
             }
@@ -1042,7 +1044,7 @@ public class Y_String  {
                 new Variable.Variant(isEmpty),
                 true,
                 TypeTag.OBJECT);
-        Y_String_Prototype.set(isEmpty.getFnName(), isEmptyVar);
+        Y_String_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
 
         // str.reverse()
         class ReverseFn extends Function.NativeFunction implements Callable {
@@ -1069,7 +1071,7 @@ public class Y_String  {
 
                 RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-                if (!(obj instanceof Y_StringObject)) {
+                if (!(obj instanceof Y_StringInstance)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
@@ -1077,7 +1079,7 @@ public class Y_String  {
                     );
                 }
 
-                Y_StringObject instance = (Y_StringObject) obj;
+                Y_StringInstance instance = (Y_StringInstance) obj;
 
                 String reversed =
                         new StringBuilder(instance.data)
@@ -1085,7 +1087,7 @@ public class Y_String  {
                                 .toString();
 
                 return new Variable.Variant(
-                        new Y_StringObject(reversed)
+                        new Y_StringInstance(reversed)
                 );
             }
 
@@ -1100,7 +1102,7 @@ public class Y_String  {
                 new Variable.Variant(reverse),
                 true,
                 TypeTag.OBJECT);
-        Y_String_Prototype.set(reverse.getFnName(), reverseVar);
+        Y_String_Instance_Prototype.set(reverse.getFnName(), reverseVar);
 
         // str.padLeft(len, padStr)
         class PadLeftFn extends Function.NativeFunction implements Callable {
@@ -1127,7 +1129,7 @@ public class Y_String  {
 
                 RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-                if (!(obj instanceof Y_StringObject)) {
+                if (!(obj instanceof Y_StringInstance)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
@@ -1135,7 +1137,7 @@ public class Y_String  {
                     );
                 }
 
-                Y_StringObject instance = (Y_StringObject) obj;
+                Y_StringInstance instance = (Y_StringInstance) obj;
 
                 Variable.Variant lenVar = arguments.get(0);
                 Variable.Variant padVar = arguments.get(1);
@@ -1149,7 +1151,7 @@ public class Y_String  {
                 }
 
                 if (!padVar.isRuntimeObject() ||
-                        !(padVar.asRuntimeObject() instanceof Y_StringObject)) {
+                        !(padVar.asRuntimeObject() instanceof Y_StringInstance)) {
 
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
@@ -1159,8 +1161,8 @@ public class Y_String  {
                 }
 
                 int targetLength = (int) lenVar.implicitlyConvertNumber();
-                Y_StringObject padString =
-                        (Y_StringObject) padVar.asRuntimeObject();
+                Y_StringInstance padString =
+                        (Y_StringInstance) padVar.asRuntimeObject();
 
                 if (padString.data.isEmpty()) {
                     return new Variable.Variant(instance);
@@ -1177,7 +1179,7 @@ public class Y_String  {
                 }
 
                 return new Variable.Variant(
-                        new Y_StringObject(result)
+                        new Y_StringInstance(result)
                 );
             }
 
@@ -1192,7 +1194,7 @@ public class Y_String  {
                 new Variable.Variant(padLeft),
                 true,
                 TypeTag.OBJECT);
-        Y_String_Prototype.set(padLeft.getFnName(), padLeftVar);
+        Y_String_Instance_Prototype.set(padLeft.getFnName(), padLeftVar);
 
         // str.padRight(len, padStr)
         class PadRightFn extends Function.NativeFunction implements Callable {
@@ -1219,7 +1221,7 @@ public class Y_String  {
 
                 RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-                if (!(obj instanceof Y_StringObject)) {
+                if (!(obj instanceof Y_StringInstance)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
@@ -1227,7 +1229,7 @@ public class Y_String  {
                     );
                 }
 
-                Y_StringObject instance = (Y_StringObject) obj;
+                Y_StringInstance instance = (Y_StringInstance) obj;
 
                 Variable.Variant lenVar = arguments.get(0);
                 Variable.Variant padVar = arguments.get(1);
@@ -1241,7 +1243,7 @@ public class Y_String  {
                 }
 
                 if (!padVar.isRuntimeObject() ||
-                        !(padVar.asRuntimeObject() instanceof Y_StringObject)) {
+                        !(padVar.asRuntimeObject() instanceof Y_StringInstance)) {
 
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
@@ -1251,8 +1253,8 @@ public class Y_String  {
                 }
 
                 int targetLength = (int) lenVar.implicitlyConvertNumber();
-                Y_StringObject padString =
-                        (Y_StringObject) padVar.asRuntimeObject();
+                Y_StringInstance padString =
+                        (Y_StringInstance) padVar.asRuntimeObject();
 
                 if (padString.data.isEmpty()) {
                     return new Variable.Variant(instance);
@@ -1269,7 +1271,7 @@ public class Y_String  {
                 }
 
                 return new Variable.Variant(
-                        new Y_StringObject(result)
+                        new Y_StringInstance(result)
                 );
             }
 
@@ -1284,7 +1286,7 @@ public class Y_String  {
                 new Variable.Variant(padRight),
                 true,
                 TypeTag.OBJECT);
-        Y_String_Prototype.set(padRight.getFnName(), padRightVar);
+        Y_String_Instance_Prototype.set(padRight.getFnName(), padRightVar);
 
         // str.compareTo(other)
         class CompareToFn extends Function.NativeFunction implements Callable {
@@ -1311,7 +1313,7 @@ public class Y_String  {
 
                 RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-                if (!(obj instanceof Y_StringObject)) {
+                if (!(obj instanceof Y_StringInstance)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
@@ -1319,12 +1321,12 @@ public class Y_String  {
                     );
                 }
 
-                Y_StringObject instance = (Y_StringObject) obj;
+                Y_StringInstance instance = (Y_StringInstance) obj;
 
                 Variable.Variant otherVar = arguments.get(0);
 
                 if (!otherVar.isRuntimeObject() ||
-                        !(otherVar.asRuntimeObject() instanceof Y_StringObject)) {
+                        !(otherVar.asRuntimeObject() instanceof Y_StringInstance)) {
 
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
@@ -1333,8 +1335,8 @@ public class Y_String  {
                     );
                 }
 
-                Y_StringObject other =
-                        (Y_StringObject) otherVar.asRuntimeObject();
+                Y_StringInstance other =
+                        (Y_StringInstance) otherVar.asRuntimeObject();
 
                 int result = instance.data.compareTo(other.data);
 
@@ -1352,7 +1354,7 @@ public class Y_String  {
                 new Variable.Variant(compareTo),
                 true,
                 TypeTag.OBJECT);
-        Y_String_Prototype.set(compareTo.getFnName(), compareToVar);
+        Y_String_Instance_Prototype.set(compareTo.getFnName(), compareToVar);
 
         // str.capitalize()
         class CapitalizeFn extends Function.NativeFunction implements Callable {
@@ -1379,7 +1381,7 @@ public class Y_String  {
 
                 RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-                if (!(obj instanceof Y_StringObject)) {
+                if (!(obj instanceof Y_StringInstance)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
@@ -1387,11 +1389,11 @@ public class Y_String  {
                     );
                 }
 
-                Y_StringObject instance = (Y_StringObject) obj;
+                Y_StringInstance instance = (Y_StringInstance) obj;
 
                 if (instance.data.isEmpty()) {
                     return new Variable.Variant(
-                            new Y_StringObject(instance.data)
+                            new Y_StringInstance(instance.data)
                     );
                 }
 
@@ -1399,7 +1401,7 @@ public class Y_String  {
                 String rest  = instance.data.substring(1);
 
                 return new Variable.Variant(
-                        new Y_StringObject(first + rest)
+                        new Y_StringInstance(first + rest)
                 );
             }
 
@@ -1414,7 +1416,7 @@ public class Y_String  {
                 new Variable.Variant(capitalize),
                 true,
                 TypeTag.OBJECT);
-        Y_String_Prototype.set(capitalize.getFnName(), capitalizeVar);
+        Y_String_Instance_Prototype.set(capitalize.getFnName(), capitalizeVar);
 
         // str.toString()
         class ToStringFn extends Function.NativeFunction implements Callable {
@@ -1439,7 +1441,7 @@ public class Y_String  {
 
                 RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-                if (!(obj instanceof Y_StringObject)) {
+                if (!(obj instanceof Y_StringInstance)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
@@ -1447,7 +1449,7 @@ public class Y_String  {
                     );
                 }
 
-                Y_StringObject instance = (Y_StringObject) obj;
+                Y_StringInstance instance = (Y_StringInstance) obj;
 
                 return new Variable.Variant("\"" + instance.data + "\"");
             }
@@ -1463,16 +1465,16 @@ public class Y_String  {
                 new Variable.Variant(toString),
                 true,
                 TypeTag.OBJECT);
-        Y_String_Prototype.set(toString.getFnName(), toStringVar);
+        Y_String_Instance_Prototype.set(toString.getFnName(), toStringVar);
     }
 
-    public static class Y_StringObject extends RuntimeObject {
+    public static class Y_StringInstance extends Y_Class.ClassObjectInstance {
 
         public final String data;
 
-        public Y_StringObject(String data) {
+        public Y_StringInstance(String data) {
             this.data = data;
-            this.prototype = Y_String_Prototype;
+            this.prototype = Y_String_Instance_Prototype;
         }
 
 
@@ -1483,7 +1485,7 @@ public class Y_String  {
 
         @Override
         public String getType() {
-            return "string";
+            return "String";
         }
 
         @Override
@@ -1493,8 +1495,8 @@ public class Y_String  {
 
         @Override
         public boolean equals(Object obj) {
-            if(!(obj instanceof Y_StringObject)) return false;
-            Y_StringObject other = (Y_StringObject) obj;
+            if(!(obj instanceof Y_StringInstance)) return false;
+            Y_StringInstance other = (Y_StringInstance) obj;
             return other.data.equals(this.data);
         }
 
@@ -1505,18 +1507,22 @@ public class Y_String  {
     }
 
 
-    public static class Y_StringInit extends Function.NativeFunction {
+    public static class Y_StringClass extends Y_Class.SealedClassObject {
 
         @Override
         public int arity() {
             return 1;
         }
 
+        public Y_StringClass() {
+            this.prototype = Y_Class.ClassPrototype;
+        }
+
         @Override
         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
             String value;
-            if(arguments.getFirst().value instanceof Y_StringObject) {
-                value = ((Y_StringObject) arguments.getFirst().value).data;
+            if(arguments.getFirst().value instanceof Y_StringInstance) {
+                value = ((Y_StringInstance) arguments.getFirst().value).data;
             }
             else if(arguments.getFirst().value instanceof String) {
                 value = arguments.getFirst().asString();
@@ -1529,22 +1535,27 @@ public class Y_String  {
                 );
             }
 
-            Y_StringObject newString = new Y_StringObject(value);
+            Y_StringInstance newString = new Y_StringInstance(value);
 
             return new Variable.Variant(newString);
         }
 
         @Override
-        public String getFnName() {
+        public String getClassName() {
+            return "String";
+        }
+
+        @Override
+        public String getType() {
             return "String";
         }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
-        Y_String.Y_StringInit stringCtor = new Y_String.Y_StringInit();
+        Y_String.Y_StringClass stringCtor = new Y_String.Y_StringClass();
         Variable.Variant variant = new Variable.Variant(stringCtor);
         Variable var = new Variable(variant, false, TypeTag.OBJECT);
-        interpreter.defineGlobal(stringCtor.getFnName(), var);
+        interpreter.defineGlobal(stringCtor.getClassName(), var);
     }
 
 }

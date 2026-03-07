@@ -11,7 +11,7 @@ import java.util.TreeSet;
 public class Y_TreeSet {
 
     // helper
-    private static Y_TreeSet.Y_TreeSetObject requireTreeSetThis(Interpreter interpreter) {
+    private static Y_TreeSet.Y_TreeSetInstance requireTreeSetThis(Interpreter interpreter) {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
@@ -24,7 +24,7 @@ public class Y_TreeSet {
 
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-        if (!(obj instanceof Y_TreeSet.Y_TreeSetObject)) {
+        if (!(obj instanceof Y_TreeSet.Y_TreeSetInstance)) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     0,
@@ -32,11 +32,13 @@ public class Y_TreeSet {
             );
         }
 
-        return (Y_TreeSet.Y_TreeSetObject) obj;
+        return (Y_TreeSet.Y_TreeSetInstance) obj;
     }
 
+    public static RuntimeObject Y_TreeSet_Instance_Prototype;
+
     static {
-        Y_TreeSet_Prototype = new RuntimeObject() {
+        Y_TreeSet_Instance_Prototype = new RuntimeObject() {
 
             @Override
             public boolean isTruthy() {
@@ -48,6 +50,7 @@ public class Y_TreeSet {
                 return "tree_set_prototype";
             }
         };
+        Y_TreeSet_Instance_Prototype.prototype = Y_Class.ClassPrototype;
 
         // ts.toString()
         class ToStringFn extends Function.NativeFunction {
@@ -62,7 +65,7 @@ public class Y_TreeSet {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_TreeSetObject ts = requireTreeSetThis(interpreter);
+                Y_TreeSetInstance ts = requireTreeSetThis(interpreter);
 
                 StringBuilder sb = new StringBuilder();
                 sb.append("TreeSet[");
@@ -87,7 +90,7 @@ public class Y_TreeSet {
 
         ToStringFn toString = new ToStringFn();
         Variable toStringVar = new Variable(new Variable.Variant(toString), true, TypeTag.OBJECT);
-        Y_TreeSet.Y_TreeSet_Prototype.set(toString.getFnName(), toStringVar);
+        Y_TreeSet.Y_TreeSet_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
 
         // ts.add(value) -> true if added, false if already existed
@@ -106,7 +109,7 @@ public class Y_TreeSet {
                 this.requireArity(arguments,1, "TreeSet.add");
 
                 Variable.Variant value = arguments.get(0);
-                Y_TreeSetObject ts = requireTreeSetThis(interpreter);
+                Y_TreeSetInstance ts = requireTreeSetThis(interpreter);
 
                 return new Variable.Variant(ts.data.add(value));
             }
@@ -119,7 +122,7 @@ public class Y_TreeSet {
 
         AddFn add = new AddFn();
         Variable addVar = new Variable(new Variable.Variant(add), true, TypeTag.OBJECT);
-        Y_TreeSet.Y_TreeSet_Prototype.set(add.getFnName(), addVar);
+        Y_TreeSet.Y_TreeSet_Instance_Prototype.set(add.getFnName(), addVar);
 
 
         // ts.remove(value) -> true if removed, false if not found
@@ -138,7 +141,7 @@ public class Y_TreeSet {
                 this.requireArity(arguments,1, "TreeSet.remove");
 
                 Variable.Variant value = arguments.get(0);
-                Y_TreeSetObject ts = requireTreeSetThis(interpreter);
+                Y_TreeSetInstance ts = requireTreeSetThis(interpreter);
 
                 return new Variable.Variant(ts.data.remove(value));
             }
@@ -151,7 +154,7 @@ public class Y_TreeSet {
 
         RemoveFn remove = new RemoveFn();
         Variable removeVar = new Variable(new Variable.Variant(remove), true, TypeTag.OBJECT);
-        Y_TreeSet.Y_TreeSet_Prototype.set(remove.getFnName(), removeVar);
+        Y_TreeSet.Y_TreeSet_Instance_Prototype.set(remove.getFnName(), removeVar);
 
 
         // ts.contains(value)
@@ -170,7 +173,7 @@ public class Y_TreeSet {
                 this.requireArity(arguments,1, "TreeSet.contains");
 
                 Variable.Variant value = arguments.get(0);
-                Y_TreeSetObject ts = requireTreeSetThis(interpreter);
+                Y_TreeSetInstance ts = requireTreeSetThis(interpreter);
 
                 return new Variable.Variant(ts.data.contains(value));
             }
@@ -183,7 +186,7 @@ public class Y_TreeSet {
 
         ContainsFn contains = new ContainsFn();
         Variable containsVar = new Variable(new Variable.Variant(contains), true, TypeTag.OBJECT);
-        Y_TreeSet.Y_TreeSet_Prototype.set(contains.getFnName(), containsVar);
+        Y_TreeSet.Y_TreeSet_Instance_Prototype.set(contains.getFnName(), containsVar);
 
 
         // ts.first() -> smallest element
@@ -201,7 +204,7 @@ public class Y_TreeSet {
 
                 this.requireArity(arguments,0, "TreeSet.first");
 
-                Y_TreeSetObject ts = requireTreeSetThis(interpreter);
+                Y_TreeSetInstance ts = requireTreeSetThis(interpreter);
 
                 if (ts.data.isEmpty()) {
                     return new Variable.Variant(null);
@@ -218,7 +221,7 @@ public class Y_TreeSet {
 
         FirstFn first = new FirstFn();
         Variable firstVar = new Variable(new Variable.Variant(first), true, TypeTag.OBJECT);
-        Y_TreeSet.Y_TreeSet_Prototype.set(first.getFnName(), firstVar);
+        Y_TreeSet.Y_TreeSet_Instance_Prototype.set(first.getFnName(), firstVar);
 
 
         // ts.last() -> largest element
@@ -236,7 +239,7 @@ public class Y_TreeSet {
 
                 this.requireArity(arguments,0, "TreeSet.last");
 
-                Y_TreeSetObject ts = requireTreeSetThis(interpreter);
+                Y_TreeSetInstance ts = requireTreeSetThis(interpreter);
 
                 if (ts.data.isEmpty()) {
                     return new Variable.Variant(null);
@@ -253,7 +256,7 @@ public class Y_TreeSet {
 
         LastFn last = new LastFn();
         Variable lastVar = new Variable(new Variable.Variant(last), true, TypeTag.OBJECT);
-        Y_TreeSet.Y_TreeSet_Prototype.set(last.getFnName(), lastVar);
+        Y_TreeSet.Y_TreeSet_Instance_Prototype.set(last.getFnName(), lastVar);
 
 
         // ts.floor(value) -> greatest element <= value
@@ -272,7 +275,7 @@ public class Y_TreeSet {
                 this.requireArity(arguments,1, "TreeSet.floor");
 
                 Variable.Variant value = arguments.get(0);
-                Y_TreeSetObject ts = requireTreeSetThis(interpreter);
+                Y_TreeSetInstance ts = requireTreeSetThis(interpreter);
 
                 Variable.Variant result = ts.data.floor(value);
 
@@ -287,7 +290,7 @@ public class Y_TreeSet {
 
         FloorFn floor = new FloorFn();
         Variable floorVar = new Variable(new Variable.Variant(floor), true, TypeTag.OBJECT);
-        Y_TreeSet.Y_TreeSet_Prototype.set(floor.getFnName(), floorVar);
+        Y_TreeSet.Y_TreeSet_Instance_Prototype.set(floor.getFnName(), floorVar);
 
 
         // ts.ceiling(value) -> smallest element >= value
@@ -306,7 +309,7 @@ public class Y_TreeSet {
                 this.requireArity(arguments,1, "TreeSet.ceiling");
 
                 Variable.Variant value = arguments.get(0);
-                Y_TreeSetObject ts = requireTreeSetThis(interpreter);
+                Y_TreeSetInstance ts = requireTreeSetThis(interpreter);
 
                 Variable.Variant result = ts.data.ceiling(value);
 
@@ -321,7 +324,7 @@ public class Y_TreeSet {
 
         CeilingFn ceiling = new CeilingFn();
         Variable ceilingVar = new Variable(new Variable.Variant(ceiling), true, TypeTag.OBJECT);
-        Y_TreeSet.Y_TreeSet_Prototype.set(ceiling.getFnName(), ceilingVar);
+        Y_TreeSet.Y_TreeSet_Instance_Prototype.set(ceiling.getFnName(), ceilingVar);
 
 
         // ts.lower(value) -> greatest element strictly < value
@@ -340,7 +343,7 @@ public class Y_TreeSet {
                 this.requireArity(arguments,1, "TreeSet.lower");
 
                 Variable.Variant value = arguments.get(0);
-                Y_TreeSetObject ts = requireTreeSetThis(interpreter);
+                Y_TreeSetInstance ts = requireTreeSetThis(interpreter);
 
                 Variable.Variant result = ts.data.lower(value);
 
@@ -355,7 +358,7 @@ public class Y_TreeSet {
 
         LowerFn lower = new LowerFn();
         Variable lowerVar = new Variable(new Variable.Variant(lower), true, TypeTag.OBJECT);
-        Y_TreeSet.Y_TreeSet_Prototype.set(lower.getFnName(), lowerVar);
+        Y_TreeSet.Y_TreeSet_Instance_Prototype.set(lower.getFnName(), lowerVar);
 
 
         // ts.higher(value) -> smallest element strictly > value
@@ -374,7 +377,7 @@ public class Y_TreeSet {
                 this.requireArity(arguments,1, "TreeSet.higher");
 
                 Variable.Variant value = arguments.get(0);
-                Y_TreeSetObject ts = requireTreeSetThis(interpreter);
+                Y_TreeSetInstance ts = requireTreeSetThis(interpreter);
 
                 Variable.Variant result = ts.data.higher(value);
 
@@ -389,7 +392,7 @@ public class Y_TreeSet {
 
         HigherFn higher = new HigherFn();
         Variable higherVar = new Variable(new Variable.Variant(higher), true, TypeTag.OBJECT);
-        Y_TreeSet.Y_TreeSet_Prototype.set(higher.getFnName(), higherVar);
+        Y_TreeSet.Y_TreeSet_Instance_Prototype.set(higher.getFnName(), higherVar);
 
 
         // ts.pollFirst() -> removes and returns smallest element
@@ -407,7 +410,7 @@ public class Y_TreeSet {
 
                 this.requireArity(arguments,0, "TreeSet.pollFirst");
 
-                Y_TreeSetObject ts = requireTreeSetThis(interpreter);
+                Y_TreeSetInstance ts = requireTreeSetThis(interpreter);
 
                 if (ts.data.isEmpty()) {
                     return new Variable.Variant(null);
@@ -424,7 +427,7 @@ public class Y_TreeSet {
 
         PollFirstFn pollFirst = new PollFirstFn();
         Variable pollFirstVar = new Variable(new Variable.Variant(pollFirst), true, TypeTag.OBJECT);
-        Y_TreeSet.Y_TreeSet_Prototype.set(pollFirst.getFnName(), pollFirstVar);
+        Y_TreeSet.Y_TreeSet_Instance_Prototype.set(pollFirst.getFnName(), pollFirstVar);
 
 
         // ts.pollLast() -> removes and returns largest element
@@ -442,7 +445,7 @@ public class Y_TreeSet {
 
                 this.requireArity(arguments,0, "TreeSet.pollLast");
 
-                Y_TreeSetObject ts = requireTreeSetThis(interpreter);
+                Y_TreeSetInstance ts = requireTreeSetThis(interpreter);
 
                 if (ts.data.isEmpty()) {
                     return new Variable.Variant(null);
@@ -459,7 +462,7 @@ public class Y_TreeSet {
 
         PollLastFn pollLast = new PollLastFn();
         Variable pollLastVar = new Variable(new Variable.Variant(pollLast), true, TypeTag.OBJECT);
-        Y_TreeSet.Y_TreeSet_Prototype.set(pollLast.getFnName(), pollLastVar);
+        Y_TreeSet.Y_TreeSet_Instance_Prototype.set(pollLast.getFnName(), pollLastVar);
 
 
         // ts.subSet(from, to) -> new TreeSet with elements in [from, to)
@@ -479,9 +482,9 @@ public class Y_TreeSet {
 
                 Variable.Variant from = arguments.get(0);
                 Variable.Variant to   = arguments.get(1);
-                Y_TreeSetObject ts = requireTreeSetThis(interpreter);
+                Y_TreeSetInstance ts = requireTreeSetThis(interpreter);
 
-                Y_TreeSetObject result = new Y_TreeSetObject();
+                Y_TreeSetInstance result = new Y_TreeSetInstance();
                 result.data.addAll(ts.data.subSet(from, to));
 
                 return new Variable.Variant(result);
@@ -495,7 +498,7 @@ public class Y_TreeSet {
 
         SubSetFn subSet = new SubSetFn();
         Variable subSetVar = new Variable(new Variable.Variant(subSet), true, TypeTag.OBJECT);
-        Y_TreeSet.Y_TreeSet_Prototype.set(subSet.getFnName(), subSetVar);
+        Y_TreeSet.Y_TreeSet_Instance_Prototype.set(subSet.getFnName(), subSetVar);
 
 
         // ts.headSet(to) -> new TreeSet with elements strictly < to
@@ -514,9 +517,9 @@ public class Y_TreeSet {
                 this.requireArity(arguments,1, "TreeSet.headSet");
 
                 Variable.Variant to = arguments.get(0);
-                Y_TreeSetObject ts = requireTreeSetThis(interpreter);
+                Y_TreeSetInstance ts = requireTreeSetThis(interpreter);
 
-                Y_TreeSetObject result = new Y_TreeSetObject();
+                Y_TreeSetInstance result = new Y_TreeSetInstance();
                 result.data.addAll(ts.data.headSet(to));
 
                 return new Variable.Variant(result);
@@ -530,7 +533,7 @@ public class Y_TreeSet {
 
         HeadSetFn headSet = new HeadSetFn();
         Variable headSetVar = new Variable(new Variable.Variant(headSet), true, TypeTag.OBJECT);
-        Y_TreeSet.Y_TreeSet_Prototype.set(headSet.getFnName(), headSetVar);
+        Y_TreeSet.Y_TreeSet_Instance_Prototype.set(headSet.getFnName(), headSetVar);
 
 
         // ts.tailSet(from) -> new TreeSet with elements >= from
@@ -549,9 +552,9 @@ public class Y_TreeSet {
                 this.requireArity(arguments,1, "TreeSet.TailSetFn");
 
                 Variable.Variant from = arguments.get(0);
-                Y_TreeSetObject ts = requireTreeSetThis(interpreter);
+                Y_TreeSetInstance ts = requireTreeSetThis(interpreter);
 
-                Y_TreeSetObject result = new Y_TreeSetObject();
+                Y_TreeSetInstance result = new Y_TreeSetInstance();
                 result.data.addAll(ts.data.tailSet(from));
 
                 return new Variable.Variant(result);
@@ -565,7 +568,7 @@ public class Y_TreeSet {
 
         TailSetFn tailSet = new TailSetFn();
         Variable tailSetVar = new Variable(new Variable.Variant(tailSet), true, TypeTag.OBJECT);
-        Y_TreeSet.Y_TreeSet_Prototype.set(tailSet.getFnName(), tailSetVar);
+        Y_TreeSet.Y_TreeSet_Instance_Prototype.set(tailSet.getFnName(), tailSetVar);
 
 
         // ts.union(other) -> new TreeSet = this ∪ other
@@ -584,10 +587,10 @@ public class Y_TreeSet {
                 this.requireArity(arguments,1, "TreeSet.union");
 
                 Variable.Variant otherVariant = arguments.get(0);
-                Y_TreeSetObject ts = requireTreeSetThis(interpreter);
+                Y_TreeSetInstance ts = requireTreeSetThis(interpreter);
 
                 RuntimeObject otherObj = otherVariant.asRuntimeObject();
-                if (!(otherObj instanceof Y_TreeSetObject)) {
+                if (!(otherObj instanceof Y_TreeSetInstance)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
@@ -595,8 +598,8 @@ public class Y_TreeSet {
                     );
                 }
 
-                Y_TreeSetObject other  = (Y_TreeSetObject) otherObj;
-                Y_TreeSetObject result = new Y_TreeSetObject();
+                Y_TreeSetInstance other  = (Y_TreeSetInstance) otherObj;
+                Y_TreeSetInstance result = new Y_TreeSetInstance();
 
                 result.data.addAll(ts.data);
                 result.data.addAll(other.data);
@@ -612,7 +615,7 @@ public class Y_TreeSet {
 
         UnionFn union = new UnionFn();
         Variable unionVar = new Variable(new Variable.Variant(union), true, TypeTag.OBJECT);
-        Y_TreeSet.Y_TreeSet_Prototype.set(union.getFnName(), unionVar);
+        Y_TreeSet.Y_TreeSet_Instance_Prototype.set(union.getFnName(), unionVar);
 
 
         // ts.intersection(other) -> new TreeSet = this ∩ other
@@ -631,10 +634,10 @@ public class Y_TreeSet {
                 this.requireArity(arguments,1, "TreeSet.intersection");
 
                 Variable.Variant otherVariant = arguments.get(0);
-                Y_TreeSetObject ts = requireTreeSetThis(interpreter);
+                Y_TreeSetInstance ts = requireTreeSetThis(interpreter);
 
                 RuntimeObject otherObj = otherVariant.asRuntimeObject();
-                if (!(otherObj instanceof Y_TreeSetObject)) {
+                if (!(otherObj instanceof Y_TreeSetInstance)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
@@ -642,8 +645,8 @@ public class Y_TreeSet {
                     );
                 }
 
-                Y_TreeSetObject other  = (Y_TreeSetObject) otherObj;
-                Y_TreeSetObject result = new Y_TreeSetObject();
+                Y_TreeSetInstance other  = (Y_TreeSetInstance) otherObj;
+                Y_TreeSetInstance result = new Y_TreeSetInstance();
 
                 for (Variable.Variant v : ts.data) {
                     if (other.data.contains(v)) {
@@ -662,7 +665,7 @@ public class Y_TreeSet {
 
         IntersectionFn intersection = new IntersectionFn();
         Variable intersectionVar = new Variable(new Variable.Variant(intersection), true, TypeTag.OBJECT);
-        Y_TreeSet.Y_TreeSet_Prototype.set(intersection.getFnName(), intersectionVar);
+        Y_TreeSet.Y_TreeSet_Instance_Prototype.set(intersection.getFnName(), intersectionVar);
 
 
         // ts.difference(other) -> new TreeSet = this \ other
@@ -681,10 +684,10 @@ public class Y_TreeSet {
                 this.requireArity(arguments,1, "TreeSet.difference");
 
                 Variable.Variant otherVariant = arguments.get(0);
-                Y_TreeSetObject ts = requireTreeSetThis(interpreter);
+                Y_TreeSetInstance ts = requireTreeSetThis(interpreter);
 
                 RuntimeObject otherObj = otherVariant.asRuntimeObject();
-                if (!(otherObj instanceof Y_TreeSetObject)) {
+                if (!(otherObj instanceof Y_TreeSetInstance)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
@@ -692,8 +695,8 @@ public class Y_TreeSet {
                     );
                 }
 
-                Y_TreeSetObject other  = (Y_TreeSetObject) otherObj;
-                Y_TreeSetObject result = new Y_TreeSetObject();
+                Y_TreeSetInstance other  = (Y_TreeSetInstance) otherObj;
+                Y_TreeSetInstance result = new Y_TreeSetInstance();
 
                 for (Variable.Variant v : ts.data) {
                     if (!other.data.contains(v)) {
@@ -712,7 +715,7 @@ public class Y_TreeSet {
 
         DifferenceFn difference = new DifferenceFn();
         Variable differenceVar = new Variable(new Variable.Variant(difference), true, TypeTag.OBJECT);
-        Y_TreeSet.Y_TreeSet_Prototype.set(difference.getFnName(), differenceVar);
+        Y_TreeSet.Y_TreeSet_Instance_Prototype.set(difference.getFnName(), differenceVar);
 
 
         // ts.isSubsetOf(other) -> true if all elements of this are in other
@@ -731,10 +734,10 @@ public class Y_TreeSet {
                 this.requireArity(arguments,1, "TreeSet.isSubsetOf");
 
                 Variable.Variant otherVariant = arguments.get(0);
-                Y_TreeSetObject ts = requireTreeSetThis(interpreter);
+                Y_TreeSetInstance ts = requireTreeSetThis(interpreter);
 
                 RuntimeObject otherObj = otherVariant.asRuntimeObject();
-                if (!(otherObj instanceof Y_TreeSetObject)) {
+                if (!(otherObj instanceof Y_TreeSetInstance)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
@@ -742,7 +745,7 @@ public class Y_TreeSet {
                     );
                 }
 
-                Y_TreeSetObject other = (Y_TreeSetObject) otherObj;
+                Y_TreeSetInstance other = (Y_TreeSetInstance) otherObj;
 
                 return new Variable.Variant(other.data.containsAll(ts.data));
             }
@@ -755,7 +758,7 @@ public class Y_TreeSet {
 
         IsSubsetOfFn isSubsetOf = new IsSubsetOfFn();
         Variable isSubsetOfVar = new Variable(new Variable.Variant(isSubsetOf), true, TypeTag.OBJECT);
-        Y_TreeSet.Y_TreeSet_Prototype.set(isSubsetOf.getFnName(), isSubsetOfVar);
+        Y_TreeSet.Y_TreeSet_Instance_Prototype.set(isSubsetOf.getFnName(), isSubsetOfVar);
 
 
         // ts.toArray() -> sorted Y_ArrayObject
@@ -773,11 +776,11 @@ public class Y_TreeSet {
 
                 this.requireArity(arguments,0, "TreeSet.toArray");
 
-                Y_TreeSetObject ts = requireTreeSetThis(interpreter);
+                Y_TreeSetInstance ts = requireTreeSetThis(interpreter);
 
                 ArrayList<Variable.Variant> list = new ArrayList<>(ts.data);
 
-                return new Variable.Variant(new Y_Array.Y_ArrayObject(list));
+                return new Variable.Variant(new Y_Array.Y_ArrayInstance(list));
             }
 
             @Override
@@ -788,7 +791,7 @@ public class Y_TreeSet {
 
         ToArrayFn toArray = new ToArrayFn();
         Variable toArrayVar = new Variable(new Variable.Variant(toArray), true, TypeTag.OBJECT);
-        Y_TreeSet.Y_TreeSet_Prototype.set(toArray.getFnName(), toArrayVar);
+        Y_TreeSet.Y_TreeSet_Instance_Prototype.set(toArray.getFnName(), toArrayVar);
 
 
         // ts.size()
@@ -806,7 +809,7 @@ public class Y_TreeSet {
 
                 this.requireArity(arguments,0, "TreeSet.size");
 
-                Y_TreeSetObject ts = requireTreeSetThis(interpreter);
+                Y_TreeSetInstance ts = requireTreeSetThis(interpreter);
 
                 return new Variable.Variant(ts.data.size());
             }
@@ -819,7 +822,7 @@ public class Y_TreeSet {
 
         SizeFn size = new SizeFn();
         Variable sizeVar = new Variable(new Variable.Variant(size), true, TypeTag.OBJECT);
-        Y_TreeSet.Y_TreeSet_Prototype.set(size.getFnName(), sizeVar);
+        Y_TreeSet.Y_TreeSet_Instance_Prototype.set(size.getFnName(), sizeVar);
 
 
         // ts.isEmpty()
@@ -837,7 +840,7 @@ public class Y_TreeSet {
 
                 this.requireArity(arguments,0, "TreeSet.isEmpty");
 
-                Y_TreeSetObject ts = requireTreeSetThis(interpreter);
+                Y_TreeSetInstance ts = requireTreeSetThis(interpreter);
 
                 return new Variable.Variant(ts.data.isEmpty());
             }
@@ -850,7 +853,7 @@ public class Y_TreeSet {
 
         IsEmptyFn isEmpty = new IsEmptyFn();
         Variable isEmptyVar = new Variable(new Variable.Variant(isEmpty), true, TypeTag.OBJECT);
-        Y_TreeSet.Y_TreeSet_Prototype.set(isEmpty.getFnName(), isEmptyVar);
+        Y_TreeSet.Y_TreeSet_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
 
 
         // ts.clear()
@@ -868,7 +871,7 @@ public class Y_TreeSet {
 
                 this.requireArity(arguments,0, "TreeSet.clear");
 
-                Y_TreeSetObject ts = requireTreeSetThis(interpreter);
+                Y_TreeSetInstance ts = requireTreeSetThis(interpreter);
                 ts.data.clear();
 
                 return new Variable.Variant(null);
@@ -882,7 +885,7 @@ public class Y_TreeSet {
 
         ClearFn clear = new ClearFn();
         Variable clearVar = new Variable(new Variable.Variant(clear), true, TypeTag.OBJECT);
-        Y_TreeSet.Y_TreeSet_Prototype.set(clear.getFnName(), clearVar);
+        Y_TreeSet.Y_TreeSet_Instance_Prototype.set(clear.getFnName(), clearVar);
 
 
         // ts.clone()
@@ -900,8 +903,8 @@ public class Y_TreeSet {
 
                 this.requireArity(arguments,0, "TreeSet.clone");
 
-                Y_TreeSetObject original = requireTreeSetThis(interpreter);
-                Y_TreeSetObject cloned   = new Y_TreeSetObject();
+                Y_TreeSetInstance original = requireTreeSetThis(interpreter);
+                Y_TreeSetInstance cloned   = new Y_TreeSetInstance();
 
                 cloned.data.addAll(original.data);
 
@@ -916,18 +919,17 @@ public class Y_TreeSet {
 
         CloneFn clone = new CloneFn();
         Variable cloneVar = new Variable(new Variable.Variant(clone), true, TypeTag.OBJECT);
-        Y_TreeSet.Y_TreeSet_Prototype.set(clone.getFnName(), cloneVar);
+        Y_TreeSet.Y_TreeSet_Instance_Prototype.set(clone.getFnName(), cloneVar);
 
     }
 
-    public static RuntimeObject Y_TreeSet_Prototype;
 
-    public static class Y_TreeSetObject extends RuntimeObject {
+    public static class Y_TreeSetInstance extends Y_Class.ClassObjectInstance {
 
         // Elements kept in sorted order — numeric keys sorted numerically, strings alphabetically
         final TreeSet<Variable.Variant> data;
 
-        public Y_TreeSetObject() {
+        public Y_TreeSetInstance() {
             this.data = new TreeSet<>((a, b) -> {
                 String sa = a.toString();
                 String sb = b.toString();
@@ -940,7 +942,7 @@ public class Y_TreeSet {
                     return sa.compareTo(sb);
                 }
             });
-            this.prototype = Y_TreeSet_Prototype;
+            this.prototype = Y_TreeSet_Instance_Prototype;
         }
 
         @Override
@@ -959,7 +961,7 @@ public class Y_TreeSet {
         }
     }
 
-    public static class Y_TreeSetInit extends Function.NativeFunction {
+    public static class Y_TreeSetClass extends Y_Class.SealedClassObject {
 
         @Override
         public int arity() {
@@ -971,22 +973,27 @@ public class Y_TreeSet {
                                      List<Variable.Variant> arguments)
                 throws YsharpError {
 
-            Y_TreeSetObject newSet = new Y_TreeSetObject();
+            Y_TreeSetInstance newSet = new Y_TreeSetInstance();
 
             return new Variable.Variant(newSet);
         }
 
         @Override
-        public String getFnName() {
+        public String getClassName() {
+            return "TreeSet";
+        }
+
+        @Override
+        public String getType() {
             return "TreeSet";
         }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
-        Y_TreeSet.Y_TreeSetInit tsCtor = new Y_TreeSet.Y_TreeSetInit();
+        Y_TreeSet.Y_TreeSetClass tsCtor = new Y_TreeSet.Y_TreeSetClass();
         Variable.Variant variant = new Variable.Variant(tsCtor);
         Variable var = new Variable(variant, false, TypeTag.OBJECT);
-        interpreter.defineGlobal(tsCtor.getFnName(), var);
+        interpreter.defineGlobal(tsCtor.getClassName(), var);
     }
 
 }

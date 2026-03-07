@@ -11,7 +11,7 @@ import java.util.TreeMap;
 public class Y_TreeMap {
 
     // helper
-    private static Y_TreeMap.Y_TreeMapObject requireTreeMapThis(Interpreter interpreter) {
+    private static Y_TreeMap.Y_TreeMapInstance requireTreeMapThis(Interpreter interpreter) {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
@@ -24,7 +24,7 @@ public class Y_TreeMap {
 
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-        if (!(obj instanceof Y_TreeMap.Y_TreeMapObject)) {
+        if (!(obj instanceof Y_TreeMap.Y_TreeMapInstance)) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     0,
@@ -32,11 +32,13 @@ public class Y_TreeMap {
             );
         }
 
-        return (Y_TreeMap.Y_TreeMapObject) obj;
+        return (Y_TreeMap.Y_TreeMapInstance) obj;
     }
 
+    public static RuntimeObject Y_TreeMap_Instance_Prototype;
+
     static {
-        Y_TreeMap_Prototype = new RuntimeObject() {
+        Y_TreeMap_Instance_Prototype = new RuntimeObject() {
 
             @Override
             public boolean isTruthy() {
@@ -48,6 +50,7 @@ public class Y_TreeMap {
                 return "tree_map_prototype";
             }
         };
+        Y_TreeMap_Instance_Prototype.prototype = Y_Class.ClassPrototype;
 
         // tm.toString()
         class ToStringFn extends Function.NativeFunction {
@@ -62,7 +65,7 @@ public class Y_TreeMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_TreeMapObject tm = requireTreeMapThis(interpreter);
+                Y_TreeMapInstance tm = requireTreeMapThis(interpreter);
 
                 StringBuilder sb = new StringBuilder();
                 sb.append("{");
@@ -89,7 +92,7 @@ public class Y_TreeMap {
 
         ToStringFn toString = new ToStringFn();
         Variable toStringVar = new Variable(new Variable.Variant(toString), true, TypeTag.OBJECT);
-        Y_TreeMap.Y_TreeMap_Prototype.set(toString.getFnName(), toStringVar);
+        Y_TreeMap.Y_TreeMap_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
 
         // tm.put(key, value)
@@ -107,7 +110,7 @@ public class Y_TreeMap {
 
                 Variable.Variant key   = arguments.get(0);
                 Variable.Variant value = arguments.get(1);
-                Y_TreeMapObject tm = requireTreeMapThis(interpreter);
+                Y_TreeMapInstance tm = requireTreeMapThis(interpreter);
 
                 Variable.Variant previous = tm.data.put(key, value);
 
@@ -122,7 +125,7 @@ public class Y_TreeMap {
 
         PutFn put = new PutFn();
         Variable putVar = new Variable(new Variable.Variant(put), true, TypeTag.OBJECT);
-        Y_TreeMap.Y_TreeMap_Prototype.set(put.getFnName(), putVar);
+        Y_TreeMap.Y_TreeMap_Instance_Prototype.set(put.getFnName(), putVar);
 
 
         // tm.get(key)
@@ -139,7 +142,7 @@ public class Y_TreeMap {
                     throws YsharpError {
 
                 Variable.Variant key = arguments.get(0);
-                Y_TreeMapObject tm = requireTreeMapThis(interpreter);
+                Y_TreeMapInstance tm = requireTreeMapThis(interpreter);
 
                 Variable.Variant value = tm.data.get(key);
 
@@ -154,7 +157,7 @@ public class Y_TreeMap {
 
         GetFn get = new GetFn();
         Variable getVar = new Variable(new Variable.Variant(get), true, TypeTag.OBJECT);
-        Y_TreeMap.Y_TreeMap_Prototype.set(get.getFnName(), getVar);
+        Y_TreeMap.Y_TreeMap_Instance_Prototype.set(get.getFnName(), getVar);
 
 
         // tm.getOrDefault(key, default)
@@ -172,7 +175,7 @@ public class Y_TreeMap {
 
                 Variable.Variant key          = arguments.get(0);
                 Variable.Variant defaultValue = arguments.get(1);
-                Y_TreeMapObject tm = requireTreeMapThis(interpreter);
+                Y_TreeMapInstance tm = requireTreeMapThis(interpreter);
 
                 Variable.Variant value = tm.data.get(key);
 
@@ -187,7 +190,7 @@ public class Y_TreeMap {
 
         GetOrDefaultFn getOrDefault = new GetOrDefaultFn();
         Variable getOrDefaultVar = new Variable(new Variable.Variant(getOrDefault), true, TypeTag.OBJECT);
-        Y_TreeMap.Y_TreeMap_Prototype.set(getOrDefault.getFnName(), getOrDefaultVar);
+        Y_TreeMap.Y_TreeMap_Instance_Prototype.set(getOrDefault.getFnName(), getOrDefaultVar);
 
 
         // tm.remove(key)
@@ -204,7 +207,7 @@ public class Y_TreeMap {
                     throws YsharpError {
 
                 Variable.Variant key = arguments.get(0);
-                Y_TreeMapObject tm = requireTreeMapThis(interpreter);
+                Y_TreeMapInstance tm = requireTreeMapThis(interpreter);
 
                 Variable.Variant removed = tm.data.remove(key);
 
@@ -219,7 +222,7 @@ public class Y_TreeMap {
 
         RemoveFn remove = new RemoveFn();
         Variable removeVar = new Variable(new Variable.Variant(remove), true, TypeTag.OBJECT);
-        Y_TreeMap.Y_TreeMap_Prototype.set(remove.getFnName(), removeVar);
+        Y_TreeMap.Y_TreeMap_Instance_Prototype.set(remove.getFnName(), removeVar);
 
 
         // tm.containsKey(key)
@@ -236,7 +239,7 @@ public class Y_TreeMap {
                     throws YsharpError {
 
                 Variable.Variant key = arguments.get(0);
-                Y_TreeMapObject tm = requireTreeMapThis(interpreter);
+                Y_TreeMapInstance tm = requireTreeMapThis(interpreter);
 
                 return new Variable.Variant(tm.data.containsKey(key));
             }
@@ -249,7 +252,7 @@ public class Y_TreeMap {
 
         ContainsKeyFn containsKey = new ContainsKeyFn();
         Variable containsKeyVar = new Variable(new Variable.Variant(containsKey), true, TypeTag.OBJECT);
-        Y_TreeMap.Y_TreeMap_Prototype.set(containsKey.getFnName(), containsKeyVar);
+        Y_TreeMap.Y_TreeMap_Instance_Prototype.set(containsKey.getFnName(), containsKeyVar);
 
 
         // tm.containsValue(value)
@@ -266,7 +269,7 @@ public class Y_TreeMap {
                     throws YsharpError {
 
                 Variable.Variant value = arguments.get(0);
-                Y_TreeMapObject tm = requireTreeMapThis(interpreter);
+                Y_TreeMapInstance tm = requireTreeMapThis(interpreter);
 
                 return new Variable.Variant(tm.data.containsValue(value));
             }
@@ -279,7 +282,7 @@ public class Y_TreeMap {
 
         ContainsValueFn containsValue = new ContainsValueFn();
         Variable containsValueVar = new Variable(new Variable.Variant(containsValue), true, TypeTag.OBJECT);
-        Y_TreeMap.Y_TreeMap_Prototype.set(containsValue.getFnName(), containsValueVar);
+        Y_TreeMap.Y_TreeMap_Instance_Prototype.set(containsValue.getFnName(), containsValueVar);
 
 
         // tm.putIfAbsent(key, value)
@@ -297,7 +300,7 @@ public class Y_TreeMap {
 
                 Variable.Variant key   = arguments.get(0);
                 Variable.Variant value = arguments.get(1);
-                Y_TreeMapObject tm = requireTreeMapThis(interpreter);
+                Y_TreeMapInstance tm = requireTreeMapThis(interpreter);
 
                 Variable.Variant existing = tm.data.putIfAbsent(key, value);
 
@@ -312,7 +315,7 @@ public class Y_TreeMap {
 
         PutIfAbsentFn putIfAbsent = new PutIfAbsentFn();
         Variable putIfAbsentVar = new Variable(new Variable.Variant(putIfAbsent), true, TypeTag.OBJECT);
-        Y_TreeMap.Y_TreeMap_Prototype.set(putIfAbsent.getFnName(), putIfAbsentVar);
+        Y_TreeMap.Y_TreeMap_Instance_Prototype.set(putIfAbsent.getFnName(), putIfAbsentVar);
 
 
         // tm.firstKey()
@@ -328,7 +331,7 @@ public class Y_TreeMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_TreeMapObject tm = requireTreeMapThis(interpreter);
+                Y_TreeMapInstance tm = requireTreeMapThis(interpreter);
 
                 if (tm.data.isEmpty()) {
                     return new Variable.Variant(null);
@@ -345,7 +348,7 @@ public class Y_TreeMap {
 
         FirstKeyFn firstKey = new FirstKeyFn();
         Variable firstKeyVar = new Variable(new Variable.Variant(firstKey), true, TypeTag.OBJECT);
-        Y_TreeMap.Y_TreeMap_Prototype.set(firstKey.getFnName(), firstKeyVar);
+        Y_TreeMap.Y_TreeMap_Instance_Prototype.set(firstKey.getFnName(), firstKeyVar);
 
 
         // tm.lastKey()
@@ -361,7 +364,7 @@ public class Y_TreeMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_TreeMapObject tm = requireTreeMapThis(interpreter);
+                Y_TreeMapInstance tm = requireTreeMapThis(interpreter);
 
                 if (tm.data.isEmpty()) {
                     return new Variable.Variant(null);
@@ -378,7 +381,7 @@ public class Y_TreeMap {
 
         LastKeyFn lastKey = new LastKeyFn();
         Variable lastKeyVar = new Variable(new Variable.Variant(lastKey), true, TypeTag.OBJECT);
-        Y_TreeMap.Y_TreeMap_Prototype.set(lastKey.getFnName(), lastKeyVar);
+        Y_TreeMap.Y_TreeMap_Instance_Prototype.set(lastKey.getFnName(), lastKeyVar);
 
 
         // tm.floorKey(key) -> greatest key <= given key
@@ -395,7 +398,7 @@ public class Y_TreeMap {
                     throws YsharpError {
 
                 Variable.Variant key = arguments.get(0);
-                Y_TreeMapObject tm = requireTreeMapThis(interpreter);
+                Y_TreeMapInstance tm = requireTreeMapThis(interpreter);
 
                 Variable.Variant result = tm.data.floorKey(key);
 
@@ -410,7 +413,7 @@ public class Y_TreeMap {
 
         FloorKeyFn floorKey = new FloorKeyFn();
         Variable floorKeyVar = new Variable(new Variable.Variant(floorKey), true, TypeTag.OBJECT);
-        Y_TreeMap.Y_TreeMap_Prototype.set(floorKey.getFnName(), floorKeyVar);
+        Y_TreeMap.Y_TreeMap_Instance_Prototype.set(floorKey.getFnName(), floorKeyVar);
 
 
         // tm.ceilingKey(key) -> smallest key >= given key
@@ -427,7 +430,7 @@ public class Y_TreeMap {
                     throws YsharpError {
 
                 Variable.Variant key = arguments.get(0);
-                Y_TreeMapObject tm = requireTreeMapThis(interpreter);
+                Y_TreeMapInstance tm = requireTreeMapThis(interpreter);
 
                 Variable.Variant result = tm.data.ceilingKey(key);
 
@@ -442,7 +445,7 @@ public class Y_TreeMap {
 
         CeilingKeyFn ceilingKey = new CeilingKeyFn();
         Variable ceilingKeyVar = new Variable(new Variable.Variant(ceilingKey), true, TypeTag.OBJECT);
-        Y_TreeMap.Y_TreeMap_Prototype.set(ceilingKey.getFnName(), ceilingKeyVar);
+        Y_TreeMap.Y_TreeMap_Instance_Prototype.set(ceilingKey.getFnName(), ceilingKeyVar);
 
 
         // tm.lowerKey(key) -> greatest key strictly < given key
@@ -459,7 +462,7 @@ public class Y_TreeMap {
                     throws YsharpError {
 
                 Variable.Variant key = arguments.get(0);
-                Y_TreeMapObject tm = requireTreeMapThis(interpreter);
+                Y_TreeMapInstance tm = requireTreeMapThis(interpreter);
 
                 Variable.Variant result = tm.data.lowerKey(key);
 
@@ -474,7 +477,7 @@ public class Y_TreeMap {
 
         LowerKeyFn lowerKey = new LowerKeyFn();
         Variable lowerKeyVar = new Variable(new Variable.Variant(lowerKey), true, TypeTag.OBJECT);
-        Y_TreeMap.Y_TreeMap_Prototype.set(lowerKey.getFnName(), lowerKeyVar);
+        Y_TreeMap.Y_TreeMap_Instance_Prototype.set(lowerKey.getFnName(), lowerKeyVar);
 
 
         // tm.higherKey(key) -> smallest key strictly > given key
@@ -491,7 +494,7 @@ public class Y_TreeMap {
                     throws YsharpError {
 
                 Variable.Variant key = arguments.get(0);
-                Y_TreeMapObject tm = requireTreeMapThis(interpreter);
+                Y_TreeMapInstance tm = requireTreeMapThis(interpreter);
 
                 Variable.Variant result = tm.data.higherKey(key);
 
@@ -506,7 +509,7 @@ public class Y_TreeMap {
 
         HigherKeyFn higherKey = new HigherKeyFn();
         Variable higherKeyVar = new Variable(new Variable.Variant(higherKey), true, TypeTag.OBJECT);
-        Y_TreeMap.Y_TreeMap_Prototype.set(higherKey.getFnName(), higherKeyVar);
+        Y_TreeMap.Y_TreeMap_Instance_Prototype.set(higherKey.getFnName(), higherKeyVar);
 
 
         // tm.pollFirstEntry() -> removes and returns [key, value] of smallest entry
@@ -522,7 +525,7 @@ public class Y_TreeMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_TreeMapObject tm = requireTreeMapThis(interpreter);
+                Y_TreeMapInstance tm = requireTreeMapThis(interpreter);
 
                 if (tm.data.isEmpty()) {
                     return new Variable.Variant(null);
@@ -534,7 +537,7 @@ public class Y_TreeMap {
                 pair.add(entry.getKey());
                 pair.add(entry.getValue());
 
-                return new Variable.Variant(new Y_Array.Y_ArrayObject(pair));
+                return new Variable.Variant(new Y_Array.Y_ArrayInstance(pair));
             }
 
             @Override
@@ -545,7 +548,7 @@ public class Y_TreeMap {
 
         PollFirstEntryFn pollFirstEntry = new PollFirstEntryFn();
         Variable pollFirstEntryVar = new Variable(new Variable.Variant(pollFirstEntry), true, TypeTag.OBJECT);
-        Y_TreeMap.Y_TreeMap_Prototype.set(pollFirstEntry.getFnName(), pollFirstEntryVar);
+        Y_TreeMap.Y_TreeMap_Instance_Prototype.set(pollFirstEntry.getFnName(), pollFirstEntryVar);
 
 
         // tm.pollLastEntry() -> removes and returns [key, value] of largest entry
@@ -561,7 +564,7 @@ public class Y_TreeMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_TreeMapObject tm = requireTreeMapThis(interpreter);
+                Y_TreeMapInstance tm = requireTreeMapThis(interpreter);
 
                 if (tm.data.isEmpty()) {
                     return new Variable.Variant(null);
@@ -573,7 +576,7 @@ public class Y_TreeMap {
                 pair.add(entry.getKey());
                 pair.add(entry.getValue());
 
-                return new Variable.Variant(new Y_Array.Y_ArrayObject(pair));
+                return new Variable.Variant(new Y_Array.Y_ArrayInstance(pair));
             }
 
             @Override
@@ -584,7 +587,7 @@ public class Y_TreeMap {
 
         PollLastEntryFn pollLastEntry = new PollLastEntryFn();
         Variable pollLastEntryVar = new Variable(new Variable.Variant(pollLastEntry), true, TypeTag.OBJECT);
-        Y_TreeMap.Y_TreeMap_Prototype.set(pollLastEntry.getFnName(), pollLastEntryVar);
+        Y_TreeMap.Y_TreeMap_Instance_Prototype.set(pollLastEntry.getFnName(), pollLastEntryVar);
 
 
         // tm.subMap(fromKey, toKey) -> new TreeMap with keys in [fromKey, toKey)
@@ -602,9 +605,9 @@ public class Y_TreeMap {
 
                 Variable.Variant fromKey = arguments.get(0);
                 Variable.Variant toKey   = arguments.get(1);
-                Y_TreeMapObject tm = requireTreeMapThis(interpreter);
+                Y_TreeMapInstance tm = requireTreeMapThis(interpreter);
 
-                Y_TreeMapObject result = new Y_TreeMapObject();
+                Y_TreeMapInstance result = new Y_TreeMapInstance();
                 result.data.putAll(tm.data.subMap(fromKey, toKey));
 
                 return new Variable.Variant(result);
@@ -618,7 +621,7 @@ public class Y_TreeMap {
 
         SubMapFn subMap = new SubMapFn();
         Variable subMapVar = new Variable(new Variable.Variant(subMap), true, TypeTag.OBJECT);
-        Y_TreeMap.Y_TreeMap_Prototype.set(subMap.getFnName(), subMapVar);
+        Y_TreeMap.Y_TreeMap_Instance_Prototype.set(subMap.getFnName(), subMapVar);
 
 
         // tm.headMap(toKey) -> new TreeMap with keys strictly < toKey
@@ -635,9 +638,9 @@ public class Y_TreeMap {
                     throws YsharpError {
 
                 Variable.Variant toKey = arguments.get(0);
-                Y_TreeMapObject tm = requireTreeMapThis(interpreter);
+                Y_TreeMapInstance tm = requireTreeMapThis(interpreter);
 
-                Y_TreeMapObject result = new Y_TreeMapObject();
+                Y_TreeMapInstance result = new Y_TreeMapInstance();
                 result.data.putAll(tm.data.headMap(toKey));
 
                 return new Variable.Variant(result);
@@ -651,7 +654,7 @@ public class Y_TreeMap {
 
         HeadMapFn headMap = new HeadMapFn();
         Variable headMapVar = new Variable(new Variable.Variant(headMap), true, TypeTag.OBJECT);
-        Y_TreeMap.Y_TreeMap_Prototype.set(headMap.getFnName(), headMapVar);
+        Y_TreeMap.Y_TreeMap_Instance_Prototype.set(headMap.getFnName(), headMapVar);
 
 
         // tm.tailMap(fromKey) -> new TreeMap with keys >= fromKey
@@ -668,9 +671,9 @@ public class Y_TreeMap {
                     throws YsharpError {
 
                 Variable.Variant fromKey = arguments.get(0);
-                Y_TreeMapObject tm = requireTreeMapThis(interpreter);
+                Y_TreeMapInstance tm = requireTreeMapThis(interpreter);
 
-                Y_TreeMapObject result = new Y_TreeMapObject();
+                Y_TreeMapInstance result = new Y_TreeMapInstance();
                 result.data.putAll(tm.data.tailMap(fromKey));
 
                 return new Variable.Variant(result);
@@ -684,7 +687,7 @@ public class Y_TreeMap {
 
         TailMapFn tailMap = new TailMapFn();
         Variable tailMapVar = new Variable(new Variable.Variant(tailMap), true, TypeTag.OBJECT);
-        Y_TreeMap.Y_TreeMap_Prototype.set(tailMap.getFnName(), tailMapVar);
+        Y_TreeMap.Y_TreeMap_Instance_Prototype.set(tailMap.getFnName(), tailMapVar);
 
 
         // tm.keys() -> sorted array of keys
@@ -700,11 +703,11 @@ public class Y_TreeMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_TreeMapObject tm = requireTreeMapThis(interpreter);
+                Y_TreeMapInstance tm = requireTreeMapThis(interpreter);
 
                 ArrayList<Variable.Variant> list = new ArrayList<>(tm.data.keySet());
 
-                return new Variable.Variant(new Y_Array.Y_ArrayObject(list));
+                return new Variable.Variant(new Y_Array.Y_ArrayInstance(list));
             }
 
             @Override
@@ -715,7 +718,7 @@ public class Y_TreeMap {
 
         KeysFn keys = new KeysFn();
         Variable keysVar = new Variable(new Variable.Variant(keys), true, TypeTag.OBJECT);
-        Y_TreeMap.Y_TreeMap_Prototype.set(keys.getFnName(), keysVar);
+        Y_TreeMap.Y_TreeMap_Instance_Prototype.set(keys.getFnName(), keysVar);
 
 
         // tm.values() -> array of values in key-sorted order
@@ -731,11 +734,11 @@ public class Y_TreeMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_TreeMapObject tm = requireTreeMapThis(interpreter);
+                Y_TreeMapInstance tm = requireTreeMapThis(interpreter);
 
                 ArrayList<Variable.Variant> list = new ArrayList<>(tm.data.values());
 
-                return new Variable.Variant(new Y_Array.Y_ArrayObject(list));
+                return new Variable.Variant(new Y_Array.Y_ArrayInstance(list));
             }
 
             @Override
@@ -746,7 +749,7 @@ public class Y_TreeMap {
 
         ValuesFn values = new ValuesFn();
         Variable valuesVar = new Variable(new Variable.Variant(values), true, TypeTag.OBJECT);
-        Y_TreeMap.Y_TreeMap_Prototype.set(values.getFnName(), valuesVar);
+        Y_TreeMap.Y_TreeMap_Instance_Prototype.set(values.getFnName(), valuesVar);
 
 
         // tm.entries() -> array of [key, value] pairs in key-sorted order
@@ -762,7 +765,7 @@ public class Y_TreeMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_TreeMapObject tm = requireTreeMapThis(interpreter);
+                Y_TreeMapInstance tm = requireTreeMapThis(interpreter);
 
                 ArrayList<Variable.Variant> outerList = new ArrayList<>();
 
@@ -770,10 +773,10 @@ public class Y_TreeMap {
                     ArrayList<Variable.Variant> pair = new ArrayList<>();
                     pair.add(entry.getKey());
                     pair.add(entry.getValue());
-                    outerList.add(new Variable.Variant(new Y_Array.Y_ArrayObject(pair)));
+                    outerList.add(new Variable.Variant(new Y_Array.Y_ArrayInstance(pair)));
                 }
 
-                return new Variable.Variant(new Y_Array.Y_ArrayObject(outerList));
+                return new Variable.Variant(new Y_Array.Y_ArrayInstance(outerList));
             }
 
             @Override
@@ -784,7 +787,7 @@ public class Y_TreeMap {
 
         EntriesFn entries = new EntriesFn();
         Variable entriesVar = new Variable(new Variable.Variant(entries), true, TypeTag.OBJECT);
-        Y_TreeMap.Y_TreeMap_Prototype.set(entries.getFnName(), entriesVar);
+        Y_TreeMap.Y_TreeMap_Instance_Prototype.set(entries.getFnName(), entriesVar);
 
 
         // tm.size()
@@ -800,7 +803,7 @@ public class Y_TreeMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_TreeMapObject tm = requireTreeMapThis(interpreter);
+                Y_TreeMapInstance tm = requireTreeMapThis(interpreter);
 
                 return new Variable.Variant(tm.data.size());
             }
@@ -813,7 +816,7 @@ public class Y_TreeMap {
 
         SizeFn size = new SizeFn();
         Variable sizeVar = new Variable(new Variable.Variant(size), true, TypeTag.OBJECT);
-        Y_TreeMap.Y_TreeMap_Prototype.set(size.getFnName(), sizeVar);
+        Y_TreeMap.Y_TreeMap_Instance_Prototype.set(size.getFnName(), sizeVar);
 
 
         // tm.isEmpty()
@@ -829,7 +832,7 @@ public class Y_TreeMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_TreeMapObject tm = requireTreeMapThis(interpreter);
+                Y_TreeMapInstance tm = requireTreeMapThis(interpreter);
 
                 return new Variable.Variant(tm.data.isEmpty());
             }
@@ -842,7 +845,7 @@ public class Y_TreeMap {
 
         IsEmptyFn isEmpty = new IsEmptyFn();
         Variable isEmptyVar = new Variable(new Variable.Variant(isEmpty), true, TypeTag.OBJECT);
-        Y_TreeMap.Y_TreeMap_Prototype.set(isEmpty.getFnName(), isEmptyVar);
+        Y_TreeMap.Y_TreeMap_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
 
 
         // tm.clear()
@@ -858,7 +861,7 @@ public class Y_TreeMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_TreeMapObject tm = requireTreeMapThis(interpreter);
+                Y_TreeMapInstance tm = requireTreeMapThis(interpreter);
                 tm.data.clear();
 
                 return new Variable.Variant(null);
@@ -872,7 +875,7 @@ public class Y_TreeMap {
 
         ClearFn clear = new ClearFn();
         Variable clearVar = new Variable(new Variable.Variant(clear), true, TypeTag.OBJECT);
-        Y_TreeMap.Y_TreeMap_Prototype.set(clear.getFnName(), clearVar);
+        Y_TreeMap.Y_TreeMap_Instance_Prototype.set(clear.getFnName(), clearVar);
 
 
         // tm.clone()
@@ -888,8 +891,8 @@ public class Y_TreeMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_TreeMapObject original = requireTreeMapThis(interpreter);
-                Y_TreeMapObject cloned   = new Y_TreeMapObject();
+                Y_TreeMapInstance original = requireTreeMapThis(interpreter);
+                Y_TreeMapInstance cloned   = new Y_TreeMapInstance();
 
                 cloned.data.putAll(original.data);
 
@@ -904,18 +907,16 @@ public class Y_TreeMap {
 
         CloneFn clone = new CloneFn();
         Variable cloneVar = new Variable(new Variable.Variant(clone), true, TypeTag.OBJECT);
-        Y_TreeMap.Y_TreeMap_Prototype.set(clone.getFnName(), cloneVar);
+        Y_TreeMap.Y_TreeMap_Instance_Prototype.set(clone.getFnName(), cloneVar);
 
     }
 
-    public static RuntimeObject Y_TreeMap_Prototype;
-
-    public static class Y_TreeMapObject extends RuntimeObject {
+    public static class Y_TreeMapInstance extends Y_Class.ClassObjectInstance {
 
         // Keys are sorted by their natural string representation
         final TreeMap<Variable.Variant, Variable.Variant> data;
 
-        public Y_TreeMapObject() {
+        public Y_TreeMapInstance() {
             this.data = new TreeMap<>((a, b) -> {
                 String sa = a.toString();
                 String sb = b.toString();
@@ -929,7 +930,7 @@ public class Y_TreeMap {
                     return sa.compareTo(sb);
                 }
             });
-            this.prototype = Y_TreeMap_Prototype;
+            this.prototype = Y_TreeMap_Instance_Prototype;
         }
 
         @Override
@@ -948,7 +949,7 @@ public class Y_TreeMap {
         }
     }
 
-    public static class Y_TreeMapInit extends Function.NativeFunction {
+    public static class Y_TreeMapClass extends Y_Class.SealedClassObject {
 
         @Override
         public int arity() {
@@ -960,22 +961,27 @@ public class Y_TreeMap {
                                      List<Variable.Variant> arguments)
                 throws YsharpError {
 
-            Y_TreeMapObject newMap = new Y_TreeMapObject();
+            Y_TreeMapInstance newMap = new Y_TreeMapInstance();
 
             return new Variable.Variant(newMap);
         }
 
         @Override
-        public String getFnName() {
+        public String getClassName() {
+            return "TreeMap";
+        }
+
+        @Override
+        public String getType() {
             return "TreeMap";
         }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
-        Y_TreeMap.Y_TreeMapInit tmCtor = new Y_TreeMap.Y_TreeMapInit();
+        Y_TreeMap.Y_TreeMapClass tmCtor = new Y_TreeMap.Y_TreeMapClass();
         Variable.Variant variant = new Variable.Variant(tmCtor);
         Variable var = new Variable(variant, false, TypeTag.OBJECT);
-        interpreter.defineGlobal(tmCtor.getFnName(), var);
+        interpreter.defineGlobal(tmCtor.getClassName(), var);
     }
 
 }

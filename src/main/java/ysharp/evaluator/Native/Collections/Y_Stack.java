@@ -12,7 +12,7 @@ import java.util.Stack;
 public class Y_Stack {
 
     // helper
-    private static Y_Stack.Y_StackObject requireStackThis (Interpreter interpreter) {
+    private static Y_Stack.Y_StackInstance requireStackThis (Interpreter interpreter) {
 
         Variable thisVar = interpreter.curEnv.getValue("this");
 
@@ -26,7 +26,7 @@ public class Y_Stack {
 
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-        if (!(obj instanceof Y_Stack.Y_StackObject)) {
+        if (!(obj instanceof Y_Stack.Y_StackInstance)) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     0,
@@ -34,13 +34,13 @@ public class Y_Stack {
             );
         }
 
-        return  (Y_Stack.Y_StackObject) obj;
+        return  (Y_Stack.Y_StackInstance) obj;
     }
 
-    public static RuntimeObject Y_Stack_Prototype;
+    public static RuntimeObject Y_Stack_Instance_Prototype;
 
     static {
-        Y_Stack_Prototype = new RuntimeObject() {
+        Y_Stack_Instance_Prototype = new RuntimeObject() {
 
             @Override
             public boolean isTruthy() {
@@ -52,6 +52,7 @@ public class Y_Stack {
                 return "stack_prototype";
             }
         };
+        Y_Stack_Instance_Prototype.prototype = Y_Class.ClassPrototype;
 
         // stack.toString()
         class ToStringFn extends Function.NativeFunction implements Callable {
@@ -63,7 +64,7 @@ public class Y_Stack {
 
             @Override
             public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
-                Y_Stack.Y_StackObject array = requireStackThis(interpreter);
+                Y_Stack.Y_StackInstance array = requireStackThis(interpreter);
 
                 StringBuilder builder = new StringBuilder();
                 builder.append("[ ");
@@ -105,7 +106,7 @@ public class Y_Stack {
                 new Variable.Variant(toString),
                 true,
                 TypeTag.OBJECT);
-        Y_Stack_Prototype.set(toString.getFnName(), toStringVar);
+        Y_Stack_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
         // arr.add(value)
         class PushFn extends Function.NativeFunction implements Callable {
@@ -121,7 +122,7 @@ public class Y_Stack {
                     throws YsharpError {
 
                 Variable.Variant value = arguments.get(0);
-                Y_Stack.Y_StackObject stack = requireStackThis(interpreter);
+                Y_Stack.Y_StackInstance stack = requireStackThis(interpreter);
                 stack.data.push(value);
 
                 return new Variable.Variant(stack.data.size());
@@ -138,7 +139,7 @@ public class Y_Stack {
                 new Variable.Variant(push),
                 true,
                 TypeTag.OBJECT);
-        Y_Stack_Prototype.set(push.getFnName(), addVar);
+        Y_Stack_Instance_Prototype.set(push.getFnName(), addVar);
 
         // stack.pop()
         class PopFn extends Function.NativeFunction implements Callable {
@@ -153,7 +154,7 @@ public class Y_Stack {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_Stack.Y_StackObject stack = requireStackThis(interpreter);
+                Y_Stack.Y_StackInstance stack = requireStackThis(interpreter);
 
                 if (stack.data.isEmpty()) {
                     throw new YsharpError(
@@ -177,7 +178,7 @@ public class Y_Stack {
                 new Variable.Variant(pop),
                 true,
                 TypeTag.OBJECT);
-        Y_Stack_Prototype.set(pop.getFnName(), popVar);
+        Y_Stack_Instance_Prototype.set(pop.getFnName(), popVar);
 
         // stack.peek()
         class PeekFn extends Function.NativeFunction implements Callable {
@@ -192,7 +193,7 @@ public class Y_Stack {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_Stack.Y_StackObject stack = requireStackThis(interpreter);
+                Y_Stack.Y_StackInstance stack = requireStackThis(interpreter);
 
                 if (stack.data.isEmpty()) {
                     throw new YsharpError(
@@ -216,7 +217,7 @@ public class Y_Stack {
                 new Variable.Variant(peek),
                 true,
                 TypeTag.OBJECT);
-        Y_Stack_Prototype.set(peek.getFnName(), peekVar);
+        Y_Stack_Instance_Prototype.set(peek.getFnName(), peekVar);
 
         // stack.empty()
         class EmptyFn extends Function.NativeFunction implements Callable {
@@ -231,7 +232,7 @@ public class Y_Stack {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_Stack.Y_StackObject stack = requireStackThis(interpreter);
+                Y_Stack.Y_StackInstance stack = requireStackThis(interpreter);
 
                 return new Variable.Variant(stack.data.isEmpty());
             }
@@ -247,7 +248,7 @@ public class Y_Stack {
                 new Variable.Variant(empty),
                 true,
                 TypeTag.OBJECT);
-        Y_Stack_Prototype.set(empty.getFnName(), emptyVar);
+        Y_Stack_Instance_Prototype.set(empty.getFnName(), emptyVar);
 
         // stack.search(element)
         class SearchFn extends Function.NativeFunction implements Callable {
@@ -262,7 +263,7 @@ public class Y_Stack {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_Stack.Y_StackObject stack = requireStackThis(interpreter);
+                Y_Stack.Y_StackInstance stack = requireStackThis(interpreter);
 
                 Variable.Variant target = arguments.get(0);
 
@@ -298,7 +299,7 @@ public class Y_Stack {
                 new Variable.Variant(search),
                 true,
                 TypeTag.OBJECT);
-        Y_Stack_Prototype.set(search.getFnName(), searchVar);
+        Y_Stack_Instance_Prototype.set(search.getFnName(), searchVar);
 
         // stack.add(index, value)
         class AddAtIndexFn extends Function.NativeFunction implements Callable {
@@ -313,7 +314,7 @@ public class Y_Stack {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_Stack.Y_StackObject stack = requireStackThis(interpreter);
+                Y_Stack.Y_StackInstance stack = requireStackThis(interpreter);
 
                 Variable.Variant indexVar = arguments.get(0);
                 Variable.Variant value = arguments.get(1);
@@ -352,7 +353,7 @@ public class Y_Stack {
                 new Variable.Variant(addAtIndex),
                 true,
                 TypeTag.OBJECT);
-        Y_Stack_Prototype.set(addAtIndex.getFnName(), addAtIndexVar);
+        Y_Stack_Instance_Prototype.set(addAtIndex.getFnName(), addAtIndexVar);
 
         // stack.clear()
         class ClearFn extends Function.NativeFunction implements Callable {
@@ -367,7 +368,7 @@ public class Y_Stack {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_Stack.Y_StackObject stack = requireStackThis(interpreter);
+                Y_Stack.Y_StackInstance stack = requireStackThis(interpreter);
 
                 stack.data.clear();
 
@@ -385,7 +386,7 @@ public class Y_Stack {
                 new Variable.Variant(clear),
                 true,
                 TypeTag.OBJECT);
-        Y_Stack_Prototype.set(clear.getFnName(), clearVar);
+        Y_Stack_Instance_Prototype.set(clear.getFnName(), clearVar);
 
         // stack.clone()
         class CloneFn extends Function.NativeFunction implements Callable {
@@ -400,13 +401,13 @@ public class Y_Stack {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_Stack.Y_StackObject stack = requireStackThis(interpreter);
+                Y_Stack.Y_StackInstance stack = requireStackThis(interpreter);
 
                 Stack<Variable.Variant> clonedData =
                         (Stack<Variable.Variant>) stack.data.clone();
 
-                Y_Stack.Y_StackObject newStack =
-                        new Y_Stack.Y_StackObject(clonedData);
+                Y_Stack.Y_StackInstance newStack =
+                        new Y_Stack.Y_StackInstance(clonedData);
 
                 return new Variable.Variant(newStack);
             }
@@ -422,7 +423,7 @@ public class Y_Stack {
                 new Variable.Variant(clone),
                 true,
                 TypeTag.OBJECT);
-        Y_Stack_Prototype.set(clone.getFnName(), cloneVar);
+        Y_Stack_Instance_Prototype.set(clone.getFnName(), cloneVar);
 
         // stack.contains(value)
         class ContainsFn extends Function.NativeFunction implements Callable {
@@ -437,7 +438,7 @@ public class Y_Stack {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_Stack.Y_StackObject stack = requireStackThis(interpreter);
+                Y_Stack.Y_StackInstance stack = requireStackThis(interpreter);
 
                 Variable.Variant target = arguments.get(0);
 
@@ -461,21 +462,21 @@ public class Y_Stack {
                 new Variable.Variant(contains),
                 true,
                 TypeTag.OBJECT);
-        Y_Stack_Prototype.set(contains.getFnName(), containsVar);
+        Y_Stack_Instance_Prototype.set(contains.getFnName(), containsVar);
     }
 
-    public static class Y_StackObject extends RuntimeObject {
+    public static class Y_StackInstance extends Y_Class.ClassObjectInstance {
 
         private final Stack<Variable.Variant> data;
 
-        public Y_StackObject(Stack<Variable.Variant> data)  {
+        public Y_StackInstance(Stack<Variable.Variant> data)  {
             this.data = data;
-            this.prototype = Y_Stack_Prototype;
+            this.prototype = Y_Stack_Instance_Prototype;
         }
 
-        public Y_StackObject() {
+        public Y_StackInstance() {
             this.data = new Stack<>();
-            this.prototype = Y_Stack_Prototype;
+            this.prototype = Y_Stack_Instance_Prototype;
         }
 
         @Override
@@ -494,7 +495,7 @@ public class Y_Stack {
         }
     }
 
-    public static class Y_StackInit extends Function.NativeFunction {
+    public static class Y_StackClass extends Y_Class.SealedClassObject {
 
         @Override
         public int arity() {
@@ -504,21 +505,26 @@ public class Y_Stack {
         @Override
         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
             Stack<Variable.Variant> value = new Stack<>();
-            Y_Stack.Y_StackObject newStack = new Y_Stack.Y_StackObject(value);
+            Y_Stack.Y_StackInstance newStack = new Y_Stack.Y_StackInstance(value);
 
             return new Variable.Variant(newStack);
         }
 
         @Override
-        public String getFnName() {
+        public String getClassName() {
+            return "Stack";
+        }
+
+        @Override
+        public String getType() {
             return "Stack";
         }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
-        Y_Stack.Y_StackInit stackCtor = new Y_Stack.Y_StackInit();
+        Y_Stack.Y_StackClass stackCtor = new Y_Stack.Y_StackClass();
         Variable.Variant variant = new Variable.Variant(stackCtor);
         Variable var = new Variable(variant, false, TypeTag.OBJECT);
-        interpreter.defineGlobal(stackCtor.getFnName(), var);
+        interpreter.defineGlobal(stackCtor.getClassName(), var);
     }
 }

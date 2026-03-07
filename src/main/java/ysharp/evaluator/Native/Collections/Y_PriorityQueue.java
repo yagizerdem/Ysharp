@@ -10,7 +10,7 @@ import java.util.List;
 public class Y_PriorityQueue {
 
     // helper
-    private static Y_PriorityQueue.Y_PriorityQueueObject requirePriorityQueueThis(Interpreter interpreter) {
+    private static Y_PriorityQueue.Y_PriorityQueueInstance requirePriorityQueueThis(Interpreter interpreter) {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
@@ -23,7 +23,7 @@ public class Y_PriorityQueue {
 
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-        if (!(obj instanceof Y_PriorityQueue.Y_PriorityQueueObject)) {
+        if (!(obj instanceof Y_PriorityQueue.Y_PriorityQueueInstance)) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     0,
@@ -31,11 +31,13 @@ public class Y_PriorityQueue {
             );
         }
 
-        return (Y_PriorityQueue.Y_PriorityQueueObject) obj;
+        return (Y_PriorityQueue.Y_PriorityQueueInstance) obj;
     }
 
+    public static RuntimeObject Y_PriorityQueue_Instance_Prototype;
+
     static {
-        Y_PriorityQueue_Prototype = new RuntimeObject() {
+        Y_PriorityQueue_Instance_Prototype = new RuntimeObject() {
 
             @Override
             public boolean isTruthy() {
@@ -47,6 +49,7 @@ public class Y_PriorityQueue {
                 return "priority_queue_prototype";
             }
         };
+        Y_PriorityQueue_Instance_Prototype.prototype = Y_Class.ClassPrototype;
 
         // pq.toString()
         class ToStringFn extends Function.NativeFunction {
@@ -61,7 +64,7 @@ public class Y_PriorityQueue {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_PriorityQueueObject pq = requirePriorityQueueThis(interpreter);
+                Y_PriorityQueueInstance pq = requirePriorityQueueThis(interpreter);
 
                 StringBuilder sb = new StringBuilder();
                 sb.append("PriorityQueue[");
@@ -89,7 +92,7 @@ public class Y_PriorityQueue {
                 new Variable.Variant(toString),
                 true,
                 TypeTag.OBJECT);
-        Y_PriorityQueue.Y_PriorityQueue_Prototype.set(toString.getFnName(), toStringVar);
+        Y_PriorityQueue.Y_PriorityQueue_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
 
         // pq.enqueue(value, priority)
@@ -108,7 +111,7 @@ public class Y_PriorityQueue {
 
                 Variable.Variant value = arguments.get(0);
                 Variable.Variant priorityVariant = arguments.get(1);
-                Y_PriorityQueueObject pq = requirePriorityQueueThis(interpreter);
+                Y_PriorityQueueInstance pq = requirePriorityQueueThis(interpreter);
 
                 double priority = ((Number) priorityVariant.value).doubleValue();
 
@@ -129,7 +132,7 @@ public class Y_PriorityQueue {
                 new Variable.Variant(enqueue),
                 true,
                 TypeTag.OBJECT);
-        Y_PriorityQueue.Y_PriorityQueue_Prototype.set(enqueue.getFnName(), enqueueVar);
+        Y_PriorityQueue.Y_PriorityQueue_Instance_Prototype.set(enqueue.getFnName(), enqueueVar);
 
 
         // pq.dequeue() -> returns value with highest priority (lowest number)
@@ -145,7 +148,7 @@ public class Y_PriorityQueue {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_PriorityQueueObject pq = requirePriorityQueueThis(interpreter);
+                Y_PriorityQueueInstance pq = requirePriorityQueueThis(interpreter);
 
                 if (pq.heap.isEmpty()) {
                     return new Variable.Variant(null);
@@ -175,7 +178,7 @@ public class Y_PriorityQueue {
                 new Variable.Variant(dequeue),
                 true,
                 TypeTag.OBJECT);
-        Y_PriorityQueue.Y_PriorityQueue_Prototype.set(dequeue.getFnName(), dequeueVar);
+        Y_PriorityQueue.Y_PriorityQueue_Instance_Prototype.set(dequeue.getFnName(), dequeueVar);
 
 
         // pq.peek() -> returns value without removing
@@ -191,7 +194,7 @@ public class Y_PriorityQueue {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_PriorityQueueObject pq = requirePriorityQueueThis(interpreter);
+                Y_PriorityQueueInstance pq = requirePriorityQueueThis(interpreter);
 
                 if (pq.heap.isEmpty()) {
                     return new Variable.Variant(null);
@@ -211,7 +214,7 @@ public class Y_PriorityQueue {
                 new Variable.Variant(peek),
                 true,
                 TypeTag.OBJECT);
-        Y_PriorityQueue.Y_PriorityQueue_Prototype.set(peek.getFnName(), peekVar);
+        Y_PriorityQueue.Y_PriorityQueue_Instance_Prototype.set(peek.getFnName(), peekVar);
 
 
         // pq.peekPriority() -> returns the priority number of the top element
@@ -227,7 +230,7 @@ public class Y_PriorityQueue {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_PriorityQueueObject pq = requirePriorityQueueThis(interpreter);
+                Y_PriorityQueueInstance pq = requirePriorityQueueThis(interpreter);
 
                 if (pq.heap.isEmpty()) {
                     return new Variable.Variant(null);
@@ -247,7 +250,7 @@ public class Y_PriorityQueue {
                 new Variable.Variant(peekPriority),
                 true,
                 TypeTag.OBJECT);
-        Y_PriorityQueue.Y_PriorityQueue_Prototype.set(peekPriority.getFnName(), peekPriorityVar);
+        Y_PriorityQueue.Y_PriorityQueue_Instance_Prototype.set(peekPriority.getFnName(), peekPriorityVar);
 
 
         // pq.contains(value) -> true/false
@@ -264,7 +267,7 @@ public class Y_PriorityQueue {
                     throws YsharpError {
 
                 Variable.Variant target = arguments.get(0);
-                Y_PriorityQueueObject pq = requirePriorityQueueThis(interpreter);
+                Y_PriorityQueueInstance pq = requirePriorityQueueThis(interpreter);
 
                 for (PriorityEntry entry : pq.heap) {
                     if (entry.value.equals(target)) {
@@ -286,7 +289,7 @@ public class Y_PriorityQueue {
                 new Variable.Variant(contains),
                 true,
                 TypeTag.OBJECT);
-        Y_PriorityQueue.Y_PriorityQueue_Prototype.set(contains.getFnName(), containsVar);
+        Y_PriorityQueue.Y_PriorityQueue_Instance_Prototype.set(contains.getFnName(), containsVar);
 
 
         // pq.changePriority(value, newPriority) -> true if found and updated
@@ -304,7 +307,7 @@ public class Y_PriorityQueue {
 
                 Variable.Variant target = arguments.get(0);
                 Variable.Variant newPriorityVariant = arguments.get(1);
-                Y_PriorityQueueObject pq = requirePriorityQueueThis(interpreter);
+                Y_PriorityQueueInstance pq = requirePriorityQueueThis(interpreter);
 
                 double newPriority = ((Number) newPriorityVariant.value).doubleValue();
 
@@ -331,7 +334,7 @@ public class Y_PriorityQueue {
                 new Variable.Variant(changePriority),
                 true,
                 TypeTag.OBJECT);
-        Y_PriorityQueue.Y_PriorityQueue_Prototype.set(changePriority.getFnName(), changePriorityVar);
+        Y_PriorityQueue.Y_PriorityQueue_Instance_Prototype.set(changePriority.getFnName(), changePriorityVar);
 
 
         // pq.remove(value) -> removes first match, returns true/false
@@ -348,7 +351,7 @@ public class Y_PriorityQueue {
                     throws YsharpError {
 
                 Variable.Variant target = arguments.get(0);
-                Y_PriorityQueueObject pq = requirePriorityQueueThis(interpreter);
+                Y_PriorityQueueInstance pq = requirePriorityQueueThis(interpreter);
 
                 for (int i = 0; i < pq.heap.size(); i++) {
                     if (pq.heap.get(i).value.equals(target)) {
@@ -379,7 +382,7 @@ public class Y_PriorityQueue {
                 new Variable.Variant(remove),
                 true,
                 TypeTag.OBJECT);
-        Y_PriorityQueue.Y_PriorityQueue_Prototype.set(remove.getFnName(), removeVar);
+        Y_PriorityQueue.Y_PriorityQueue_Instance_Prototype.set(remove.getFnName(), removeVar);
 
 
         // pq.size()
@@ -395,7 +398,7 @@ public class Y_PriorityQueue {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_PriorityQueueObject pq = requirePriorityQueueThis(interpreter);
+                Y_PriorityQueueInstance pq = requirePriorityQueueThis(interpreter);
 
                 return new Variable.Variant(pq.heap.size());
             }
@@ -411,7 +414,7 @@ public class Y_PriorityQueue {
                 new Variable.Variant(size),
                 true,
                 TypeTag.OBJECT);
-        Y_PriorityQueue.Y_PriorityQueue_Prototype.set(size.getFnName(), sizeVar);
+        Y_PriorityQueue.Y_PriorityQueue_Instance_Prototype.set(size.getFnName(), sizeVar);
 
 
         // pq.isEmpty()
@@ -427,7 +430,7 @@ public class Y_PriorityQueue {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_PriorityQueueObject pq = requirePriorityQueueThis(interpreter);
+                Y_PriorityQueueInstance pq = requirePriorityQueueThis(interpreter);
 
                 return new Variable.Variant(pq.heap.isEmpty());
             }
@@ -443,7 +446,7 @@ public class Y_PriorityQueue {
                 new Variable.Variant(isEmpty),
                 true,
                 TypeTag.OBJECT);
-        Y_PriorityQueue.Y_PriorityQueue_Prototype.set(isEmpty.getFnName(), isEmptyVar);
+        Y_PriorityQueue.Y_PriorityQueue_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
 
 
         // pq.clear()
@@ -459,7 +462,7 @@ public class Y_PriorityQueue {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_PriorityQueueObject pq = requirePriorityQueueThis(interpreter);
+                Y_PriorityQueueInstance pq = requirePriorityQueueThis(interpreter);
                 pq.heap.clear();
 
                 return new Variable.Variant(null);
@@ -476,7 +479,7 @@ public class Y_PriorityQueue {
                 new Variable.Variant(clear),
                 true,
                 TypeTag.OBJECT);
-        Y_PriorityQueue.Y_PriorityQueue_Prototype.set(clear.getFnName(), clearVar);
+        Y_PriorityQueue.Y_PriorityQueue_Instance_Prototype.set(clear.getFnName(), clearVar);
 
 
         // pq.toArray() -> returns array of values in heap order (not sorted)
@@ -492,7 +495,7 @@ public class Y_PriorityQueue {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_PriorityQueueObject pq = requirePriorityQueueThis(interpreter);
+                Y_PriorityQueueInstance pq = requirePriorityQueueThis(interpreter);
 
                 java.util.ArrayList<Variable.Variant> result =
                         new java.util.ArrayList<>();
@@ -501,8 +504,8 @@ public class Y_PriorityQueue {
                     result.add(entry.value);
                 }
 
-                Y_Array.Y_ArrayObject array =
-                        new Y_Array.Y_ArrayObject(result);
+                Y_Array.Y_ArrayInstance array =
+                        new Y_Array.Y_ArrayInstance(result);
 
                 return new Variable.Variant(array);
             }
@@ -518,7 +521,7 @@ public class Y_PriorityQueue {
                 new Variable.Variant(toArray),
                 true,
                 TypeTag.OBJECT);
-        Y_PriorityQueue.Y_PriorityQueue_Prototype.set(toArray.getFnName(), toArrayVar);
+        Y_PriorityQueue.Y_PriorityQueue_Instance_Prototype.set(toArray.getFnName(), toArrayVar);
 
 
         // pq.drainSorted() -> dequeues all elements in priority order, returns array
@@ -534,7 +537,7 @@ public class Y_PriorityQueue {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_PriorityQueueObject pq = requirePriorityQueueThis(interpreter);
+                Y_PriorityQueueInstance pq = requirePriorityQueueThis(interpreter);
 
                 java.util.ArrayList<Variable.Variant> result =
                         new java.util.ArrayList<>();
@@ -550,8 +553,8 @@ public class Y_PriorityQueue {
                     result.add(top.value);
                 }
 
-                Y_Array.Y_ArrayObject array =
-                        new Y_Array.Y_ArrayObject(result);
+                Y_Array.Y_ArrayInstance array =
+                        new Y_Array.Y_ArrayInstance(result);
 
                 return new Variable.Variant(array);
             }
@@ -567,7 +570,7 @@ public class Y_PriorityQueue {
                 new Variable.Variant(drainSorted),
                 true,
                 TypeTag.OBJECT);
-        Y_PriorityQueue.Y_PriorityQueue_Prototype.set(drainSorted.getFnName(), drainSortedVar);
+        Y_PriorityQueue.Y_PriorityQueue_Instance_Prototype.set(drainSorted.getFnName(), drainSortedVar);
 
 
         // pq.clone()
@@ -583,8 +586,8 @@ public class Y_PriorityQueue {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_PriorityQueueObject original = requirePriorityQueueThis(interpreter);
-                Y_PriorityQueueObject cloned = new Y_PriorityQueueObject();
+                Y_PriorityQueueInstance original = requirePriorityQueueThis(interpreter);
+                Y_PriorityQueueInstance cloned = new Y_PriorityQueueInstance();
 
                 for (PriorityEntry entry : original.heap) {
                     cloned.heap.add(new PriorityEntry(entry.value, entry.priority));
@@ -604,11 +607,11 @@ public class Y_PriorityQueue {
                 new Variable.Variant(clone),
                 true,
                 TypeTag.OBJECT);
-        Y_PriorityQueue.Y_PriorityQueue_Prototype.set(clone.getFnName(), cloneVar);
+        Y_PriorityQueue.Y_PriorityQueue_Instance_Prototype.set(clone.getFnName(), cloneVar);
 
     }
 
-    public static RuntimeObject Y_PriorityQueue_Prototype;
+
 
     // Internal entry holding value + priority
     static class PriorityEntry {
@@ -621,14 +624,14 @@ public class Y_PriorityQueue {
         }
     }
 
-    public static class Y_PriorityQueueObject extends RuntimeObject {
+    public static class Y_PriorityQueueInstance extends Y_Class.ClassObjectInstance {
 
         // Min-heap: index 0 = highest priority (lowest priority number)
         final ArrayList<PriorityEntry> heap;
 
-        public Y_PriorityQueueObject() {
+        public Y_PriorityQueueInstance() {
             this.heap = new ArrayList<>();
-            this.prototype = Y_PriorityQueue_Prototype;
+            this.prototype = Y_PriorityQueue_Instance_Prototype;
         }
 
         // Bubble up: after insert at end
@@ -688,7 +691,7 @@ public class Y_PriorityQueue {
         }
     }
 
-    public static class Y_PriorityQueueInit extends Function.NativeFunction {
+    public static class Y_PriorityQueueClass extends Y_Class.SealedClassObject {
 
         @Override
         public int arity() {
@@ -700,22 +703,27 @@ public class Y_PriorityQueue {
                                      List<Variable.Variant> arguments)
                 throws YsharpError {
 
-            Y_PriorityQueueObject newPQ = new Y_PriorityQueueObject();
+            Y_PriorityQueueInstance newPQ = new Y_PriorityQueueInstance();
 
             return new Variable.Variant(newPQ);
         }
 
         @Override
-        public String getFnName() {
+        public String getClassName() {
+            return "PriorityQueue";
+        }
+
+        @Override
+        public String getType() {
             return "PriorityQueue";
         }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
-        Y_PriorityQueue.Y_PriorityQueueInit pqCtor = new Y_PriorityQueue.Y_PriorityQueueInit();
+        Y_PriorityQueue.Y_PriorityQueueClass pqCtor = new Y_PriorityQueue.Y_PriorityQueueClass();
         Variable.Variant variant = new Variable.Variant(pqCtor);
         Variable var = new Variable(variant, false, TypeTag.OBJECT);
-        interpreter.defineGlobal(pqCtor.getFnName(), var);
+        interpreter.defineGlobal(pqCtor.getClassName(), var);
     }
 
 }
