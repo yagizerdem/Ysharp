@@ -8,10 +8,7 @@ import ysharp.evaluator.Native.Collections.Trie.Y_T9Trie;
 import ysharp.evaluator.Native.Form.Y_Button;
 import ysharp.evaluator.Native.Form.Y_Frame;
 import ysharp.evaluator.Native.Threading.Y_Thread;
-import ysharp.evaluator.Native.Util.Y_File;
-import ysharp.evaluator.Native.Util.Y_Math;
-import ysharp.evaluator.Native.Util.Y_Time;
-import ysharp.evaluator.Native.Util.Y_UUID;
+import ysharp.evaluator.Native.Util.*;
 import ysharp.lexer.Cursor;
 import ysharp.lexer.Lexer;
 import ysharp.lexer.Preprocess;
@@ -74,7 +71,12 @@ public class Core {
                     println String.getType();
                     
                     var name = new String("yagiz erdem");
-                    println UUID.v4();
+                    println DateTime.of(2020, 11, 04, 0, 0, 0);
+                    println DateTime.now();
+                
+                    println Crypto.randomBytes(4);
+                    
+                
                 """;
 
 
@@ -159,5 +161,8 @@ public class Core {
         Y_UUID.Register(interpreter);
         Y_Time.Register(interpreter);
         Y_File.Register(interpreter);
+        Y_Random.Register(interpreter);
+        Y_DateTime.Register(interpreter);
+        Y_Crypto.Register(interpreter);
     }
 }
