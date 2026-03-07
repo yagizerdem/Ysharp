@@ -30,11 +30,15 @@ public class Core {
           String program = """
                 
                     var terminal = new DefaultTerminal();
+                    terminal.enableSgr(SGR.UNDERLINE);
+                    terminal.enableSgr(SGR.BOLD);
+                    
                     terminal.putCharacter('c');
                     terminal.flush();
                     terminal.putCharacter('a');
                     terminal.flush();
                     Time.sleep(1000);
+                    terminal.resetColorAndSGR();
                     terminal.clearScreen();
                     terminal.flush();
                     terminal.bell();
@@ -45,13 +49,7 @@ public class Core {
                     var arr = SGR.values();
                     println arr.toString();
                   
-                    class Human {
-                        var a  = 10;
-                    }
                     
-                    var h = new Human();
-                    println h.a;
-                  
                 
                 """;
 

@@ -2,6 +2,7 @@ package ysharp.evaluator.Native.TUI.Terminal.Abstract;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
+import ysharp.evaluator.Native.TUI.Util.ySGR;
 import ysharp.parser.TypeTag;
 
 import java.io.IOException;
@@ -380,6 +381,130 @@ public class yBaseTerminal {
                 true,
                 TypeTag.OBJECT);
         yBaseTerminal_Instance_Prototype.set(setCursorPosition.getFnName(), setCursorPositionVar);
+
+
+        // terminal.disableSrg(SRG) Deactivates an SGR (Selected Graphic Rendition) code which has previously been activated through enableSGR(..).
+        class DisableSgrFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 1;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                requireArity(arguments, arity(), getFnName());
+                yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
+                ySGR.ySGREnum srgEnum = ySGR.requireYSRGEnum(arguments.getFirst(),
+                        "disableSgr",
+                        1);
+
+                try {
+                    terminal.instance.disableSGR(srgEnum.sgr);
+                }catch (IOException ex) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            -1,
+                            "Terminal.disableSGR: " + ex.getMessage()
+                    );
+                }
+
+                return new Variable.Variant(null);
+            }
+
+            @Override
+            public String getFnName() {
+                return "disableSgr";
+            }
+        }
+
+        DisableSgrFn disableSgr = new DisableSgrFn();
+        Variable disableSgrVar = new Variable(
+                new Variable.Variant(disableSgr),
+                true,
+                TypeTag.OBJECT);
+        yBaseTerminal_Instance_Prototype.set(disableSgr.getFnName(), disableSgrVar);
+
+        // terminal.enableSgr(SRG)  Activates an SGR (Selected Graphic Rendition) code.
+        class EnableSgrFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 1;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                requireArity(arguments, arity(), getFnName());
+                yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
+                ySGR.ySGREnum srgEnum = ySGR.requireYSRGEnum(arguments.getFirst(),
+                        "enableSgr",
+                        1);
+
+                try {
+                    terminal.instance.enableSGR(srgEnum.sgr);
+                } catch (IOException ex) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            -1,
+                            "Terminal.enableSGR: " + ex.getMessage()
+                    );
+                }
+
+                return new Variable.Variant(null);
+            }
+
+            @Override
+            public String getFnName() {
+                return "enableSgr";
+            }
+        }
+
+        EnableSgrFn enableSgr = new EnableSgrFn();
+        Variable enableSgrVar = new Variable(
+                new Variable.Variant(enableSgr),
+                true,
+                TypeTag.OBJECT);
+        yBaseTerminal_Instance_Prototype.set(enableSgr.getFnName(), enableSgrVar);
+
+        // terminal.resetColorAndSGR()
+        class resetColorAndSrgFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 0;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                requireArity(arguments, arity(), getFnName());
+                yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
+
+                try {
+                    terminal.instance.resetColorAndSGR();
+                } catch (IOException ex) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            -1,
+                            "Terminal.resetColorAndSGR: " + ex.getMessage()
+                    );
+                }
+
+                return new Variable.Variant(null);
+            }
+
+            @Override
+            public String getFnName() {
+                return "resetColorAndSGR";
+            }
+        }
+
+        resetColorAndSrgFn resetColorAndSGR = new resetColorAndSrgFn();
+        Variable resetColorAndSGRVar = new Variable(
+                new Variable.Variant(resetColorAndSGR),
+                true,
+                TypeTag.OBJECT);
+        yBaseTerminal_Instance_Prototype.set(resetColorAndSGR.getFnName(), resetColorAndSGRVar);
     }
 
 }
