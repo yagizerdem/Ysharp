@@ -73,7 +73,7 @@ public class Y_Time {
                     TypeTag.OBJECT
             );
 
-            this.prototype.set(now.getFnName(), nowVar);
+            this.set(now.getFnName(), nowVar);
 
 
             // Time.nowMillis()
@@ -108,7 +108,7 @@ public class Y_Time {
                     TypeTag.OBJECT
             );
 
-            this.prototype.set(nowMillis.getFnName(), nowMillisVar);
+            this.set(nowMillis.getFnName(), nowMillisVar);
 
 
             // Time.nano()
@@ -143,7 +143,7 @@ public class Y_Time {
                     TypeTag.OBJECT
             );
 
-            this.prototype.set(nano.getFnName(), nanoVar);
+            this.set(nano.getFnName(), nanoVar);
 
 
             // Time.sleep(ms)
@@ -191,7 +191,7 @@ public class Y_Time {
                     TypeTag.OBJECT
             );
 
-            this.prototype.set(sleep.getFnName(), sleepVar);
+            this.set(sleep.getFnName(), sleepVar);
 
 
             // Time.iso()
@@ -226,7 +226,7 @@ public class Y_Time {
                     TypeTag.OBJECT
             );
 
-            this.prototype.set(iso.getFnName(), isoVar);
+            this.set(iso.getFnName(), isoVar);
 
             // Time.seconds()
             class SecondsFn extends Function.NativeFunction {
@@ -260,7 +260,7 @@ public class Y_Time {
                     TypeTag.OBJECT
             );
 
-            this.prototype.set(seconds.getFnName(), secondsVar);
+            this.set(seconds.getFnName(), secondsVar);
 
 
             // Time.minutes()
@@ -295,7 +295,7 @@ public class Y_Time {
                     TypeTag.OBJECT
             );
 
-            this.prototype.set(minutes.getFnName(), minutesVar);
+            this.set(minutes.getFnName(), minutesVar);
 
             // Time.format(timestamp)
             class FormatFn extends Function.NativeFunction {
@@ -333,7 +333,7 @@ public class Y_Time {
                     TypeTag.OBJECT
             );
 
-            this.prototype.set(format.getFnName(), formatVar);
+            this.set(format.getFnName(), formatVar);
 
 
             // Time.parse(iso)
@@ -372,7 +372,7 @@ public class Y_Time {
                     TypeTag.OBJECT
             );
 
-            this.prototype.set(parse.getFnName(), parseVar);
+            this.set(parse.getFnName(), parseVar);
 
 
             // Time.measure(fn)
@@ -427,7 +427,7 @@ public class Y_Time {
                     TypeTag.OBJECT
             );
 
-            this.prototype.set(measure.getFnName(), measureVar);
+            this.set(measure.getFnName(), measureVar);
         }
 
         @Override

@@ -76,7 +76,7 @@ public class Y_DateTime {
                     new Variable.Variant(now),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(now.getFnName(), nowVar);
+            this.set(now.getFnName(), nowVar);
 
 
             // DateTime.utcNow() -> DateTime  (current UTC time)
@@ -106,7 +106,7 @@ public class Y_DateTime {
                     new Variable.Variant(utcNow),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(utcNow.getFnName(), utcNowVar);
+            this.set(utcNow.getFnName(), utcNowVar);
 
 
             // DateTime.of(year, month, day, hour, minute, second) -> DateTime
@@ -146,7 +146,7 @@ public class Y_DateTime {
                     new Variable.Variant(of),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(of.getFnName(), ofVar);
+            this.set(of.getFnName(), ofVar);
 
 
             // DateTime.fromEpoch(epochSeconds: number) -> DateTime
@@ -182,7 +182,7 @@ public class Y_DateTime {
                     new Variable.Variant(fromEpoch),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(fromEpoch.getFnName(), fromEpochVar);
+            this.set(fromEpoch.getFnName(), fromEpochVar);
 
 
             // DateTime.parse(isoString: string) -> DateTime
@@ -222,7 +222,7 @@ public class Y_DateTime {
                     new Variable.Variant(parse),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(parse.getFnName(), parseVar);
+            this.set(parse.getFnName(), parseVar);
 
 
             // DateTime.year(dt: DateTime) -> number
@@ -255,7 +255,7 @@ public class Y_DateTime {
                     new Variable.Variant(year),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(year.getFnName(), yearVar);
+            this.set(year.getFnName(), yearVar);
 
 
             // DateTime.month(dt: DateTime) -> number  (1-12)
@@ -288,7 +288,7 @@ public class Y_DateTime {
                     new Variable.Variant(month),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(month.getFnName(), monthVar);
+            this.set(month.getFnName(), monthVar);
 
 
             // DateTime.day(dt: DateTime) -> number  (1-31)
@@ -321,7 +321,7 @@ public class Y_DateTime {
                     new Variable.Variant(day),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(day.getFnName(), dayVar);
+            this.set(day.getFnName(), dayVar);
 
 
             // DateTime.hour(dt: DateTime) -> number  (0-23)
@@ -354,7 +354,7 @@ public class Y_DateTime {
                     new Variable.Variant(hour),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(hour.getFnName(), hourVar);
+            this.set(hour.getFnName(), hourVar);
 
 
             // DateTime.minute(dt: DateTime) -> number  (0-59)
@@ -387,7 +387,7 @@ public class Y_DateTime {
                     new Variable.Variant(minute),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(minute.getFnName(), minuteVar);
+            this.set(minute.getFnName(), minuteVar);
 
 
             // DateTime.second(dt: DateTime) -> number  (0-59)
@@ -420,7 +420,7 @@ public class Y_DateTime {
                     new Variable.Variant(second),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(second.getFnName(), secondVar);
+            this.set(second.getFnName(), secondVar);
 
 
             // DateTime.dayOfWeek(dt: DateTime) -> number  (1=Mon ... 7=Sun)
@@ -453,7 +453,7 @@ public class Y_DateTime {
                     new Variable.Variant(dayOfWeek),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(dayOfWeek.getFnName(), dayOfWeekVar);
+            this.set(dayOfWeek.getFnName(), dayOfWeekVar);
 
 
             // DateTime.dayOfYear(dt: DateTime) -> number  (1-366)
@@ -486,7 +486,7 @@ public class Y_DateTime {
                     new Variable.Variant(dayOfYear),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(dayOfYear.getFnName(), dayOfYearVar);
+            this.set(dayOfYear.getFnName(), dayOfYearVar);
 
 
             // DateTime.toEpoch(dt: DateTime) -> number  (seconds since Unix epoch)
@@ -519,7 +519,7 @@ public class Y_DateTime {
                     new Variable.Variant(toEpoch),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(toEpoch.getFnName(), toEpochVar);
+            this.set(toEpoch.getFnName(), toEpochVar);
 
 
             // DateTime.format(dt: DateTime, pattern: string) -> string
@@ -559,7 +559,7 @@ public class Y_DateTime {
                     new Variable.Variant(format),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(format.getFnName(), formatVar);
+            this.set(format.getFnName(), formatVar);
 
 
             // DateTime.addDays(dt: DateTime, days: number) -> DateTime
@@ -594,7 +594,7 @@ public class Y_DateTime {
                     new Variable.Variant(addDays),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(addDays.getFnName(), addDaysVar);
+            this.set(addDays.getFnName(), addDaysVar);
 
 
             // DateTime.addHours(dt: DateTime, hours: number) -> DateTime
@@ -629,7 +629,7 @@ public class Y_DateTime {
                     new Variable.Variant(addHours),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(addHours.getFnName(), addHoursVar);
+            this.set(addHours.getFnName(), addHoursVar);
 
 
             // DateTime.addMinutes(dt: DateTime, minutes: number) -> DateTime
@@ -664,7 +664,7 @@ public class Y_DateTime {
                     new Variable.Variant(addMinutes),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(addMinutes.getFnName(), addMinutesVar);
+            this.set(addMinutes.getFnName(), addMinutesVar);
 
 
             // DateTime.addSeconds(dt: DateTime, seconds: number) -> DateTime
@@ -699,7 +699,7 @@ public class Y_DateTime {
                     new Variable.Variant(addSeconds),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(addSeconds.getFnName(), addSecondsVar);
+            this.set(addSeconds.getFnName(), addSecondsVar);
 
 
             // DateTime.addMonths(dt: DateTime, months: number) -> DateTime
@@ -734,7 +734,7 @@ public class Y_DateTime {
                     new Variable.Variant(addMonths),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(addMonths.getFnName(), addMonthsVar);
+            this.set(addMonths.getFnName(), addMonthsVar);
 
 
             // DateTime.addYears(dt: DateTime, years: number) -> DateTime
@@ -769,7 +769,7 @@ public class Y_DateTime {
                     new Variable.Variant(addYears),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(addYears.getFnName(), addYearsVar);
+            this.set(addYears.getFnName(), addYearsVar);
 
 
             // DateTime.diffSeconds(a: DateTime, b: DateTime) -> number  (a - b in seconds)
@@ -804,7 +804,7 @@ public class Y_DateTime {
                     new Variable.Variant(diffSeconds),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(diffSeconds.getFnName(), diffSecondsVar);
+            this.set(diffSeconds.getFnName(), diffSecondsVar);
 
 
             // DateTime.diffDays(a: DateTime, b: DateTime) -> number  (a - b in days)
@@ -839,7 +839,7 @@ public class Y_DateTime {
                     new Variable.Variant(diffDays),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(diffDays.getFnName(), diffDaysVar);
+            this.set(diffDays.getFnName(), diffDaysVar);
 
 
             // DateTime.isBefore(a: DateTime, b: DateTime) -> bool
@@ -874,7 +874,7 @@ public class Y_DateTime {
                     new Variable.Variant(isBefore),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(isBefore.getFnName(), isBeforeVar);
+            this.set(isBefore.getFnName(), isBeforeVar);
 
 
             // DateTime.isAfter(a: DateTime, b: DateTime) -> bool
@@ -909,7 +909,7 @@ public class Y_DateTime {
                     new Variable.Variant(isAfter),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(isAfter.getFnName(), isAfterVar);
+            this.set(isAfter.getFnName(), isAfterVar);
 
 
             // DateTime.isEqual(a: DateTime, b: DateTime) -> bool
@@ -944,7 +944,7 @@ public class Y_DateTime {
                     new Variable.Variant(isEqual),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(isEqual.getFnName(), isEqualVar);
+            this.set(isEqual.getFnName(), isEqualVar);
 
 
             // DateTime.toUtc(dt: DateTime) -> DateTime
@@ -978,7 +978,7 @@ public class Y_DateTime {
                     new Variable.Variant(toUtc),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(toUtc.getFnName(), toUtcVar);
+            this.set(toUtc.getFnName(), toUtcVar);
 
 
             // DateTime.withZone(dt: DateTime, zoneId: string) -> DateTime
@@ -1020,7 +1020,7 @@ public class Y_DateTime {
                     new Variable.Variant(withZone),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(withZone.getFnName(), withZoneVar);
+            this.set(withZone.getFnName(), withZoneVar);
 
 
             // DateTime.toString(dt: DateTime) -> string  (ISO-8601)
@@ -1053,7 +1053,7 @@ public class Y_DateTime {
                     new Variable.Variant(toStringFn),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(toStringFn.getFnName(), toStringVar);
+            this.set(toStringFn.getFnName(), toStringVar);
         }
 
 

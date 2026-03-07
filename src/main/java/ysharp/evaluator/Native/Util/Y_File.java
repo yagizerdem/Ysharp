@@ -83,7 +83,7 @@ public class Y_File {
                     true,
                     TypeTag.OBJECT
             );
-            this.prototype.set(read.getFnName(),readVar);
+            this.set(read.getFnName(),readVar);
 
             // File.write(path,content)
             class WriteFn extends Function.NativeFunction {
@@ -128,7 +128,7 @@ public class Y_File {
                     true,
                     TypeTag.OBJECT
             );
-            this.prototype.set(write.getFnName(),writeVar);
+            this.set(write.getFnName(),writeVar);
 
             // File.append(path,content)
             class AppendFn extends Function.NativeFunction {
@@ -176,7 +176,7 @@ public class Y_File {
                     true,
                     TypeTag.OBJECT
             );
-            this.prototype.set(append.getFnName(),appendVar);
+            this.set(append.getFnName(),appendVar);
 
             // File.exists(path)
             class ExistsFn extends Function.NativeFunction {
@@ -212,7 +212,7 @@ public class Y_File {
                     true,
                     TypeTag.OBJECT
             );
-            this.prototype.set(exists.getFnName(),existsVar);
+            this.set(exists.getFnName(),existsVar);
 
             // File.delete(path)
             class DeleteFn extends Function.NativeFunction {
@@ -256,7 +256,7 @@ public class Y_File {
                     true,
                     TypeTag.OBJECT
             );
-            this.prototype.set(delete.getFnName(),deleteVar);
+            this.set(delete.getFnName(),deleteVar);
 
         }
 

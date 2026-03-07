@@ -71,7 +71,7 @@ public class Y_Math {
                     new Variable.Variant(pow),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(pow.getFnName(), powVar);
+            this.set(pow.getFnName(), powVar);
 
             // Math.sqrt(a: number)
             class SqrtFn extends Function.NativeFunction {
@@ -104,7 +104,7 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT);
 
-            this.prototype.set(sqrt.getFnName(), sqrtVar);
+            this.set(sqrt.getFnName(), sqrtVar);
 
 
             // Math.abs(a: number)
@@ -138,7 +138,7 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT);
 
-            this.prototype.set(abs.getFnName(), absVar);
+            this.set(abs.getFnName(), absVar);
 
 
             // Math.floor(a: number)
@@ -172,7 +172,7 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT);
 
-            this.prototype.set(floor.getFnName(), floorVar);
+            this.set(floor.getFnName(), floorVar);
 
 
             // Math.ceil(a: number)
@@ -206,7 +206,7 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT);
 
-            this.prototype.set(ceil.getFnName(), ceilVar);
+            this.set(ceil.getFnName(), ceilVar);
 
 
             // Math.max(a: number, b: number)
@@ -242,7 +242,7 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT);
 
-            this.prototype.set(max.getFnName(), maxVar);
+            this.set(max.getFnName(), maxVar);
 
 
             // Math.min(a: number, b: number)
@@ -278,7 +278,7 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT);
 
-            this.prototype.set(min.getFnName(), minVar);
+            this.set(min.getFnName(), minVar);
 
 
             // Math.sin(a: number)
@@ -312,7 +312,7 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT);
 
-            this.prototype.set(sin.getFnName(), sinVar);
+            this.set(sin.getFnName(), sinVar);
 
 
             // Math.cos(a: number)
@@ -346,7 +346,7 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT);
 
-            this.prototype.set(cos.getFnName(), cosVar);
+            this.set(cos.getFnName(), cosVar);
 
 
             // Math.tan(a: number)
@@ -380,7 +380,7 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT);
 
-            this.prototype.set(tan.getFnName(), tanVar);
+            this.set(tan.getFnName(), tanVar);
 
 
             // Math.log(a: number)
@@ -414,7 +414,7 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT);
 
-            this.prototype.set(log.getFnName(), logVar);
+            this.set(log.getFnName(), logVar);
 
 
             // Math.exp(a: number)
@@ -448,7 +448,7 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT);
 
-            this.prototype.set(exp.getFnName(), expVar);
+            this.set(exp.getFnName(), expVar);
 
 
             // Math.round(a: number)
@@ -482,7 +482,7 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT);
 
-            this.prototype.set(round.getFnName(), roundVar);
+            this.set(round.getFnName(), roundVar);
 
 
             // Math.random()
@@ -513,7 +513,7 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT);
 
-            this.prototype.set(random.getFnName(), randomVar);
+            this.set(random.getFnName(), randomVar);
 
 
             // Math.clamp(value: number, min: number, max: number)
@@ -550,7 +550,7 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT);
 
-            this.prototype.set(clamp.getFnName(), clampVar);
+            this.set(clamp.getFnName(), clampVar);
 
             // Math.atan(a: number)
             class AtanFn extends Function.NativeFunction {
@@ -583,7 +583,7 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT);
 
-            this.prototype.set(atan.getFnName(), atanVar);
+            this.set(atan.getFnName(), atanVar);
 
 
             // Math.atan2(y: number, x: number)
@@ -619,7 +619,7 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT);
 
-            this.prototype.set(atan2.getFnName(), atan2Var);
+            this.set(atan2.getFnName(), atan2Var);
 
 
             // Math.hypot(a: number, b: number)
@@ -655,7 +655,7 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT);
 
-            this.prototype.set(hypot.getFnName(), hypotVar);
+            this.set(hypot.getFnName(), hypotVar);
 
 
             // Math.sign(a: number)
@@ -689,7 +689,7 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT);
 
-            this.prototype.set(sign.getFnName(), signVar);
+            this.set(sign.getFnName(), signVar);
 
 
             // Math.degToRad(a: number)
@@ -723,7 +723,7 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT);
 
-            this.prototype.set(degToRad.getFnName(), degToRadVar);
+            this.set(degToRad.getFnName(), degToRadVar);
 
 
             // Math.radToDeg(a: number)
@@ -757,7 +757,7 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT);
 
-            this.prototype.set(radToDeg.getFnName(), radToDegVar);
+            this.set(radToDeg.getFnName(), radToDegVar);
 
 
             // Math.lerp(a: number, b: number, t: number)
@@ -794,7 +794,7 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT);
 
-            this.prototype.set(lerp.getFnName(), lerpVar);
+            this.set(lerp.getFnName(), lerpVar);
 
 
             // Math.asin(a: number)
@@ -828,7 +828,7 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT);
 
-            this.prototype.set(asin.getFnName(), asinVar);
+            this.set(asin.getFnName(), asinVar);
 
 
             // Math.acos(a: number)
@@ -862,7 +862,7 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT);
 
-            this.prototype.set(acos.getFnName(), acosVar);
+            this.set(acos.getFnName(), acosVar);
 
 
             // Math.log10(a: number)
@@ -896,7 +896,7 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT);
 
-            this.prototype.set(log10.getFnName(), log10Var);
+            this.set(log10.getFnName(), log10Var);
 
 
             // Math.log2(a: number)
@@ -930,7 +930,7 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT);
 
-            this.prototype.set(log2.getFnName(), log2Var);
+            this.set(log2.getFnName(), log2Var);
 
 
             // Math.cbrt(a: number)
@@ -964,7 +964,7 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT);
 
-            this.prototype.set(cbrt.getFnName(), cbrtVar);
+            this.set(cbrt.getFnName(), cbrtVar);
 
 
             // Math.trunc(a: number)
@@ -999,7 +999,7 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT);
 
-            this.prototype.set(trunc.getFnName(), truncVar);
+            this.set(trunc.getFnName(), truncVar);
 
 
             // Math.fract(a: number)
@@ -1034,7 +1034,7 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT);
 
-            this.prototype.set(fract.getFnName(), fractVar);
+            this.set(fract.getFnName(), fractVar);
 
 
             // add constants
@@ -1043,14 +1043,14 @@ public class Y_Math {
                     true,
                     TypeTag.OBJECT
             );
-            this.prototype.set("PI", PI_var);
+            this.set("PI", PI_var);
 
             Variable E_var  = new Variable(
                     new Variable.Variant(Math.E),
                     true,
                     TypeTag.OBJECT
             );
-            this.prototype.set("E", E_var);
+            this.set("E", E_var);
         }
 
         @Override

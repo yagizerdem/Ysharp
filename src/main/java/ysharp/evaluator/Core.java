@@ -7,6 +7,8 @@ import ysharp.evaluator.Native.Collections.Trie.Y_SortedMapTrie;
 import ysharp.evaluator.Native.Collections.Trie.Y_T9Trie;
 import ysharp.evaluator.Native.Form.Y_Button;
 import ysharp.evaluator.Native.Form.Y_Frame;
+import ysharp.evaluator.Native.TUI.Terminal.yDefaultTerminal;
+import ysharp.evaluator.Native.TUI.Terminal.ySwingTerminal;
 import ysharp.evaluator.Native.Threading.Y_Thread;
 import ysharp.evaluator.Native.Util.*;
 import ysharp.lexer.Cursor;
@@ -14,6 +16,7 @@ import ysharp.lexer.Lexer;
 import ysharp.lexer.Preprocess;
 import ysharp.parser.Parser;
 import ysharp.parser.Stmt;
+import ysharp.evaluator.Native.TUI.Util.ySGR;
 
 import java.util.List;
 
@@ -25,57 +28,30 @@ public class Core {
           Register(interpreter);
 
           String program = """
-                                
-                    class MyMath {
-                        sum(a,b) do 
-                            return a + b;
-                        end
-                        
-                        constructor(a) do 
-                            this.testProp = a;
-                        end
-                        
-                        test() do 
-                            println "test";
-                        end 
-                        
-                        var testProp = 1;
-                        var f_name = "ahmet";
-                    }
-                                
-                    sealed class Matrix extends MyMath {
-                        static foo() do 
-                            println "foo";
-                        end
-                        bar(a) do 
-                            println a;
-                        end
-                       
-                       constructor(a) do
-                            this.testProp = 12;
-                            super(a);
-                            this.f_name = "yagiz";
-                        end
-                        
-                        var PI = 3.3;
-                        const k = 10;
-                    }
-                    
-     
-                                                            
-                    var m  = new Matrix(56);
-                    
-                    println m.testProp;
-                    println m.f_name;
-                    println m.getType();
-                    println String.getType();
-                    
-                    var name = new String("yagiz erdem");
-                    println DateTime.of(2020, 11, 04, 0, 0, 0);
-                    println DateTime.now();
                 
-                    println Crypto.randomBytes(4);
+                    var terminal = new DefaultTerminal();
+                    terminal.putCharacter('c');
+                    terminal.flush();
+                    terminal.putCharacter('a');
+                    terminal.flush();
+                    Time.sleep(1000);
+                    terminal.clearScreen();
+                    terminal.flush();
+                    terminal.bell();
+                    terminal.setCursorPosition(3,56);
+                    terminal.putCharacter('6');
+                    terminal.flush();
+                  
+                    var arr = SGR.values();
+                    println arr.toString();
+                  
+                    class Human {
+                        var a  = 10;
+                    }
                     
+                    var h = new Human();
+                    println h.a;
+                  
                 
                 """;
 
@@ -164,5 +140,10 @@ public class Core {
         Y_Random.Register(interpreter);
         Y_DateTime.Register(interpreter);
         Y_Crypto.Register(interpreter);
+
+        // TUI
+        yDefaultTerminal.Register(interpreter);
+        ySwingTerminal.Register(interpreter);
+        ySGR.Register(interpreter);
     }
 }

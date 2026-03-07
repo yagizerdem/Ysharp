@@ -1,0 +1,385 @@
+package ysharp.evaluator.Native.TUI.Terminal.Abstract;
+
+import ysharp.YsharpError;
+import ysharp.evaluator.*;
+import ysharp.parser.TypeTag;
+
+import java.io.IOException;
+import java.util.List;
+
+public class yBaseTerminal {
+
+    // helper
+    private static yAbstractTerminal.AbstractTerminal requireTerminalThis (Interpreter interpreter) {
+
+        Variable thisVar = interpreter.curEnv.getValue("this");
+
+        if (thisVar == null) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    0,
+                    "Terminal method called without a valid 'this' context."
+            );
+        }
+
+        RuntimeObject obj = thisVar.value.asRuntimeObject();
+
+        if (!(obj instanceof yAbstractTerminal.AbstractTerminal)) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    0,
+                    "Method can only be called on Terminal instances."
+            );
+        }
+
+        return (yAbstractTerminal.AbstractTerminal) obj;
+    }
+
+    public static RuntimeObject yBaseTerminal_Instance_Prototype;
+
+    static {
+        yBaseTerminal_Instance_Prototype = new RuntimeObject() {
+
+            @Override
+            public boolean isTruthy() {
+                return true;
+            }
+
+            @Override
+            public String getType() {
+                return "__Terminal__";
+            }
+        };
+        yBaseTerminal_Instance_Prototype.prototype = Y_Class.ClassPrototype;
+
+
+        // terminal.putCharacter(char)
+        class PutCharacterFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 1;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                requireArity(arguments, arity(), getFnName());
+                yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
+                char c = requireChar(arguments.getFirst(), getFnName(), 1);
+
+                try {
+                    terminal.instance.putCharacter(c);
+                }
+                catch (IOException ex) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            -1,
+                            "Failed to write character to terminal."
+                    );
+                }
+
+                return new Variable.Variant(null);
+            }
+
+            @Override
+            public String getFnName() {
+                return "putCharacter";
+            }
+        }
+
+        PutCharacterFn putCharacter = new PutCharacterFn();
+        Variable putCharacterVar = new Variable(
+                new Variable.Variant(putCharacter),
+                true,
+                TypeTag.OBJECT);
+        yBaseTerminal_Instance_Prototype.set(putCharacter.getFnName(), putCharacterVar);
+
+
+        // terminal.clearScreen()
+        class ClearScreenFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 0;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                requireArity(arguments, arity(), getFnName());
+                yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
+
+                try {
+                    terminal.instance.clearScreen();
+                }
+                catch (IOException ex) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            -1,
+                            "Failed to clear screen."
+                    );
+                }
+
+                return new Variable.Variant(null);
+            }
+
+            @Override
+            public String getFnName() {
+                return "clearScreen";
+            }
+        }
+
+        ClearScreenFn clearScreen = new ClearScreenFn();
+        Variable clearScreenVar = new Variable(
+                new Variable.Variant(clearScreen),
+                true,
+                TypeTag.OBJECT);
+        yBaseTerminal_Instance_Prototype.set(clearScreen.getFnName(), clearScreenVar);
+
+
+        // terminal.flush()
+        class FlushFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 0;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                requireArity(arguments, arity(), getFnName());
+                yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
+
+                try {
+                    terminal.instance.flush();
+                }
+                catch (IOException ex) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            -1,
+                            "Failed to flush."
+                    );
+                }
+
+                return new Variable.Variant(null);
+            }
+
+            @Override
+            public String getFnName() {
+                return "flush";
+            }
+        }
+
+        FlushFn flush = new FlushFn();
+        Variable flushVar = new Variable(
+                new Variable.Variant(flush),
+                true,
+                TypeTag.OBJECT);
+        yBaseTerminal_Instance_Prototype.set(flush.getFnName(), flushVar);
+
+        // terminal.close()
+        class CloseFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 0;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                requireArity(arguments, arity(), getFnName());
+                yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
+
+                try {
+                    terminal.instance.close();
+                }
+                catch (IOException ex) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            -1,
+                            "Failed to close terminal."
+                    );
+                }
+
+                return new Variable.Variant(null);
+            }
+
+            @Override
+            public String getFnName() {
+                return "close";
+            }
+        }
+
+        CloseFn close = new CloseFn();
+        Variable closeVar = new Variable(
+                new Variable.Variant(close),
+                true,
+                TypeTag.OBJECT);
+        yBaseTerminal_Instance_Prototype.set(close.getFnName(), closeVar);
+
+        // terminal.bell()
+        class BellFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 0;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                requireArity(arguments, arity(), getFnName());
+                yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
+
+                try {
+                    terminal.instance.bell();
+                }
+                catch (IOException ex) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            -1,
+                            "Failed to ring terminal bell."
+                    );
+                }
+
+                return new Variable.Variant(null);
+            }
+
+            @Override
+            public String getFnName() {
+                return "bell";
+            }
+        }
+
+        BellFn bell = new BellFn();
+        Variable bellVar = new Variable(
+                new Variable.Variant(bell),
+                true,
+                TypeTag.OBJECT);
+        yBaseTerminal_Instance_Prototype.set(bell.getFnName(), bellVar);
+
+
+        // terminal.enterPrivateMode()
+        class EnterPrivateModeFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 0;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                requireArity(arguments, arity(), getFnName());
+                yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
+
+                try {
+                    terminal.instance.enterPrivateMode();
+                }
+                catch (IOException ex) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            -1,
+                            "Failed to enter terminal private mode."
+                    );
+                }
+
+                return new Variable.Variant(null);
+            }
+
+            @Override
+            public String getFnName() {
+                return "enterPrivateMode";
+            }
+        }
+
+        EnterPrivateModeFn enterPrivateMode = new EnterPrivateModeFn();
+        Variable enterPrivateModeVar = new Variable(
+                new Variable.Variant(enterPrivateMode),
+                true,
+                TypeTag.OBJECT);
+        yBaseTerminal_Instance_Prototype.set(enterPrivateMode.getFnName(), enterPrivateModeVar);
+
+
+        // terminal.exitPrivateMode()
+        class ExitPrivateModeFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 0;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                requireArity(arguments, arity(), getFnName());
+                yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
+
+                try {
+                    terminal.instance.exitPrivateMode();
+                }
+                catch (IOException ex) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            -1,
+                            "Failed to exit terminal private mode."
+                    );
+                }
+
+                return new Variable.Variant(null);
+            }
+
+            @Override
+            public String getFnName() {
+                return "exitPrivateMode";
+            }
+        }
+
+        ExitPrivateModeFn exitPrivateMode = new ExitPrivateModeFn();
+        Variable exitPrivateModeVar = new Variable(
+                new Variable.Variant(exitPrivateMode),
+                true,
+                TypeTag.OBJECT);
+        yBaseTerminal_Instance_Prototype.set(exitPrivateMode.getFnName(), exitPrivateModeVar);
+
+        // terminal.setCursorPosition(x, y)
+        class SetCursorPositionFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 2;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                requireArity(arguments, arity(), getFnName());
+                yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
+
+                int x = requireInt(arguments.get(0), getFnName(), 1);
+                int y = requireInt(arguments.get(1), getFnName(), 2);
+
+                try {
+                    terminal.instance.setCursorPosition(x, y);
+                }
+                catch (IOException ex) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            -1,
+                            "Failed to set cursor position."
+                    );
+                }
+
+                return new Variable.Variant(null);
+            }
+
+            @Override
+            public String getFnName() {
+                return "setCursorPosition";
+            }
+        }
+
+        SetCursorPositionFn setCursorPosition = new SetCursorPositionFn();
+        Variable setCursorPositionVar = new Variable(
+                new Variable.Variant(setCursorPosition),
+                true,
+                TypeTag.OBJECT);
+        yBaseTerminal_Instance_Prototype.set(setCursorPosition.getFnName(), setCursorPositionVar);
+    }
+
+}

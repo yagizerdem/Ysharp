@@ -55,7 +55,6 @@ public class Y_Class {
                 return "getType";
             }
 
-
         }
 
         GetTypeFn getType = new GetTypeFn();
