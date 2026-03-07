@@ -16,6 +16,7 @@ import ysharp.lexer.Lexer;
 import ysharp.lexer.Preprocess;
 import ysharp.parser.Parser;
 import ysharp.parser.Stmt;
+import ysharp.evaluator.Native.TUI.Util.ySGR;
 
 import java.util.List;
 
@@ -28,21 +29,28 @@ public class Core {
 
           String program = """
                 
-                var terminal = new DefaultTerminal();
-                            
-                terminal.putCharacter('c');
-                terminal.flush();
-                terminal.putCharacter('a');
-                terminal.flush();
-                
-                Time.sleep(1000);
-                terminal.clearScreen();
-                terminal.flush();
-                terminal.bell();
-                terminal.setCursorPosition(3,56);
-                terminal.putCharacter('6');
-                terminal.flush();
-                  Time.sleep(3000);
+                    var terminal = new DefaultTerminal();
+                    terminal.putCharacter('c');
+                    terminal.flush();
+                    terminal.putCharacter('a');
+                    terminal.flush();
+                    Time.sleep(1000);
+                    terminal.clearScreen();
+                    terminal.flush();
+                    terminal.bell();
+                    terminal.setCursorPosition(3,56);
+                    terminal.putCharacter('6');
+                    terminal.flush();
+                  
+                    var arr = SGR.values();
+                    println arr.toString();
+                  
+                    class Human {
+                        var a  = 10;
+                    }
+                    
+                    var h = new Human();
+                    println h.a;
                   
                 
                 """;
@@ -136,5 +144,6 @@ public class Core {
         // TUI
         yDefaultTerminal.Register(interpreter);
         ySwingTerminal.Register(interpreter);
+        ySGR.Register(interpreter);
     }
 }

@@ -71,7 +71,7 @@ public class Y_UUID {
                     TypeTag.OBJECT
             );
 
-            this.prototype.set(v4.getFnName(), v4Var);
+            this.set(v4.getFnName(), v4Var);
 
             // UUID.nil()
             class NilFn extends Function.NativeFunction {
@@ -102,7 +102,7 @@ public class Y_UUID {
                     TypeTag.OBJECT
             );
 
-            this.prototype.set(nil.getFnName(), nilVar);
+            this.set(nil.getFnName(), nilVar);
 
 
             // UUID.isValid(uuid: string)
@@ -144,7 +144,7 @@ public class Y_UUID {
                     TypeTag.OBJECT
             );
 
-            this.prototype.set(isValid.getFnName(), isValidVar);
+            this.set(isValid.getFnName(), isValidVar);
 
             // UUID.parse(uuid: string)
             class ParseFn extends Function.NativeFunction {
@@ -181,7 +181,7 @@ public class Y_UUID {
                     TypeTag.OBJECT
             );
 
-            this.prototype.set(parse.getFnName(), parseVar);
+            this.set(parse.getFnName(), parseVar);
 
         }
 

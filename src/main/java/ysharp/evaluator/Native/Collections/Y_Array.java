@@ -77,7 +77,7 @@ public class Y_Array {
                             builder.append(bound.call(interpreter, args));
                         }
                         else {
-                            builder.append("<class>");
+                            builder.append(var.value.toString());
                         }
                     }
                     else {

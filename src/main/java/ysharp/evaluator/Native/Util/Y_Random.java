@@ -71,7 +71,7 @@ public class Y_Random {
                     new Variable.Variant(next),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(next.getFnName(), nextVar);
+            this.set(next.getFnName(), nextVar);
 
 
             // Random.nextInt(min: int, max: int) -> int in [min, max]
@@ -106,7 +106,7 @@ public class Y_Random {
                     new Variable.Variant(nextInt),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(nextInt.getFnName(), nextIntVar);
+            this.set(nextInt.getFnName(), nextIntVar);
 
 
             // Random.nextFloat(min: number, max: number) -> number in [min, max)
@@ -141,7 +141,7 @@ public class Y_Random {
                     new Variable.Variant(nextFloat),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(nextFloat.getFnName(), nextFloatVar);
+            this.set(nextFloat.getFnName(), nextFloatVar);
 
 
             // Random.nextBool() -> boolean (0.0 or 1.0)
@@ -171,7 +171,7 @@ public class Y_Random {
                     new Variable.Variant(nextBool),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(nextBool.getFnName(), nextBoolVar);
+            this.set(nextBool.getFnName(), nextBoolVar);
 
 
             // Random.nextGaussian() -> number (mean=0, stddev=1)
@@ -201,7 +201,7 @@ public class Y_Random {
                     new Variable.Variant(nextGaussian),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(nextGaussian.getFnName(), nextGaussianVar);
+            this.set(nextGaussian.getFnName(), nextGaussianVar);
 
 
             // Random.setSeed(seed: int)
@@ -234,7 +234,7 @@ public class Y_Random {
                     new Variable.Variant(setSeed),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(setSeed.getFnName(), setSeedVar);
+            this.set(setSeed.getFnName(), setSeedVar);
 
 
             // Random.chance(probability: number) -> bool  e.g. chance(0.3) = 30% true
@@ -267,7 +267,7 @@ public class Y_Random {
                     new Variable.Variant(chance),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(chance.getFnName(), chanceVar);
+            this.set(chance.getFnName(), chanceVar);
 
 
             // Random.pick(a: number, b: number) -> one of the two values at random
@@ -300,7 +300,7 @@ public class Y_Random {
                     new Variable.Variant(pick),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(pick.getFnName(), pickVar);
+            this.set(pick.getFnName(), pickVar);
         }
 
         @Override

@@ -90,7 +90,7 @@ public class Y_Crypto {
                     new Variable.Variant(md5),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(md5.getFnName(), md5Var);
+            this.set(md5.getFnName(), md5Var);
 
 
             // Crypto.sha1(input: string) -> string  (hex)
@@ -131,7 +131,7 @@ public class Y_Crypto {
                     new Variable.Variant(sha1),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(sha1.getFnName(), sha1Var);
+            this.set(sha1.getFnName(), sha1Var);
 
 
             // Crypto.sha256(input: string) -> string  (hex)
@@ -172,7 +172,7 @@ public class Y_Crypto {
                     new Variable.Variant(sha256),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(sha256.getFnName(), sha256Var);
+            this.set(sha256.getFnName(), sha256Var);
 
 
             // Crypto.sha512(input: string) -> string  (hex)
@@ -213,7 +213,7 @@ public class Y_Crypto {
                     new Variable.Variant(sha512),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(sha512.getFnName(), sha512Var);
+            this.set(sha512.getFnName(), sha512Var);
 
 
             // Crypto.hmacSha256(key: string, data: string) -> string  (hex)
@@ -258,7 +258,7 @@ public class Y_Crypto {
                     new Variable.Variant(hmacSha256),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(hmacSha256.getFnName(), hmacSha256Var);
+            this.set(hmacSha256.getFnName(), hmacSha256Var);
 
 
             // Crypto.hmacSha512(key: string, data: string) -> string  (hex)
@@ -303,7 +303,7 @@ public class Y_Crypto {
                     new Variable.Variant(hmacSha512),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(hmacSha512.getFnName(), hmacSha512Var);
+            this.set(hmacSha512.getFnName(), hmacSha512Var);
 
 
 
@@ -338,7 +338,7 @@ public class Y_Crypto {
                     new Variable.Variant(base64Encode),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(base64Encode.getFnName(), base64EncodeVar);
+            this.set(base64Encode.getFnName(), base64EncodeVar);
 
 
             // Crypto.base64Decode(input: string) -> string
@@ -378,7 +378,7 @@ public class Y_Crypto {
                     new Variable.Variant(base64Decode),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(base64Decode.getFnName(), base64DecodeVar);
+            this.set(base64Decode.getFnName(), base64DecodeVar);
 
 
 
@@ -413,7 +413,7 @@ public class Y_Crypto {
                     new Variable.Variant(toHex),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(toHex.getFnName(), toHexVar);
+            this.set(toHex.getFnName(), toHexVar);
 
 
             // Crypto.fromHex(input: string) -> string
@@ -453,7 +453,7 @@ public class Y_Crypto {
                     new Variable.Variant(fromHex),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(fromHex.getFnName(), fromHexVar);
+            this.set(fromHex.getFnName(), fromHexVar);
 
 
 
@@ -490,7 +490,7 @@ public class Y_Crypto {
                     new Variable.Variant(randomBytes),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(randomBytes.getFnName(), randomBytesVar);
+            this.set(randomBytes.getFnName(), randomBytesVar);
 
 
             // Crypto.uuid() -> string  (UUID v4)
@@ -520,7 +520,7 @@ public class Y_Crypto {
                     new Variable.Variant(uuid),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(uuid.getFnName(), uuidVar);
+            this.set(uuid.getFnName(), uuidVar);
 
 
             // Crypto.aesGenerateKey() -> string  (base64 encoded 256-bit key)
@@ -558,7 +558,7 @@ public class Y_Crypto {
                     new Variable.Variant(aesGenerateKey),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(aesGenerateKey.getFnName(), aesGenerateKeyVar);
+            this.set(aesGenerateKey.getFnName(), aesGenerateKeyVar);
 
 
             // Crypto.aesEncrypt(plaintext: string, base64Key: string) -> string  (base64: iv + ciphertext)
@@ -613,7 +613,7 @@ public class Y_Crypto {
                     new Variable.Variant(aesEncrypt),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(aesEncrypt.getFnName(), aesEncryptVar);
+            this.set(aesEncrypt.getFnName(), aesEncryptVar);
 
 
             // Crypto.aesDecrypt(base64Ciphertext: string, base64Key: string) -> string
@@ -668,7 +668,7 @@ public class Y_Crypto {
                     new Variable.Variant(aesDecrypt),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(aesDecrypt.getFnName(), aesDecryptVar);
+            this.set(aesDecrypt.getFnName(), aesDecryptVar);
 
             // Crypto.aesGcmEncrypt(plaintext: string, base64Key: string) -> string  (base64: iv + tag + ciphertext)
             class AesGcmEncryptFn extends Function.NativeFunction {
@@ -722,7 +722,7 @@ public class Y_Crypto {
                     new Variable.Variant(aesGcmEncrypt),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(aesGcmEncrypt.getFnName(), aesGcmEncryptVar);
+            this.set(aesGcmEncrypt.getFnName(), aesGcmEncryptVar);
 
 
             // Crypto.aesGcmDecrypt(base64Ciphertext: string, base64Key: string) -> string
@@ -777,7 +777,7 @@ public class Y_Crypto {
                     new Variable.Variant(aesGcmDecrypt),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(aesGcmDecrypt.getFnName(), aesGcmDecryptVar);
+            this.set(aesGcmDecrypt.getFnName(), aesGcmDecryptVar);
 
 
             // Crypto.rsaGenerateKeyPair() -> string  (JSON: { publicKey, privateKey } both base64)
@@ -819,7 +819,7 @@ public class Y_Crypto {
                     new Variable.Variant(rsaGenerateKeyPair),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(rsaGenerateKeyPair.getFnName(), rsaGenerateKeyPairVar);
+            this.set(rsaGenerateKeyPair.getFnName(), rsaGenerateKeyPairVar);
 
 
             // Crypto.rsaEncrypt(plaintext: string, base64PublicKey: string) -> string  (base64)
@@ -867,7 +867,7 @@ public class Y_Crypto {
                     new Variable.Variant(rsaEncrypt),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(rsaEncrypt.getFnName(), rsaEncryptVar);
+            this.set(rsaEncrypt.getFnName(), rsaEncryptVar);
 
 
             // Crypto.rsaDecrypt(base64Ciphertext: string, base64PrivateKey: string) -> string
@@ -915,7 +915,7 @@ public class Y_Crypto {
                     new Variable.Variant(rsaDecrypt),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(rsaDecrypt.getFnName(), rsaDecryptVar);
+            this.set(rsaDecrypt.getFnName(), rsaDecryptVar);
 
 
             // Crypto.rsaSign(data: string, base64PrivateKey: string) -> string  (base64 signature)
@@ -964,7 +964,7 @@ public class Y_Crypto {
                     new Variable.Variant(rsaSign),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(rsaSign.getFnName(), rsaSignVar);
+            this.set(rsaSign.getFnName(), rsaSignVar);
 
 
             // Crypto.rsaVerify(data: string, base64Signature: string, base64PublicKey: string) -> bool
@@ -1013,7 +1013,7 @@ public class Y_Crypto {
                     new Variable.Variant(rsaVerify),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(rsaVerify.getFnName(), rsaVerifyVar);
+            this.set(rsaVerify.getFnName(), rsaVerifyVar);
 
 
             // Crypto.constantTimeEquals(a: string, b: string) -> bool  (timing-safe compare)
@@ -1059,7 +1059,7 @@ public class Y_Crypto {
                     new Variable.Variant(constantTimeEquals),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(constantTimeEquals.getFnName(), constantTimeEqualsVar);
+            this.set(constantTimeEquals.getFnName(), constantTimeEqualsVar);
 
 
             // Crypto.pbkdf2(password: string, salt: string, iterations: int) -> string
@@ -1118,7 +1118,7 @@ public class Y_Crypto {
                     new Variable.Variant(pbkdf2),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(pbkdf2.getFnName(), pbkdf2Var);
+            this.set(pbkdf2.getFnName(), pbkdf2Var);
 
 
             // Crypto.scrypt(password: string, salt: string) -> string
@@ -1177,7 +1177,7 @@ public class Y_Crypto {
                     new Variable.Variant(scrypt),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(scrypt.getFnName(), scryptVar);
+            this.set(scrypt.getFnName(), scryptVar);
 
 
             // Crypto.randomString(length: int) -> string
@@ -1220,7 +1220,7 @@ public class Y_Crypto {
                     new Variable.Variant(randomString),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(randomString.getFnName(), randomStringVar);
+            this.set(randomString.getFnName(), randomStringVar);
 
 
             // Crypto.deriveKey(password: string, salt: string) -> string
@@ -1279,7 +1279,7 @@ public class Y_Crypto {
                     new Variable.Variant(deriveKey),
                     true,
                     TypeTag.OBJECT);
-            this.prototype.set(deriveKey.getFnName(), deriveKeyVar);
+            this.set(deriveKey.getFnName(), deriveKeyVar);
 
         }
 
