@@ -185,7 +185,7 @@ public abstract class RuntimeObject {
         return v.asString();
     }
 
-    protected Y_String.Y_StringObject requireStringObject(Variable.Variant v,
+    protected Y_String.Y_StringInstance requireStringObject(Variable.Variant v,
                                    String fn,
                                    int index) throws YsharpError {
 

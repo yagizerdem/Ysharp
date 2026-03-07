@@ -11,7 +11,7 @@ import java.util.List;
 public class Y_HashTable {
 
     // helper
-    private static Y_HashTable.Y_MapObject requireMapThis (Interpreter interpreter) {
+    private static Y_HashTable.Y_MapInstance requireMapThis (Interpreter interpreter) {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
@@ -24,7 +24,7 @@ public class Y_HashTable {
 
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-        if (!(obj instanceof Y_HashTable.Y_MapObject)) {
+        if (!(obj instanceof Y_HashTable.Y_MapInstance)) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     0,
@@ -32,12 +32,13 @@ public class Y_HashTable {
             );
         }
 
-        return  (Y_HashTable.Y_MapObject) obj;
+        return  (Y_HashTable.Y_MapInstance) obj;
     }
 
+    public static RuntimeObject Y_Map_Instance_Prototype;
 
     static {
-        Y_Map_Prototype = new RuntimeObject() {
+        Y_Map_Instance_Prototype = new RuntimeObject() {
 
             @Override
             public boolean isTruthy() {
@@ -49,6 +50,7 @@ public class Y_HashTable {
                 return "map_prototype";
             }
         };
+        Y_Map_Instance_Prototype.prototype = Y_Class.ClassPrototype;
 
         // map.toString()
         class ToStringFn extends Function.NativeFunction {
@@ -63,7 +65,7 @@ public class Y_HashTable {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_MapObject map = requireMapThis(interpreter);
+                Y_MapInstance map = requireMapThis(interpreter);
 
                 StringBuilder sb = new StringBuilder();
                 sb.append("{");
@@ -99,7 +101,7 @@ public class Y_HashTable {
                 new Variable.Variant(toString),
                 true,
                 TypeTag.OBJECT);
-        Y_HashTable.Y_Map_Prototype.set(toString.getFnName(), toStringVar);
+        Y_HashTable.Y_Map_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
         //  map.put(10, 100)
         class PutFn extends Function.NativeFunction {
@@ -112,7 +114,7 @@ public class Y_HashTable {
             public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
                 Variable.Variant key = arguments.get(0);
                 Variable.Variant value = arguments.get(1);
-                Y_MapObject array = requireMapThis(interpreter);
+                Y_MapInstance array = requireMapThis(interpreter);
                 array.data.put(key, value);
 
                 return new Variable.Variant(array.data.size());
@@ -129,7 +131,7 @@ public class Y_HashTable {
                 new Variable.Variant(put),
                 true,
                 TypeTag.OBJECT);
-        Y_HashTable.Y_Map_Prototype.set(put.getFnName(), putVar);
+        Y_HashTable.Y_Map_Instance_Prototype.set(put.getFnName(), putVar);
 
 
         // map.get("name")
@@ -146,7 +148,7 @@ public class Y_HashTable {
                     throws YsharpError {
 
                 Variable.Variant key = arguments.get(0);
-                Y_MapObject map = requireMapThis(interpreter);
+                Y_MapInstance map = requireMapThis(interpreter);
 
                 Variable.Variant value = map.data.get(key);
 
@@ -168,7 +170,7 @@ public class Y_HashTable {
                 new Variable.Variant(get),
                 true,
                 TypeTag.OBJECT);
-        Y_HashTable.Y_Map_Prototype.set(get.getFnName(), getVar);
+        Y_HashTable.Y_Map_Instance_Prototype.set(get.getFnName(), getVar);
 
 
         // map.remove("name")
@@ -185,7 +187,7 @@ public class Y_HashTable {
                     throws YsharpError {
 
                 Variable.Variant key = arguments.get(0);
-                Y_MapObject map = requireMapThis(interpreter);
+                Y_MapInstance map = requireMapThis(interpreter);
 
                 Variable.Variant removed = map.data.remove(key);
 
@@ -207,7 +209,7 @@ public class Y_HashTable {
                 new Variable.Variant(remove),
                 true,
                 TypeTag.OBJECT);
-        Y_HashTable.Y_Map_Prototype.set(remove.getFnName(), removeVar);
+        Y_HashTable.Y_Map_Instance_Prototype.set(remove.getFnName(), removeVar);
 
 
         // map.containsKey("name")
@@ -224,7 +226,7 @@ public class Y_HashTable {
                     throws YsharpError {
 
                 Variable.Variant key = arguments.get(0);
-                Y_MapObject map = requireMapThis(interpreter);
+                Y_MapInstance map = requireMapThis(interpreter);
 
                 boolean exists = map.data.containsKey(key);
 
@@ -242,7 +244,7 @@ public class Y_HashTable {
                 new Variable.Variant(containsKey),
                 true,
                 TypeTag.OBJECT);
-        Y_HashTable.Y_Map_Prototype.set(containsKey.getFnName(), containsKeyVar);
+        Y_HashTable.Y_Map_Instance_Prototype.set(containsKey.getFnName(), containsKeyVar);
 
 
         // map.size()
@@ -258,7 +260,7 @@ public class Y_HashTable {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_MapObject map = requireMapThis(interpreter);
+                Y_MapInstance map = requireMapThis(interpreter);
 
                 return new Variable.Variant(map.data.size());
             }
@@ -274,7 +276,7 @@ public class Y_HashTable {
                 new Variable.Variant(size),
                 true,
                 TypeTag.OBJECT);
-        Y_HashTable.Y_Map_Prototype.set(size.getFnName(), sizeVar);
+        Y_HashTable.Y_Map_Instance_Prototype.set(size.getFnName(), sizeVar);
 
 
         // map.clear()
@@ -290,7 +292,7 @@ public class Y_HashTable {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_MapObject map = requireMapThis(interpreter);
+                Y_MapInstance map = requireMapThis(interpreter);
                 map.data.clear();
 
                 return new Variable.Variant(null);
@@ -307,7 +309,7 @@ public class Y_HashTable {
                 new Variable.Variant(clear),
                 true,
                 TypeTag.OBJECT);
-        Y_HashTable.Y_Map_Prototype.set(clear.getFnName(), clearVar);
+        Y_HashTable.Y_Map_Instance_Prototype.set(clear.getFnName(), clearVar);
 
         // map.isEmpty()
         class IsEmptyFn extends Function.NativeFunction {
@@ -322,7 +324,7 @@ public class Y_HashTable {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_MapObject map = requireMapThis(interpreter);
+                Y_MapInstance map = requireMapThis(interpreter);
 
                 return new Variable.Variant(map.data.isEmpty());
             }
@@ -338,7 +340,7 @@ public class Y_HashTable {
                 new Variable.Variant(isEmpty),
                 true,
                 TypeTag.OBJECT);
-        Y_HashTable.Y_Map_Prototype.set(isEmpty.getFnName(), isEmptyVar);
+        Y_HashTable.Y_Map_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
 
         // map.keys()
         class KeysFn extends Function.NativeFunction {
@@ -353,7 +355,7 @@ public class Y_HashTable {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_MapObject map = requireMapThis(interpreter);
+                Y_MapInstance map = requireMapThis(interpreter);
 
                 java.util.ArrayList<Variable.Variant> list =
                         new ArrayList<>();
@@ -362,8 +364,8 @@ public class Y_HashTable {
                     list.add(key);
                 }
 
-                Y_Array.Y_ArrayObject array =
-                        new Y_Array.Y_ArrayObject(list);
+                Y_Array.Y_ArrayInstance array =
+                        new Y_Array.Y_ArrayInstance(list);
 
                 return new Variable.Variant(array);
             }
@@ -379,7 +381,7 @@ public class Y_HashTable {
                 new Variable.Variant(keys),
                 true,
                 TypeTag.OBJECT);
-        Y_HashTable.Y_Map_Prototype.set(keys.getFnName(), keysVar);
+        Y_HashTable.Y_Map_Instance_Prototype.set(keys.getFnName(), keysVar);
 
 
         // map.values()
@@ -395,7 +397,7 @@ public class Y_HashTable {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_MapObject map = requireMapThis(interpreter);
+                Y_MapInstance map = requireMapThis(interpreter);
 
                 java.util.ArrayList<Variable.Variant> list =
                         new java.util.ArrayList<>();
@@ -404,8 +406,8 @@ public class Y_HashTable {
                     list.add(value);
                 }
 
-                Y_Array.Y_ArrayObject array =
-                        new Y_Array.Y_ArrayObject(list);
+                Y_Array.Y_ArrayInstance array =
+                        new Y_Array.Y_ArrayInstance(list);
 
                 return new Variable.Variant(array);
             }
@@ -421,7 +423,7 @@ public class Y_HashTable {
                 new Variable.Variant(values),
                 true,
                 TypeTag.OBJECT);
-        Y_HashTable.Y_Map_Prototype.set(values.getFnName(), valuesVar);
+        Y_HashTable.Y_Map_Instance_Prototype.set(values.getFnName(), valuesVar);
 
 
         // map.entries()
@@ -437,7 +439,7 @@ public class Y_HashTable {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_MapObject map = requireMapThis(interpreter);
+                Y_MapInstance map = requireMapThis(interpreter);
 
                 java.util.ArrayList<Variable.Variant> outerList =
                         new java.util.ArrayList<>();
@@ -450,14 +452,14 @@ public class Y_HashTable {
                     pairList.add(entry.getKey());
                     pairList.add(entry.getValue());
 
-                    Y_Array.Y_ArrayObject pairArray =
-                            new Y_Array.Y_ArrayObject(pairList);
+                    Y_Array.Y_ArrayInstance pairArray =
+                            new Y_Array.Y_ArrayInstance(pairList);
 
                     outerList.add(new Variable.Variant(pairArray));
                 }
 
-                Y_Array.Y_ArrayObject resultArray =
-                        new Y_Array.Y_ArrayObject(outerList);
+                Y_Array.Y_ArrayInstance resultArray =
+                        new Y_Array.Y_ArrayInstance(outerList);
 
                 return new Variable.Variant(resultArray);
             }
@@ -473,7 +475,7 @@ public class Y_HashTable {
                 new Variable.Variant(entries),
                 true,
                 TypeTag.OBJECT);
-        Y_HashTable.Y_Map_Prototype.set(entries.getFnName(), entriesVar);
+        Y_HashTable.Y_Map_Instance_Prototype.set(entries.getFnName(), entriesVar);
 
 
         // map.clone()
@@ -489,13 +491,13 @@ public class Y_HashTable {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_MapObject original = requireMapThis(interpreter);
+                Y_MapInstance original = requireMapThis(interpreter);
 
                 // shallow copy
                 Hashtable<Variable.Variant, Variable.Variant> newTable =
                         new Hashtable<>(original.data);
 
-                Y_MapObject clonedMap = new Y_MapObject(newTable);
+                Y_MapInstance clonedMap = new Y_MapInstance(newTable);
 
                 return new Variable.Variant(clonedMap);
             }
@@ -511,24 +513,23 @@ public class Y_HashTable {
                 new Variable.Variant(clone),
                 true,
                 TypeTag.OBJECT);
-        Y_HashTable.Y_Map_Prototype.set(clone.getFnName(), cloneVar);
+        Y_HashTable.Y_Map_Instance_Prototype.set(clone.getFnName(), cloneVar);
 
     }
 
-    public static RuntimeObject Y_Map_Prototype;
 
-    public static class Y_MapObject extends RuntimeObject {
+    public static class Y_MapInstance extends Y_Class.ClassObjectInstance {
 
         private final Hashtable<Variable.Variant, Variable.Variant> data;
 
-        public Y_MapObject(Hashtable<Variable.Variant, Variable.Variant> data) {
+        public Y_MapInstance(Hashtable<Variable.Variant, Variable.Variant> data) {
             this.data = data;
-            this.prototype = Y_Map_Prototype;
+            this.prototype = Y_Map_Instance_Prototype;
         }
 
-        public Y_MapObject() {
+        public Y_MapInstance() {
             this.data = new Hashtable<>();
-            this.prototype = Y_Map_Prototype;
+            this.prototype = Y_Map_Instance_Prototype;
         }
 
 
@@ -548,7 +549,7 @@ public class Y_HashTable {
         }
     }
 
-    public static class Y_MapInit extends Function.NativeFunction {
+    public static class Y_MapClass extends Y_Class.SealedClassObject {
 
         @Override
         public int arity() {
@@ -558,22 +559,27 @@ public class Y_HashTable {
         @Override
         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
             Hashtable<Variable.Variant, Variable.Variant> value = new Hashtable<>();
-            Y_MapObject newMap = new Y_MapObject(value);
+            Y_MapInstance newMap = new Y_MapInstance(value);
 
             return new Variable.Variant(newMap);
         }
 
         @Override
-        public String getFnName() {
+        public String getClassName() {
+            return "HashTable";
+        }
+
+        @Override
+        public String getType() {
             return "HashTable";
         }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
-        Y_HashTable.Y_MapInit mapCtor = new Y_HashTable.Y_MapInit();
+        Y_HashTable.Y_MapClass mapCtor = new Y_HashTable.Y_MapClass();
         Variable.Variant variant = new Variable.Variant(mapCtor);
         Variable var = new Variable(variant, false, TypeTag.OBJECT);
-        interpreter.defineGlobal(mapCtor.getFnName(), var);
+        interpreter.defineGlobal(mapCtor.getClassName(), var);
     }
 
 }

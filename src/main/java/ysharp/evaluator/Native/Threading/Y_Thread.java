@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Y_Thread {
 
-    private static Y_ThreadObject requireThreadThis(Interpreter interpreter) {
+    private static Y_ThreadInstance requireThreadThis(Interpreter interpreter) {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
@@ -22,7 +22,7 @@ public class Y_Thread {
 
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-        if (!(obj instanceof Y_ThreadObject)) {
+        if (!(obj instanceof Y_ThreadInstance)) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     0,
@@ -30,14 +30,14 @@ public class Y_Thread {
             );
         }
 
-        return (Y_ThreadObject) obj;
+        return (Y_ThreadInstance) obj;
     }
 
 
-    public static RuntimeObject Y_Thread_Prototype;
+    public static RuntimeObject Y_Thread_Instance_Prototype;
 
     static {
-        Y_Thread_Prototype = new RuntimeObject() {
+        Y_Thread_Instance_Prototype = new RuntimeObject() {
 
             @Override
             public boolean isTruthy() {
@@ -49,6 +49,7 @@ public class Y_Thread {
                 return "thread_prototype";
             }
         };
+        Y_Thread_Instance_Prototype.prototype = Y_Class.ClassPrototype;
 
         // thread.start();
         class StartFn extends Function.NativeFunction {
@@ -60,7 +61,7 @@ public class Y_Thread {
             @Override
             public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
 
-                Y_ThreadObject thread = requireThreadThis(interpreter);
+                Y_ThreadInstance thread = requireThreadThis(interpreter);
 
                 Thread jt = thread.getJavaThread();
 
@@ -96,7 +97,7 @@ public class Y_Thread {
                 new Variable.Variant(start),
                 true,
                 TypeTag.OBJECT);
-        Y_Thread_Prototype.set(start.getFnName(), startVar);
+        Y_Thread_Instance_Prototype.set(start.getFnName(), startVar);
 
         // thread.join();
         class JoinFn extends Function.NativeFunction {
@@ -108,7 +109,7 @@ public class Y_Thread {
             @Override
             public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
                 try {
-                    Y_ThreadObject thread = requireThreadThis(interpreter);
+                    Y_ThreadInstance thread = requireThreadThis(interpreter);
                     thread.getJavaThread().join();
                 }catch (InterruptedException interruptedException) {
                     throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
@@ -130,7 +131,7 @@ public class Y_Thread {
                 new Variable.Variant(join),
                 true,
                 TypeTag.OBJECT);
-        Y_Thread_Prototype.set(join.getFnName(), joinVar);
+        Y_Thread_Instance_Prototype.set(join.getFnName(), joinVar);
 
 
         // thread.isAlive;
@@ -142,7 +143,7 @@ public class Y_Thread {
 
             @Override
             public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
-                Y_ThreadObject thread = requireThreadThis(interpreter);
+                Y_ThreadInstance thread = requireThreadThis(interpreter);
                 boolean flag = thread.getJavaThread().isAlive();
 
                 return new Variable.Variant(flag);
@@ -159,7 +160,7 @@ public class Y_Thread {
                 new Variable.Variant(isAlive),
                 true,
                 TypeTag.OBJECT);
-        Y_Thread_Prototype.set(isAlive.getFnName(), isAliveVar);
+        Y_Thread_Instance_Prototype.set(isAlive.getFnName(), isAliveVar);
 
         // thread.interrupt()
         class InterruptFn extends Function.NativeFunction {
@@ -174,7 +175,7 @@ public class Y_Thread {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_ThreadObject thread = requireThreadThis(interpreter);
+                Y_ThreadInstance thread = requireThreadThis(interpreter);
 
                 Thread jt = thread.getJavaThread();
 
@@ -202,20 +203,20 @@ public class Y_Thread {
                 new Variable.Variant(interrupt),
                 true,
                 TypeTag.OBJECT);
-        Y_Thread_Prototype.set(interrupt.getFnName(), interruptVar);
+        Y_Thread_Instance_Prototype.set(interrupt.getFnName(), interruptVar);
 
     }
 
 
-    public static class Y_ThreadObject extends RuntimeObject {
+    public static class Y_ThreadInstance extends Y_Class.ClassObjectInstance {
 
         private Thread javaThread;
 
         private Callable callable;
 
-        public Y_ThreadObject(Callable callable) {
+        public Y_ThreadInstance(Callable callable) {
             this.callable = callable;
-            this.prototype = Y_Thread_Prototype;
+            this.prototype = Y_Thread_Instance_Prototype;
         }
 
         public Thread getJavaThread() {
@@ -246,7 +247,7 @@ public class Y_Thread {
         }
     }
 
-    public static class Y_ThreadInit extends Function.NativeFunction {
+    public static class Y_ThreadClass extends Y_Class.SealedClassObject {
 
         @Override
         public int arity() {
@@ -265,7 +266,7 @@ public class Y_Thread {
                         "Thread constructor requires a function or lambda as its first argument.");
             }
 
-            Callable fn = requireCallable(arguments.getFirst(), getFnName(), 1);
+            Callable fn = requireCallable(arguments.getFirst(), getClassName(), 1);
 
             List<Variable.Variant> fnArgs = new ArrayList<>();
 
@@ -273,7 +274,7 @@ public class Y_Thread {
                 fnArgs.add(arguments.get(i));
             }
 
-             Y_ThreadObject thread = new Y_ThreadObject(fn);
+             Y_ThreadInstance thread = new Y_ThreadInstance(fn);
              Interpreter newInstance = new Interpreter();
              newInstance.global = interpreter.global;
              newInstance.curEnv = interpreter.curEnv;
@@ -283,7 +284,12 @@ public class Y_Thread {
         }
 
         @Override
-        public String getFnName() {
+        public String getClassName() {
+            return "Thread";
+        }
+
+        @Override
+        public String getType() {
             return "Thread";
         }
     }
@@ -309,13 +315,10 @@ public class Y_Thread {
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
-
-        Y_ThreadInit ctor = new Y_ThreadInit();
-
+        Y_ThreadClass ctor = new Y_ThreadClass();
         Variable.Variant variant = new Variable.Variant(ctor);
         Variable var = new Variable(variant, false, TypeTag.OBJECT);
-
-        interpreter.defineGlobal(ctor.getFnName(), var);
+        interpreter.defineGlobal(ctor.getClassName(), var);
     }
 
 }

@@ -60,7 +60,7 @@ public class Y_File {
 
                     try {
                         String content = Files.readString(Path.of(path));
-                        return new Variable.Variant(new Y_String.Y_StringObject(content));
+                        return new Variable.Variant(new Y_String.Y_StringInstance(content));
                     }
                     catch (IOException e){
                         throw new YsharpError(

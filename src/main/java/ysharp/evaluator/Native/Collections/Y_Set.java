@@ -9,7 +9,7 @@ import java.util.*;
 
 public class Y_Set {
 
-    private static Y_SetObject requireSetThis(Interpreter interpreter) {
+    private static Y_SetInstance requireSetThis(Interpreter interpreter) {
 
         Variable thisVar = interpreter.curEnv.getValue("this");
 
@@ -23,7 +23,7 @@ public class Y_Set {
 
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-        if (!(obj instanceof Y_SetObject)) {
+        if (!(obj instanceof Y_SetInstance)) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     0,
@@ -31,20 +31,21 @@ public class Y_Set {
             );
         }
 
-        return (Y_SetObject) obj;
+        return (Y_SetInstance) obj;
     }
 
-    public static RuntimeObject Y_Set_Prototype;
+    public static RuntimeObject Y_Set_Instance_Prototype;
 
     static {
 
-        Y_Set_Prototype = new RuntimeObject() {
+        Y_Set_Instance_Prototype = new RuntimeObject() {
             @Override
             public boolean isTruthy() { return true; }
 
             @Override
             public String getType() { return "set_prototype"; }
         };
+        Y_Set_Instance_Prototype.prototype = Y_Class.ClassPrototype;
 
         // set.toString()
         class ToStringFn extends Function.NativeFunction {
@@ -58,7 +59,7 @@ public class Y_Set {
                     List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_SetObject set = requireSetThis(interpreter);
+                Y_SetInstance set = requireSetThis(interpreter);
 
                 StringBuilder builder = new StringBuilder();
                 builder.append("{ ");
@@ -107,7 +108,7 @@ public class Y_Set {
                 new Variable.Variant(toString),
                 true,
                 TypeTag.OBJECT);
-        Y_Set_Prototype.set(toString.getFnName(), toStringVar);
+        Y_Set_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
         // set.add("data")
         class AddFn extends Function.NativeFunction {
@@ -121,7 +122,7 @@ public class Y_Set {
                     List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_SetObject set = requireSetThis(interpreter);
+                Y_SetInstance set = requireSetThis(interpreter);
                 set.data.add(arguments.get(0));
 
                 return new Variable.Variant(set.data.size());
@@ -136,7 +137,7 @@ public class Y_Set {
                 true,
                 TypeTag.OBJECT
         );
-        Y_Set_Prototype.set(add.getFnName(), addVar);
+        Y_Set_Instance_Prototype.set(add.getFnName(), addVar);
 
         // set.remove("data")
         class RemoveFn extends Function.NativeFunction {
@@ -150,7 +151,7 @@ public class Y_Set {
                     List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_SetObject set = requireSetThis(interpreter);
+                Y_SetInstance set = requireSetThis(interpreter);
 
                 boolean removed = set.data.remove(arguments.get(0));
                 return new Variable.Variant(removed);
@@ -166,7 +167,7 @@ public class Y_Set {
                 true,
                 TypeTag.OBJECT
         );
-        Y_Set_Prototype.set(remove.getFnName(),removeVar);
+        Y_Set_Instance_Prototype.set(remove.getFnName(),removeVar);
 
         // set.contains("data")
         class ContainsFn extends Function.NativeFunction {
@@ -180,7 +181,7 @@ public class Y_Set {
                     List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_SetObject set = requireSetThis(interpreter);
+                Y_SetInstance set = requireSetThis(interpreter);
                 return new Variable.Variant(
                         set.data.contains(arguments.get(0)));
             }
@@ -195,7 +196,7 @@ public class Y_Set {
                 true,
                 TypeTag.OBJECT
         );
-        Y_Set_Prototype.set(contains.getFnName(), containsVar);
+        Y_Set_Instance_Prototype.set(contains.getFnName(), containsVar);
 
         // set.clear()
         class ClearFn extends Function.NativeFunction {
@@ -209,7 +210,7 @@ public class Y_Set {
                     List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_SetObject set = requireSetThis(interpreter);
+                Y_SetInstance set = requireSetThis(interpreter);
                 set.data.clear();
 
                 return new Variable.Variant(null);
@@ -225,7 +226,7 @@ public class Y_Set {
                 true,
                 TypeTag.OBJECT
         );
-        Y_Set_Prototype.set(clear.getFnName(), clearVar);
+        Y_Set_Instance_Prototype.set(clear.getFnName(), clearVar);
 
         // set.size()
         class SizeFn extends Function.NativeFunction {
@@ -239,7 +240,7 @@ public class Y_Set {
                     List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_SetObject set = requireSetThis(interpreter);
+                Y_SetInstance set = requireSetThis(interpreter);
                 return new Variable.Variant(set.data.size());
             }
 
@@ -253,7 +254,7 @@ public class Y_Set {
                 true,
                 TypeTag.OBJECT
         );
-        Y_Set_Prototype.set(size.getFnName(), sizeVar);
+        Y_Set_Instance_Prototype.set(size.getFnName(), sizeVar);
 
         // set.clone()
         class CloneFn extends Function.NativeFunction {
@@ -267,14 +268,14 @@ public class Y_Set {
                     List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_SetObject set = requireSetThis(interpreter);
+                Y_SetInstance set = requireSetThis(interpreter);
 
                 // shallow copy
                 HashSet<Variable.Variant> clonedData =
                         new HashSet<>(set.data);
 
-                Y_SetObject newSet =
-                        new Y_SetObject(clonedData);
+                Y_SetInstance newSet =
+                        new Y_SetInstance(clonedData);
 
                 return new Variable.Variant(newSet);
             }
@@ -289,7 +290,7 @@ public class Y_Set {
                 true,
                 TypeTag.OBJECT
         );
-        Y_Set_Prototype.set(clone.getFnName(), cloneVar);
+        Y_Set_Instance_Prototype.set(clone.getFnName(), cloneVar);
 
         // set.union(other)
         class UnionFn extends Function.NativeFunction {
@@ -303,12 +304,12 @@ public class Y_Set {
                     List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_SetObject set = requireSetThis(interpreter);
+                Y_SetInstance set = requireSetThis(interpreter);
 
                 Variable.Variant otherVar = arguments.get(0);
 
                 if (!otherVar.isRuntimeObject() ||
-                        !(otherVar.asRuntimeObject() instanceof Y_SetObject)) {
+                        !(otherVar.asRuntimeObject() instanceof Y_SetInstance)) {
 
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
@@ -317,8 +318,8 @@ public class Y_Set {
                     );
                 }
 
-                Y_SetObject other =
-                        (Y_SetObject) otherVar.asRuntimeObject();
+                Y_SetInstance other =
+                        (Y_SetInstance) otherVar.asRuntimeObject();
 
                 HashSet<Variable.Variant> newData =
                         new HashSet<>(set.data);
@@ -326,7 +327,7 @@ public class Y_Set {
                 newData.addAll(other.data);
 
                 return new Variable.Variant(
-                        new Y_SetObject(newData)
+                        new Y_SetInstance(newData)
                 );
             }
 
@@ -340,7 +341,7 @@ public class Y_Set {
                 true,
                 TypeTag.OBJECT
         );
-        Y_Set_Prototype.set(union.getFnName(), unionVar);
+        Y_Set_Instance_Prototype.set(union.getFnName(), unionVar);
 
         // set.intersection(other)
         class IntersectionFn extends Function.NativeFunction {
@@ -354,12 +355,12 @@ public class Y_Set {
                     List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_SetObject set = requireSetThis(interpreter);
+                Y_SetInstance set = requireSetThis(interpreter);
 
                 Variable.Variant otherVar = arguments.get(0);
 
                 if (!otherVar.isRuntimeObject() ||
-                        !(otherVar.asRuntimeObject() instanceof Y_SetObject)) {
+                        !(otherVar.asRuntimeObject() instanceof Y_SetInstance)) {
 
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
@@ -368,8 +369,8 @@ public class Y_Set {
                     );
                 }
 
-                Y_SetObject other =
-                        (Y_SetObject) otherVar.asRuntimeObject();
+                Y_SetInstance other =
+                        (Y_SetInstance) otherVar.asRuntimeObject();
 
                 HashSet<Variable.Variant> newData =
                         new HashSet<>(set.data);
@@ -377,7 +378,7 @@ public class Y_Set {
                 newData.retainAll(other.data);
 
                 return new Variable.Variant(
-                        new Y_SetObject(newData)
+                        new Y_SetInstance(newData)
                 );
             }
 
@@ -391,7 +392,7 @@ public class Y_Set {
                 true,
                 TypeTag.OBJECT
         );
-        Y_Set_Prototype.set(intersection.getFnName(), intersectionVar);
+        Y_Set_Instance_Prototype.set(intersection.getFnName(), intersectionVar);
 
         // set.difference(other)
         class DifferenceFn extends Function.NativeFunction {
@@ -405,12 +406,12 @@ public class Y_Set {
                     List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_SetObject set = requireSetThis(interpreter);
+                Y_SetInstance set = requireSetThis(interpreter);
 
                 Variable.Variant otherVar = arguments.get(0);
 
                 if (!otherVar.isRuntimeObject() ||
-                        !(otherVar.asRuntimeObject() instanceof Y_SetObject)) {
+                        !(otherVar.asRuntimeObject() instanceof Y_SetInstance)) {
 
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
@@ -419,8 +420,8 @@ public class Y_Set {
                     );
                 }
 
-                Y_SetObject other =
-                        (Y_SetObject) otherVar.asRuntimeObject();
+                Y_SetInstance other =
+                        (Y_SetInstance) otherVar.asRuntimeObject();
 
                 HashSet<Variable.Variant> newData =
                         new HashSet<>(set.data);
@@ -428,7 +429,7 @@ public class Y_Set {
                 newData.removeAll(other.data);
 
                 return new Variable.Variant(
-                        new Y_SetObject(newData)
+                        new Y_SetInstance(newData)
                 );
             }
 
@@ -442,7 +443,7 @@ public class Y_Set {
                 true,
                 TypeTag.OBJECT
         );
-        Y_Set_Prototype.set(difference.getFnName(), differenceVar);
+        Y_Set_Instance_Prototype.set(difference.getFnName(), differenceVar);
 
         // set.isSubsetOf(other)
         class IsSubsetFn extends Function.NativeFunction {
@@ -456,12 +457,12 @@ public class Y_Set {
                     List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_SetObject set = requireSetThis(interpreter);
+                Y_SetInstance set = requireSetThis(interpreter);
 
                 Variable.Variant otherVar = arguments.get(0);
 
                 if (!otherVar.isRuntimeObject() ||
-                        !(otherVar.asRuntimeObject() instanceof Y_SetObject)) {
+                        !(otherVar.asRuntimeObject() instanceof Y_SetInstance)) {
 
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
@@ -470,8 +471,8 @@ public class Y_Set {
                     );
                 }
 
-                Y_SetObject other =
-                        (Y_SetObject) otherVar.asRuntimeObject();
+                Y_SetInstance other =
+                        (Y_SetInstance) otherVar.asRuntimeObject();
 
                 boolean result =
                         other.data.containsAll(set.data);
@@ -489,7 +490,7 @@ public class Y_Set {
                 true,
                 TypeTag.OBJECT
         );
-        Y_Set_Prototype.set(isSubset.getFnName(), isSubsetVar);
+        Y_Set_Instance_Prototype.set(isSubset.getFnName(), isSubsetVar);
 
         // set.empty()
         class EmptyFn extends Function.NativeFunction {
@@ -503,7 +504,7 @@ public class Y_Set {
                     List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_SetObject set = requireSetThis(interpreter);
+                Y_SetInstance set = requireSetThis(interpreter);
                 return new Variable.Variant(set.data.isEmpty());
             }
 
@@ -517,7 +518,7 @@ public class Y_Set {
                 true,
                 TypeTag.OBJECT
         );
-        Y_Set_Prototype.set(empty.getFnName(), emptyVar);
+        Y_Set_Instance_Prototype.set(empty.getFnName(), emptyVar);
 
         // set.isSupersetOf(other)
         class IsSupersetFn extends Function.NativeFunction {
@@ -531,12 +532,12 @@ public class Y_Set {
                     List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_SetObject set = requireSetThis(interpreter);
+                Y_SetInstance set = requireSetThis(interpreter);
 
                 Variable.Variant otherVar = arguments.get(0);
 
                 if (!otherVar.isRuntimeObject() ||
-                        !(otherVar.asRuntimeObject() instanceof Y_SetObject)) {
+                        !(otherVar.asRuntimeObject() instanceof Y_SetInstance)) {
 
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
@@ -545,8 +546,8 @@ public class Y_Set {
                     );
                 }
 
-                Y_SetObject other =
-                        (Y_SetObject) otherVar.asRuntimeObject();
+                Y_SetInstance other =
+                        (Y_SetInstance) otherVar.asRuntimeObject();
 
                 boolean result =
                         set.data.containsAll(other.data);
@@ -564,7 +565,7 @@ public class Y_Set {
                 true,
                 TypeTag.OBJECT
         );
-        Y_Set_Prototype.set(isSuperset.getFnName(), isSupersetVar);
+        Y_Set_Instance_Prototype.set(isSuperset.getFnName(), isSupersetVar);
 
         // set.equals(other)
         class EqualsFn extends Function.NativeFunction {
@@ -578,18 +579,18 @@ public class Y_Set {
                     List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_SetObject set = requireSetThis(interpreter);
+                Y_SetInstance set = requireSetThis(interpreter);
 
                 Variable.Variant otherVar = arguments.get(0);
 
                 if (!otherVar.isRuntimeObject() ||
-                        !(otherVar.asRuntimeObject() instanceof Y_SetObject)) {
+                        !(otherVar.asRuntimeObject() instanceof Y_SetInstance)) {
 
                     return new Variable.Variant(false);
                 }
 
-                Y_SetObject other =
-                        (Y_SetObject) otherVar.asRuntimeObject();
+                Y_SetInstance other =
+                        (Y_SetInstance) otherVar.asRuntimeObject();
 
                 if (set.data.size() != other.data.size()) {
                     return new Variable.Variant(false);
@@ -611,22 +612,22 @@ public class Y_Set {
                 true,
                 TypeTag.OBJECT
         );
-        Y_Set_Prototype.set(equals.getFnName(), equalsVar);
+        Y_Set_Instance_Prototype.set(equals.getFnName(), equalsVar);
     }
 
 
-    public static class Y_SetObject extends RuntimeObject {
+    public static class Y_SetInstance extends Y_Class.ClassObjectInstance {
 
         private final HashSet<Variable.Variant> data;
 
-        public Y_SetObject() {
+        public Y_SetInstance() {
             this.data = new HashSet<>();
-            this.prototype = Y_Set_Prototype;
+            this.prototype = Y_Set_Instance_Prototype;
         }
 
-        public Y_SetObject(HashSet<Variable.Variant> data) {
+        public Y_SetInstance(HashSet<Variable.Variant> data) {
             this.data = data;
-            this.prototype = Y_Set_Prototype;
+            this.prototype = Y_Set_Instance_Prototype;
         }
 
         @Override
@@ -639,7 +640,7 @@ public class Y_Set {
         public String toString() { return "<class:set>"; }
     }
 
-    public static class Y_SetInit extends Function.NativeFunction {
+    public static class Y_SetClass extends Y_Class.SealedClassObject {
 
         @Override
         public int arity() { return 0; }
@@ -650,19 +651,26 @@ public class Y_Set {
                 List<Variable.Variant> arguments)
                 throws YsharpError {
 
-            return new Variable.Variant(new Y_SetObject());
+            return new Variable.Variant(new Y_SetInstance());
         }
 
         @Override
-        public String getFnName() { return "Set"; }
+        public String getClassName() {
+            return "Set";
+        }
+
+        @Override
+        public String getType() {
+            return "Set";
+        }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
 
-        Y_SetInit ctor = new Y_SetInit();
+        Y_SetClass ctor = new Y_SetClass();
 
         interpreter.defineGlobal(
-                ctor.getFnName(),
+                ctor.getClassName(),
                 new Variable(
                         new Variable.Variant(ctor),
                         false,

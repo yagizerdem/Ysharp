@@ -573,7 +573,7 @@ public class Interpreter implements
             return new Variable.Variant(c.value());
 
         if (lit instanceof Token.Literal.Str s) {
-            Y_String.Y_StringObject object = new Y_String.Y_StringObject(s.value());
+            Y_String.Y_StringInstance object = new Y_String.Y_StringInstance(s.value());
             return new Variable.Variant(object);
         }
 
@@ -597,7 +597,7 @@ public class Interpreter implements
         for(int i = 0; i < expr.elements.size(); i++) {
             data.add(evaluate(expr.elements.get(i)));
         }
-        Y_Array.Y_ArrayObject y_array = new Y_Array.Y_ArrayObject(data);
+        Y_Array.Y_ArrayInstance y_array = new Y_Array.Y_ArrayInstance(data);
 
         return new Variable.Variant(y_array);
     }
@@ -608,7 +608,7 @@ public class Interpreter implements
         for(Expr.MapInitializerExpr.Entry entry : expr.entries) {
             if(entry.key.literal  instanceof Token.Literal.Str) {
                 String key = ((Token.Literal.Str) entry.key.literal).value();
-                Y_String.Y_StringObject stringObj = new Y_String.Y_StringObject(key);
+                Y_String.Y_StringInstance stringObj = new Y_String.Y_StringInstance(key);
                 hashTable.put(new Variable.Variant(stringObj), evaluate(entry.value));
             }
             else {
@@ -619,7 +619,7 @@ public class Interpreter implements
             }
         }
 
-        return new Variable.Variant(new Y_HashTable.Y_MapObject(hashTable));
+        return new Variable.Variant(new Y_HashTable.Y_MapInstance(hashTable));
     }
 
     @Override

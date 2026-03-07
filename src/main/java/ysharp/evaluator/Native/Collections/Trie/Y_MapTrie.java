@@ -12,7 +12,7 @@ import java.util.List;
 public class Y_MapTrie {
 
     // helper
-    private static Y_MapTrie.Y_MapTrieObject requireTrieThis(Interpreter interpreter) {
+    private static Y_MapTrie.Y_MapTrieInstance requireTrieThis(Interpreter interpreter) {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
@@ -25,7 +25,7 @@ public class Y_MapTrie {
 
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-        if (!(obj instanceof Y_MapTrie.Y_MapTrieObject)) {
+        if (!(obj instanceof Y_MapTrie.Y_MapTrieInstance)) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     0,
@@ -33,11 +33,13 @@ public class Y_MapTrie {
             );
         }
 
-        return (Y_MapTrie.Y_MapTrieObject) obj;
+        return (Y_MapTrie.Y_MapTrieInstance) obj;
     }
-
+    
+    public static RuntimeObject Y_MapTrie_Instance_Prototype;
+    
     static {
-        Y_MapTrie_Prototype = new RuntimeObject() {
+        Y_MapTrie_Instance_Prototype = new RuntimeObject() {
 
             @Override
             public boolean isTruthy() {
@@ -49,7 +51,7 @@ public class Y_MapTrie {
                 return "trie_prototype";
             }
         };
-
+        Y_MapTrie_Instance_Prototype.prototype = Y_Class.ClassPrototype;
 
         // trie.toString()
         class ToStringFn extends Function.NativeFunction {
@@ -66,7 +68,7 @@ public class Y_MapTrie {
 
                 this.requireArity(arguments, 0, "Trie.toString");
 
-                Y_MapTrieObject trie = requireTrieThis(interpreter);
+                Y_MapTrieInstance trie = requireTrieThis(interpreter);
 
                 return new Variable.Variant(trie.data.toString());
             }
@@ -79,7 +81,7 @@ public class Y_MapTrie {
 
         ToStringFn toString = new ToStringFn();
         Variable toStringVar = new Variable(new Variable.Variant(toString), true, TypeTag.OBJECT);
-        Y_MapTrie.Y_MapTrie_Prototype.set(toString.getFnName(), toStringVar);
+        Y_MapTrie.Y_MapTrie_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
 
         // trie.insert(key, value)
@@ -99,7 +101,7 @@ public class Y_MapTrie {
 
                 Variable.Variant key   = arguments.get(0);
                 Variable.Variant value = arguments.get(1);
-                Y_MapTrieObject trie = requireTrieThis(interpreter);
+                Y_MapTrieInstance trie = requireTrieThis(interpreter);
 
                 String keyStr = key.toString();
 
@@ -116,7 +118,7 @@ public class Y_MapTrie {
 
         InsertFn insert = new InsertFn();
         Variable insertVar = new Variable(new Variable.Variant(insert), true, TypeTag.OBJECT);
-        Y_MapTrie.Y_MapTrie_Prototype.set(insert.getFnName(), insertVar);
+        Y_MapTrie.Y_MapTrie_Instance_Prototype.set(insert.getFnName(), insertVar);
 
 
         // trie.get(key) -> value or null
@@ -135,7 +137,7 @@ public class Y_MapTrie {
                 this.requireArity(arguments, 1, "Trie.get");
 
                 Variable.Variant key = arguments.get(0);
-                Y_MapTrieObject trie = requireTrieThis(interpreter);
+                Y_MapTrieInstance trie = requireTrieThis(interpreter);
 
                 Variable.Variant result = trie.data.get(key.toString());
 
@@ -150,7 +152,7 @@ public class Y_MapTrie {
 
         GetFn get = new GetFn();
         Variable getVar = new Variable(new Variable.Variant(get), true, TypeTag.OBJECT);
-        Y_MapTrie.Y_MapTrie_Prototype.set(get.getFnName(), getVar);
+        Y_MapTrie.Y_MapTrie_Instance_Prototype.set(get.getFnName(), getVar);
 
 
         // trie.contains(key) -> true/false
@@ -169,7 +171,7 @@ public class Y_MapTrie {
                 this.requireArity(arguments, 1, "Trie.contains");
 
                 Variable.Variant key = arguments.get(0);
-                Y_MapTrieObject trie = requireTrieThis(interpreter);
+                Y_MapTrieInstance trie = requireTrieThis(interpreter);
 
                 return new Variable.Variant(trie.data.contains(key.toString()));
             }
@@ -182,7 +184,7 @@ public class Y_MapTrie {
 
         ContainsFn contains = new ContainsFn();
         Variable containsVar = new Variable(new Variable.Variant(contains), true, TypeTag.OBJECT);
-        Y_MapTrie.Y_MapTrie_Prototype.set(contains.getFnName(), containsVar);
+        Y_MapTrie.Y_MapTrie_Instance_Prototype.set(contains.getFnName(), containsVar);
 
 
         // trie.deleteKey(key)
@@ -201,7 +203,7 @@ public class Y_MapTrie {
                 this.requireArity(arguments, 1, "Trie.deleteKey");
 
                 Variable.Variant key = arguments.get(0);
-                Y_MapTrieObject trie = requireTrieThis(interpreter);
+                Y_MapTrieInstance trie = requireTrieThis(interpreter);
 
                 trie.data.deleteKey(key.toString());
 
@@ -216,7 +218,7 @@ public class Y_MapTrie {
 
         DeleteKeyFn deleteKey = new DeleteKeyFn();
         Variable deleteKeyVar = new Variable(new Variable.Variant(deleteKey), true, TypeTag.OBJECT);
-        Y_MapTrie.Y_MapTrie_Prototype.set(deleteKey.getFnName(), deleteKeyVar);
+        Y_MapTrie.Y_MapTrie_Instance_Prototype.set(deleteKey.getFnName(), deleteKeyVar);
 
 
         // trie.getKeySuggestions(prefix) -> Y_ArrayObject of matching keys
@@ -235,7 +237,7 @@ public class Y_MapTrie {
                 this.requireArity(arguments, 1, "Trie.getKeySuggestions");
 
                 Variable.Variant prefix = arguments.get(0);
-                Y_MapTrieObject trie = requireTrieThis(interpreter);
+                Y_MapTrieInstance trie = requireTrieThis(interpreter);
 
                 List<String> suggestions = trie.data.getKeySuggestions(prefix.toString());
 
@@ -244,7 +246,7 @@ public class Y_MapTrie {
                     list.add(new Variable.Variant(s));
                 }
 
-                return new Variable.Variant(new Y_Array.Y_ArrayObject(list));
+                return new Variable.Variant(new Y_Array.Y_ArrayInstance(list));
             }
 
             @Override
@@ -255,7 +257,7 @@ public class Y_MapTrie {
 
         GetKeySuggestionsFn getKeySuggestions = new GetKeySuggestionsFn();
         Variable getKeySuggestionsVar = new Variable(new Variable.Variant(getKeySuggestions), true, TypeTag.OBJECT);
-        Y_MapTrie.Y_MapTrie_Prototype.set(getKeySuggestions.getFnName(), getKeySuggestionsVar);
+        Y_MapTrie.Y_MapTrie_Instance_Prototype.set(getKeySuggestions.getFnName(), getKeySuggestionsVar);
 
 
         // trie.getValueSuggestions(prefix) -> Y_ArrayObject of matching values
@@ -274,14 +276,14 @@ public class Y_MapTrie {
                 this.requireArity(arguments, 1, "Trie.getValueSuggestions");
 
                 Variable.Variant prefix = arguments.get(0);
-                Y_MapTrieObject trie = requireTrieThis(interpreter);
+                Y_MapTrieInstance trie = requireTrieThis(interpreter);
 
                 List<Variable.Variant> suggestions =
                         trie.data.getValueSuggestions(prefix.toString());
 
                 ArrayList<Variable.Variant> list = new ArrayList<>(suggestions);
 
-                return new Variable.Variant(new Y_Array.Y_ArrayObject(list));
+                return new Variable.Variant(new Y_Array.Y_ArrayInstance(list));
             }
 
             @Override
@@ -292,7 +294,7 @@ public class Y_MapTrie {
 
         GetValueSuggestionsFn getValueSuggestions = new GetValueSuggestionsFn();
         Variable getValueSuggestionsVar = new Variable(new Variable.Variant(getValueSuggestions), true, TypeTag.OBJECT);
-        Y_MapTrie.Y_MapTrie_Prototype.set(getValueSuggestions.getFnName(), getValueSuggestionsVar);
+        Y_MapTrie.Y_MapTrie_Instance_Prototype.set(getValueSuggestions.getFnName(), getValueSuggestionsVar);
 
 
         // trie.keys() -> Y_ArrayObject of all keys in sorted trie order
@@ -310,7 +312,7 @@ public class Y_MapTrie {
 
                 this.requireArity(arguments, 0, "Trie.keys");
 
-                Y_MapTrieObject trie = requireTrieThis(interpreter);
+                Y_MapTrieInstance trie = requireTrieThis(interpreter);
 
                 List<String> keyList = trie.data.keys();
 
@@ -319,7 +321,7 @@ public class Y_MapTrie {
                     list.add(new Variable.Variant(s));
                 }
 
-                return new Variable.Variant(new Y_Array.Y_ArrayObject(list));
+                return new Variable.Variant(new Y_Array.Y_ArrayInstance(list));
             }
 
             @Override
@@ -330,7 +332,7 @@ public class Y_MapTrie {
 
         KeysFn keys = new KeysFn();
         Variable keysVar = new Variable(new Variable.Variant(keys), true, TypeTag.OBJECT);
-        Y_MapTrie.Y_MapTrie_Prototype.set(keys.getFnName(), keysVar);
+        Y_MapTrie.Y_MapTrie_Instance_Prototype.set(keys.getFnName(), keysVar);
 
 
         // trie.values() -> Y_ArrayObject of all values
@@ -348,13 +350,13 @@ public class Y_MapTrie {
 
                 this.requireArity(arguments, 0, "Trie.values");
 
-                Y_MapTrieObject trie = requireTrieThis(interpreter);
+                Y_MapTrieInstance trie = requireTrieThis(interpreter);
 
                 List<Variable.Variant> valueList = trie.data.values();
 
                 ArrayList<Variable.Variant> list = new ArrayList<>(valueList);
 
-                return new Variable.Variant(new Y_Array.Y_ArrayObject(list));
+                return new Variable.Variant(new Y_Array.Y_ArrayInstance(list));
             }
 
             @Override
@@ -365,7 +367,7 @@ public class Y_MapTrie {
 
         ValuesFn values = new ValuesFn();
         Variable valuesVar = new Variable(new Variable.Variant(values), true, TypeTag.OBJECT);
-        Y_MapTrie.Y_MapTrie_Prototype.set(values.getFnName(), valuesVar);
+        Y_MapTrie.Y_MapTrie_Instance_Prototype.set(values.getFnName(), valuesVar);
 
 
         // trie.size() -> number of keys stored
@@ -383,7 +385,7 @@ public class Y_MapTrie {
 
                 this.requireArity(arguments, 0, "Trie.size");
 
-                Y_MapTrieObject trie = requireTrieThis(interpreter);
+                Y_MapTrieInstance trie = requireTrieThis(interpreter);
 
                 return new Variable.Variant(trie.data.size());
             }
@@ -396,7 +398,7 @@ public class Y_MapTrie {
 
         SizeFn size = new SizeFn();
         Variable sizeVar = new Variable(new Variable.Variant(size), true, TypeTag.OBJECT);
-        Y_MapTrie.Y_MapTrie_Prototype.set(size.getFnName(), sizeVar);
+        Y_MapTrie.Y_MapTrie_Instance_Prototype.set(size.getFnName(), sizeVar);
 
 
         // trie.isEmpty()
@@ -414,7 +416,7 @@ public class Y_MapTrie {
 
                 this.requireArity(arguments, 0, "Trie.isEmpty");
 
-                Y_MapTrieObject trie = requireTrieThis(interpreter);
+                Y_MapTrieInstance trie = requireTrieThis(interpreter);
 
                 return new Variable.Variant(trie.data.size() == 0);
             }
@@ -427,7 +429,7 @@ public class Y_MapTrie {
 
         IsEmptyFn isEmpty = new IsEmptyFn();
         Variable isEmptyVar = new Variable(new Variable.Variant(isEmpty), true, TypeTag.OBJECT);
-        Y_MapTrie.Y_MapTrie_Prototype.set(isEmpty.getFnName(), isEmptyVar);
+        Y_MapTrie.Y_MapTrie_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
 
 
         // trie.clear() -> deep clear (keeps root, clears children)
@@ -445,7 +447,7 @@ public class Y_MapTrie {
 
                 this.requireArity(arguments, 0, "Trie.clear");
 
-                Y_MapTrieObject trie = requireTrieThis(interpreter);
+                Y_MapTrieInstance trie = requireTrieThis(interpreter);
                 trie.data.clear();
 
                 return new Variable.Variant(null);
@@ -459,7 +461,7 @@ public class Y_MapTrie {
 
         ClearFn clear = new ClearFn();
         Variable clearVar = new Variable(new Variable.Variant(clear), true, TypeTag.OBJECT);
-        Y_MapTrie.Y_MapTrie_Prototype.set(clear.getFnName(), clearVar);
+        Y_MapTrie.Y_MapTrie_Instance_Prototype.set(clear.getFnName(), clearVar);
 
 
         // trie.fastClear() -> replaces root node entirely (faster)
@@ -477,7 +479,7 @@ public class Y_MapTrie {
 
                 this.requireArity(arguments, 0, "Trie.fastClear");
 
-                Y_MapTrieObject trie = requireTrieThis(interpreter);
+                Y_MapTrieInstance trie = requireTrieThis(interpreter);
                 trie.data.fastClear();
 
                 return new Variable.Variant(null);
@@ -491,7 +493,7 @@ public class Y_MapTrie {
 
         FastClearFn fastClear = new FastClearFn();
         Variable fastClearVar = new Variable(new Variable.Variant(fastClear), true, TypeTag.OBJECT);
-        Y_MapTrie.Y_MapTrie_Prototype.set(fastClear.getFnName(), fastClearVar);
+        Y_MapTrie.Y_MapTrie_Instance_Prototype.set(fastClear.getFnName(), fastClearVar);
 
 
         // trie.print() -> prints trie structure to stdout (debug)
@@ -509,7 +511,7 @@ public class Y_MapTrie {
 
                 this.requireArity(arguments, 0, "Trie.print");
 
-                Y_MapTrieObject trie = requireTrieThis(interpreter);
+                Y_MapTrieInstance trie = requireTrieThis(interpreter);
                 trie.data.print();
 
                 return new Variable.Variant(null);
@@ -523,20 +525,19 @@ public class Y_MapTrie {
 
         PrintFn print = new PrintFn();
         Variable printVar = new Variable(new Variable.Variant(print), true, TypeTag.OBJECT);
-        Y_MapTrie.Y_MapTrie_Prototype.set(print.getFnName(), printVar);
+        Y_MapTrie.Y_MapTrie_Instance_Prototype.set(print.getFnName(), printVar);
 
     }
+    
 
-    public static RuntimeObject Y_MapTrie_Prototype;
-
-    public static class Y_MapTrieObject extends RuntimeObject {
+    public static class Y_MapTrieInstance extends Y_Class.ClassObjectInstance {
 
         // Backed by MapTrie<Variable.Variant> — keys are lowercased+trimmed strings
         final MapTrie<Variable.Variant> data;
 
-        public Y_MapTrieObject() {
+        public Y_MapTrieInstance() {
             this.data = new MapTrie<>();
-            this.prototype = Y_MapTrie_Prototype;
+            this.prototype = Y_MapTrie_Instance_Prototype;
         }
 
         @Override
@@ -555,7 +556,7 @@ public class Y_MapTrie {
         }
     }
 
-    public static class Y_MapTrieInit extends Function.NativeFunction {
+    public static class Y_MapTrieClass extends Y_Class.SealedClassObject {
 
         @Override
         public int arity() {
@@ -569,22 +570,27 @@ public class Y_MapTrie {
 
             this.requireArity(arguments, 0, "MapTrie");
 
-            Y_MapTrieObject newTrie = new Y_MapTrieObject();
+            Y_MapTrieInstance newTrie = new Y_MapTrieInstance();
 
             return new Variable.Variant(newTrie);
         }
 
         @Override
-        public String getFnName() {
+        public String getClassName() {
+            return "MapTrie";
+        }
+
+        @Override
+        public String getType() {
             return "MapTrie";
         }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
-        Y_MapTrie.Y_MapTrieInit trieCtor = new Y_MapTrie.Y_MapTrieInit();
+        Y_MapTrie.Y_MapTrieClass trieCtor = new Y_MapTrie.Y_MapTrieClass();
         Variable.Variant variant = new Variable.Variant(trieCtor);
         Variable var = new Variable(variant, false, TypeTag.OBJECT);
-        interpreter.defineGlobal(trieCtor.getFnName(), var);
+        interpreter.defineGlobal(trieCtor.getClassName(), var);
     }
 
 }

@@ -46,7 +46,7 @@ public class Core {
                         var f_name = "ahmet";
                     }
                                 
-                    sealed class Matrix extends Array {
+                    sealed class Matrix extends MyMath {
                         static foo() do 
                             println "foo";
                         end
@@ -70,9 +70,11 @@ public class Core {
                     
                     println m.testProp;
                     println m.f_name;
+                    println m.getType();
+                    println String.getType();
                     
-                    
-                    
+                    var name = new String("yagiz erdem");
+                    println UUID.v4();
                 """;
 
 

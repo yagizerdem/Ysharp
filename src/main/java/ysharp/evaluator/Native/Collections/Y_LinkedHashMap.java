@@ -11,7 +11,7 @@ import java.util.List;
 public class Y_LinkedHashMap {
 
     // helper
-    private static Y_LinkedHashMap.Y_LinkedHashMapObject requireLinkedHashMapThis(Interpreter interpreter) {
+    private static Y_LinkedHashMap.Y_LinkedHashMapInstance requireLinkedHashMapThis(Interpreter interpreter) {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
@@ -24,7 +24,7 @@ public class Y_LinkedHashMap {
 
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-        if (!(obj instanceof Y_LinkedHashMap.Y_LinkedHashMapObject)) {
+        if (!(obj instanceof Y_LinkedHashMap.Y_LinkedHashMapInstance)) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     0,
@@ -32,11 +32,13 @@ public class Y_LinkedHashMap {
             );
         }
 
-        return (Y_LinkedHashMap.Y_LinkedHashMapObject) obj;
+        return (Y_LinkedHashMap.Y_LinkedHashMapInstance) obj;
     }
 
+    public static RuntimeObject Y_LinkedHashMap_Instance_Prototype;
+
     static {
-        Y_LinkedHashMap_Prototype = new RuntimeObject() {
+        Y_LinkedHashMap_Instance_Prototype = new RuntimeObject() {
 
             @Override
             public boolean isTruthy() {
@@ -48,6 +50,7 @@ public class Y_LinkedHashMap {
                 return "linked_hash_map_prototype";
             }
         };
+        Y_LinkedHashMap_Instance_Prototype.prototype = Y_Class.ClassPrototype;
 
         // lhm.toString()
         class ToStringFn extends Function.NativeFunction {
@@ -62,7 +65,7 @@ public class Y_LinkedHashMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_LinkedHashMapObject lhm = requireLinkedHashMapThis(interpreter);
+                Y_LinkedHashMapInstance lhm = requireLinkedHashMapThis(interpreter);
 
                 StringBuilder sb = new StringBuilder();
                 sb.append("{");
@@ -89,7 +92,7 @@ public class Y_LinkedHashMap {
 
         ToStringFn toString = new ToStringFn();
         Variable toStringVar = new Variable(new Variable.Variant(toString), true, TypeTag.OBJECT);
-        Y_LinkedHashMap.Y_LinkedHashMap_Prototype.set(toString.getFnName(), toStringVar);
+        Y_LinkedHashMap.Y_LinkedHashMap_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
 
         // lhm.put(key, value)
@@ -107,7 +110,7 @@ public class Y_LinkedHashMap {
 
                 Variable.Variant key   = arguments.get(0);
                 Variable.Variant value = arguments.get(1);
-                Y_LinkedHashMapObject lhm = requireLinkedHashMapThis(interpreter);
+                Y_LinkedHashMapInstance lhm = requireLinkedHashMapThis(interpreter);
 
                 Variable.Variant previous = lhm.data.put(key, value);
 
@@ -122,7 +125,7 @@ public class Y_LinkedHashMap {
 
         PutFn put = new PutFn();
         Variable putVar = new Variable(new Variable.Variant(put), true, TypeTag.OBJECT);
-        Y_LinkedHashMap.Y_LinkedHashMap_Prototype.set(put.getFnName(), putVar);
+        Y_LinkedHashMap.Y_LinkedHashMap_Instance_Prototype.set(put.getFnName(), putVar);
 
 
         // lhm.get(key)
@@ -139,7 +142,7 @@ public class Y_LinkedHashMap {
                     throws YsharpError {
 
                 Variable.Variant key = arguments.get(0);
-                Y_LinkedHashMapObject lhm = requireLinkedHashMapThis(interpreter);
+                Y_LinkedHashMapInstance lhm = requireLinkedHashMapThis(interpreter);
 
                 Variable.Variant value = lhm.data.get(key);
 
@@ -154,7 +157,7 @@ public class Y_LinkedHashMap {
 
         GetFn get = new GetFn();
         Variable getVar = new Variable(new Variable.Variant(get), true, TypeTag.OBJECT);
-        Y_LinkedHashMap.Y_LinkedHashMap_Prototype.set(get.getFnName(), getVar);
+        Y_LinkedHashMap.Y_LinkedHashMap_Instance_Prototype.set(get.getFnName(), getVar);
 
 
         // lhm.getOrDefault(key, default)
@@ -172,7 +175,7 @@ public class Y_LinkedHashMap {
 
                 Variable.Variant key          = arguments.get(0);
                 Variable.Variant defaultValue = arguments.get(1);
-                Y_LinkedHashMapObject lhm = requireLinkedHashMapThis(interpreter);
+                Y_LinkedHashMapInstance lhm = requireLinkedHashMapThis(interpreter);
 
                 Variable.Variant value = lhm.data.get(key);
 
@@ -187,7 +190,7 @@ public class Y_LinkedHashMap {
 
         GetOrDefaultFn getOrDefault = new GetOrDefaultFn();
         Variable getOrDefaultVar = new Variable(new Variable.Variant(getOrDefault), true, TypeTag.OBJECT);
-        Y_LinkedHashMap.Y_LinkedHashMap_Prototype.set(getOrDefault.getFnName(), getOrDefaultVar);
+        Y_LinkedHashMap.Y_LinkedHashMap_Instance_Prototype.set(getOrDefault.getFnName(), getOrDefaultVar);
 
 
         // lhm.remove(key)
@@ -204,7 +207,7 @@ public class Y_LinkedHashMap {
                     throws YsharpError {
 
                 Variable.Variant key = arguments.get(0);
-                Y_LinkedHashMapObject lhm = requireLinkedHashMapThis(interpreter);
+                Y_LinkedHashMapInstance lhm = requireLinkedHashMapThis(interpreter);
 
                 Variable.Variant removed = lhm.data.remove(key);
 
@@ -219,7 +222,7 @@ public class Y_LinkedHashMap {
 
         RemoveFn remove = new RemoveFn();
         Variable removeVar = new Variable(new Variable.Variant(remove), true, TypeTag.OBJECT);
-        Y_LinkedHashMap.Y_LinkedHashMap_Prototype.set(remove.getFnName(), removeVar);
+        Y_LinkedHashMap.Y_LinkedHashMap_Instance_Prototype.set(remove.getFnName(), removeVar);
 
 
         // lhm.containsKey(key)
@@ -236,7 +239,7 @@ public class Y_LinkedHashMap {
                     throws YsharpError {
 
                 Variable.Variant key = arguments.get(0);
-                Y_LinkedHashMapObject lhm = requireLinkedHashMapThis(interpreter);
+                Y_LinkedHashMapInstance lhm = requireLinkedHashMapThis(interpreter);
 
                 return new Variable.Variant(lhm.data.containsKey(key));
             }
@@ -249,7 +252,7 @@ public class Y_LinkedHashMap {
 
         ContainsKeyFn containsKey = new ContainsKeyFn();
         Variable containsKeyVar = new Variable(new Variable.Variant(containsKey), true, TypeTag.OBJECT);
-        Y_LinkedHashMap.Y_LinkedHashMap_Prototype.set(containsKey.getFnName(), containsKeyVar);
+        Y_LinkedHashMap.Y_LinkedHashMap_Instance_Prototype.set(containsKey.getFnName(), containsKeyVar);
 
 
         // lhm.containsValue(value)
@@ -266,7 +269,7 @@ public class Y_LinkedHashMap {
                     throws YsharpError {
 
                 Variable.Variant value = arguments.get(0);
-                Y_LinkedHashMapObject lhm = requireLinkedHashMapThis(interpreter);
+                Y_LinkedHashMapInstance lhm = requireLinkedHashMapThis(interpreter);
 
                 return new Variable.Variant(lhm.data.containsValue(value));
             }
@@ -279,7 +282,7 @@ public class Y_LinkedHashMap {
 
         ContainsValueFn containsValue = new ContainsValueFn();
         Variable containsValueVar = new Variable(new Variable.Variant(containsValue), true, TypeTag.OBJECT);
-        Y_LinkedHashMap.Y_LinkedHashMap_Prototype.set(containsValue.getFnName(), containsValueVar);
+        Y_LinkedHashMap.Y_LinkedHashMap_Instance_Prototype.set(containsValue.getFnName(), containsValueVar);
 
 
         // lhm.keys() -> Y_ArrayObject in insertion order
@@ -295,11 +298,11 @@ public class Y_LinkedHashMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_LinkedHashMapObject lhm = requireLinkedHashMapThis(interpreter);
+                Y_LinkedHashMapInstance lhm = requireLinkedHashMapThis(interpreter);
 
                 ArrayList<Variable.Variant> list = new ArrayList<>(lhm.data.keySet());
 
-                Y_Array.Y_ArrayObject array = new Y_Array.Y_ArrayObject(list);
+                Y_Array.Y_ArrayInstance array = new Y_Array.Y_ArrayInstance(list);
 
                 return new Variable.Variant(array);
             }
@@ -312,7 +315,7 @@ public class Y_LinkedHashMap {
 
         KeysFn keys = new KeysFn();
         Variable keysVar = new Variable(new Variable.Variant(keys), true, TypeTag.OBJECT);
-        Y_LinkedHashMap.Y_LinkedHashMap_Prototype.set(keys.getFnName(), keysVar);
+        Y_LinkedHashMap.Y_LinkedHashMap_Instance_Prototype.set(keys.getFnName(), keysVar);
 
 
         // lhm.values() -> Y_ArrayObject in insertion order
@@ -328,11 +331,11 @@ public class Y_LinkedHashMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_LinkedHashMapObject lhm = requireLinkedHashMapThis(interpreter);
+                Y_LinkedHashMapInstance lhm = requireLinkedHashMapThis(interpreter);
 
                 ArrayList<Variable.Variant> list = new ArrayList<>(lhm.data.values());
 
-                Y_Array.Y_ArrayObject array = new Y_Array.Y_ArrayObject(list);
+                Y_Array.Y_ArrayInstance array = new Y_Array.Y_ArrayInstance(list);
 
                 return new Variable.Variant(array);
             }
@@ -345,7 +348,7 @@ public class Y_LinkedHashMap {
 
         ValuesFn values = new ValuesFn();
         Variable valuesVar = new Variable(new Variable.Variant(values), true, TypeTag.OBJECT);
-        Y_LinkedHashMap.Y_LinkedHashMap_Prototype.set(values.getFnName(), valuesVar);
+        Y_LinkedHashMap.Y_LinkedHashMap_Instance_Prototype.set(values.getFnName(), valuesVar);
 
 
         // lhm.entries() -> array of [key, value] pairs in insertion order
@@ -361,7 +364,7 @@ public class Y_LinkedHashMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_LinkedHashMapObject lhm = requireLinkedHashMapThis(interpreter);
+                Y_LinkedHashMapInstance lhm = requireLinkedHashMapThis(interpreter);
 
                 ArrayList<Variable.Variant> outerList = new ArrayList<>();
 
@@ -369,10 +372,10 @@ public class Y_LinkedHashMap {
                     ArrayList<Variable.Variant> pair = new ArrayList<>();
                     pair.add(entry.getKey());
                     pair.add(entry.getValue());
-                    outerList.add(new Variable.Variant(new Y_Array.Y_ArrayObject(pair)));
+                    outerList.add(new Variable.Variant(new Y_Array.Y_ArrayInstance(pair)));
                 }
 
-                return new Variable.Variant(new Y_Array.Y_ArrayObject(outerList));
+                return new Variable.Variant(new Y_Array.Y_ArrayInstance(outerList));
             }
 
             @Override
@@ -383,7 +386,7 @@ public class Y_LinkedHashMap {
 
         EntriesFn entries = new EntriesFn();
         Variable entriesVar = new Variable(new Variable.Variant(entries), true, TypeTag.OBJECT);
-        Y_LinkedHashMap.Y_LinkedHashMap_Prototype.set(entries.getFnName(), entriesVar);
+        Y_LinkedHashMap.Y_LinkedHashMap_Instance_Prototype.set(entries.getFnName(), entriesVar);
 
 
         // lhm.firstKey()
@@ -399,7 +402,7 @@ public class Y_LinkedHashMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_LinkedHashMapObject lhm = requireLinkedHashMapThis(interpreter);
+                Y_LinkedHashMapInstance lhm = requireLinkedHashMapThis(interpreter);
 
                 if (lhm.data.isEmpty()) {
                     return new Variable.Variant(null);
@@ -416,7 +419,7 @@ public class Y_LinkedHashMap {
 
         FirstKeyFn firstKey = new FirstKeyFn();
         Variable firstKeyVar = new Variable(new Variable.Variant(firstKey), true, TypeTag.OBJECT);
-        Y_LinkedHashMap.Y_LinkedHashMap_Prototype.set(firstKey.getFnName(), firstKeyVar);
+        Y_LinkedHashMap.Y_LinkedHashMap_Instance_Prototype.set(firstKey.getFnName(), firstKeyVar);
 
 
         // lhm.lastKey()
@@ -432,7 +435,7 @@ public class Y_LinkedHashMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_LinkedHashMapObject lhm = requireLinkedHashMapThis(interpreter);
+                Y_LinkedHashMapInstance lhm = requireLinkedHashMapThis(interpreter);
 
                 if (lhm.data.isEmpty()) {
                     return new Variable.Variant(null);
@@ -454,7 +457,7 @@ public class Y_LinkedHashMap {
 
         LastKeyFn lastKey = new LastKeyFn();
         Variable lastKeyVar = new Variable(new Variable.Variant(lastKey), true, TypeTag.OBJECT);
-        Y_LinkedHashMap.Y_LinkedHashMap_Prototype.set(lastKey.getFnName(), lastKeyVar);
+        Y_LinkedHashMap.Y_LinkedHashMap_Instance_Prototype.set(lastKey.getFnName(), lastKeyVar);
 
 
         // lhm.removeFirst() -> removes and returns value of first inserted entry
@@ -470,7 +473,7 @@ public class Y_LinkedHashMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_LinkedHashMapObject lhm = requireLinkedHashMapThis(interpreter);
+                Y_LinkedHashMapInstance lhm = requireLinkedHashMapThis(interpreter);
 
                 if (lhm.data.isEmpty()) {
                     return new Variable.Variant(null);
@@ -489,7 +492,7 @@ public class Y_LinkedHashMap {
 
         RemoveFirstFn removeFirst = new RemoveFirstFn();
         Variable removeFirstVar = new Variable(new Variable.Variant(removeFirst), true, TypeTag.OBJECT);
-        Y_LinkedHashMap.Y_LinkedHashMap_Prototype.set(removeFirst.getFnName(), removeFirstVar);
+        Y_LinkedHashMap.Y_LinkedHashMap_Instance_Prototype.set(removeFirst.getFnName(), removeFirstVar);
 
 
         // lhm.removeLast() -> removes and returns value of last inserted entry
@@ -505,7 +508,7 @@ public class Y_LinkedHashMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_LinkedHashMapObject lhm = requireLinkedHashMapThis(interpreter);
+                Y_LinkedHashMapInstance lhm = requireLinkedHashMapThis(interpreter);
 
                 if (lhm.data.isEmpty()) {
                     return new Variable.Variant(null);
@@ -527,7 +530,7 @@ public class Y_LinkedHashMap {
 
         RemoveLastFn removeLast = new RemoveLastFn();
         Variable removeLastVar = new Variable(new Variable.Variant(removeLast), true, TypeTag.OBJECT);
-        Y_LinkedHashMap.Y_LinkedHashMap_Prototype.set(removeLast.getFnName(), removeLastVar);
+        Y_LinkedHashMap.Y_LinkedHashMap_Instance_Prototype.set(removeLast.getFnName(), removeLastVar);
 
 
         // lhm.putIfAbsent(key, value)
@@ -545,7 +548,7 @@ public class Y_LinkedHashMap {
 
                 Variable.Variant key   = arguments.get(0);
                 Variable.Variant value = arguments.get(1);
-                Y_LinkedHashMapObject lhm = requireLinkedHashMapThis(interpreter);
+                Y_LinkedHashMapInstance lhm = requireLinkedHashMapThis(interpreter);
 
                 Variable.Variant existing = lhm.data.putIfAbsent(key, value);
 
@@ -560,7 +563,7 @@ public class Y_LinkedHashMap {
 
         PutIfAbsentFn putIfAbsent = new PutIfAbsentFn();
         Variable putIfAbsentVar = new Variable(new Variable.Variant(putIfAbsent), true, TypeTag.OBJECT);
-        Y_LinkedHashMap.Y_LinkedHashMap_Prototype.set(putIfAbsent.getFnName(), putIfAbsentVar);
+        Y_LinkedHashMap.Y_LinkedHashMap_Instance_Prototype.set(putIfAbsent.getFnName(), putIfAbsentVar);
 
 
         // lhm.size()
@@ -576,7 +579,7 @@ public class Y_LinkedHashMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_LinkedHashMapObject lhm = requireLinkedHashMapThis(interpreter);
+                Y_LinkedHashMapInstance lhm = requireLinkedHashMapThis(interpreter);
 
                 return new Variable.Variant(lhm.data.size());
             }
@@ -589,7 +592,7 @@ public class Y_LinkedHashMap {
 
         SizeFn size = new SizeFn();
         Variable sizeVar = new Variable(new Variable.Variant(size), true, TypeTag.OBJECT);
-        Y_LinkedHashMap.Y_LinkedHashMap_Prototype.set(size.getFnName(), sizeVar);
+        Y_LinkedHashMap.Y_LinkedHashMap_Instance_Prototype.set(size.getFnName(), sizeVar);
 
 
         // lhm.isEmpty()
@@ -605,7 +608,7 @@ public class Y_LinkedHashMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_LinkedHashMapObject lhm = requireLinkedHashMapThis(interpreter);
+                Y_LinkedHashMapInstance lhm = requireLinkedHashMapThis(interpreter);
 
                 return new Variable.Variant(lhm.data.isEmpty());
             }
@@ -618,7 +621,7 @@ public class Y_LinkedHashMap {
 
         IsEmptyFn isEmpty = new IsEmptyFn();
         Variable isEmptyVar = new Variable(new Variable.Variant(isEmpty), true, TypeTag.OBJECT);
-        Y_LinkedHashMap.Y_LinkedHashMap_Prototype.set(isEmpty.getFnName(), isEmptyVar);
+        Y_LinkedHashMap.Y_LinkedHashMap_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
 
 
         // lhm.clear()
@@ -634,7 +637,7 @@ public class Y_LinkedHashMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_LinkedHashMapObject lhm = requireLinkedHashMapThis(interpreter);
+                Y_LinkedHashMapInstance lhm = requireLinkedHashMapThis(interpreter);
                 lhm.data.clear();
 
                 return new Variable.Variant(null);
@@ -648,7 +651,7 @@ public class Y_LinkedHashMap {
 
         ClearFn clear = new ClearFn();
         Variable clearVar = new Variable(new Variable.Variant(clear), true, TypeTag.OBJECT);
-        Y_LinkedHashMap.Y_LinkedHashMap_Prototype.set(clear.getFnName(), clearVar);
+        Y_LinkedHashMap.Y_LinkedHashMap_Instance_Prototype.set(clear.getFnName(), clearVar);
 
 
         // lhm.clone()
@@ -664,8 +667,8 @@ public class Y_LinkedHashMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_LinkedHashMapObject original = requireLinkedHashMapThis(interpreter);
-                Y_LinkedHashMapObject cloned   = new Y_LinkedHashMapObject();
+                Y_LinkedHashMapInstance original = requireLinkedHashMapThis(interpreter);
+                Y_LinkedHashMapInstance cloned   = new Y_LinkedHashMapInstance();
 
                 cloned.data.putAll(original.data);
 
@@ -680,19 +683,17 @@ public class Y_LinkedHashMap {
 
         CloneFn clone = new CloneFn();
         Variable cloneVar = new Variable(new Variable.Variant(clone), true, TypeTag.OBJECT);
-        Y_LinkedHashMap.Y_LinkedHashMap_Prototype.set(clone.getFnName(), cloneVar);
+        Y_LinkedHashMap.Y_LinkedHashMap_Instance_Prototype.set(clone.getFnName(), cloneVar);
 
     }
 
-    public static RuntimeObject Y_LinkedHashMap_Prototype;
-
-    public static class Y_LinkedHashMapObject extends RuntimeObject {
+    public static class Y_LinkedHashMapInstance extends Y_Class.ClassObjectInstance {
 
         final LinkedHashMap<Variable.Variant, Variable.Variant> data;
 
-        public Y_LinkedHashMapObject() {
+        public Y_LinkedHashMapInstance() {
             this.data = new LinkedHashMap<>();
-            this.prototype = Y_LinkedHashMap_Prototype;
+            this.prototype = Y_LinkedHashMap_Instance_Prototype;
         }
 
         @Override
@@ -711,7 +712,7 @@ public class Y_LinkedHashMap {
         }
     }
 
-    public static class Y_LinkedHashMapInit extends Function.NativeFunction {
+    public static class Y_LinkedHashMapClass extends Y_Class.SealedClassObject {
 
         @Override
         public int arity() {
@@ -723,22 +724,28 @@ public class Y_LinkedHashMap {
                                      List<Variable.Variant> arguments)
                 throws YsharpError {
 
-            Y_LinkedHashMapObject newMap = new Y_LinkedHashMapObject();
+            Y_LinkedHashMapInstance newMap = new Y_LinkedHashMapInstance();
 
             return new Variable.Variant(newMap);
         }
 
         @Override
-        public String getFnName() {
+        public String getClassName() {
             return "LinkedHashMap";
         }
+
+        @Override
+        public String getType() {
+            return "LinkedHashMap";
+        }
+
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
-        Y_LinkedHashMap.Y_LinkedHashMapInit lhmCtor = new Y_LinkedHashMap.Y_LinkedHashMapInit();
+        Y_LinkedHashMap.Y_LinkedHashMapClass lhmCtor = new Y_LinkedHashMap.Y_LinkedHashMapClass();
         Variable.Variant variant = new Variable.Variant(lhmCtor);
         Variable var = new Variable(variant, false, TypeTag.OBJECT);
-        interpreter.defineGlobal(lhmCtor.getFnName(), var);
+        interpreter.defineGlobal(lhmCtor.getClassName(), var);
     }
 
 }
