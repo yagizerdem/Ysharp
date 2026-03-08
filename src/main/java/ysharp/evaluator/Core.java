@@ -29,14 +29,15 @@ public class Core {
           Register(interpreter);
 
           String program = """
-                
-                    var terminal = new YSPFTerminal();
-                    terminal.enableSgr(SGR.UNDERLINE);
-                    terminal.enableSgr(SGR.BOLD);
-
-                    terminal.writeLine("yagiz erdem");
-                    terminal.write("yagiz erdem");
-                    terminal.write("yagiz erdem");
+                    var arr = new Array();
+                    arr.add("af"); 
+                    arr.add(1);
+                    arr.add(445.5);   
+                    
+                    for var i = 0; i < arr.size(); i+= 1 do
+                        println arr.get(i);
+                     end
+            
                 """;
 
 
