@@ -29,19 +29,7 @@ public class Core {
           Register(interpreter);
 
           String program = """
-                try do
-                    throw 12;
-                end
-                catch(err) do
-                    println err;
-                    println "err occured";
-                end
-                finally do
-                    println "hit finally";
-                end
-
                 
-
                 """;
 
 

@@ -332,8 +332,9 @@ public class Interpreter implements
             case Token.TokenType.PLUS -> {
                 Variable.Variant var = this.evaluate(expr.expr);
                 if(!var.isNumber()) {
-                    // throw error
-                    return null;
+                    throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                            expr.op.line,
+                            "Operand must be a number.");
                 }
                 return var;
             }
@@ -346,9 +347,9 @@ public class Interpreter implements
                     return new Variable.Variant(var.asDouble() * -1);
                 }
 
-                // throw error
-
-                return null;
+                throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                        expr.op.line,
+                        "Operand must be a number.");
             }
             case Token.TokenType.BANG -> {
                 Variable.Variant var = this.evaluate(expr.expr);
@@ -359,12 +360,71 @@ public class Interpreter implements
                 if(var.isInt()) {
                     return new Variable.Variant(~var.asInt());
                 }
-                // throw error
-                return  null;
+
+                throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                        expr.op.line,
+                        "Operand must be a int.");
+
+            }
+            case Token.TokenType.PLUS_PLUS -> {
+
+                if (!(expr.expr instanceof Expr.VariableExpr)) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.SEMANTIC,
+                            expr.op.line,
+                            "Operand of '" + expr.op.lexeme + "' must be a variable."
+                    );
+                }
+
+                Variable.Variant var = this.evaluate(expr.expr);
+                if(!var.isNumber()) {
+                    throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                            expr.op.line,
+                            "Operand must be a number.");
+                }
+
+                var oldValue = var.value;
+
+                if (var.isInt()) {
+                    var.value = var.asInt() + 1;
+                } else {
+                    var.value = var.asDouble() + 1;
+                }
+                return new Variable.Variant(oldValue);
+            }
+            case Token.TokenType.MINUS_MINUS -> {
+
+                if (!(expr.expr instanceof Expr.VariableExpr)) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.SEMANTIC,
+                            expr.op.line,
+                            "Operand of '" + expr.op.lexeme + "' must be a variable."
+                    );
+                }
+
+                Variable.Variant var = this.evaluate(expr.expr);
+                if(!var.isNumber()) {
+                    throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                            expr.op.line,
+                            "Operand must be a number.");
+                }
+
+                var oldValue = var.value;
+
+                if (var.isInt()) {
+                    var.value = var.asInt() - 1;
+                } else {
+                    var.value = var.asDouble() - 1;
+                }
+                return new Variable.Variant(oldValue);
             }
         }
 
-        return null;
+        throw new YsharpError(
+                YsharpError.YsharpErrorType.PROCESS,
+                expr.op.line,
+                "Unknown unary operator '" + expr.op.lexeme + "'."
+        );
     }
 
     @Override
@@ -380,7 +440,51 @@ public class Interpreter implements
 
     @Override
     public Variable.Variant visitPostfixExpr(Expr.PostfixExpr expr) {
-        return null;
+
+        if (!(expr.operand instanceof Expr.VariableExpr)) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.SEMANTIC,
+                    expr.op.line,
+                    "Operand of '" + expr.op.lexeme + "' must be a variable."
+            );
+        }
+
+        Variable.Variant var = this.evaluate(expr.operand);
+
+        if (!var.isNumber()) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    expr.op.line,
+                    "Operand must be a number."
+            );
+        }
+        Variable.Variant oldValue = new Variable.Variant(var.value);
+
+        switch (expr.op.type) {
+
+            case Token.TokenType.PLUS_PLUS -> {
+                if (var.isInt()) {
+                    var.value = var.asInt() + 1;
+                } else {
+                    var.value = var.asDouble() + 1;
+                }
+            }
+
+            case Token.TokenType.MINUS_MINUS -> {
+                if (var.isInt()) {
+                    var.value = var.asInt() - 1;
+                } else {
+                    var.value = var.asDouble() - 1;
+                }
+            }
+
+            default -> throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    expr.op.line,
+                    "Unknown postfix operator '" + expr.op.lexeme + "'."
+            );
+        }
+        return oldValue;
     }
 
     @Override
