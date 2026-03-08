@@ -9,7 +9,6 @@ public class yAbstractTerminal {
 
     public static abstract class AbstractTerminal extends Y_Class.ClassObjectInstance  {
         public Terminal instance;
-        public boolean autoFlush = false;
     };
 
     public static abstract class AbstractSwingTerminal extends yAbstractTerminal.AbstractTerminal {

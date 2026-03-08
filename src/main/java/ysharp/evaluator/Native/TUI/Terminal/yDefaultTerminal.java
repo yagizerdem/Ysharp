@@ -54,6 +54,10 @@ public class yDefaultTerminal {
                         -1,
                         "Failed to initialize terminal.");
             }
+
+
+            Variable autoFlushVar = new Variable(new Variable.Variant(false), false, TypeTag.BOOL);
+            this.set("autoFlush", autoFlushVar);
         }
 
         @Override

@@ -71,7 +71,7 @@ public class yBaseTerminal {
 
                 try {
                     terminal.instance.putCharacter(c);
-                    if(terminal.autoFlush) terminal.instance.flush();
+                    if(terminal.get("autoFlush").value.isTruthy()) terminal.instance.flush();
                 }
                 catch (IOException ex) {
                     throw new YsharpError(
@@ -649,7 +649,7 @@ public class yBaseTerminal {
                     for(char c : text.toCharArray()) {
                         terminal.instance.putCharacter(c);
                     }
-                    if(terminal.autoFlush) terminal.instance.flush();
+                    if(terminal.get("autoFlush").value.isTruthy())  terminal.instance.flush();
                 }
                 catch(IOException ex) {
                     throw new YsharpError(
@@ -698,7 +698,7 @@ public class yBaseTerminal {
                     }
 
                     terminal.instance.putCharacter('\n');
-                    if(terminal.autoFlush) terminal.instance.flush();
+                    if(terminal.get("autoFlush").value.isTruthy())  terminal.instance.flush();
                 }
                 catch(IOException ex) {
                     throw new YsharpError(
@@ -724,8 +724,6 @@ public class yBaseTerminal {
                 TypeTag.OBJECT);
         yBaseTerminal_Instance_Prototype.set(writeLine.getFnName(), writeLineVar);
 
-        Variable autoFlushVar = new Variable(new Variable.Variant(false), false, TypeTag.BOOL);
-        yBaseTerminal_Instance_Prototype.set("autoFlush", autoFlushVar);
     }
 
 }

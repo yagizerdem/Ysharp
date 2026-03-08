@@ -34,13 +34,9 @@ public class Core {
                     terminal.enableSgr(SGR.UNDERLINE);
                     terminal.enableSgr(SGR.BOLD);
 
-                    terminal.autoFlush = true;
-                                        println terminal.autoFlush;
                     terminal.writeLine("yagiz erdem");
                     terminal.write("yagiz erdem");
                     terminal.write("yagiz erdem");
-                    println terminal.autoFlush;
-                    
                 """;
 
 
