@@ -3,14 +3,8 @@ package ysharp.parser;
 import ysharp.YsharpError;
 import ysharp.lexer.Token;
 
-import javax.print.DocFlavor;
-import javax.swing.*;
-import java.security.CryptoPrimitive;
-import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentNavigableMap;
-import java.util.concurrent.RecursiveTask;
 
 public class Parser {
 
@@ -953,6 +947,8 @@ public class Parser {
         if(match(peek(), Token.TokenType.RETURN)) return parseReturnStmt();
         if(match(peek(), Token.TokenType.SWITCH)) return parseSwitchStmt();
         if(match(peek(), Token.TokenType.FUNCTION)) return parseFunctionDeclaration();
+        if(match(peek(), Token.TokenType.THROW)) return parseThrowStmt();
+        if(match(peek(), Token.TokenType.TRY)) return parseTryStmt();
         if(match(peek(), Token.TokenType.SEALED)) {
             consume(Token.TokenType.CLASS,
                     "Expected 'class' after 'sealed'.");
@@ -1179,6 +1175,56 @@ public class Parser {
                 "Expected 'end' after switch statement.");
 
         return new Stmt.SwitchStmt(condition, cases, defaultClause);
+    }
+
+    private Stmt parseThrowStmt() throws YsharpError {
+      Token throwToken = previous();
+      Expr expr = parseAssignment();
+
+      consume(Token.TokenType.SEMI_COLON, "expected semi colon after expression");
+
+      return  new Stmt.ThrowStmt(throwToken, expr);
+    }
+
+    private Stmt parseTryStmt() throws YsharpError {
+
+        Token tryToken = previous();
+
+        Stmt tryBlock = parseBlockStmt();
+
+        consume(Token.TokenType.CATCH,
+                "Expected 'catch' after try block.");
+
+        consume(Token.TokenType.LEFT_PAREN,
+                "Expected '(' after catch.");
+
+
+        Token errIdentifier = advance();
+        if(errIdentifier.type != Token.TokenType.IDENTIFIER) {
+            throw new YsharpError(YsharpError.YsharpErrorType.SYNTAX,
+                    errIdentifier.line,
+                    "Expected identifier in catch clause.");
+        }
+
+        consume(Token.TokenType.RIGHT_PAREN,
+                "Expected ')' after catch identifier.");
+
+        Stmt catchBlock = parseBlockStmt();
+
+        Stmt finallyBlock = null;
+
+        if (match(peek(), Token.TokenType.FINALLY)) {
+
+            finallyBlock = parseBlockStmt();
+        }
+
+        return new Stmt.TryStmt(
+                tryToken,
+                tryBlock,
+                errIdentifier,
+                catchBlock,
+                finallyBlock
+        );
     }
 
     // declaration parser

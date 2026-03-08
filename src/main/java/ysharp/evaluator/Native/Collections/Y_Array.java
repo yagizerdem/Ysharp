@@ -500,6 +500,59 @@ public class Y_Array {
                 TypeTag.OBJECT);
         Y_Array_Instance_Prototype.set(set.getFnName(), setVar);
 
+        // arr.get(index)
+        class GetFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 1;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                Y_ArrayInstance array = requireArrayThis(interpreter);
+
+                Variable.Variant indexVar = arguments.get(0);
+
+                if (!indexVar.canImplicitlyConvertNumber()) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            0,
+                            "'get' argument must be a number."
+                    );
+                }
+
+                int index = (int) indexVar.implicitlyConvertNumber();
+
+                if (index < 0 || index >= array.data.size()) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            0,
+                            "Index out of bounds for 'get'."
+                    );
+                }
+
+                return array.data.get(index);
+            }
+
+            @Override
+            public String getFnName() {
+                return "get";
+            }
+        }
+
+        GetFn get = new GetFn();
+        Variable getVar = new Variable(
+                new Variable.Variant(get),
+                true,
+                TypeTag.OBJECT);
+
+        Y_Array_Instance_Prototype.set(get.getFnName(), getVar);
+
+
         // arr.pop()
         class PopFn extends Function.NativeFunction implements Callable {
 

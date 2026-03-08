@@ -29,14 +29,19 @@ public class Core {
           Register(interpreter);
 
           String program = """
-                
-                    var terminal = new YSPFTerminal();
-                    terminal.enableSgr(SGR.UNDERLINE);
-                    terminal.enableSgr(SGR.BOLD);
+                try do
+                    throw 12;
+                end
+                catch(err) do
+                    println err;
+                    println "err occured";
+                end
+                finally do
+                    println "hit finally";
+                end
 
-                    terminal.writeLine("yagiz erdem");
-                    terminal.write("yagiz erdem");
-                    terminal.write("yagiz erdem");
+                
+
                 """;
 
 
@@ -72,11 +77,19 @@ public class Core {
           int a = 10;
 
 
-      }catch (YsharpError err) {
-          System.out.println(err.toString());
+      }
+      catch (YsharpError err) {
+          printStdErr("Runtime error:");
+          printStdErr(err.toString());
+      }
+      catch (Signal.ThrowSignal ex) {
+          printStdErr("Uncaught throw:");
+          printStdErr(ex.value.toString());
       }
       catch (Exception ex) {
-          System.out.println(ex.getMessage());
+          printStdErr("Process failed.");
+          printStdErr("Internal error: " + ex.getClass().getSimpleName());
+          printStdErr(ex.getMessage());
       }
 
     }
@@ -85,6 +98,10 @@ public class Core {
         for(YsharpError err : errors) {
             System.err.println(err.toString());
         }
+    }
+
+    private void printStdErr(String error) {
+        System.err.println(error);
     }
 
     private static void Register(Interpreter interpreter) throws Exception {

@@ -25,6 +25,8 @@ public abstract class Stmt {
         void visitContinueStmt(Stmt.ContinueStmt stmt);
         void visitReturnStmt(Stmt.ReturnStmt stmt);
         void visitSwitchStmt(Stmt.SwitchStmt stmt);
+        void visitThrowStmt(Stmt.ThrowStmt stmt);
+        void visitTryStmt(Stmt.TryStmt stmt);
 
         void visitVarDeclaration(Stmt.VarDeclaration stmt);
         void visitFunctionDeclaration(Stmt.FunctionDeclaration stmt);
@@ -215,6 +217,50 @@ public abstract class Stmt {
         @Override
         public void accept(Visitor visitor) {
             visitor.visitSwitchStmt(this);
+        }
+    }
+
+    public static class ThrowStmt extends Stmt {
+
+        public final Token throwToken;
+        public final Expr expr;
+
+        public ThrowStmt(Token throwToken,
+                         Expr expr) {
+            this.throwToken = throwToken;
+            this.expr =expr;
+        }
+
+        @Override
+        public void accept(Visitor visitor) {
+            visitor.visitThrowStmt(this);
+        }
+    }
+
+    public static class TryStmt extends Stmt {
+
+        public final Token tryToken;
+        public final Stmt tryBlock;
+        public final Token errIdentifier;
+        public final Stmt catchBlock;
+        public final Stmt finallyBlock;
+
+        public TryStmt(Token tryToken,
+                       Stmt tryBlock,
+                       Token errIdentifier,
+                       Stmt catchBlock,
+                       Stmt finallyBlock) {
+
+            this.tryToken = tryToken;
+            this.tryBlock = tryBlock;
+            this.errIdentifier = errIdentifier;
+            this.catchBlock = catchBlock;
+            this.finallyBlock = finallyBlock;
+        }
+
+        @Override
+        public void accept(Visitor visitor) {
+            visitor.visitTryStmt(this);
         }
     }
 

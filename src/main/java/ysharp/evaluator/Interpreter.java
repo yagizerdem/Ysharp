@@ -851,6 +851,38 @@ public class Interpreter implements
         }
     }
 
+    @Override
+    public void visitThrowStmt(Stmt.ThrowStmt stmt) {
+        Variable.Variant variant = this.evaluate(stmt.expr);
+        throw new Signal.ThrowSignal(variant);
+    }
+
+    @Override
+    public void visitTryStmt(Stmt.TryStmt stmt) {
+
+        try {
+            this.execute(stmt.tryBlock);
+        }catch (Signal.ThrowSignal sig) {
+            Environment oldEnv = this.curEnv;
+            try {
+                Environment newEnv = new Environment(curEnv);
+                newEnv.define(stmt.errIdentifier.lexeme, new Variable(sig.value, true, TypeTag.ANY));
+                this.curEnv = newEnv;
+                this.execute(stmt.catchBlock);
+            }
+            finally {
+                this.curEnv = oldEnv;
+            }
+
+        }
+        finally {
+
+            if(stmt.finallyBlock != null) {
+                this.execute(stmt.finallyBlock);
+            }
+        }
+    }
+
     // declaration visitor
 
     @Override
