@@ -30,7 +30,7 @@ public class Core {
 
           String program = """
                 
-                    var terminal = new DefaultTerminal();
+                    var terminal = new YSPFTerminal();
                     terminal.enableSgr(SGR.UNDERLINE);
                     terminal.enableSgr(SGR.BOLD);
 

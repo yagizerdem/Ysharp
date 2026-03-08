@@ -37,6 +37,9 @@ public class ySwingTerminal {
         public ySwingTerminalInstance() {
             this.prototype = ySwingTerminal_Instance_Prototype;
             this.instance = new SwingTerminal();
+
+            Variable autoFlushVar = new Variable(new Variable.Variant(false), false, TypeTag.BOOL);
+            this.set("autoFlush", autoFlushVar);
         }
 
         @Override
@@ -59,7 +62,6 @@ public class ySwingTerminal {
 
         ySwingTerminalClass(){
             this.prototype =  Y_Class.ClassPrototype;
-
         }
 
         @Override
