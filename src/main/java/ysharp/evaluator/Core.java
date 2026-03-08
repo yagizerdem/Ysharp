@@ -29,15 +29,11 @@ public class Core {
           Register(interpreter);
 
           String program = """
-                    var arr = new Array();
-                    arr.add("af"); 
-                    arr.add(1);
-                    arr.add(445.5);   
-                    
-                    for var i = 0; i < arr.size(); i+= 1 do
-                        println arr.get(i);
-                     end
             
+                throw 12;                    
+                
+                
+                
                 """;
 
 
@@ -73,11 +69,19 @@ public class Core {
           int a = 10;
 
 
-      }catch (YsharpError err) {
-          System.out.println(err.toString());
+      }
+      catch (YsharpError err) {
+          printStdErr("Runtime error:");
+          printStdErr(err.toString());
+      }
+      catch (yThrow ex) {
+          printStdErr("Uncaught throw:");
+          printStdErr(ex.value.toString());
       }
       catch (Exception ex) {
-          System.out.println(ex.getMessage());
+          printStdErr("Process failed.");
+          printStdErr("Internal error: " + ex.getClass().getSimpleName());
+          printStdErr(ex.getMessage());
       }
 
     }
@@ -86,6 +90,10 @@ public class Core {
         for(YsharpError err : errors) {
             System.err.println(err.toString());
         }
+    }
+
+    private void printStdErr(String error) {
+        System.err.println(error);
     }
 
     private static void Register(Interpreter interpreter) throws Exception {

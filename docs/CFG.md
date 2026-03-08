@@ -68,6 +68,7 @@ printlnStmt |
 returnStmt |
 breakStmt |
 continueStmt |
+throwStmt |
 block
 
 - block &rarr; "do" declaration* "end"
@@ -106,6 +107,7 @@ statement
 - returnStmt &rarr; "return" expression? ";"
 - breakStmt &rarr; "break" ";"
 - continueStmt &rarr; "continue" ";"
+- throwStmt &rarr; "throw" expression ";"
 
 ### utility
 - NUMBER &rarr; INT | DOUBLE

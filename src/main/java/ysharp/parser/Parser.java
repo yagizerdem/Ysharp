@@ -953,6 +953,7 @@ public class Parser {
         if(match(peek(), Token.TokenType.RETURN)) return parseReturnStmt();
         if(match(peek(), Token.TokenType.SWITCH)) return parseSwitchStmt();
         if(match(peek(), Token.TokenType.FUNCTION)) return parseFunctionDeclaration();
+        if(match(peek(), Token.TokenType.THROW)) return parseThrowStmt();
         if(match(peek(), Token.TokenType.SEALED)) {
             consume(Token.TokenType.CLASS,
                     "Expected 'class' after 'sealed'.");
@@ -1179,6 +1180,15 @@ public class Parser {
                 "Expected 'end' after switch statement.");
 
         return new Stmt.SwitchStmt(condition, cases, defaultClause);
+    }
+
+    private Stmt parseThrowStmt() throws YsharpError {
+      Token throwToken = previous();
+      Expr expr = parseAssignment();
+
+      consume(Token.TokenType.SEMI_COLON, "expected semi colon after expression");
+
+      return  new Stmt.ThrowStmt(throwToken, expr);
     }
 
     // declaration parser

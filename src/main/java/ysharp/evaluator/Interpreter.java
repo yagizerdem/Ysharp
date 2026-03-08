@@ -851,6 +851,12 @@ public class Interpreter implements
         }
     }
 
+    @Override
+    public void visitThrowStmt(Stmt.ThrowStmt stmt) {
+        Variable.Variant variant = this.evaluate(stmt.expr);
+        throw new yThrow(variant);
+    }
+
     // declaration visitor
 
     @Override

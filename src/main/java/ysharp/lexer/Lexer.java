@@ -46,6 +46,7 @@ public class Lexer {
         KEYWORD_MAP.put("default", Token.TokenType.DEFAULT);
         KEYWORD_MAP.put("then", Token.TokenType.THEN);
         KEYWORD_MAP.put("return", Token.TokenType.RETURN);
+        KEYWORD_MAP.put("throw", Token.TokenType.THROW);
         KEYWORD_MAP.put("new", Token.TokenType.NEW);
         KEYWORD_MAP.put("function", Token.TokenType.FUNCTION);
         KEYWORD_MAP.put("class", Token.TokenType.CLASS);
