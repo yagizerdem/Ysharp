@@ -14,5 +14,14 @@ public abstract class Signal extends RuntimeException {
             this.value = value;
         }
     }
+    public static class ThrowSignal extends RuntimeException {
+
+        public final Variable.Variant value;
+
+        public ThrowSignal(Variable.Variant value) {
+            this.value = value;
+        }
+    }
+
 
 }

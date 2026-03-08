@@ -6,7 +6,7 @@ public class YsharpError extends RuntimeException {
     public enum YsharpErrorType {
         SYNTAX,
         SEMANTIC,
-        PROCESS
+        PROCESS,
     }
 
 

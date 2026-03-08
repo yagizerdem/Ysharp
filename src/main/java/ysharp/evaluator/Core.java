@@ -29,11 +29,19 @@ public class Core {
           Register(interpreter);
 
           String program = """
-            
-                throw 12;                    
+                try do
+                    throw 12;
+                end
+                catch(err) do
+                    println err;
+                    println "err occured";
+                end
+                finally do
+                    println "hit finally";
+                end
+
                 
-                
-                
+
                 """;
 
 
@@ -74,7 +82,7 @@ public class Core {
           printStdErr("Runtime error:");
           printStdErr(err.toString());
       }
-      catch (yThrow ex) {
+      catch (Signal.ThrowSignal ex) {
           printStdErr("Uncaught throw:");
           printStdErr(ex.value.toString());
       }
