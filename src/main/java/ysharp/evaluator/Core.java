@@ -9,6 +9,7 @@ import ysharp.evaluator.Native.Form.Y_Button;
 import ysharp.evaluator.Native.Form.Y_Frame;
 import ysharp.evaluator.Native.TUI.Terminal.yDefaultTerminal;
 import ysharp.evaluator.Native.TUI.Terminal.ySwingTerminal;
+import ysharp.evaluator.Native.TUI.Util.TextColor.yTextColor;
 import ysharp.evaluator.Native.Threading.Y_Thread;
 import ysharp.evaluator.Native.Util.*;
 import ysharp.lexer.Cursor;
@@ -29,30 +30,13 @@ public class Core {
 
           String program = """
                 
-                    var terminal = new DefaultTerminal();
-                    terminal.putCharacter('c');
-                    terminal.flush();
-                    terminal.putCharacter('a');
-                    terminal.flush();
-                    Time.sleep(1000);
-                    terminal.clearScreen();
-                    terminal.flush();
-                    terminal.bell();
-                    terminal.setCursorPosition(3,56);
-                    terminal.putCharacter('6');
-                    terminal.flush();
-                  
-                    var arr = SGR.values();
-                    println arr.toString();
-                  
-                    class Human {
-                        var a  = 10;
-                    }
-                    
-                    var h = new Human();
-                    println h.a;
-                  
-                
+                    var terminal = new YSPFTerminal();
+                    terminal.enableSgr(SGR.UNDERLINE);
+                    terminal.enableSgr(SGR.BOLD);
+
+                    terminal.writeLine("yagiz erdem");
+                    terminal.write("yagiz erdem");
+                    terminal.write("yagiz erdem");
                 """;
 
 
@@ -145,5 +129,6 @@ public class Core {
         yDefaultTerminal.Register(interpreter);
         ySwingTerminal.Register(interpreter);
         ySGR.Register(interpreter);
+        yTextColor.Register(interpreter);
     }
 }

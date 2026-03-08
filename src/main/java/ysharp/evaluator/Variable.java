@@ -29,6 +29,7 @@ public class Variable {
             this.value = value;
         }
 
+
         public String getType() {
             return switch (value) {
                 case Integer i        -> "int";

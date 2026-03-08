@@ -10,6 +10,31 @@ import java.util.List;
 
 public class ySGR {
 
+    public static ySGREnum requireYSRGEnum (Variable.Variant v,
+                                         String fn,
+                                         int index) throws YsharpError {
+
+        if (!v.isRuntimeObject()) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    -1,
+                    fn + " argument " + index + " must be a object."
+            );
+        }
+
+        RuntimeObject obj = v.asRuntimeObject();
+
+        if(!(obj instanceof ySGREnum)) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    -1,
+                    fn + " argument " + index + " must be a SRG object."
+            );
+        }
+
+        return (ySGREnum) obj;
+    }
+
     public static class ySGREnum extends RuntimeObject {
         public SGR sgr;
         public ySGREnum(SGR sgr){

@@ -2,6 +2,8 @@ package ysharp.evaluator.Native.TUI.Terminal.Abstract;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
+import ysharp.evaluator.Native.TUI.Util.TextColor.yTextColor;
+import ysharp.evaluator.Native.TUI.Util.ySGR;
 import ysharp.parser.TypeTag;
 
 import java.io.IOException;
@@ -69,6 +71,7 @@ public class yBaseTerminal {
 
                 try {
                     terminal.instance.putCharacter(c);
+                    if(terminal.get("autoFlush").value.isTruthy()) terminal.instance.flush();
                 }
                 catch (IOException ex) {
                     throw new YsharpError(
@@ -380,6 +383,347 @@ public class yBaseTerminal {
                 true,
                 TypeTag.OBJECT);
         yBaseTerminal_Instance_Prototype.set(setCursorPosition.getFnName(), setCursorPositionVar);
+
+
+        // terminal.disableSgr(SGR) Deactivates an SGR (Selected Graphic Rendition) code which has previously been activated through enableSGR(..).
+        class DisableSgrFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 1;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                requireArity(arguments, arity(), getFnName());
+                yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
+                ySGR.ySGREnum srgEnum = ySGR.requireYSRGEnum(arguments.getFirst(),
+                        "disableSgr",
+                        1);
+
+                try {
+                    terminal.instance.disableSGR(srgEnum.sgr);
+                }catch (IOException ex) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            -1,
+                            "Terminal.disableSGR: " + ex.getMessage()
+                    );
+                }
+
+                return new Variable.Variant(null);
+            }
+
+            @Override
+            public String getFnName() {
+                return "disableSgr";
+            }
+        }
+
+        DisableSgrFn disableSgr = new DisableSgrFn();
+        Variable disableSgrVar = new Variable(
+                new Variable.Variant(disableSgr),
+                true,
+                TypeTag.OBJECT);
+        yBaseTerminal_Instance_Prototype.set(disableSgr.getFnName(), disableSgrVar);
+
+        // terminal.enableSgr(SRG)  Activates an SGR (Selected Graphic Rendition) code.
+        class EnableSgrFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 1;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                requireArity(arguments, arity(), getFnName());
+                yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
+                ySGR.ySGREnum srgEnum = ySGR.requireYSRGEnum(arguments.getFirst(),
+                        "enableSgr",
+                        1);
+
+                try {
+                    terminal.instance.enableSGR(srgEnum.sgr);
+                } catch (IOException ex) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            -1,
+                            "Terminal.enableSGR: " + ex.getMessage()
+                    );
+                }
+
+                return new Variable.Variant(null);
+            }
+
+            @Override
+            public String getFnName() {
+                return "enableSgr";
+            }
+        }
+
+        EnableSgrFn enableSgr = new EnableSgrFn();
+        Variable enableSgrVar = new Variable(
+                new Variable.Variant(enableSgr),
+                true,
+                TypeTag.OBJECT);
+        yBaseTerminal_Instance_Prototype.set(enableSgr.getFnName(), enableSgrVar);
+
+        // terminal.resetColorAndSGR()
+        class ResetColorAndSrgFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 0;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                requireArity(arguments, arity(), getFnName());
+                yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
+
+                try {
+                    terminal.instance.resetColorAndSGR();
+                } catch (IOException ex) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            -1,
+                            "Terminal.resetColorAndSGR: " + ex.getMessage()
+                    );
+                }
+
+                return new Variable.Variant(null);
+            }
+
+            @Override
+            public String getFnName() {
+                return "resetColorAndSGR";
+            }
+        }
+
+        ResetColorAndSrgFn resetColorAndSGR = new ResetColorAndSrgFn();
+        Variable resetColorAndSGRVar = new Variable(
+                new Variable.Variant(resetColorAndSGR),
+                true,
+                TypeTag.OBJECT);
+        yBaseTerminal_Instance_Prototype.set(resetColorAndSGR.getFnName(), resetColorAndSGRVar);
+
+        // terminal.setBackgroundColor(TextColor)
+        class SetBackgroundColorFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 1;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                requireArity(arguments, arity(), getFnName());
+                yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
+                yTextColor.yTextColorEnum textColor = yTextColor.requireYTextColorEnum(arguments.getFirst(), getFnName(), 1);
+
+                try {
+                    terminal.instance.setBackgroundColor(textColor.color);
+                } catch (IOException ex) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            -1,
+                            "Terminal.setBackgroundColor: " + ex.getMessage()
+                    );
+                }
+
+                return new Variable.Variant(null);
+            }
+
+            @Override
+            public String getFnName() {
+                return "setBackgroundColor";
+            }
+        }
+
+        SetBackgroundColorFn setBackgroundColor = new SetBackgroundColorFn();
+        Variable setBackgroundColorVar = new Variable(
+                new Variable.Variant(setBackgroundColor),
+                true,
+                TypeTag.OBJECT);
+        yBaseTerminal_Instance_Prototype.set(setBackgroundColor.getFnName(), setBackgroundColorVar);
+
+
+        // terminal.setForegroundColor(TextColor)
+        class SetForegroundColorFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 1;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                requireArity(arguments, arity(), getFnName());
+                yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
+                yTextColor.yTextColorEnum textColor = yTextColor.requireYTextColorEnum(arguments.getFirst(), getFnName(), 1);
+
+                try {
+                    terminal.instance.setForegroundColor(textColor.color);
+                } catch (IOException ex) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            -1,
+                            "Terminal.setForegroundColor: " + ex.getMessage()
+                    );
+                }
+
+                return new Variable.Variant(null);
+            }
+
+            @Override
+            public String getFnName() {
+                return "setForegroundColor";
+            }
+        }
+
+        SetForegroundColorFn setForegroundColor = new SetForegroundColorFn();
+        Variable setForegroundColorVar = new Variable(
+                new Variable.Variant(setForegroundColor),
+                true,
+                TypeTag.OBJECT);
+        yBaseTerminal_Instance_Prototype.set(setForegroundColor.getFnName(), setForegroundColorVar);
+
+        // terminal.setCursorVisible(bool)
+        class SetCursorVisibleFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 1;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                requireArity(arguments, arity(), getFnName());
+                yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
+                boolean flag = requireBoolean(arguments.getFirst(), getFnName(), 1);
+
+                try {
+                    terminal.instance.setCursorVisible(flag);
+                } catch (IOException ex) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            -1,
+                            "Terminal.setCursorVisible: " + ex.getMessage()
+                    );
+                }
+
+                return new Variable.Variant(null);
+            }
+
+            @Override
+            public String getFnName() {
+                return "setCursorVisible";
+            }
+        }
+
+        SetCursorVisibleFn setCursorVisible = new SetCursorVisibleFn();
+        Variable setCursorVisibleVar = new Variable(
+                new Variable.Variant(setCursorVisible),
+                true,
+                TypeTag.OBJECT);
+        yBaseTerminal_Instance_Prototype.set(setCursorVisible.getFnName(), setCursorVisibleVar);
+
+        class WriteFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 1;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+
+                yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
+
+                String text = requireString(arguments.getFirst(), getFnName(), 1);
+
+                try {
+                    for(char c : text.toCharArray()) {
+                        terminal.instance.putCharacter(c);
+                    }
+                    if(terminal.get("autoFlush").value.isTruthy())  terminal.instance.flush();
+                }
+                catch(IOException ex) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            -1,
+                            "Terminal.write: " + ex.getMessage()
+                    );
+                }
+
+                return new Variable.Variant(null);
+            }
+
+            @Override
+            public String getFnName() {
+                return "write";
+            }
+        }
+
+
+        WriteFn write = new WriteFn();
+        Variable writeVar = new Variable(
+                new Variable.Variant(write),
+                true,
+                TypeTag.OBJECT);
+        yBaseTerminal_Instance_Prototype.set(write.getFnName(), writeVar);
+
+        class WriteLineFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 1;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+
+                yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
+
+                String text = requireString(arguments.getFirst(), getFnName(), 1);
+
+                try {
+                    for(char c : text.toCharArray()) {
+                        terminal.instance.putCharacter(c);
+                    }
+
+                    terminal.instance.putCharacter('\n');
+                    if(terminal.get("autoFlush").value.isTruthy())  terminal.instance.flush();
+                }
+                catch(IOException ex) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            -1,
+                            "Terminal.writeLine: " + ex.getMessage()
+                    );
+                }
+
+                return new Variable.Variant(null);
+            }
+
+            @Override
+            public String getFnName() {
+                return "writeLine";
+            }
+        }
+
+        WriteLineFn writeLine = new WriteLineFn();
+        Variable writeLineVar = new Variable(
+                new Variable.Variant(writeLine),
+                true,
+                TypeTag.OBJECT);
+        yBaseTerminal_Instance_Prototype.set(writeLine.getFnName(), writeLineVar);
+
     }
 
 }

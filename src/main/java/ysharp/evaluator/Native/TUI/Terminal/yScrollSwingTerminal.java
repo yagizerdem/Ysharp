@@ -37,7 +37,11 @@ public class yScrollSwingTerminal {
         public yScrollSwingTerminalInstance() {
             this.prototype = yScrollSwingTerminal_Instance_Prototype;
             this.instance = new ScrollingSwingTerminal();
-          }
+
+
+            Variable autoFlushVar = new Variable(new Variable.Variant(false), false, TypeTag.BOOL);
+            this.set("autoFlush", autoFlushVar);
+        }
 
         @Override
         public boolean isTruthy() {

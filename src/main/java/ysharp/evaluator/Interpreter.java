@@ -967,37 +967,17 @@ public class Interpreter implements
 
                 instance.prototype = this.InstancePrototype;
 
-                // add instance properties of super class to child class
-                if(stmt.superName !=  null) {
-                    Variable parentClassVar = interpreter.curEnv.getValue(stmt.superName);
-                    if(parentClassVar ==  null) {
-                        throw new YsharpError(
-                                YsharpError.YsharpErrorType.SEMANTIC,
-                                stmt.superName.line,
-                                "Superclass '" + stmt.superName.lexeme + "' is not defined."
-                        );
-                    }
-
-                    if(!parentClassVar.value.isClass()) {
-                        throw new YsharpError(
-                                YsharpError.YsharpErrorType.SEMANTIC,
-                                stmt.superName.line,
-                                "'" + stmt.superName.lexeme + "' is not a class and cannot be extended."
-                        );
-                    }
-
-                    // get the constructor of super class
-                    Y_Class.ClassObject parentClass = parentClassVar.value.asClass();
-
-                    parentClass.InstancePrototype.fields.forEach((key,  val) ->{
-                        if(!val.value.isFunctionLike()) {
-                            if(!instance.prototype.fields.containsKey(key)) {
-                                instance.set(key, val);
-                            }
-                        }
-                    });
-
+                for(var prop :   instanceProperty) {
+                    instance.set(prop.name.lexeme,
+                            new Variable(
+                                    prop.initializer != null ?
+                                            new Variable.Variant(interpreter.evaluate(prop.initializer)):
+                                            new Variable.Variant(null),
+                                                    prop.isConst,
+                                                    prop.type == null ? TypeTag.ANY : TypeTag.fromString(prop.type.lexeme)));
                 }
+
+                // add instance properties of super class to child class
 
                 if(constructorFn != null) {
                     Environment newEnv = new Environment(curEnv);
@@ -1101,32 +1081,6 @@ public class Interpreter implements
                     new Variable.Variant(methodToNativeFn(method)),
                     true,
                     TypeTag.OBJECT
-            ));
-        }
-
-        // instance props both reside in class instance prototype and class instance itself
-        for(Stmt.ClassDeclaration.Property prop : instanceProperty) {
-
-            if(prop.isConst && prop.initializer == null) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.SEMANTIC,
-                        prop.name.line,
-                        "Constant field '" + prop.name.lexeme + "' must be initialized."
-                );
-            }
-
-            Variable.Variant variant = prop.initializer == null ? new Variable.Variant(null) : this.evaluate(prop.initializer);
-
-            klass.InstancePrototype.set(prop.name.lexeme, new Variable(
-                    variant,
-                    prop.isConst,
-                    prop.type == null ? TypeTag.ANY : TypeTag.fromString(prop.type.lexeme)
-            ));
-
-            klass.set(prop.name.lexeme, new Variable(
-                    variant,
-                    prop.isConst,
-                    prop.type == null ? TypeTag.ANY : TypeTag.fromString(prop.type.lexeme)
             ));
         }
 
