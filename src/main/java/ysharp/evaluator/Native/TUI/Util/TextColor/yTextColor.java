@@ -67,76 +67,8 @@ public class yTextColor {
             this.prototype = Y_Class.ClassPrototype;
 
             // ANSI COLORS
-
-            this.set("BLACK",
-                    new Variable(new Variable.Variant(
-                            new yTextColorEnum(TextColor.ANSI.BLACK)),
-                            true,
-                            TypeTag.OBJECT));
-
-            this.set("RED",
-                    new Variable(new Variable.Variant(
-                            new yTextColorEnum(TextColor.ANSI.RED)),
-                            true,
-                            TypeTag.OBJECT));
-
-            this.set("GREEN",
-                    new Variable(new Variable.Variant(
-                            new yTextColorEnum(TextColor.ANSI.GREEN)),
-                            true,
-                            TypeTag.OBJECT));
-
-            this.set("YELLOW",
-                    new Variable(new Variable.Variant(
-                            new yTextColorEnum(TextColor.ANSI.YELLOW)),
-                            true,
-                            TypeTag.OBJECT));
-
-            this.set("BLUE",
-                    new Variable(new Variable.Variant(
-                            new yTextColorEnum(TextColor.ANSI.BLUE)),
-                            true,
-                            TypeTag.OBJECT));
-
-            this.set("MAGENTA",
-                    new Variable(new Variable.Variant(
-                            new yTextColorEnum(TextColor.ANSI.MAGENTA)),
-                            true,
-                            TypeTag.OBJECT));
-
-            this.set("CYAN",
-                    new Variable(new Variable.Variant(
-                            new yTextColorEnum(TextColor.ANSI.CYAN)),
-                            true,
-                            TypeTag.OBJECT));
-
-            this.set("WHITE",
-                    new Variable(new Variable.Variant(
-                            new yTextColorEnum(TextColor.ANSI.WHITE)),
-                            true,
-                            TypeTag.OBJECT));
-
-            // bright
-
-            this.set("BRIGHT_RED",
-                    new Variable(new Variable.Variant(
-                            new yTextColorEnum(TextColor.ANSI.RED_BRIGHT)),
-                            true,
-                            TypeTag.OBJECT));
-
-            this.set("BRIGHT_GREEN",
-                    new Variable(new Variable.Variant(
-                            new yTextColorEnum(TextColor.ANSI.GREEN_BRIGHT)),
-                            true,
-                            TypeTag.OBJECT));
-
-            this.set("BRIGHT_BLUE",
-                    new Variable(new Variable.Variant(
-                            new yTextColorEnum(TextColor.ANSI.BLUE_BRIGHT)),
-                            true,
-                            TypeTag.OBJECT));
-
-
+            yANSI.yANSIClass ANSI = new yANSI.yANSIClass();
+            this.set(ANSI.getClassName(), new Variable(new Variable.Variant(ANSI), true, TypeTag.OBJECT));
 
         }
 

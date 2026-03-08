@@ -4,7 +4,9 @@ import ysharp.YsharpError;
 import ysharp.lexer.Token;
 import ysharp.parser.TypeTag;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Y_Class {
 
@@ -74,7 +76,7 @@ public class Y_Class {
 
         public Token superClassName;
 
-        public RuntimeObject InstancePrototype;
+        public RuntimeObject InstancePrototype; // holds instance methods
 
         public Function.NativeFunction constructor =  null;
 
