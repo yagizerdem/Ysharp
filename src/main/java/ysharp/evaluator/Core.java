@@ -11,6 +11,7 @@ import ysharp.evaluator.Native.Network.yHttp;
 import ysharp.evaluator.Native.TUI.Terminal.yDefaultTerminal;
 import ysharp.evaluator.Native.TUI.Terminal.ySwingTerminal;
 import ysharp.evaluator.Native.TUI.Util.TextColor.yTextColor;
+import ysharp.evaluator.Native.Threading.ySemaphore;
 import ysharp.evaluator.Native.Threading.yThread;
 import ysharp.evaluator.Native.Util.*;
 import ysharp.lexer.Cursor;
@@ -30,7 +31,7 @@ public class Core {
           Register(interpreter);
 
           String program = """
-                    var t = new Thread(()=> do 
+                  var t = new Thread(()=> do 
                         for var i = 0 ; i < 999; i++ do
                             println i;
                         end
@@ -134,6 +135,7 @@ public class Core {
 
         // threading
         yThread.Register(interpreter);
+        ySemaphore.Register(interpreter);
 
 
         // utils
