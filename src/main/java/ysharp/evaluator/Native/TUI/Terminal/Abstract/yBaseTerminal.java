@@ -52,7 +52,7 @@ public class yBaseTerminal {
                 return "__Terminal__";
             }
         };
-        yBaseTerminal_Instance_Prototype.prototype = Y_Class.ClassPrototype;
+        yBaseTerminal_Instance_Prototype.prototype = yClass.ClassPrototype;
 
 
         // terminal.putCharacter(char)

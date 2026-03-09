@@ -2,15 +2,17 @@ package ysharp.evaluator;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.Native.Collections.*;
-import ysharp.evaluator.Native.Collections.Trie.Y_MapTrie;
-import ysharp.evaluator.Native.Collections.Trie.Y_SortedMapTrie;
-import ysharp.evaluator.Native.Collections.Trie.Y_T9Trie;
+import ysharp.evaluator.Native.Collections.Trie.yMapTrie;
+import ysharp.evaluator.Native.Collections.Trie.ySortedMapTrie;
+import ysharp.evaluator.Native.Collections.Trie.yT9Trie;
 import ysharp.evaluator.Native.Form.Y_Button;
 import ysharp.evaluator.Native.Form.Y_Frame;
+import ysharp.evaluator.Native.Network.yHttp;
 import ysharp.evaluator.Native.TUI.Terminal.yDefaultTerminal;
 import ysharp.evaluator.Native.TUI.Terminal.ySwingTerminal;
 import ysharp.evaluator.Native.TUI.Util.TextColor.yTextColor;
-import ysharp.evaluator.Native.Threading.Y_Thread;
+import ysharp.evaluator.Native.Threading.ySemaphore;
+import ysharp.evaluator.Native.Threading.yThread;
 import ysharp.evaluator.Native.Util.*;
 import ysharp.lexer.Cursor;
 import ysharp.lexer.Lexer;
@@ -29,12 +31,17 @@ public class Core {
           Register(interpreter);
 
           String program = """
-                    println "yagiz" == "yagiz";
-                    var a = 10;
-                    a >>= 4;
-                    println a;                
-                        
-                    
+                  var t = new Thread(()=> do 
+                        for var i = 0 ; i < 999; i++ do
+                            println i;
+                        end
+                    end);
+                   
+                   t.start();
+                   
+                    for var i = 0 ; i < 999; i++ do
+                            println i;
+                    end
                 """;
 
 
@@ -98,42 +105,47 @@ public class Core {
     }
 
     private static void Register(Interpreter interpreter) throws Exception {
-        Y_String.Register(interpreter);
+        yString.Register(interpreter);
 
         // collections
-        Y_Array.Register(interpreter);
-        Y_Stack.Register(interpreter);
-        Y_Queue.Register(interpreter);
-        Y_Set.Register(interpreter);
-        Y_HashTable.Register(interpreter);
-        Y_LinkedList.Register(interpreter);
-        Y_PriorityQueue.Register(interpreter);
-        Y_ArrayDeque.Register(interpreter);
-        Y_TreeMap.Register(interpreter);
-        Y_HashMap.Register(interpreter);
-        Y_TreeSet.Register(interpreter);
-        Y_WeakHashMap.Register(interpreter);
-        Y_IdentityHashMap.Register(interpreter);
-        Y_MapTrie.Register(interpreter);
-        Y_SortedMapTrie.Register(interpreter);
-        Y_T9Trie.Register(interpreter);
+        yArray.Register(interpreter);
+        yStack.Register(interpreter);
+        yQueue.Register(interpreter);
+        ySet.Register(interpreter);
+        yHashTable.Register(interpreter);
+        yLinkedList.Register(interpreter);
+        yPriorityQueue.Register(interpreter);
+        yArrayDeque.Register(interpreter);
+        yTreeMap.Register(interpreter);
+        yHashMap.Register(interpreter);
+        yTreeSet.Register(interpreter);
+        yWeakHashMap.Register(interpreter);
+        yIdentityHashMap.Register(interpreter);
+        yMapTrie.Register(interpreter);
+        ySortedMapTrie.Register(interpreter);
+        yT9Trie.Register(interpreter);
 
         //forms
         Y_Frame.Register(interpreter);
         Y_Button.Register(interpreter);
 
+
+        //http
+        yHttp.register(interpreter);
+
         // threading
-        Y_Thread.Register(interpreter);
+        yThread.Register(interpreter);
+        ySemaphore.Register(interpreter);
 
 
         // utils
-        Y_Math.Register(interpreter);
-        Y_UUID.Register(interpreter);
-        Y_Time.Register(interpreter);
-        Y_File.Register(interpreter);
-        Y_Random.Register(interpreter);
-        Y_DateTime.Register(interpreter);
-        Y_Crypto.Register(interpreter);
+        yMath.Register(interpreter);
+        yUUID.Register(interpreter);
+        yTime.Register(interpreter);
+        yFile.Register(interpreter);
+        yRandom.Register(interpreter);
+        yDateTime.Register(interpreter);
+        yCrypto.Register(interpreter);
 
         // TUI
         yDefaultTerminal.Register(interpreter);

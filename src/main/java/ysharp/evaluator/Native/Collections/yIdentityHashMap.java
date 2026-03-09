@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
 
-public class Y_IdentityHashMap {
+public class yIdentityHashMap {
 
     // helper
-    private static Y_IdentityHashMap.Y_IdentityHashMapInstance requireIdentityHashMapThis(Interpreter interpreter) {
+    private static yIdentityHashMap.yIdentityHashMapInstance requireIdentityHashMapThis(Interpreter interpreter) {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
@@ -24,7 +24,7 @@ public class Y_IdentityHashMap {
 
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-        if (!(obj instanceof Y_IdentityHashMap.Y_IdentityHashMapInstance)) {
+        if (!(obj instanceof yIdentityHashMap.yIdentityHashMapInstance)) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     0,
@@ -32,13 +32,13 @@ public class Y_IdentityHashMap {
             );
         }
 
-        return (Y_IdentityHashMap.Y_IdentityHashMapInstance) obj;
+        return (yIdentityHashMap.yIdentityHashMapInstance) obj;
     }
 
-    public static RuntimeObject Y_IdentityHashMap_Instance_Prototype;
+    public static RuntimeObject yIdentityHashMap_Instance_Prototype;
 
     static {
-        Y_IdentityHashMap_Instance_Prototype = new RuntimeObject() {
+        yIdentityHashMap_Instance_Prototype = new RuntimeObject() {
 
             @Override
             public boolean isTruthy() {
@@ -50,7 +50,7 @@ public class Y_IdentityHashMap {
                 return "identity_hash_map_prototype";
             }
         };
-        Y_IdentityHashMap_Instance_Prototype.prototype = Y_Class.ClassPrototype;
+        yIdentityHashMap_Instance_Prototype.prototype = yClass.ClassPrototype;
 
         // ihm.toString()
         class ToStringFn extends Function.NativeFunction {
@@ -67,7 +67,7 @@ public class Y_IdentityHashMap {
 
                 this.requireArity(arguments, 0, "IdentityHashMap.toString");
 
-                Y_IdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
+                yIdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
 
                 StringBuilder sb = new StringBuilder();
                 sb.append("{");
@@ -94,7 +94,7 @@ public class Y_IdentityHashMap {
 
         ToStringFn toString = new ToStringFn();
         Variable toStringVar = new Variable(new Variable.Variant(toString), true, TypeTag.OBJECT);
-        Y_IdentityHashMap.Y_IdentityHashMap_Instance_Prototype.set(toString.getFnName(), toStringVar);
+        yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
 
         // ihm.put(key, value)
@@ -114,7 +114,7 @@ public class Y_IdentityHashMap {
 
                 Variable.Variant key   = arguments.get(0);
                 Variable.Variant value = arguments.get(1);
-                Y_IdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
+                yIdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
 
                 Variable.Variant previous = ihm.data.put(key, value);
 
@@ -129,7 +129,7 @@ public class Y_IdentityHashMap {
 
         PutFn put = new PutFn();
         Variable putVar = new Variable(new Variable.Variant(put), true, TypeTag.OBJECT);
-        Y_IdentityHashMap.Y_IdentityHashMap_Instance_Prototype.set(put.getFnName(), putVar);
+        yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(put.getFnName(), putVar);
 
 
         // ihm.putAll(otherIhm)
@@ -148,10 +148,10 @@ public class Y_IdentityHashMap {
                 this.requireArity(arguments, 1, "IdentityHashMap.putAll");
 
                 Variable.Variant otherVariant = arguments.get(0);
-                Y_IdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
+                yIdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
 
                 RuntimeObject otherObj = otherVariant.asRuntimeObject();
-                if (!(otherObj instanceof Y_IdentityHashMapInstance)) {
+                if (!(otherObj instanceof yIdentityHashMapInstance)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
@@ -159,7 +159,7 @@ public class Y_IdentityHashMap {
                     );
                 }
 
-                Y_IdentityHashMapInstance other = (Y_IdentityHashMapInstance) otherObj;
+                yIdentityHashMapInstance other = (yIdentityHashMapInstance) otherObj;
                 ihm.data.putAll(other.data);
 
                 return new Variable.Variant(null);
@@ -173,7 +173,7 @@ public class Y_IdentityHashMap {
 
         PutAllFn putAll = new PutAllFn();
         Variable putAllVar = new Variable(new Variable.Variant(putAll), true, TypeTag.OBJECT);
-        Y_IdentityHashMap.Y_IdentityHashMap_Instance_Prototype.set(putAll.getFnName(), putAllVar);
+        yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(putAll.getFnName(), putAllVar);
 
 
         // ihm.get(key)
@@ -192,7 +192,7 @@ public class Y_IdentityHashMap {
                 this.requireArity(arguments, 1, "IdentityHashMap.get");
 
                 Variable.Variant key = arguments.get(0);
-                Y_IdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
+                yIdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
 
                 Variable.Variant value = ihm.data.get(key);
 
@@ -207,7 +207,7 @@ public class Y_IdentityHashMap {
 
         GetFn get = new GetFn();
         Variable getVar = new Variable(new Variable.Variant(get), true, TypeTag.OBJECT);
-        Y_IdentityHashMap.Y_IdentityHashMap_Instance_Prototype.set(get.getFnName(), getVar);
+        yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(get.getFnName(), getVar);
 
 
         // ihm.remove(key)
@@ -226,7 +226,7 @@ public class Y_IdentityHashMap {
                 this.requireArity(arguments, 1, "IdentityHashMap.remove");
 
                 Variable.Variant key = arguments.get(0);
-                Y_IdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
+                yIdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
 
                 Variable.Variant removed = ihm.data.remove(key);
 
@@ -241,7 +241,7 @@ public class Y_IdentityHashMap {
 
         RemoveFn remove = new RemoveFn();
         Variable removeVar = new Variable(new Variable.Variant(remove), true, TypeTag.OBJECT);
-        Y_IdentityHashMap.Y_IdentityHashMap_Instance_Prototype.set(remove.getFnName(), removeVar);
+        yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(remove.getFnName(), removeVar);
 
 
         // ihm.containsKey(key)  -- uses reference equality (==), not equals()
@@ -260,7 +260,7 @@ public class Y_IdentityHashMap {
                 this.requireArity(arguments, 1, "IdentityHashMap.containsKey");
 
                 Variable.Variant key = arguments.get(0);
-                Y_IdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
+                yIdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
 
                 return new Variable.Variant(ihm.data.containsKey(key));
             }
@@ -273,7 +273,7 @@ public class Y_IdentityHashMap {
 
         ContainsKeyFn containsKey = new ContainsKeyFn();
         Variable containsKeyVar = new Variable(new Variable.Variant(containsKey), true, TypeTag.OBJECT);
-        Y_IdentityHashMap.Y_IdentityHashMap_Instance_Prototype.set(containsKey.getFnName(), containsKeyVar);
+        yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(containsKey.getFnName(), containsKeyVar);
 
 
         // ihm.containsValue(value)  -- uses reference equality (==)
@@ -292,7 +292,7 @@ public class Y_IdentityHashMap {
                 this.requireArity(arguments, 1, "IdentityHashMap.containsValue");
 
                 Variable.Variant value = arguments.get(0);
-                Y_IdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
+                yIdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
 
                 return new Variable.Variant(ihm.data.containsValue(value));
             }
@@ -305,7 +305,7 @@ public class Y_IdentityHashMap {
 
         ContainsValueFn containsValue = new ContainsValueFn();
         Variable containsValueVar = new Variable(new Variable.Variant(containsValue), true, TypeTag.OBJECT);
-        Y_IdentityHashMap.Y_IdentityHashMap_Instance_Prototype.set(containsValue.getFnName(), containsValueVar);
+        yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(containsValue.getFnName(), containsValueVar);
 
 
         // ihm.keySet() -> Y_ArrayObject of current keys (identity-based)
@@ -323,11 +323,11 @@ public class Y_IdentityHashMap {
 
                 this.requireArity(arguments, 0, "IdentityHashMap.keySet");
 
-                Y_IdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
+                yIdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
 
                 ArrayList<Variable.Variant> list = new ArrayList<>(ihm.data.keySet());
 
-                return new Variable.Variant(new Y_Array.Y_ArrayInstance(list));
+                return new Variable.Variant(new yArray.yArrayInstance(list));
             }
 
             @Override
@@ -338,7 +338,7 @@ public class Y_IdentityHashMap {
 
         KeySetFn keySet = new KeySetFn();
         Variable keySetVar = new Variable(new Variable.Variant(keySet), true, TypeTag.OBJECT);
-        Y_IdentityHashMap.Y_IdentityHashMap_Instance_Prototype.set(keySet.getFnName(), keySetVar);
+        yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(keySet.getFnName(), keySetVar);
 
 
         // ihm.values() -> Y_ArrayObject of current values
@@ -356,11 +356,11 @@ public class Y_IdentityHashMap {
 
                 this.requireArity(arguments, 0, "IdentityHashMap.values");
 
-                Y_IdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
+                yIdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
 
                 ArrayList<Variable.Variant> list = new ArrayList<>(ihm.data.values());
 
-                return new Variable.Variant(new Y_Array.Y_ArrayInstance(list));
+                return new Variable.Variant(new yArray.yArrayInstance(list));
             }
 
             @Override
@@ -371,7 +371,7 @@ public class Y_IdentityHashMap {
 
         ValuesFn values = new ValuesFn();
         Variable valuesVar = new Variable(new Variable.Variant(values), true, TypeTag.OBJECT);
-        Y_IdentityHashMap.Y_IdentityHashMap_Instance_Prototype.set(values.getFnName(), valuesVar);
+        yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(values.getFnName(), valuesVar);
 
 
         // ihm.entrySet() -> array of [key, value] pairs
@@ -389,7 +389,7 @@ public class Y_IdentityHashMap {
 
                 this.requireArity(arguments, 0, "IdentityHashMap.entrySet");
 
-                Y_IdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
+                yIdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
 
                 ArrayList<Variable.Variant> outerList = new ArrayList<>();
 
@@ -397,10 +397,10 @@ public class Y_IdentityHashMap {
                     ArrayList<Variable.Variant> pair = new ArrayList<>();
                     pair.add(entry.getKey());
                     pair.add(entry.getValue());
-                    outerList.add(new Variable.Variant(new Y_Array.Y_ArrayInstance(pair)));
+                    outerList.add(new Variable.Variant(new yArray.yArrayInstance(pair)));
                 }
 
-                return new Variable.Variant(new Y_Array.Y_ArrayInstance(outerList));
+                return new Variable.Variant(new yArray.yArrayInstance(outerList));
             }
 
             @Override
@@ -411,7 +411,7 @@ public class Y_IdentityHashMap {
 
         EntrySetFn entrySet = new EntrySetFn();
         Variable entrySetVar = new Variable(new Variable.Variant(entrySet), true, TypeTag.OBJECT);
-        Y_IdentityHashMap.Y_IdentityHashMap_Instance_Prototype.set(entrySet.getFnName(), entrySetVar);
+        yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(entrySet.getFnName(), entrySetVar);
 
 
         // ihm.equals(other) -> compares mappings for equality
@@ -430,14 +430,14 @@ public class Y_IdentityHashMap {
                 this.requireArity(arguments, 1, "IdentityHashMap.equals");
 
                 Variable.Variant otherVariant = arguments.get(0);
-                Y_IdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
+                yIdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
 
                 RuntimeObject otherObj = otherVariant.asRuntimeObject();
-                if (!(otherObj instanceof Y_IdentityHashMapInstance)) {
+                if (!(otherObj instanceof yIdentityHashMapInstance)) {
                     return new Variable.Variant(false);
                 }
 
-                Y_IdentityHashMapInstance other = (Y_IdentityHashMapInstance) otherObj;
+                yIdentityHashMapInstance other = (yIdentityHashMapInstance) otherObj;
 
                 return new Variable.Variant(ihm.data.equals(other.data));
             }
@@ -450,7 +450,7 @@ public class Y_IdentityHashMap {
 
         EqualsFn equals = new EqualsFn();
         Variable equalsVar = new Variable(new Variable.Variant(equals), true, TypeTag.OBJECT);
-        Y_IdentityHashMap.Y_IdentityHashMap_Instance_Prototype.set(equals.getFnName(), equalsVar);
+        yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(equals.getFnName(), equalsVar);
 
 
         // ihm.hashCode()
@@ -468,7 +468,7 @@ public class Y_IdentityHashMap {
 
                 this.requireArity(arguments, 0, "IdentityHashMap.hashCode");
 
-                Y_IdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
+                yIdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
 
                 return new Variable.Variant(ihm.data.hashCode());
             }
@@ -481,7 +481,7 @@ public class Y_IdentityHashMap {
 
         HashCodeFn hashCode = new HashCodeFn();
         Variable hashCodeVar = new Variable(new Variable.Variant(hashCode), true, TypeTag.OBJECT);
-        Y_IdentityHashMap.Y_IdentityHashMap_Instance_Prototype.set(hashCode.getFnName(), hashCodeVar);
+        yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(hashCode.getFnName(), hashCodeVar);
 
 
         // ihm.size()
@@ -499,7 +499,7 @@ public class Y_IdentityHashMap {
 
                 this.requireArity(arguments, 0, "IdentityHashMap.size");
 
-                Y_IdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
+                yIdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
 
                 return new Variable.Variant(ihm.data.size());
             }
@@ -512,7 +512,7 @@ public class Y_IdentityHashMap {
 
         SizeFn size = new SizeFn();
         Variable sizeVar = new Variable(new Variable.Variant(size), true, TypeTag.OBJECT);
-        Y_IdentityHashMap.Y_IdentityHashMap_Instance_Prototype.set(size.getFnName(), sizeVar);
+        yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(size.getFnName(), sizeVar);
 
 
         // ihm.isEmpty()
@@ -530,7 +530,7 @@ public class Y_IdentityHashMap {
 
                 this.requireArity(arguments, 0, "IdentityHashMap.isEmpty");
 
-                Y_IdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
+                yIdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
 
                 return new Variable.Variant(ihm.data.isEmpty());
             }
@@ -543,7 +543,7 @@ public class Y_IdentityHashMap {
 
         IsEmptyFn isEmpty = new IsEmptyFn();
         Variable isEmptyVar = new Variable(new Variable.Variant(isEmpty), true, TypeTag.OBJECT);
-        Y_IdentityHashMap.Y_IdentityHashMap_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
+        yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
 
 
         // ihm.clear()
@@ -561,7 +561,7 @@ public class Y_IdentityHashMap {
 
                 this.requireArity(arguments, 0, "IdentityHashMap.clear");
 
-                Y_IdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
+                yIdentityHashMapInstance ihm = requireIdentityHashMapThis(interpreter);
                 ihm.data.clear();
 
                 return new Variable.Variant(null);
@@ -575,7 +575,7 @@ public class Y_IdentityHashMap {
 
         ClearFn clear = new ClearFn();
         Variable clearVar = new Variable(new Variable.Variant(clear), true, TypeTag.OBJECT);
-        Y_IdentityHashMap.Y_IdentityHashMap_Instance_Prototype.set(clear.getFnName(), clearVar);
+        yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(clear.getFnName(), clearVar);
 
 
         // ihm.clone() -> shallow copy
@@ -593,8 +593,8 @@ public class Y_IdentityHashMap {
 
                 this.requireArity(arguments, 0, "IdentityHashMap.clone");
 
-                Y_IdentityHashMapInstance original = requireIdentityHashMapThis(interpreter);
-                Y_IdentityHashMapInstance cloned   = new Y_IdentityHashMapInstance();
+                yIdentityHashMapInstance original = requireIdentityHashMapThis(interpreter);
+                yIdentityHashMapInstance cloned   = new yIdentityHashMapInstance();
 
                 cloned.data.putAll(original.data);
 
@@ -609,18 +609,18 @@ public class Y_IdentityHashMap {
 
         CloneFn clone = new CloneFn();
         Variable cloneVar = new Variable(new Variable.Variant(clone), true, TypeTag.OBJECT);
-        Y_IdentityHashMap.Y_IdentityHashMap_Instance_Prototype.set(clone.getFnName(), cloneVar);
+        yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(clone.getFnName(), cloneVar);
 
     }
 
-    public static class Y_IdentityHashMapInstance extends Y_Class.ClassObjectInstance {
+    public static class yIdentityHashMapInstance extends yClass.ClassObjectInstance {
 
         // Uses reference equality (==) for key comparison, not equals()
         final IdentityHashMap<Variable.Variant, Variable.Variant> data;
 
-        public Y_IdentityHashMapInstance() {
+        public yIdentityHashMapInstance() {
             this.data = new IdentityHashMap<>();
-            this.prototype = Y_IdentityHashMap_Instance_Prototype;
+            this.prototype = yIdentityHashMap_Instance_Prototype;
         }
 
         @Override
@@ -639,7 +639,7 @@ public class Y_IdentityHashMap {
         }
     }
 
-    public static class Y_IdentityHashMapClass extends Y_Class.SealedClassObject {
+    public static class yIdentityHashMapClass extends yClass.SealedClassObject {
 
         @Override
         public int arity() {
@@ -653,7 +653,7 @@ public class Y_IdentityHashMap {
 
             this.requireArity(arguments, 0, "IdentityHashMap");
 
-            Y_IdentityHashMapInstance newMap = new Y_IdentityHashMapInstance();
+            yIdentityHashMapInstance newMap = new yIdentityHashMapInstance();
 
             return new Variable.Variant(newMap);
         }
@@ -670,7 +670,7 @@ public class Y_IdentityHashMap {
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
-        Y_IdentityHashMap.Y_IdentityHashMapClass ihmCtor = new Y_IdentityHashMap.Y_IdentityHashMapClass();
+        yIdentityHashMap.yIdentityHashMapClass ihmCtor = new yIdentityHashMap.yIdentityHashMapClass();
         Variable.Variant variant = new Variable.Variant(ihmCtor);
         Variable var = new Variable(variant, false, TypeTag.OBJECT);
         interpreter.defineGlobal(ihmCtor.getClassName(), var);

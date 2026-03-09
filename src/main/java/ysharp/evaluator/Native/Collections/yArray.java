@@ -8,10 +8,10 @@ import ysharp.parser.TypeTag;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Y_Array {
+public class yArray {
 
     // helper
-    private static Y_ArrayInstance requireArrayThis (Interpreter interpreter) {
+    private static yArrayInstance requireArrayThis (Interpreter interpreter) {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
@@ -24,7 +24,7 @@ public class Y_Array {
 
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-        if (!(obj instanceof Y_ArrayInstance)) {
+        if (!(obj instanceof yArrayInstance)) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     0,
@@ -32,14 +32,14 @@ public class Y_Array {
             );
         }
 
-        return  (Y_ArrayInstance) obj;
+        return  (yArrayInstance) obj;
     }
 
 
-    public static RuntimeObject Y_Array_Instance_Prototype;
+    public static RuntimeObject yArray_Instance_Prototype;
 
     static {
-        Y_Array_Instance_Prototype = new RuntimeObject() {
+        yArray_Instance_Prototype = new RuntimeObject() {
 
             @Override
             public boolean isTruthy() {
@@ -51,7 +51,7 @@ public class Y_Array {
                 return "array_prototype";
             }
         };
-        Y_Array_Instance_Prototype.prototype = Y_Class.ClassPrototype;
+        yArray_Instance_Prototype.prototype = yClass.ClassPrototype;
 
         // arr.toString()
         class ToStringFn extends Function.NativeFunction implements Callable {
@@ -63,7 +63,7 @@ public class Y_Array {
 
             @Override
             public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
-                Y_ArrayInstance array = requireArrayThis(interpreter);
+                yArrayInstance array = requireArrayThis(interpreter);
 
                 StringBuilder builder = new StringBuilder();
                 builder.append("[ ");
@@ -105,7 +105,7 @@ public class Y_Array {
                 new Variable.Variant(toString),
                 true,
                 TypeTag.OBJECT);
-        Y_Array_Instance_Prototype.set(toString.getFnName(), toStringVar);
+        yArray_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
         // arr.add(value)
         class AddFn extends Function.NativeFunction implements Callable {
@@ -121,7 +121,7 @@ public class Y_Array {
                     throws YsharpError {
 
                 Variable.Variant value = arguments.get(0);
-                Y_ArrayInstance array = requireArrayThis(interpreter);
+                yArrayInstance array = requireArrayThis(interpreter);
                 array.data.add(value);
 
                 return new Variable.Variant(array.data.size());
@@ -138,7 +138,7 @@ public class Y_Array {
                 new Variable.Variant(add),
                 true,
                 TypeTag.OBJECT);
-        Y_Array_Instance_Prototype.set(add.getFnName(), addVar);
+        yArray_Instance_Prototype.set(add.getFnName(), addVar);
 
         // arr.insert(index, value)
         class InsertFn extends Function.NativeFunction implements Callable {
@@ -153,7 +153,7 @@ public class Y_Array {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_ArrayInstance array = requireArrayThis(interpreter);
+                yArrayInstance array = requireArrayThis(interpreter);
 
                 Variable.Variant indexVar = arguments.get(0);
                 Variable.Variant value    = arguments.get(1);
@@ -192,7 +192,7 @@ public class Y_Array {
                 new Variable.Variant(insert),
                 true,
                 TypeTag.OBJECT);
-        Y_Array_Instance_Prototype.set(insert.getFnName(), insertVar);
+        yArray_Instance_Prototype.set(insert.getFnName(), insertVar);
 
         // arr.clear()
         class ClearFn extends Function.NativeFunction implements Callable {
@@ -207,7 +207,7 @@ public class Y_Array {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_ArrayInstance array = requireArrayThis(interpreter);
+                yArrayInstance array = requireArrayThis(interpreter);
 
                 array.data.clear();
 
@@ -225,7 +225,7 @@ public class Y_Array {
                 new Variable.Variant(clear),
                 true,
                 TypeTag.OBJECT);
-        Y_Array_Instance_Prototype.set(clear.getFnName(), clearVar);
+        yArray_Instance_Prototype.set(clear.getFnName(), clearVar);
 
         // arr.clone()
         class CloneFn extends Function.NativeFunction implements Callable {
@@ -240,9 +240,9 @@ public class Y_Array {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_ArrayInstance array = requireArrayThis(interpreter);
+                yArrayInstance array = requireArrayThis(interpreter);
 
-                Y_ArrayInstance newArray = new Y_ArrayInstance();
+                yArrayInstance newArray = new yArrayInstance();
 
                 // shallow copy
                 newArray.data.addAll(array.data);
@@ -261,7 +261,7 @@ public class Y_Array {
                 new Variable.Variant(clone),
                 true,
                 TypeTag.OBJECT);
-        Y_Array_Instance_Prototype.set(clone.getFnName(), cloneVar);
+        yArray_Instance_Prototype.set(clone.getFnName(), cloneVar);
 
         // arr.contains(value)
         class ContainsFn extends Function.NativeFunction implements Callable {
@@ -276,7 +276,7 @@ public class Y_Array {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_ArrayInstance array = requireArrayThis(interpreter);
+                yArrayInstance array = requireArrayThis(interpreter);
 
                 Variable.Variant target = arguments.get(0);
 
@@ -305,7 +305,7 @@ public class Y_Array {
                 new Variable.Variant(contains),
                 true,
                 TypeTag.OBJECT);
-        Y_Array_Instance_Prototype.set(contains.getFnName(), containsVar);
+        yArray_Instance_Prototype.set(contains.getFnName(), containsVar);
 
         // arr.ensureCapacity(minCapacity)
         class EnsureCapacityFn extends Function.NativeFunction implements Callable {
@@ -320,7 +320,7 @@ public class Y_Array {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_ArrayInstance array = requireArrayThis(interpreter);
+                yArrayInstance array = requireArrayThis(interpreter);
 
                 Variable.Variant capVar = arguments.get(0);
 
@@ -358,7 +358,7 @@ public class Y_Array {
                 new Variable.Variant(ensureCapacity),
                 true,
                 TypeTag.OBJECT);
-        Y_Array_Instance_Prototype.set(
+        yArray_Instance_Prototype.set(
                 ensureCapacity.getFnName(),
                 ensureCapacityVar
         );
@@ -376,7 +376,7 @@ public class Y_Array {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_ArrayInstance array = requireArrayThis(interpreter);
+                yArrayInstance array = requireArrayThis(interpreter);
 
                 return new Variable.Variant(array.data.size());
             }
@@ -392,7 +392,7 @@ public class Y_Array {
                 new Variable.Variant(size),
                 true,
                 TypeTag.OBJECT);
-        Y_Array_Instance_Prototype.set(size.getFnName(), sizeVar);
+        yArray_Instance_Prototype.set(size.getFnName(), sizeVar);
 
         // arr.remove(index)
         class RemoveFn extends Function.NativeFunction implements Callable {
@@ -407,7 +407,7 @@ public class Y_Array {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_ArrayInstance array = requireArrayThis(interpreter);
+                yArrayInstance array = requireArrayThis(interpreter);
 
                 Variable.Variant indexVar = arguments.get(0);
 
@@ -445,7 +445,7 @@ public class Y_Array {
                 new Variable.Variant(remove),
                 true,
                 TypeTag.OBJECT);
-        Y_Array_Instance_Prototype.set(remove.getFnName(), removeVar);
+        yArray_Instance_Prototype.set(remove.getFnName(), removeVar);
 
         // arr.set(index, value)
         class SetFn extends Function.NativeFunction implements Callable {
@@ -460,7 +460,7 @@ public class Y_Array {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_ArrayInstance array = requireArrayThis(interpreter);
+                yArrayInstance array = requireArrayThis(interpreter);
 
                 Variable.Variant indexVar = arguments.get(0);
                 Variable.Variant newValue = arguments.get(1);
@@ -498,7 +498,7 @@ public class Y_Array {
                 new Variable.Variant(set),
                 true,
                 TypeTag.OBJECT);
-        Y_Array_Instance_Prototype.set(set.getFnName(), setVar);
+        yArray_Instance_Prototype.set(set.getFnName(), setVar);
 
         // arr.get(index)
         class GetFn extends Function.NativeFunction implements Callable {
@@ -513,7 +513,7 @@ public class Y_Array {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_ArrayInstance array = requireArrayThis(interpreter);
+                yArrayInstance array = requireArrayThis(interpreter);
 
                 Variable.Variant indexVar = arguments.get(0);
 
@@ -550,7 +550,7 @@ public class Y_Array {
                 true,
                 TypeTag.OBJECT);
 
-        Y_Array_Instance_Prototype.set(get.getFnName(), getVar);
+        yArray_Instance_Prototype.set(get.getFnName(), getVar);
 
 
         // arr.pop()
@@ -566,7 +566,7 @@ public class Y_Array {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_ArrayInstance array = requireArrayThis(interpreter);
+                yArrayInstance array = requireArrayThis(interpreter);
 
                 int size = array.data.size();
 
@@ -592,7 +592,7 @@ public class Y_Array {
                 new Variable.Variant(pop),
                 true,
                 TypeTag.OBJECT);
-        Y_Array_Instance_Prototype.set(pop.getFnName(), popVar);
+        yArray_Instance_Prototype.set(pop.getFnName(), popVar);
 
         class IsEmptyFn extends Function.NativeFunction implements Callable {
 
@@ -606,7 +606,7 @@ public class Y_Array {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_ArrayInstance array = requireArrayThis(interpreter);
+                yArrayInstance array = requireArrayThis(interpreter);
 
                 return new Variable.Variant(array.data.isEmpty());
             }
@@ -623,21 +623,21 @@ public class Y_Array {
                 new Variable.Variant(isEmpty),
                 true,
                 TypeTag.OBJECT);
-        Y_Array_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
+        yArray_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
     }
 
-    public static class Y_ArrayInstance extends Y_Class.ClassObjectInstance {
+    public static class yArrayInstance extends yClass.ClassObjectInstance {
 
         public final ArrayList<Variable.Variant> data;
 
-        public Y_ArrayInstance(ArrayList<Variable.Variant> data) {
+        public yArrayInstance(ArrayList<Variable.Variant> data) {
             this.data = data;
-            this.prototype = Y_Array_Instance_Prototype;
+            this.prototype = yArray_Instance_Prototype;
         }
 
-        public Y_ArrayInstance() {
+        public yArrayInstance() {
             this.data = new ArrayList<>();
-            this.prototype = Y_Array_Instance_Prototype;
+            this.prototype = yArray_Instance_Prototype;
         }
 
 
@@ -657,21 +657,21 @@ public class Y_Array {
         }
     }
 
-    public static class Y_ArrayClass extends Y_Class.SealedClassObject {
+    public static class yArrayClass extends yClass.SealedClassObject {
 
         @Override
         public int arity() {
             return 0;
         }
 
-        public Y_ArrayClass(){
-            this.prototype = Y_Class.ClassPrototype;
+        public yArrayClass(){
+            this.prototype = yClass.ClassPrototype;
         }
 
         @Override
         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
             ArrayList<Variable.Variant> value = new ArrayList<>();
-            Y_Array.Y_ArrayInstance newArray = new Y_Array.Y_ArrayInstance(value);
+            yArray.yArrayInstance newArray = new yArray.yArrayInstance(value);
 
             return new Variable.Variant(newArray);
         }
@@ -688,7 +688,7 @@ public class Y_Array {
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
-        Y_Array.Y_ArrayClass arrayCtor = new Y_Array.Y_ArrayClass();
+        yArrayClass arrayCtor = new yArrayClass();
         Variable.Variant variant = new Variable.Variant(arrayCtor);
         Variable var = new Variable(variant, false, TypeTag.OBJECT);
         interpreter.defineGlobal(arrayCtor.getClassName(), var);

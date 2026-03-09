@@ -19,13 +19,13 @@ import java.util.Base64;
 import java.util.HexFormat;
 import java.util.List;
 
-public class Y_Crypto {
+public class yCrypto {
 
     static {}
 
-    public static class Y_CryptoInstance extends Y_Class.ClassObjectInstance {
+    public static class yCryptoInstance extends yClass.ClassObjectInstance {
 
-        public Y_CryptoInstance() {}
+        public yCryptoInstance() {}
 
         @Override
         public boolean isTruthy() {
@@ -44,10 +44,10 @@ public class Y_Crypto {
     }
 
 
-    public static class Y_CryptoClass extends Y_Class.SealedClassObject {
+    public static class yCryptoClass extends yClass.SealedClassObject {
 
-        Y_CryptoClass() {
-            this.prototype = Y_Class.ClassPrototype;
+        yCryptoClass() {
+            this.prototype = yClass.ClassPrototype;
 
             // add static methods here
 
@@ -71,7 +71,7 @@ public class Y_Crypto {
                         MessageDigest md = MessageDigest.getInstance("MD5");
                         byte[] digest = md.digest(input.getBytes(StandardCharsets.UTF_8));
                         String response = HexFormat.of().formatHex(digest);
-                        return new Variable.Variant(new Y_String.Y_StringInstance(response));
+                        return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (NoSuchAlgorithmException e) {
                         throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
                                 -1 ,
@@ -112,7 +112,7 @@ public class Y_Crypto {
                         MessageDigest md = MessageDigest.getInstance("SHA-1");
                         byte[] digest = md.digest(input.getBytes(StandardCharsets.UTF_8));
                         String response = HexFormat.of().formatHex(digest);
-                        return new Variable.Variant(new Y_String.Y_StringInstance(response));
+                        return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (NoSuchAlgorithmException e) {
                         throw new YsharpError(YsharpError.YsharpErrorType.PROCESS ,
                                 -1,
@@ -153,7 +153,7 @@ public class Y_Crypto {
                         MessageDigest md = MessageDigest.getInstance("SHA-256");
                         byte[] digest = md.digest(input.getBytes(StandardCharsets.UTF_8));
                         String response = HexFormat.of().formatHex(digest);
-                        return new Variable.Variant(new Y_String.Y_StringInstance(response));
+                        return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (NoSuchAlgorithmException e) {
                         throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
                                 -1,
@@ -194,7 +194,7 @@ public class Y_Crypto {
                         MessageDigest md = MessageDigest.getInstance("SHA-512");
                         byte[] digest = md.digest(input.getBytes(StandardCharsets.UTF_8));
                         String response = HexFormat.of().formatHex(digest);
-                        return new Variable.Variant(new Y_String.Y_StringInstance(response));
+                        return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (NoSuchAlgorithmException e) {
                         throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
                                 -1,
@@ -239,7 +239,7 @@ public class Y_Crypto {
                         mac.init(keySpec);
                         byte[] digest = mac.doFinal(data.getBytes(StandardCharsets.UTF_8));
                         String response = HexFormat.of().formatHex(digest);
-                        return new Variable.Variant(new Y_String.Y_StringInstance(response));
+                        return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (Exception e) {
                         throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
                                 -1,
@@ -284,7 +284,7 @@ public class Y_Crypto {
                         mac.init(keySpec);
                         byte[] digest = mac.doFinal(data.getBytes(StandardCharsets.UTF_8));
                         String response = HexFormat.of().formatHex(digest);
-                        return new Variable.Variant(new Y_String.Y_StringInstance(response));
+                        return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (Exception e) {
                         throw new YsharpError(YsharpError.YsharpErrorType.PROCESS ,
                                 -1,
@@ -324,7 +324,7 @@ public class Y_Crypto {
                     String response = Base64.getEncoder().encodeToString(
                             input.getBytes(StandardCharsets.UTF_8));
 
-                    return new Variable.Variant(new Y_String.Y_StringInstance(response));
+                    return new Variable.Variant(new yString.yStringInstance(response));
                 }
 
                 @Override
@@ -359,7 +359,7 @@ public class Y_Crypto {
                     try {
                         byte[] decoded = Base64.getDecoder().decode(input);
                         String response = new String(decoded, StandardCharsets.UTF_8);
-                        return new Variable.Variant(new Y_String.Y_StringInstance(response));
+                        return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (IllegalArgumentException e) {
                         throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
                                 -1,
@@ -399,7 +399,7 @@ public class Y_Crypto {
                     String response = HexFormat.of().formatHex(
                             input.getBytes(StandardCharsets.UTF_8));
 
-                    return new Variable.Variant(new Y_String.Y_StringInstance(response));
+                    return new Variable.Variant(new yString.yStringInstance(response));
                 }
 
                 @Override
@@ -434,7 +434,7 @@ public class Y_Crypto {
                     try {
                         byte[] bytes = HexFormat.of().parseHex(input);
                         String response = new String(bytes, StandardCharsets.UTF_8);
-                        return new Variable.Variant(new Y_String.Y_StringInstance(response));
+                        return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (IllegalArgumentException e) {
                         throw new YsharpError( YsharpError.YsharpErrorType.PROCESS,
                                 -1,
@@ -476,7 +476,7 @@ public class Y_Crypto {
                     new SecureRandom().nextBytes(bytes);
                     String response = HexFormat.of().formatHex(bytes);
 
-                    return new Variable.Variant(new Y_String.Y_StringInstance(response));
+                    return new Variable.Variant(new yString.yStringInstance(response));
                 }
 
                 @Override
@@ -506,7 +506,7 @@ public class Y_Crypto {
 
                     String response = java.util.UUID.randomUUID().toString();
 
-                    return new Variable.Variant(new Y_String.Y_StringInstance(response));
+                    return new Variable.Variant(new yString.yStringInstance(response));
                 }
 
                 @Override
@@ -539,7 +539,7 @@ public class Y_Crypto {
                         kg.init(256, new SecureRandom());
                         SecretKey key = kg.generateKey();
                         String response = Base64.getEncoder().encodeToString(key.getEncoded());
-                        return new Variable.Variant(new Y_String.Y_StringInstance(response));
+                        return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (NoSuchAlgorithmException e) {
                         throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
                                 -1,
@@ -594,7 +594,7 @@ public class Y_Crypto {
                         System.arraycopy(encrypted, 0, combined, iv.length, encrypted.length);
 
                         String response = Base64.getEncoder().encodeToString(combined);
-                        return new Variable.Variant(new Y_String.Y_StringInstance(response));
+                        return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (Exception e) {
                         throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
                                 -1,
@@ -649,7 +649,7 @@ public class Y_Crypto {
                         byte[] decrypted = cipher.doFinal(ciphertext);
 
                         String response = new String(decrypted, StandardCharsets.UTF_8);
-                        return new Variable.Variant(new Y_String.Y_StringInstance(response));
+                        return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (Exception e) {
                         throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
                                 -1,
@@ -703,7 +703,7 @@ public class Y_Crypto {
                         System.arraycopy(encrypted, 0, combined, iv.length, encrypted.length);
 
                         String response = Base64.getEncoder().encodeToString(combined);
-                        return new Variable.Variant(new Y_String.Y_StringInstance(response));
+                        return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (Exception e) {
                         throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
                                 -1,
@@ -758,7 +758,7 @@ public class Y_Crypto {
                         byte[] decrypted = cipher.doFinal(ciphertext);
 
                         String response = new String(decrypted, StandardCharsets.UTF_8);
-                        return new Variable.Variant(new Y_String.Y_StringInstance(response));
+                        return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (Exception e) {
                         throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
                                 -1,
@@ -800,7 +800,7 @@ public class Y_Crypto {
                         String priv = Base64.getEncoder().encodeToString(kp.getPrivate().getEncoded());
 
                         String response = "{\"publicKey\":\"" + pub + "\",\"privateKey\":\"" + priv + "\"}";
-                        return new Variable.Variant(new Y_String.Y_StringInstance(response));
+                        return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (NoSuchAlgorithmException e) {
                         throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
                                 -1 ,
@@ -848,7 +848,7 @@ public class Y_Crypto {
                         byte[] encrypted = cipher.doFinal(plaintext.getBytes(StandardCharsets.UTF_8));
 
                         String response = Base64.getEncoder().encodeToString(encrypted);
-                        return new Variable.Variant(new Y_String.Y_StringInstance(response));
+                        return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (Exception e) {
                         throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
                                 -1,
@@ -896,7 +896,7 @@ public class Y_Crypto {
                         byte[] decrypted = cipher.doFinal(Base64.getDecoder().decode(base64Cipher));
 
                         String response = new String(decrypted, StandardCharsets.UTF_8);
-                        return new Variable.Variant(new Y_String.Y_StringInstance(response));
+                        return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (Exception e) {
                         throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
                                 -1,
@@ -945,7 +945,7 @@ public class Y_Crypto {
                         byte[] signature = sig.sign();
 
                         String response = Base64.getEncoder().encodeToString(signature);
-                        return new Variable.Variant(new Y_String.Y_StringInstance(response));
+                        return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (Exception e) {
                         throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
                                 -1,
@@ -1095,7 +1095,7 @@ public class Y_Crypto {
                         byte[] key = skf.generateSecret(spec).getEncoded();
                         String response = HexFormat.of().formatHex(key);
 
-                        return new Variable.Variant(new Y_String.Y_StringInstance(response));
+                        return new Variable.Variant(new yString.yStringInstance(response));
 
                     } catch (Exception e) {
 
@@ -1154,7 +1154,7 @@ public class Y_Crypto {
 
                         String response = HexFormat.of().formatHex(key);
 
-                        return new Variable.Variant(new Y_String.Y_StringInstance(response));
+                        return new Variable.Variant(new yString.yStringInstance(response));
 
                     } catch (Exception e) {
 
@@ -1206,7 +1206,7 @@ public class Y_Crypto {
                         sb.append(chars.charAt(index));
                     }
 
-                    return new Variable.Variant(new Y_String.Y_StringInstance(sb.toString()));
+                    return new Variable.Variant(new yString.yStringInstance(sb.toString()));
                 }
 
                 @Override
@@ -1256,7 +1256,7 @@ public class Y_Crypto {
 
                         String response = Base64.getEncoder().encodeToString(key);
 
-                        return new Variable.Variant(new Y_String.Y_StringInstance(response));
+                        return new Variable.Variant(new yString.yStringInstance(response));
 
                     } catch (Exception e) {
 
@@ -1296,7 +1296,7 @@ public class Y_Crypto {
 
             requireArity(arguments, 0, getClassName());
 
-            Y_CryptoInstance instance = new Y_CryptoInstance();
+            yCryptoInstance instance = new yCryptoInstance();
             return new Variable.Variant(instance);
         }
 
@@ -1314,7 +1314,7 @@ public class Y_Crypto {
 
     public static void Register(Interpreter interpreter) throws Exception {
 
-        Y_CryptoClass ctor = new Y_CryptoClass();
+        yCryptoClass ctor = new yCryptoClass();
 
         Variable.Variant variant = new Variable.Variant(ctor);
         Variable var = new Variable(variant,

@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Y_HashMap {
+public class yHashMap {
 
     // helper
-    private static Y_HashMap.Y_HashMapInstance requireHashMapThis(Interpreter interpreter) {
+    private static yHashMap.yHashMapInstance requireHashMapThis(Interpreter interpreter) {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
@@ -24,7 +24,7 @@ public class Y_HashMap {
 
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-        if (!(obj instanceof Y_HashMap.Y_HashMapInstance)) {
+        if (!(obj instanceof yHashMap.yHashMapInstance)) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     0,
@@ -32,13 +32,13 @@ public class Y_HashMap {
             );
         }
 
-        return (Y_HashMap.Y_HashMapInstance) obj;
+        return (yHashMap.yHashMapInstance) obj;
     }
 
-    public static RuntimeObject Y_HashMap_Instance_Prototype;
+    public static RuntimeObject yHashMap_Instance_Prototype;
 
     static {
-        Y_HashMap_Instance_Prototype = new RuntimeObject() {
+        yHashMap_Instance_Prototype = new RuntimeObject() {
 
             @Override
             public boolean isTruthy() {
@@ -50,7 +50,7 @@ public class Y_HashMap {
                 return "hash_map_prototype";
             }
         };
-        Y_HashMap_Instance_Prototype.prototype = Y_Class.ClassPrototype;
+        yHashMap_Instance_Prototype.prototype = yClass.ClassPrototype;
 
         // hm.toString()
         class ToStringFn extends Function.NativeFunction {
@@ -65,7 +65,7 @@ public class Y_HashMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_HashMapInstance hm = requireHashMapThis(interpreter);
+                yHashMapInstance hm = requireHashMapThis(interpreter);
 
                 StringBuilder sb = new StringBuilder();
                 sb.append("{");
@@ -92,7 +92,7 @@ public class Y_HashMap {
 
         ToStringFn toString = new ToStringFn();
         Variable toStringVar = new Variable(new Variable.Variant(toString), true, TypeTag.OBJECT);
-        Y_HashMap.Y_HashMap_Instance_Prototype.set(toString.getFnName(), toStringVar);
+        yHashMap.yHashMap_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
 
         // hm.put(key, value)
@@ -110,7 +110,7 @@ public class Y_HashMap {
 
                 Variable.Variant key   = arguments.get(0);
                 Variable.Variant value = arguments.get(1);
-                Y_HashMapInstance hm = requireHashMapThis(interpreter);
+                yHashMapInstance hm = requireHashMapThis(interpreter);
 
                 Variable.Variant previous = hm.data.put(key, value);
 
@@ -125,7 +125,7 @@ public class Y_HashMap {
 
         PutFn put = new PutFn();
         Variable putVar = new Variable(new Variable.Variant(put), true, TypeTag.OBJECT);
-        Y_HashMap.Y_HashMap_Instance_Prototype.set(put.getFnName(), putVar);
+        yHashMap.yHashMap_Instance_Prototype.set(put.getFnName(), putVar);
 
 
         // hm.get(key)
@@ -142,7 +142,7 @@ public class Y_HashMap {
                     throws YsharpError {
 
                 Variable.Variant key = arguments.get(0);
-                Y_HashMapInstance hm = requireHashMapThis(interpreter);
+                yHashMapInstance hm = requireHashMapThis(interpreter);
 
                 Variable.Variant value = hm.data.get(key);
 
@@ -157,7 +157,7 @@ public class Y_HashMap {
 
         GetFn get = new GetFn();
         Variable getVar = new Variable(new Variable.Variant(get), true, TypeTag.OBJECT);
-        Y_HashMap.Y_HashMap_Instance_Prototype.set(get.getFnName(), getVar);
+        yHashMap.yHashMap_Instance_Prototype.set(get.getFnName(), getVar);
 
 
         // hm.getOrDefault(key, default)
@@ -175,7 +175,7 @@ public class Y_HashMap {
 
                 Variable.Variant key          = arguments.get(0);
                 Variable.Variant defaultValue = arguments.get(1);
-                Y_HashMapInstance hm = requireHashMapThis(interpreter);
+                yHashMapInstance hm = requireHashMapThis(interpreter);
 
                 Variable.Variant value = hm.data.get(key);
 
@@ -190,7 +190,7 @@ public class Y_HashMap {
 
         GetOrDefaultFn getOrDefault = new GetOrDefaultFn();
         Variable getOrDefaultVar = new Variable(new Variable.Variant(getOrDefault), true, TypeTag.OBJECT);
-        Y_HashMap.Y_HashMap_Instance_Prototype.set(getOrDefault.getFnName(), getOrDefaultVar);
+        yHashMap.yHashMap_Instance_Prototype.set(getOrDefault.getFnName(), getOrDefaultVar);
 
 
         // hm.remove(key)
@@ -207,7 +207,7 @@ public class Y_HashMap {
                     throws YsharpError {
 
                 Variable.Variant key = arguments.get(0);
-                Y_HashMapInstance hm = requireHashMapThis(interpreter);
+                yHashMapInstance hm = requireHashMapThis(interpreter);
 
                 Variable.Variant removed = hm.data.remove(key);
 
@@ -222,7 +222,7 @@ public class Y_HashMap {
 
         RemoveFn remove = new RemoveFn();
         Variable removeVar = new Variable(new Variable.Variant(remove), true, TypeTag.OBJECT);
-        Y_HashMap.Y_HashMap_Instance_Prototype.set(remove.getFnName(), removeVar);
+        yHashMap.yHashMap_Instance_Prototype.set(remove.getFnName(), removeVar);
 
 
         // hm.containsKey(key)
@@ -239,7 +239,7 @@ public class Y_HashMap {
                     throws YsharpError {
 
                 Variable.Variant key = arguments.get(0);
-                Y_HashMapInstance hm = requireHashMapThis(interpreter);
+                yHashMapInstance hm = requireHashMapThis(interpreter);
 
                 return new Variable.Variant(hm.data.containsKey(key));
             }
@@ -252,7 +252,7 @@ public class Y_HashMap {
 
         ContainsKeyFn containsKey = new ContainsKeyFn();
         Variable containsKeyVar = new Variable(new Variable.Variant(containsKey), true, TypeTag.OBJECT);
-        Y_HashMap.Y_HashMap_Instance_Prototype.set(containsKey.getFnName(), containsKeyVar);
+        yHashMap.yHashMap_Instance_Prototype.set(containsKey.getFnName(), containsKeyVar);
 
 
         // hm.containsValue(value)
@@ -269,7 +269,7 @@ public class Y_HashMap {
                     throws YsharpError {
 
                 Variable.Variant value = arguments.get(0);
-                Y_HashMapInstance hm = requireHashMapThis(interpreter);
+                yHashMapInstance hm = requireHashMapThis(interpreter);
 
                 return new Variable.Variant(hm.data.containsValue(value));
             }
@@ -282,7 +282,7 @@ public class Y_HashMap {
 
         ContainsValueFn containsValue = new ContainsValueFn();
         Variable containsValueVar = new Variable(new Variable.Variant(containsValue), true, TypeTag.OBJECT);
-        Y_HashMap.Y_HashMap_Instance_Prototype.set(containsValue.getFnName(), containsValueVar);
+        yHashMap.yHashMap_Instance_Prototype.set(containsValue.getFnName(), containsValueVar);
 
 
         // hm.putIfAbsent(key, value)
@@ -300,7 +300,7 @@ public class Y_HashMap {
 
                 Variable.Variant key   = arguments.get(0);
                 Variable.Variant value = arguments.get(1);
-                Y_HashMapInstance hm = requireHashMapThis(interpreter);
+                yHashMapInstance hm = requireHashMapThis(interpreter);
 
                 Variable.Variant existing = hm.data.putIfAbsent(key, value);
 
@@ -315,7 +315,7 @@ public class Y_HashMap {
 
         PutIfAbsentFn putIfAbsent = new PutIfAbsentFn();
         Variable putIfAbsentVar = new Variable(new Variable.Variant(putIfAbsent), true, TypeTag.OBJECT);
-        Y_HashMap.Y_HashMap_Instance_Prototype.set(putIfAbsent.getFnName(), putIfAbsentVar);
+        yHashMap.yHashMap_Instance_Prototype.set(putIfAbsent.getFnName(), putIfAbsentVar);
 
 
         // hm.replace(key, value)
@@ -333,7 +333,7 @@ public class Y_HashMap {
 
                 Variable.Variant key   = arguments.get(0);
                 Variable.Variant value = arguments.get(1);
-                Y_HashMapInstance hm = requireHashMapThis(interpreter);
+                yHashMapInstance hm = requireHashMapThis(interpreter);
 
                 Variable.Variant old = hm.data.replace(key, value);
 
@@ -348,7 +348,7 @@ public class Y_HashMap {
 
         ReplaceFn replace = new ReplaceFn();
         Variable replaceVar = new Variable(new Variable.Variant(replace), true, TypeTag.OBJECT);
-        Y_HashMap.Y_HashMap_Instance_Prototype.set(replace.getFnName(), replaceVar);
+        yHashMap.yHashMap_Instance_Prototype.set(replace.getFnName(), replaceVar);
 
 
         // hm.merge(key, value, remappingFn)
@@ -369,7 +369,7 @@ public class Y_HashMap {
                 Variable.Variant value    = arguments.get(1);
                 Variable.Variant fnVariant = arguments.get(2);
 
-                Y_HashMapInstance hm = requireHashMapThis(interpreter);
+                yHashMapInstance hm = requireHashMapThis(interpreter);
 
                 Variable.Variant existing = hm.data.get(key);
 
@@ -412,7 +412,7 @@ public class Y_HashMap {
 
         MergeFn merge = new MergeFn();
         Variable mergeVar = new Variable(new Variable.Variant(merge), true, TypeTag.OBJECT);
-        Y_HashMap.Y_HashMap_Instance_Prototype.set(merge.getFnName(), mergeVar);
+        yHashMap.yHashMap_Instance_Prototype.set(merge.getFnName(), mergeVar);
 
 
         // hm.compute(key, remappingFn(key, oldVal))
@@ -432,7 +432,7 @@ public class Y_HashMap {
                 Variable.Variant key      = arguments.get(0);
                 Variable.Variant fnVariant = arguments.get(1);
 
-                Y_HashMapInstance hm = requireHashMapThis(interpreter);
+                yHashMapInstance hm = requireHashMapThis(interpreter);
 
                 if (!fnVariant.isCallable()) {
                     throw new YsharpError(
@@ -469,7 +469,7 @@ public class Y_HashMap {
 
         ComputeFn compute = new ComputeFn();
         Variable computeVar = new Variable(new Variable.Variant(compute), true, TypeTag.OBJECT);
-        Y_HashMap.Y_HashMap_Instance_Prototype.set(compute.getFnName(), computeVar);
+        yHashMap.yHashMap_Instance_Prototype.set(compute.getFnName(), computeVar);
 
 
         // hm.computeIfAbsent(key, mappingFn(key))
@@ -488,7 +488,7 @@ public class Y_HashMap {
                 Variable.Variant key      = arguments.get(0);
                 Variable.Variant fnVariant = arguments.get(1);
 
-                Y_HashMapInstance hm = requireHashMapThis(interpreter);
+                yHashMapInstance hm = requireHashMapThis(interpreter);
 
                 Variable.Variant existing = hm.data.get(key);
                 if (existing != null) {
@@ -525,7 +525,7 @@ public class Y_HashMap {
 
         ComputeIfAbsentFn computeIfAbsent = new ComputeIfAbsentFn();
         Variable computeIfAbsentVar = new Variable(new Variable.Variant(computeIfAbsent), true, TypeTag.OBJECT);
-        Y_HashMap.Y_HashMap_Instance_Prototype.set(computeIfAbsent.getFnName(), computeIfAbsentVar);
+        yHashMap.yHashMap_Instance_Prototype.set(computeIfAbsent.getFnName(), computeIfAbsentVar);
 
 
         // hm.computeIfPresent(key, remappingFn(key, oldVal))
@@ -544,7 +544,7 @@ public class Y_HashMap {
                 Variable.Variant key      = arguments.get(0);
                 Variable.Variant fnVariant = arguments.get(1);
 
-                Y_HashMapInstance hm = requireHashMapThis(interpreter);
+                yHashMapInstance hm = requireHashMapThis(interpreter);
 
                 Variable.Variant existing = hm.data.get(key);
                 if (existing == null) {
@@ -584,7 +584,7 @@ public class Y_HashMap {
 
         ComputeIfPresentFn computeIfPresent = new ComputeIfPresentFn();
         Variable computeIfPresentVar = new Variable(new Variable.Variant(computeIfPresent), true, TypeTag.OBJECT);
-        Y_HashMap.Y_HashMap_Instance_Prototype.set(computeIfPresent.getFnName(), computeIfPresentVar);
+        yHashMap.yHashMap_Instance_Prototype.set(computeIfPresent.getFnName(), computeIfPresentVar);
 
 
         // hm.keys()
@@ -600,11 +600,11 @@ public class Y_HashMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_HashMapInstance hm = requireHashMapThis(interpreter);
+                yHashMapInstance hm = requireHashMapThis(interpreter);
 
                 ArrayList<Variable.Variant> list = new ArrayList<>(hm.data.keySet());
 
-                return new Variable.Variant(new Y_Array.Y_ArrayInstance(list));
+                return new Variable.Variant(new yArray.yArrayInstance(list));
             }
 
             @Override
@@ -615,7 +615,7 @@ public class Y_HashMap {
 
         KeysFn keys = new KeysFn();
         Variable keysVar = new Variable(new Variable.Variant(keys), true, TypeTag.OBJECT);
-        Y_HashMap.Y_HashMap_Instance_Prototype.set(keys.getFnName(), keysVar);
+        yHashMap.yHashMap_Instance_Prototype.set(keys.getFnName(), keysVar);
 
 
         // hm.values()
@@ -631,11 +631,11 @@ public class Y_HashMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_HashMapInstance hm = requireHashMapThis(interpreter);
+                yHashMapInstance hm = requireHashMapThis(interpreter);
 
                 ArrayList<Variable.Variant> list = new ArrayList<>(hm.data.values());
 
-                return new Variable.Variant(new Y_Array.Y_ArrayInstance(list));
+                return new Variable.Variant(new yArray.yArrayInstance(list));
             }
 
             @Override
@@ -646,7 +646,7 @@ public class Y_HashMap {
 
         ValuesFn values = new ValuesFn();
         Variable valuesVar = new Variable(new Variable.Variant(values), true, TypeTag.OBJECT);
-        Y_HashMap.Y_HashMap_Instance_Prototype.set(values.getFnName(), valuesVar);
+        yHashMap.yHashMap_Instance_Prototype.set(values.getFnName(), valuesVar);
 
 
         // hm.entries()
@@ -662,7 +662,7 @@ public class Y_HashMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_HashMapInstance hm = requireHashMapThis(interpreter);
+                yHashMapInstance hm = requireHashMapThis(interpreter);
 
                 ArrayList<Variable.Variant> outerList = new ArrayList<>();
 
@@ -670,10 +670,10 @@ public class Y_HashMap {
                     ArrayList<Variable.Variant> pair = new ArrayList<>();
                     pair.add(entry.getKey());
                     pair.add(entry.getValue());
-                    outerList.add(new Variable.Variant(new Y_Array.Y_ArrayInstance(pair)));
+                    outerList.add(new Variable.Variant(new yArray.yArrayInstance(pair)));
                 }
 
-                return new Variable.Variant(new Y_Array.Y_ArrayInstance(outerList));
+                return new Variable.Variant(new yArray.yArrayInstance(outerList));
             }
 
             @Override
@@ -684,7 +684,7 @@ public class Y_HashMap {
 
         EntriesFn entries = new EntriesFn();
         Variable entriesVar = new Variable(new Variable.Variant(entries), true, TypeTag.OBJECT);
-        Y_HashMap.Y_HashMap_Instance_Prototype.set(entries.getFnName(), entriesVar);
+        yHashMap.yHashMap_Instance_Prototype.set(entries.getFnName(), entriesVar);
 
 
         // hm.size()
@@ -700,7 +700,7 @@ public class Y_HashMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_HashMapInstance hm = requireHashMapThis(interpreter);
+                yHashMapInstance hm = requireHashMapThis(interpreter);
 
                 return new Variable.Variant(hm.data.size());
             }
@@ -713,7 +713,7 @@ public class Y_HashMap {
 
         SizeFn size = new SizeFn();
         Variable sizeVar = new Variable(new Variable.Variant(size), true, TypeTag.OBJECT);
-        Y_HashMap.Y_HashMap_Instance_Prototype.set(size.getFnName(), sizeVar);
+        yHashMap.yHashMap_Instance_Prototype.set(size.getFnName(), sizeVar);
 
 
         // hm.isEmpty()
@@ -729,7 +729,7 @@ public class Y_HashMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_HashMapInstance hm = requireHashMapThis(interpreter);
+                yHashMapInstance hm = requireHashMapThis(interpreter);
 
                 return new Variable.Variant(hm.data.isEmpty());
             }
@@ -742,7 +742,7 @@ public class Y_HashMap {
 
         IsEmptyFn isEmpty = new IsEmptyFn();
         Variable isEmptyVar = new Variable(new Variable.Variant(isEmpty), true, TypeTag.OBJECT);
-        Y_HashMap.Y_HashMap_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
+        yHashMap.yHashMap_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
 
 
         // hm.clear()
@@ -758,7 +758,7 @@ public class Y_HashMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_HashMapInstance hm = requireHashMapThis(interpreter);
+                yHashMapInstance hm = requireHashMapThis(interpreter);
                 hm.data.clear();
 
                 return new Variable.Variant(null);
@@ -772,7 +772,7 @@ public class Y_HashMap {
 
         ClearFn clear = new ClearFn();
         Variable clearVar = new Variable(new Variable.Variant(clear), true, TypeTag.OBJECT);
-        Y_HashMap.Y_HashMap_Instance_Prototype.set(clear.getFnName(), clearVar);
+        yHashMap.yHashMap_Instance_Prototype.set(clear.getFnName(), clearVar);
 
 
         // hm.clone()
@@ -788,8 +788,8 @@ public class Y_HashMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_HashMapInstance original = requireHashMapThis(interpreter);
-                Y_HashMapInstance cloned   = new Y_HashMapInstance();
+                yHashMapInstance original = requireHashMapThis(interpreter);
+                yHashMapInstance cloned   = new yHashMapInstance();
 
                 cloned.data.putAll(original.data);
 
@@ -804,17 +804,17 @@ public class Y_HashMap {
 
         CloneFn clone = new CloneFn();
         Variable cloneVar = new Variable(new Variable.Variant(clone), true, TypeTag.OBJECT);
-        Y_HashMap.Y_HashMap_Instance_Prototype.set(clone.getFnName(), cloneVar);
+        yHashMap.yHashMap_Instance_Prototype.set(clone.getFnName(), cloneVar);
 
     }
 
-    public static class Y_HashMapInstance extends Y_Class.ClassObjectInstance {
+    public static class yHashMapInstance extends yClass.ClassObjectInstance {
 
         final HashMap<Variable.Variant, Variable.Variant> data;
 
-        public Y_HashMapInstance() {
+        public yHashMapInstance() {
             this.data = new HashMap<>();
-            this.prototype = Y_HashMap_Instance_Prototype;
+            this.prototype = yHashMap_Instance_Prototype;
         }
 
         @Override
@@ -833,7 +833,7 @@ public class Y_HashMap {
         }
     }
 
-    public static class Y_HashMapClass extends Y_Class.SealedClassObject {
+    public static class yHashMapClass extends yClass.SealedClassObject {
 
         @Override
         public int arity() {
@@ -845,7 +845,7 @@ public class Y_HashMap {
                                      List<Variable.Variant> arguments)
                 throws YsharpError {
 
-            Y_HashMapInstance newMap = new Y_HashMapInstance();
+            yHashMapInstance newMap = new yHashMapInstance();
 
             return new Variable.Variant(newMap);
         }
@@ -862,7 +862,7 @@ public class Y_HashMap {
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
-        Y_HashMap.Y_HashMapClass hmCtor = new Y_HashMap.Y_HashMapClass();
+        yHashMap.yHashMapClass hmCtor = new yHashMap.yHashMapClass();
         Variable.Variant variant = new Variable.Variant(hmCtor);
         Variable var = new Variable(variant, false, TypeTag.OBJECT);
         interpreter.defineGlobal(hmCtor.getClassName(), var);

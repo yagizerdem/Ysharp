@@ -7,16 +7,16 @@ import ysharp.parser.TypeTag;
 import java.util.List;
 import java.util.Random;
 
-public class Y_Random {
+public class yRandom {
 
 
     static {
         // all the methods in random class should be static because i want so !
     }
 
-    public static class Y_RandomInstance extends Y_Class.ClassObjectInstance {
+    public static class yRandomInstance extends yClass.ClassObjectInstance {
 
-        public Y_RandomInstance() {}
+        public yRandomInstance() {}
 
         @Override
         public boolean isTruthy() {
@@ -35,12 +35,12 @@ public class Y_Random {
     }
 
 
-    public static class Y_RandomClass extends Y_Class.SealedClassObject {
+    public static class yRandomClass extends yClass.SealedClassObject {
 
         private static final Random rng = new Random();
 
-        Y_RandomClass() {
-            this.prototype = Y_Class.ClassPrototype;
+        yRandomClass() {
+            this.prototype = yClass.ClassPrototype;
 
             // add static methods here
 
@@ -315,7 +315,7 @@ public class Y_Random {
 
             requireArity(arguments, 0, getClassName());
 
-            Y_RandomInstance instance = new Y_RandomInstance();
+            yRandomInstance instance = new yRandomInstance();
             return new Variable.Variant(instance);
         }
 
@@ -332,7 +332,7 @@ public class Y_Random {
 
     public static void Register(Interpreter interpreter) throws Exception {
 
-        Y_RandomClass ctor = new Y_RandomClass();
+        yRandomClass ctor = new yRandomClass();
 
         Variable.Variant variant = new Variable.Variant(ctor);
         Variable var = new Variable(variant,

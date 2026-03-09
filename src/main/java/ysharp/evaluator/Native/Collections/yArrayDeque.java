@@ -8,10 +8,10 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Y_ArrayDeque {
+public class yArrayDeque {
 
     // helper
-    private static Y_ArrayDeque.Y_ArrayDequeInstance requireArrayDequeThis(Interpreter interpreter) {
+    private static yArrayDeque.yArrayDequeInstance requireArrayDequeThis(Interpreter interpreter) {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
@@ -24,7 +24,7 @@ public class Y_ArrayDeque {
 
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-        if (!(obj instanceof Y_ArrayDeque.Y_ArrayDequeInstance)) {
+        if (!(obj instanceof yArrayDeque.yArrayDequeInstance)) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     0,
@@ -32,13 +32,13 @@ public class Y_ArrayDeque {
             );
         }
 
-        return (Y_ArrayDeque.Y_ArrayDequeInstance) obj;
+        return (yArrayDeque.yArrayDequeInstance) obj;
     }
 
-    public static RuntimeObject Y_ArrayDeque_Instance_Prototype;
+    public static RuntimeObject yArrayDeque_Instance_Prototype;
 
     static {
-        Y_ArrayDeque_Instance_Prototype = new RuntimeObject() {
+        yArrayDeque_Instance_Prototype = new RuntimeObject() {
 
             @Override
             public boolean isTruthy() {
@@ -50,7 +50,7 @@ public class Y_ArrayDeque {
                 return "array_deque_prototype";
             }
         };
-        Y_ArrayDeque_Instance_Prototype.prototype = Y_Class.ClassPrototype;
+        yArrayDeque_Instance_Prototype.prototype = yClass.ClassPrototype;
 
         // deque.toString()
         class ToStringFn extends Function.NativeFunction {
@@ -65,7 +65,7 @@ public class Y_ArrayDeque {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_ArrayDequeInstance deque = requireArrayDequeThis(interpreter);
+                yArrayDequeInstance deque = requireArrayDequeThis(interpreter);
 
                 StringBuilder sb = new StringBuilder();
                 sb.append("Deque[");
@@ -90,7 +90,7 @@ public class Y_ArrayDeque {
 
         ToStringFn toString = new ToStringFn();
         Variable toStringVar = new Variable(new Variable.Variant(toString), true, TypeTag.OBJECT);
-        Y_ArrayDeque.Y_ArrayDeque_Instance_Prototype.set(toString.getFnName(), toStringVar);
+        yArrayDeque.yArrayDeque_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
 
         // deque.addFirst(value)
@@ -107,7 +107,7 @@ public class Y_ArrayDeque {
                     throws YsharpError {
 
                 Variable.Variant value = arguments.get(0);
-                Y_ArrayDequeInstance deque = requireArrayDequeThis(interpreter);
+                yArrayDequeInstance deque = requireArrayDequeThis(interpreter);
 
                 deque.data.addFirst(value);
 
@@ -122,7 +122,7 @@ public class Y_ArrayDeque {
 
         AddFirstFn addFirst = new AddFirstFn();
         Variable addFirstVar = new Variable(new Variable.Variant(addFirst), true, TypeTag.OBJECT);
-        Y_ArrayDeque.Y_ArrayDeque_Instance_Prototype.set(addFirst.getFnName(), addFirstVar);
+        yArrayDeque.yArrayDeque_Instance_Prototype.set(addFirst.getFnName(), addFirstVar);
 
 
         // deque.addLast(value)
@@ -139,7 +139,7 @@ public class Y_ArrayDeque {
                     throws YsharpError {
 
                 Variable.Variant value = arguments.get(0);
-                Y_ArrayDequeInstance deque = requireArrayDequeThis(interpreter);
+                yArrayDequeInstance deque = requireArrayDequeThis(interpreter);
 
                 deque.data.addLast(value);
 
@@ -154,7 +154,7 @@ public class Y_ArrayDeque {
 
         AddLastFn addLast = new AddLastFn();
         Variable addLastVar = new Variable(new Variable.Variant(addLast), true, TypeTag.OBJECT);
-        Y_ArrayDeque.Y_ArrayDeque_Instance_Prototype.set(addLast.getFnName(), addLastVar);
+        yArrayDeque.yArrayDeque_Instance_Prototype.set(addLast.getFnName(), addLastVar);
 
 
         // deque.removeFirst()
@@ -170,7 +170,7 @@ public class Y_ArrayDeque {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_ArrayDequeInstance deque = requireArrayDequeThis(interpreter);
+                yArrayDequeInstance deque = requireArrayDequeThis(interpreter);
 
                 if (deque.data.isEmpty()) {
                     return new Variable.Variant(null);
@@ -187,7 +187,7 @@ public class Y_ArrayDeque {
 
         RemoveFirstFn removeFirst = new RemoveFirstFn();
         Variable removeFirstVar = new Variable(new Variable.Variant(removeFirst), true, TypeTag.OBJECT);
-        Y_ArrayDeque.Y_ArrayDeque_Instance_Prototype.set(removeFirst.getFnName(), removeFirstVar);
+        yArrayDeque.yArrayDeque_Instance_Prototype.set(removeFirst.getFnName(), removeFirstVar);
 
 
         // deque.removeLast()
@@ -203,7 +203,7 @@ public class Y_ArrayDeque {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_ArrayDequeInstance deque = requireArrayDequeThis(interpreter);
+                yArrayDequeInstance deque = requireArrayDequeThis(interpreter);
 
                 if (deque.data.isEmpty()) {
                     return new Variable.Variant(null);
@@ -220,7 +220,7 @@ public class Y_ArrayDeque {
 
         RemoveLastFn removeLast = new RemoveLastFn();
         Variable removeLastVar = new Variable(new Variable.Variant(removeLast), true, TypeTag.OBJECT);
-        Y_ArrayDeque.Y_ArrayDeque_Instance_Prototype.set(removeLast.getFnName(), removeLastVar);
+        yArrayDeque.yArrayDeque_Instance_Prototype.set(removeLast.getFnName(), removeLastVar);
 
 
         // deque.peekFirst()
@@ -236,7 +236,7 @@ public class Y_ArrayDeque {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_ArrayDequeInstance deque = requireArrayDequeThis(interpreter);
+                yArrayDequeInstance deque = requireArrayDequeThis(interpreter);
 
                 if (deque.data.isEmpty()) {
                     return new Variable.Variant(null);
@@ -253,7 +253,7 @@ public class Y_ArrayDeque {
 
         PeekFirstFn peekFirst = new PeekFirstFn();
         Variable peekFirstVar = new Variable(new Variable.Variant(peekFirst), true, TypeTag.OBJECT);
-        Y_ArrayDeque.Y_ArrayDeque_Instance_Prototype.set(peekFirst.getFnName(), peekFirstVar);
+        yArrayDeque.yArrayDeque_Instance_Prototype.set(peekFirst.getFnName(), peekFirstVar);
 
 
         // deque.peekLast()
@@ -269,7 +269,7 @@ public class Y_ArrayDeque {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_ArrayDequeInstance deque = requireArrayDequeThis(interpreter);
+                yArrayDequeInstance deque = requireArrayDequeThis(interpreter);
 
                 if (deque.data.isEmpty()) {
                     return new Variable.Variant(null);
@@ -286,7 +286,7 @@ public class Y_ArrayDeque {
 
         PeekLastFn peekLast = new PeekLastFn();
         Variable peekLastVar = new Variable(new Variable.Variant(peekLast), true, TypeTag.OBJECT);
-        Y_ArrayDeque.Y_ArrayDeque_Instance_Prototype.set(peekLast.getFnName(), peekLastVar);
+        yArrayDeque.yArrayDeque_Instance_Prototype.set(peekLast.getFnName(), peekLastVar);
 
 
         // deque.contains(value)
@@ -303,7 +303,7 @@ public class Y_ArrayDeque {
                     throws YsharpError {
 
                 Variable.Variant target = arguments.get(0);
-                Y_ArrayDequeInstance deque = requireArrayDequeThis(interpreter);
+                yArrayDequeInstance deque = requireArrayDequeThis(interpreter);
 
                 return new Variable.Variant(deque.data.contains(target));
             }
@@ -316,7 +316,7 @@ public class Y_ArrayDeque {
 
         ContainsFn contains = new ContainsFn();
         Variable containsVar = new Variable(new Variable.Variant(contains), true, TypeTag.OBJECT);
-        Y_ArrayDeque.Y_ArrayDeque_Instance_Prototype.set(contains.getFnName(), containsVar);
+        yArrayDeque.yArrayDeque_Instance_Prototype.set(contains.getFnName(), containsVar);
 
 
         // deque.removeFirstOccurrence(value)
@@ -333,7 +333,7 @@ public class Y_ArrayDeque {
                     throws YsharpError {
 
                 Variable.Variant target = arguments.get(0);
-                Y_ArrayDequeInstance deque = requireArrayDequeThis(interpreter);
+                yArrayDequeInstance deque = requireArrayDequeThis(interpreter);
 
                 return new Variable.Variant(deque.data.removeFirstOccurrence(target));
             }
@@ -346,7 +346,7 @@ public class Y_ArrayDeque {
 
         RemoveFirstOccurrenceFn removeFirstOccurrence = new RemoveFirstOccurrenceFn();
         Variable removeFirstOccurrenceVar = new Variable(new Variable.Variant(removeFirstOccurrence), true, TypeTag.OBJECT);
-        Y_ArrayDeque.Y_ArrayDeque_Instance_Prototype.set(removeFirstOccurrence.getFnName(), removeFirstOccurrenceVar);
+        yArrayDeque.yArrayDeque_Instance_Prototype.set(removeFirstOccurrence.getFnName(), removeFirstOccurrenceVar);
 
 
         // deque.removeLastOccurrence(value)
@@ -363,7 +363,7 @@ public class Y_ArrayDeque {
                     throws YsharpError {
 
                 Variable.Variant target = arguments.get(0);
-                Y_ArrayDequeInstance deque = requireArrayDequeThis(interpreter);
+                yArrayDequeInstance deque = requireArrayDequeThis(interpreter);
 
                 return new Variable.Variant(deque.data.removeLastOccurrence(target));
             }
@@ -376,7 +376,7 @@ public class Y_ArrayDeque {
 
         RemoveLastOccurrenceFn removeLastOccurrence = new RemoveLastOccurrenceFn();
         Variable removeLastOccurrenceVar = new Variable(new Variable.Variant(removeLastOccurrence), true, TypeTag.OBJECT);
-        Y_ArrayDeque.Y_ArrayDeque_Instance_Prototype.set(removeLastOccurrence.getFnName(), removeLastOccurrenceVar);
+        yArrayDeque.yArrayDeque_Instance_Prototype.set(removeLastOccurrence.getFnName(), removeLastOccurrenceVar);
 
 
         // deque.size()
@@ -392,7 +392,7 @@ public class Y_ArrayDeque {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_ArrayDequeInstance deque = requireArrayDequeThis(interpreter);
+                yArrayDequeInstance deque = requireArrayDequeThis(interpreter);
 
                 return new Variable.Variant(deque.data.size());
             }
@@ -405,7 +405,7 @@ public class Y_ArrayDeque {
 
         SizeFn size = new SizeFn();
         Variable sizeVar = new Variable(new Variable.Variant(size), true, TypeTag.OBJECT);
-        Y_ArrayDeque.Y_ArrayDeque_Instance_Prototype.set(size.getFnName(), sizeVar);
+        yArrayDeque.yArrayDeque_Instance_Prototype.set(size.getFnName(), sizeVar);
 
 
         // deque.isEmpty()
@@ -421,7 +421,7 @@ public class Y_ArrayDeque {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_ArrayDequeInstance deque = requireArrayDequeThis(interpreter);
+                yArrayDequeInstance deque = requireArrayDequeThis(interpreter);
 
                 return new Variable.Variant(deque.data.isEmpty());
             }
@@ -434,7 +434,7 @@ public class Y_ArrayDeque {
 
         IsEmptyFn isEmpty = new IsEmptyFn();
         Variable isEmptyVar = new Variable(new Variable.Variant(isEmpty), true, TypeTag.OBJECT);
-        Y_ArrayDeque.Y_ArrayDeque_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
+        yArrayDeque.yArrayDeque_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
 
 
         // deque.clear()
@@ -450,7 +450,7 @@ public class Y_ArrayDeque {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_ArrayDequeInstance deque = requireArrayDequeThis(interpreter);
+                yArrayDequeInstance deque = requireArrayDequeThis(interpreter);
                 deque.data.clear();
 
                 return new Variable.Variant(null);
@@ -464,7 +464,7 @@ public class Y_ArrayDeque {
 
         ClearFn clear = new ClearFn();
         Variable clearVar = new Variable(new Variable.Variant(clear), true, TypeTag.OBJECT);
-        Y_ArrayDeque.Y_ArrayDeque_Instance_Prototype.set(clear.getFnName(), clearVar);
+        yArrayDeque.yArrayDeque_Instance_Prototype.set(clear.getFnName(), clearVar);
 
 
         // deque.toArray() -> returns Y_ArrayObject (front to back order)
@@ -480,11 +480,11 @@ public class Y_ArrayDeque {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_ArrayDequeInstance deque = requireArrayDequeThis(interpreter);
+                yArrayDequeInstance deque = requireArrayDequeThis(interpreter);
 
                 ArrayList<Variable.Variant> result = new ArrayList<>(deque.data);
 
-                Y_Array.Y_ArrayInstance array = new Y_Array.Y_ArrayInstance(result);
+                yArray.yArrayInstance array = new yArray.yArrayInstance(result);
 
                 return new Variable.Variant(array);
             }
@@ -497,7 +497,7 @@ public class Y_ArrayDeque {
 
         ToArrayFn toArray = new ToArrayFn();
         Variable toArrayVar = new Variable(new Variable.Variant(toArray), true, TypeTag.OBJECT);
-        Y_ArrayDeque.Y_ArrayDeque_Instance_Prototype.set(toArray.getFnName(), toArrayVar);
+        yArrayDeque.yArrayDeque_Instance_Prototype.set(toArray.getFnName(), toArrayVar);
 
 
         // deque.clone()
@@ -513,8 +513,8 @@ public class Y_ArrayDeque {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_ArrayDequeInstance original = requireArrayDequeThis(interpreter);
-                Y_ArrayDequeInstance cloned = new Y_ArrayDequeInstance();
+                yArrayDequeInstance original = requireArrayDequeThis(interpreter);
+                yArrayDequeInstance cloned = new yArrayDequeInstance();
 
                 cloned.data.addAll(original.data);
 
@@ -529,7 +529,7 @@ public class Y_ArrayDeque {
 
         CloneFn clone = new CloneFn();
         Variable cloneVar = new Variable(new Variable.Variant(clone), true, TypeTag.OBJECT);
-        Y_ArrayDeque.Y_ArrayDeque_Instance_Prototype.set(clone.getFnName(), cloneVar);
+        yArrayDeque.yArrayDeque_Instance_Prototype.set(clone.getFnName(), cloneVar);
 
 
         // --- Stack convenience methods ---
@@ -548,7 +548,7 @@ public class Y_ArrayDeque {
                     throws YsharpError {
 
                 Variable.Variant value = arguments.get(0);
-                Y_ArrayDequeInstance deque = requireArrayDequeThis(interpreter);
+                yArrayDequeInstance deque = requireArrayDequeThis(interpreter);
 
                 deque.data.push(value);
 
@@ -563,7 +563,7 @@ public class Y_ArrayDeque {
 
         PushFn push = new PushFn();
         Variable pushVar = new Variable(new Variable.Variant(push), true, TypeTag.OBJECT);
-        Y_ArrayDeque.Y_ArrayDeque_Instance_Prototype.set(push.getFnName(), pushVar);
+        yArrayDeque.yArrayDeque_Instance_Prototype.set(push.getFnName(), pushVar);
 
 
         // deque.pop() -> removeFirst alias
@@ -579,7 +579,7 @@ public class Y_ArrayDeque {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_ArrayDequeInstance deque = requireArrayDequeThis(interpreter);
+                yArrayDequeInstance deque = requireArrayDequeThis(interpreter);
 
                 if (deque.data.isEmpty()) {
                     return new Variable.Variant(null);
@@ -596,7 +596,7 @@ public class Y_ArrayDeque {
 
         PopFn pop = new PopFn();
         Variable popVar = new Variable(new Variable.Variant(pop), true, TypeTag.OBJECT);
-        Y_ArrayDeque.Y_ArrayDeque_Instance_Prototype.set(pop.getFnName(), popVar);
+        yArrayDeque.yArrayDeque_Instance_Prototype.set(pop.getFnName(), popVar);
 
 
         // --- Queue convenience methods ---
@@ -615,7 +615,7 @@ public class Y_ArrayDeque {
                     throws YsharpError {
 
                 Variable.Variant value = arguments.get(0);
-                Y_ArrayDequeInstance deque = requireArrayDequeThis(interpreter);
+                yArrayDequeInstance deque = requireArrayDequeThis(interpreter);
 
                 deque.data.offer(value);
 
@@ -630,7 +630,7 @@ public class Y_ArrayDeque {
 
         OfferFn offer = new OfferFn();
         Variable offerVar = new Variable(new Variable.Variant(offer), true, TypeTag.OBJECT);
-        Y_ArrayDeque.Y_ArrayDeque_Instance_Prototype.set(offer.getFnName(), offerVar);
+        yArrayDeque.yArrayDeque_Instance_Prototype.set(offer.getFnName(), offerVar);
 
 
         // deque.poll() -> removeFirst alias
@@ -646,7 +646,7 @@ public class Y_ArrayDeque {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_ArrayDequeInstance deque = requireArrayDequeThis(interpreter);
+                yArrayDequeInstance deque = requireArrayDequeThis(interpreter);
 
                 if (deque.data.isEmpty()) {
                     return new Variable.Variant(null);
@@ -663,17 +663,17 @@ public class Y_ArrayDeque {
 
         PollFn poll = new PollFn();
         Variable pollVar = new Variable(new Variable.Variant(poll), true, TypeTag.OBJECT);
-        Y_ArrayDeque.Y_ArrayDeque_Instance_Prototype.set(poll.getFnName(), pollVar);
+        yArrayDeque.yArrayDeque_Instance_Prototype.set(poll.getFnName(), pollVar);
 
     }
 
-    public static class Y_ArrayDequeInstance extends Y_Class.ClassObjectInstance {
+    public static class yArrayDequeInstance extends yClass.ClassObjectInstance {
 
         public final ArrayDeque<Variable.Variant> data;
 
-        public Y_ArrayDequeInstance() {
+        public yArrayDequeInstance() {
             this.data = new ArrayDeque<>();
-            this.prototype = Y_ArrayDeque_Instance_Prototype;
+            this.prototype = yArrayDeque_Instance_Prototype;
         }
 
         @Override
@@ -692,7 +692,7 @@ public class Y_ArrayDeque {
         }
     }
 
-    public static class Y_ArrayDequeClass extends Y_Class.SealedClassObject {
+    public static class yArrayDequeClass extends yClass.SealedClassObject {
 
         @Override
         public int arity() {
@@ -704,7 +704,7 @@ public class Y_ArrayDeque {
                                      List<Variable.Variant> arguments)
                 throws YsharpError {
 
-            Y_ArrayDequeInstance newDeque = new Y_ArrayDequeInstance();
+            yArrayDequeInstance newDeque = new yArrayDequeInstance();
 
             return new Variable.Variant(newDeque);
         }
@@ -721,7 +721,7 @@ public class Y_ArrayDeque {
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
-        Y_ArrayDeque.Y_ArrayDequeClass dequeCtor = new Y_ArrayDeque.Y_ArrayDequeClass();
+        yArrayDequeClass dequeCtor = new yArrayDequeClass();
         Variable.Variant variant = new Variable.Variant(dequeCtor);
         Variable var = new Variable(variant, false, TypeTag.OBJECT);
         interpreter.defineGlobal(dequeCtor.getClassName(), var);

@@ -7,7 +7,7 @@ import ysharp.evaluator.Native.TUI.Terminal.Abstract.yAbstractTerminal;
 import ysharp.evaluator.Native.TUI.Terminal.Abstract.yBaseTerminal;
 import ysharp.evaluator.RuntimeObject;
 import ysharp.evaluator.Variable;
-import ysharp.evaluator.Y_Class;
+import ysharp.evaluator.yClass;
 import ysharp.parser.TypeTag;
 
 import java.util.List;
@@ -59,10 +59,10 @@ public class yScrollSwingTerminal {
         }
     }
 
-    public static class yScrollSwingTerminalClass extends Y_Class.SealedClassObject {
+    public static class yScrollSwingTerminalClass extends yClass.SealedClassObject {
 
         yScrollSwingTerminalClass(){
-            this.prototype =  Y_Class.ClassPrototype;
+            this.prototype =  yClass.ClassPrototype;
         }
 
         @Override

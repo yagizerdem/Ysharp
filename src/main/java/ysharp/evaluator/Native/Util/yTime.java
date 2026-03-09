@@ -7,16 +7,16 @@ import ysharp.parser.TypeTag;
 import java.time.Instant;
 import java.util.List;
 
-public class Y_Time {
+public class yTime {
 
-    public static RuntimeObject Y_Time_Instance_Prototype;
+    public static RuntimeObject yTime_Instance_Prototype;
 
     static {}
 
 
-    public static class Y_Time_Instance extends Y_Class.ClassObjectInstance {
+    public static class yTime_Instance extends yClass.ClassObjectInstance {
 
-        public Y_Time_Instance() {}
+        public yTime_Instance() {}
 
         @Override
         public boolean isTruthy() {
@@ -35,11 +35,11 @@ public class Y_Time {
     }
 
 
-    public static class Y_TimeClass extends Y_Class.SealedClassObject {
+    public static class yTimeClass extends yClass.SealedClassObject {
 
-        Y_TimeClass(){
+        yTimeClass(){
 
-            this.prototype = Y_Class.ClassPrototype;
+            this.prototype = yClass.ClassPrototype;
 
             // Time.now()  -> seconds
             class NowFn extends Function.NativeFunction {
@@ -440,7 +440,7 @@ public class Y_Time {
                                      List<Variable.Variant> arguments)
                 throws YsharpError {
 
-            Y_Time_Instance instance = new Y_Time_Instance();
+            yTime_Instance instance = new yTime_Instance();
             return new Variable.Variant(instance);
         }
 
@@ -457,7 +457,7 @@ public class Y_Time {
 
     public static void Register(Interpreter interpreter) throws Exception {
 
-        Y_TimeClass ctor = new Y_TimeClass();
+        yTimeClass ctor = new yTimeClass();
 
         Variable.Variant variant = new Variable.Variant(ctor);
 

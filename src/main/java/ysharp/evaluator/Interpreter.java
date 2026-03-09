@@ -1,8 +1,8 @@
 package ysharp.evaluator;
 
 import ysharp.YsharpError;
-import ysharp.evaluator.Native.Collections.Y_Array;
-import ysharp.evaluator.Native.Collections.Y_HashTable;
+import ysharp.evaluator.Native.Collections.yArray;
+import ysharp.evaluator.Native.Collections.yHashTable;
 import ysharp.evaluator.Native.function.binding.BoundNativeFunction;
 import ysharp.lexer.Token;
 import ysharp.parser.Expr;
@@ -141,11 +141,11 @@ public class Interpreter implements
 
                     if (right.isInt()) {
                         return new Variable.Variant(
-                                new Y_String.Y_StringInstance(left.asString() + right.asInt())
+                                new yString.yStringInstance(left.asString() + right.asInt())
                         );
                     } else {
                         return new Variable.Variant(
-                                new Y_String.Y_StringInstance(left.asString() + right.asNumber())
+                                new yString.yStringInstance(left.asString() + right.asNumber())
                         );
                     }
                 }
@@ -154,18 +154,18 @@ public class Interpreter implements
 
                     if (left.isInt()) {
                         return new Variable.Variant(
-                                new Y_String.Y_StringInstance(left.asInt() + right.asString())
+                                new yString.yStringInstance(left.asInt() + right.asString())
                         );
                     } else {
                         return new Variable.Variant(
-                                new Y_String.Y_StringInstance(left.asNumber() + right.asString())
+                                new yString.yStringInstance(left.asNumber() + right.asString())
                         );
                     }
                 }
 
                 if (left.isString() && right.isString()) {
                     return new Variable.Variant(
-                            new Y_String.Y_StringInstance(left.asString() + right.asString())
+                            new yString.yStringInstance(left.asString() + right.asString())
                     );
                 }
 
@@ -731,7 +731,7 @@ public class Interpreter implements
             return new Variable.Variant(c.value());
 
         if (lit instanceof Token.Literal.Str s) {
-            Y_String.Y_StringInstance object = new Y_String.Y_StringInstance(s.value());
+            yString.yStringInstance object = new yString.yStringInstance(s.value());
             return new Variable.Variant(object);
         }
 
@@ -755,7 +755,7 @@ public class Interpreter implements
         for(int i = 0; i < expr.elements.size(); i++) {
             data.add(evaluate(expr.elements.get(i)));
         }
-        Y_Array.Y_ArrayInstance y_array = new Y_Array.Y_ArrayInstance(data);
+        yArray.yArrayInstance y_array = new yArray.yArrayInstance(data);
 
         return new Variable.Variant(y_array);
     }
@@ -766,7 +766,7 @@ public class Interpreter implements
         for(Expr.MapInitializerExpr.Entry entry : expr.entries) {
             if(entry.key.literal  instanceof Token.Literal.Str) {
                 String key = ((Token.Literal.Str) entry.key.literal).value();
-                Y_String.Y_StringInstance stringObj = new Y_String.Y_StringInstance(key);
+                yString.yStringInstance stringObj = new yString.yStringInstance(key);
                 hashTable.put(new Variable.Variant(stringObj), evaluate(entry.value));
             }
             else {
@@ -777,7 +777,7 @@ public class Interpreter implements
             }
         }
 
-        return new Variable.Variant(new Y_HashTable.Y_MapInstance(hashTable));
+        return new Variable.Variant(new yHashTable.yMapInstance(hashTable));
     }
 
     @Override
@@ -838,10 +838,10 @@ public class Interpreter implements
             );
         }
 
-        Y_Class.ClassObjectInstance instance =
+        yClass.ClassObjectInstance instance =
                 thisVar.value.asClassInstance();
 
-        Y_Class.ClassObject superConstructor = superVar.value.asClass();
+        yClass.ClassObject superConstructor = superVar.value.asClass();
         List<Variable.Variant> superArgs = new ArrayList<>();
         for(Expr expr_ : expr.arguments) {
             superArgs.add(this.evaluate(expr_));
@@ -856,7 +856,7 @@ public class Interpreter implements
             );
         }
 
-        Y_Class.ClassObjectInstance superInstance = superInstanceVariant.asClassInstance();
+        yClass.ClassObjectInstance superInstance = superInstanceVariant.asClassInstance();
 
         for(var field : superInstance.fields.entrySet()) {
             instance.set(field.getKey(), field.getValue());
@@ -1117,7 +1117,7 @@ public class Interpreter implements
 
 
         // class constructor object
-        Y_Class.ClassObject  klass = new Y_Class.ClassObject() {
+        yClass.ClassObject  klass = new yClass.ClassObject() {
             @Override
             public boolean isSealed() {
                 return stmt.isSealed;
@@ -1143,7 +1143,7 @@ public class Interpreter implements
                         "Constructor called with incorrect number of arguments. Expected " + this.arity() + "."
                 );
 
-                Y_Class.ClassObjectInstance instance = new Y_Class.ClassObjectInstance() {
+                yClass.ClassObjectInstance instance = new yClass.ClassObjectInstance() {
                     @Override
                     public boolean isTruthy() {
                         return true;
@@ -1197,7 +1197,7 @@ public class Interpreter implements
                     if(stmt.superName != null) {
 
                         Variable parentClassVar = interpreter.curEnv.getValue(stmt.superName);
-                        Y_Class.ClassObject parentClass = parentClassVar.value.asClass();
+                        yClass.ClassObject parentClass = parentClassVar.value.asClass();
 
                         newEnv.define(
                                 "super",
@@ -1295,7 +1295,7 @@ public class Interpreter implements
                 );
             }
 
-            Y_Class.ClassObject superClass = variant.asClass();
+            yClass.ClassObject superClass = variant.asClass();
             if(superClass.isSealed()) {
                 throw new YsharpError(
                         YsharpError.YsharpErrorType.SYNTAX,
@@ -1309,7 +1309,7 @@ public class Interpreter implements
             klass.InstancePrototype.prototype =  superClass.InstancePrototype;
         }
         else {
-            klass.InstancePrototype.prototype = Y_Class.ClassPrototype; // root prototype
+            klass.InstancePrototype.prototype = yClass.ClassPrototype; // root prototype
         }
 
         curEnv.define(klass.getClassName(), new Variable(new Variable.Variant(klass), true, TypeTag.OBJECT));

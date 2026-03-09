@@ -7,10 +7,10 @@ import ysharp.parser.TypeTag;
 
 import java.util.*;
 
-public class Y_Queue {
+public class yQueue {
 
     // helper
-    private static Y_Queue.Y_QueueInstance requireQueueThis (Interpreter interpreter) {
+    private static yQueue.yQueueInstance requireQueueThis (Interpreter interpreter) {
 
         Variable thisVar = interpreter.curEnv.getValue("this");
 
@@ -24,7 +24,7 @@ public class Y_Queue {
 
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-        if (!(obj instanceof Y_Queue.Y_QueueInstance)) {
+        if (!(obj instanceof yQueue.yQueueInstance)) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     0,
@@ -32,13 +32,13 @@ public class Y_Queue {
             );
         }
 
-        return  (Y_Queue.Y_QueueInstance) obj;
+        return  (yQueue.yQueueInstance) obj;
     }
 
-    public static RuntimeObject Y_Queue_Instance_Prototype;
+    public static RuntimeObject yQueue_Instance_Prototype;
 
     static {
-        Y_Queue_Instance_Prototype = new RuntimeObject() {
+        yQueue_Instance_Prototype = new RuntimeObject() {
 
             @Override
             public boolean isTruthy() {
@@ -50,7 +50,7 @@ public class Y_Queue {
                 return "queue_prototype";
             }
         };
-        Y_Queue_Instance_Prototype.prototype = Y_Class.ClassPrototype;
+        yQueue_Instance_Prototype.prototype = yClass.ClassPrototype;
 
         // queue.toString()
         class ToStringFn extends Function.NativeFunction implements Callable {
@@ -62,7 +62,7 @@ public class Y_Queue {
 
             @Override
             public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
-                Y_Queue.Y_QueueInstance queue = requireQueueThis(interpreter);
+                yQueue.yQueueInstance queue = requireQueueThis(interpreter);
 
                 StringBuilder builder = new StringBuilder();
                 builder.append("[ ");
@@ -116,7 +116,7 @@ public class Y_Queue {
                 new Variable.Variant(toString),
                 true,
                 TypeTag.OBJECT);
-        Y_Queue_Instance_Prototype.set(toString.getFnName(), toStringVar);
+        yQueue_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
         // queue.add(value)
         class AddFn extends Function.NativeFunction implements Callable {
@@ -131,7 +131,7 @@ public class Y_Queue {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_QueueInstance queue = requireQueueThis(interpreter);
+                yQueueInstance queue = requireQueueThis(interpreter);
 
                 Variable.Variant value = arguments.get(0);
 
@@ -152,7 +152,7 @@ public class Y_Queue {
                 true,
                 TypeTag.OBJECT);
 
-        Y_Queue_Instance_Prototype.set(add.getFnName(), addVar);
+        yQueue_Instance_Prototype.set(add.getFnName(), addVar);
 
         // queue.remove()
         class RemoveFn extends Function.NativeFunction implements Callable {
@@ -167,7 +167,7 @@ public class Y_Queue {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_QueueInstance queue = requireQueueThis(interpreter);
+                yQueueInstance queue = requireQueueThis(interpreter);
 
                 if (queue.data.isEmpty()) {
                     throw new YsharpError(
@@ -191,7 +191,7 @@ public class Y_Queue {
                 new Variable.Variant(remove),
                 true,
                 TypeTag.OBJECT);
-        Y_Queue_Instance_Prototype.set(remove.getFnName(), removeVar);
+        yQueue_Instance_Prototype.set(remove.getFnName(), removeVar);
 
         // queue.poll()
         class PollFn extends Function.NativeFunction implements Callable {
@@ -206,7 +206,7 @@ public class Y_Queue {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_QueueInstance queue = requireQueueThis(interpreter);
+                yQueueInstance queue = requireQueueThis(interpreter);
 
                 if (queue.data.isEmpty()) {
                     return new Variable.Variant(null);
@@ -229,7 +229,7 @@ public class Y_Queue {
                 true,
                 TypeTag.OBJECT);
 
-        Y_Queue_Instance_Prototype.set(poll.getFnName(), pollVar);
+        yQueue_Instance_Prototype.set(poll.getFnName(), pollVar);
 
         // queue.peek()
         class PeekFn extends Function.NativeFunction implements Callable {
@@ -244,7 +244,7 @@ public class Y_Queue {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_QueueInstance queue = requireQueueThis(interpreter);
+                yQueueInstance queue = requireQueueThis(interpreter);
 
                 if (queue.data.isEmpty()) {
                     return new Variable.Variant(null);
@@ -264,7 +264,7 @@ public class Y_Queue {
                 new Variable.Variant(peek),
                 true,
                 TypeTag.OBJECT);
-        Y_Queue_Instance_Prototype.set(peek.getFnName(), peekVar);
+        yQueue_Instance_Prototype.set(peek.getFnName(), peekVar);
 
         // queue.size()
         class SizeFn extends Function.NativeFunction implements Callable {
@@ -279,7 +279,7 @@ public class Y_Queue {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_QueueInstance queue = requireQueueThis(interpreter);
+                yQueueInstance queue = requireQueueThis(interpreter);
 
                 return new Variable.Variant(queue.data.size());
             }
@@ -295,7 +295,7 @@ public class Y_Queue {
                 new Variable.Variant(size),
                 true,
                 TypeTag.OBJECT);
-        Y_Queue_Instance_Prototype.set(size.getFnName(), sizeVar);
+        yQueue_Instance_Prototype.set(size.getFnName(), sizeVar);
 
         // queue.isEmpty()
         class IsEmptyFn extends Function.NativeFunction implements Callable {
@@ -310,7 +310,7 @@ public class Y_Queue {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_QueueInstance queue = requireQueueThis(interpreter);
+                yQueueInstance queue = requireQueueThis(interpreter);
 
                 return new Variable.Variant(queue.data.isEmpty());
             }
@@ -326,22 +326,22 @@ public class Y_Queue {
                 new Variable.Variant(isEmpty),
                 true,
                 TypeTag.OBJECT);
-        Y_Queue_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
+        yQueue_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
 
     }
 
-    public static class Y_QueueInstance extends Y_Class.ClassObjectInstance {
+    public static class yQueueInstance extends yClass.ClassObjectInstance {
 
         private final Queue<Variable.Variant> data;
 
-        public Y_QueueInstance(Queue<Variable.Variant> data) {
+        public yQueueInstance(Queue<Variable.Variant> data) {
             this.data = data;
-            this.prototype = Y_Queue_Instance_Prototype;
+            this.prototype = yQueue_Instance_Prototype;
         }
 
-        public Y_QueueInstance() {
+        public yQueueInstance() {
             this.data = new LinkedList<>();
-            this.prototype = Y_Queue_Instance_Prototype;
+            this.prototype = yQueue_Instance_Prototype;
         }
 
         @Override
@@ -360,7 +360,7 @@ public class Y_Queue {
         }
     }
 
-    public static class Y_QueueClass extends Y_Class.SealedClassObject {
+    public static class yQueueClass extends yClass.SealedClassObject {
 
         @Override
         public int arity() {
@@ -370,7 +370,7 @@ public class Y_Queue {
         @Override
         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
             Queue<Variable.Variant> value = new LinkedList<>();
-            Y_Queue.Y_QueueInstance newQueue = new Y_Queue.Y_QueueInstance(value);
+            yQueue.yQueueInstance newQueue = new yQueue.yQueueInstance(value);
 
             return new Variable.Variant(newQueue);
         }
@@ -387,7 +387,7 @@ public class Y_Queue {
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
-        Y_Queue.Y_QueueClass queueCtor = new Y_Queue.Y_QueueClass();
+        yQueue.yQueueClass queueCtor = new yQueue.yQueueClass();
         Variable.Variant variant = new Variable.Variant(queueCtor);
         Variable var = new Variable(variant, false, TypeTag.OBJECT);
         interpreter.defineGlobal(queueCtor.getClassName(), var);
