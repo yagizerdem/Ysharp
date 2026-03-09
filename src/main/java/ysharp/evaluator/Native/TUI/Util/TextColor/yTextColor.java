@@ -40,7 +40,7 @@ public class yTextColor {
 
         public yTextColorEnum(TextColor color){
             this.color = color;
-            this.prototype = Y_Class.ClassPrototype;
+            this.prototype = yClass.ClassPrototype;
         }
 
         @Override
@@ -60,11 +60,11 @@ public class yTextColor {
         }
     }
 
-    public static class yTextColorClass extends Y_Class.SealedClassObject {
+    public static class yTextColorClass extends yClass.SealedClassObject {
 
         yTextColorClass(){
 
-            this.prototype = Y_Class.ClassPrototype;
+            this.prototype = yClass.ClassPrototype;
 
             // ANSI COLORS
             yANSI.yANSIClass ANSI = new yANSI.yANSIClass();

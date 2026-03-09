@@ -2,17 +2,18 @@ package ysharp.evaluator.Native.Collections.Trie;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.evaluator.Native.Collections.Y_Array;
+import ysharp.evaluator.Native.Collections.yArray;
 import ysharp.parser.TypeTag;
-import ysharp.evaluator.Native.Collections.Trie.Concrete.MapTrie;
+import ysharp.evaluator.Native.Collections.Trie.Concrete.T9Trie;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
-public class Y_MapTrie {
+public class yT9Trie {
 
     // helper
-    private static Y_MapTrie.Y_MapTrieInstance requireTrieThis(Interpreter interpreter) {
+    private static yT9Trie.yT9TrieInstance requireT9TrieThis(Interpreter interpreter) {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
@@ -25,21 +26,21 @@ public class Y_MapTrie {
 
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-        if (!(obj instanceof Y_MapTrie.Y_MapTrieInstance)) {
+        if (!(obj instanceof yT9Trie.yT9TrieInstance)) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     0,
-                    "This method can only be called on Trie objects."
+                    "This method can only be called on T9Trie objects."
             );
         }
 
-        return (Y_MapTrie.Y_MapTrieInstance) obj;
+        return (yT9Trie.yT9TrieInstance) obj;
     }
-    
-    public static RuntimeObject Y_MapTrie_Instance_Prototype;
-    
+
+    public static RuntimeObject yT9Trie_Instance_Prototype;
+
     static {
-        Y_MapTrie_Instance_Prototype = new RuntimeObject() {
+        yT9Trie_Instance_Prototype = new RuntimeObject() {
 
             @Override
             public boolean isTruthy() {
@@ -48,12 +49,12 @@ public class Y_MapTrie {
 
             @Override
             public String getType() {
-                return "trie_prototype";
+                return "t9_trie_prototype";
             }
         };
-        Y_MapTrie_Instance_Prototype.prototype = Y_Class.ClassPrototype;
+        yT9Trie_Instance_Prototype.prototype = yClass.ClassPrototype;
 
-        // trie.toString()
+        // t9.toString()
         class ToStringFn extends Function.NativeFunction {
 
             @Override
@@ -66,11 +67,11 @@ public class Y_MapTrie {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                this.requireArity(arguments, 0, "Trie.toString");
+                this.requireArity(arguments, 0, "T9Trie.toString");
 
-                Y_MapTrieInstance trie = requireTrieThis(interpreter);
+                yT9TrieInstance t9 = requireT9TrieThis(interpreter);
 
-                return new Variable.Variant(trie.data.toString());
+                return new Variable.Variant(t9.data.toString());
             }
 
             @Override
@@ -81,10 +82,47 @@ public class Y_MapTrie {
 
         ToStringFn toString = new ToStringFn();
         Variable toStringVar = new Variable(new Variable.Variant(toString), true, TypeTag.OBJECT);
-        Y_MapTrie.Y_MapTrie_Instance_Prototype.set(toString.getFnName(), toStringVar);
+        yT9Trie.yT9Trie_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
 
-        // trie.insert(key, value)
+        // t9.insertValue(key, value)
+        // Primary insert — maps word -> T9 digits, appends value to that bucket
+        class InsertValueFn extends Function.NativeFunction {
+
+            @Override
+            public int arity() {
+                return 2;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                this.requireArity(arguments, 2, "T9Trie.insertValue");
+
+                Variable.Variant key   = arguments.get(0);
+                Variable.Variant value = arguments.get(1);
+                yT9TrieInstance t9 = requireT9TrieThis(interpreter);
+
+                t9.data.insertValue(key.toString(), value);
+
+                return new Variable.Variant(null);
+            }
+
+            @Override
+            public String getFnName() {
+                return "insertValue";
+            }
+        }
+
+        InsertValueFn insertValue = new InsertValueFn();
+        Variable insertValueVar = new Variable(new Variable.Variant(insertValue), true, TypeTag.OBJECT);
+        yT9Trie.yT9Trie_Instance_Prototype.set(insertValue.getFnName(), insertValueVar);
+
+
+        // t9.insert(key, valuesArray)
+        // Bulk insert — takes a Y_ArrayObject as the value list for a key
         class InsertFn extends Function.NativeFunction {
 
             @Override
@@ -97,15 +135,25 @@ public class Y_MapTrie {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                this.requireArity(arguments, 2, "Trie.insert");
+                this.requireArity(arguments, 2, "T9Trie.insert");
 
-                Variable.Variant key   = arguments.get(0);
-                Variable.Variant value = arguments.get(1);
-                Y_MapTrieInstance trie = requireTrieThis(interpreter);
+                Variable.Variant key         = arguments.get(0);
+                Variable.Variant valuesVariant = arguments.get(1);
+                yT9TrieInstance t9 = requireT9TrieThis(interpreter);
 
-                String keyStr = key.toString();
+                RuntimeObject obj = valuesVariant.asRuntimeObject();
+                if (!(obj instanceof yArray.yArrayInstance)) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            0,
+                            "T9Trie.insert: second argument must be an Array of values."
+                    );
+                }
 
-                trie.data.insert(keyStr, value);
+                yArray.yArrayInstance arr = (yArray.yArrayInstance) obj;
+                LinkedList<Variable.Variant> list = new LinkedList<>(arr.data);
+
+                t9.data.insert(key.toString(), list);
 
                 return new Variable.Variant(null);
             }
@@ -118,10 +166,10 @@ public class Y_MapTrie {
 
         InsertFn insert = new InsertFn();
         Variable insertVar = new Variable(new Variable.Variant(insert), true, TypeTag.OBJECT);
-        Y_MapTrie.Y_MapTrie_Instance_Prototype.set(insert.getFnName(), insertVar);
+        yT9Trie.yT9Trie_Instance_Prototype.set(insert.getFnName(), insertVar);
 
 
-        // trie.get(key) -> value or null
+        // t9.get(key) -> Y_ArrayObject of values stored under the T9 digits of key
         class GetFn extends Function.NativeFunction {
 
             @Override
@@ -134,14 +182,16 @@ public class Y_MapTrie {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                this.requireArity(arguments, 1, "Trie.get");
+                this.requireArity(arguments, 1, "T9Trie.get");
 
                 Variable.Variant key = arguments.get(0);
-                Y_MapTrieInstance trie = requireTrieThis(interpreter);
+                yT9TrieInstance t9 = requireT9TrieThis(interpreter);
 
-                Variable.Variant result = trie.data.get(key.toString());
+                LinkedList<Variable.Variant> result = t9.data.get(key.toString());
 
-                return result != null ? result : new Variable.Variant(null);
+                ArrayList<Variable.Variant> list = new ArrayList<>(result);
+
+                return new Variable.Variant(new yArray.yArrayInstance(list));
             }
 
             @Override
@@ -152,10 +202,10 @@ public class Y_MapTrie {
 
         GetFn get = new GetFn();
         Variable getVar = new Variable(new Variable.Variant(get), true, TypeTag.OBJECT);
-        Y_MapTrie.Y_MapTrie_Instance_Prototype.set(get.getFnName(), getVar);
+        yT9Trie.yT9Trie_Instance_Prototype.set(get.getFnName(), getVar);
 
 
-        // trie.contains(key) -> true/false
+        // t9.contains(key) -> true if the T9 digit sequence of key exists
         class ContainsFn extends Function.NativeFunction {
 
             @Override
@@ -168,12 +218,12 @@ public class Y_MapTrie {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                this.requireArity(arguments, 1, "Trie.contains");
+                this.requireArity(arguments, 1, "T9Trie.contains");
 
                 Variable.Variant key = arguments.get(0);
-                Y_MapTrieInstance trie = requireTrieThis(interpreter);
+                yT9TrieInstance t9 = requireT9TrieThis(interpreter);
 
-                return new Variable.Variant(trie.data.contains(key.toString()));
+                return new Variable.Variant(t9.data.contains(key.toString()));
             }
 
             @Override
@@ -184,10 +234,10 @@ public class Y_MapTrie {
 
         ContainsFn contains = new ContainsFn();
         Variable containsVar = new Variable(new Variable.Variant(contains), true, TypeTag.OBJECT);
-        Y_MapTrie.Y_MapTrie_Instance_Prototype.set(contains.getFnName(), containsVar);
+        yT9Trie.yT9Trie_Instance_Prototype.set(contains.getFnName(), containsVar);
 
 
-        // trie.deleteKey(key)
+        // t9.deleteKey(key) -> deletes the T9 digit sequence of key
         class DeleteKeyFn extends Function.NativeFunction {
 
             @Override
@@ -200,12 +250,12 @@ public class Y_MapTrie {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                this.requireArity(arguments, 1, "Trie.deleteKey");
+                this.requireArity(arguments, 1, "T9Trie.deleteKey");
 
                 Variable.Variant key = arguments.get(0);
-                Y_MapTrieInstance trie = requireTrieThis(interpreter);
+                yT9TrieInstance t9 = requireT9TrieThis(interpreter);
 
-                trie.data.deleteKey(key.toString());
+                t9.data.deleteKey(key.toString());
 
                 return new Variable.Variant(null);
             }
@@ -218,10 +268,10 @@ public class Y_MapTrie {
 
         DeleteKeyFn deleteKey = new DeleteKeyFn();
         Variable deleteKeyVar = new Variable(new Variable.Variant(deleteKey), true, TypeTag.OBJECT);
-        Y_MapTrie.Y_MapTrie_Instance_Prototype.set(deleteKey.getFnName(), deleteKeyVar);
+        yT9Trie.yT9Trie_Instance_Prototype.set(deleteKey.getFnName(), deleteKeyVar);
 
 
-        // trie.getKeySuggestions(prefix) -> Y_ArrayObject of matching keys
+        // t9.getKeySuggestions(prefix) -> Y_ArrayObject of T9 digit keys matching prefix
         class GetKeySuggestionsFn extends Function.NativeFunction {
 
             @Override
@@ -234,19 +284,19 @@ public class Y_MapTrie {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                this.requireArity(arguments, 1, "Trie.getKeySuggestions");
+                this.requireArity(arguments, 1, "T9Trie.getKeySuggestions");
 
                 Variable.Variant prefix = arguments.get(0);
-                Y_MapTrieInstance trie = requireTrieThis(interpreter);
+                yT9TrieInstance t9 = requireT9TrieThis(interpreter);
 
-                List<String> suggestions = trie.data.getKeySuggestions(prefix.toString());
+                List<String> suggestions = t9.data.getKeySuggestions(prefix.toString());
 
                 ArrayList<Variable.Variant> list = new ArrayList<>();
                 for (String s : suggestions) {
                     list.add(new Variable.Variant(s));
                 }
 
-                return new Variable.Variant(new Y_Array.Y_ArrayInstance(list));
+                return new Variable.Variant(new yArray.yArrayInstance(list));
             }
 
             @Override
@@ -257,11 +307,12 @@ public class Y_MapTrie {
 
         GetKeySuggestionsFn getKeySuggestions = new GetKeySuggestionsFn();
         Variable getKeySuggestionsVar = new Variable(new Variable.Variant(getKeySuggestions), true, TypeTag.OBJECT);
-        Y_MapTrie.Y_MapTrie_Instance_Prototype.set(getKeySuggestions.getFnName(), getKeySuggestionsVar);
+        yT9Trie.yT9Trie_Instance_Prototype.set(getKeySuggestions.getFnName(), getKeySuggestionsVar);
 
 
-        // trie.getValueSuggestions(prefix) -> Y_ArrayObject of matching values
-        class GetValueSuggestionsFn extends Function.NativeFunction {
+        // t9.getT9ValueSuggestions(prefix) -> Y_ArrayObject of all values under T9 prefix
+        // prefix can be digit string (e.g. "43") or a word (converted to T9 internally)
+        class GetT9ValueSuggestionsFn extends Function.NativeFunction {
 
             @Override
             public int arity() {
@@ -273,31 +324,66 @@ public class Y_MapTrie {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                this.requireArity(arguments, 1, "Trie.getValueSuggestions");
+                this.requireArity(arguments, 1, "T9Trie.getT9ValueSuggestions");
 
                 Variable.Variant prefix = arguments.get(0);
-                Y_MapTrieInstance trie = requireTrieThis(interpreter);
+                yT9TrieInstance t9 = requireT9TrieThis(interpreter);
 
                 List<Variable.Variant> suggestions =
-                        trie.data.getValueSuggestions(prefix.toString());
+                        t9.data.getT9ValueSuggestions(prefix.toString());
 
                 ArrayList<Variable.Variant> list = new ArrayList<>(suggestions);
 
-                return new Variable.Variant(new Y_Array.Y_ArrayInstance(list));
+                return new Variable.Variant(new yArray.yArrayInstance(list));
             }
 
             @Override
             public String getFnName() {
-                return "getValueSuggestions";
+                return "getT9ValueSuggestions";
             }
         }
 
-        GetValueSuggestionsFn getValueSuggestions = new GetValueSuggestionsFn();
-        Variable getValueSuggestionsVar = new Variable(new Variable.Variant(getValueSuggestions), true, TypeTag.OBJECT);
-        Y_MapTrie.Y_MapTrie_Instance_Prototype.set(getValueSuggestions.getFnName(), getValueSuggestionsVar);
+        GetT9ValueSuggestionsFn getT9ValueSuggestions = new GetT9ValueSuggestionsFn();
+        Variable getT9ValueSuggestionsVar = new Variable(new Variable.Variant(getT9ValueSuggestions), true, TypeTag.OBJECT);
+        yT9Trie.yT9Trie_Instance_Prototype.set(getT9ValueSuggestions.getFnName(), getT9ValueSuggestionsVar);
 
 
-        // trie.keys() -> Y_ArrayObject of all keys in sorted trie order
+        // t9.t9Values() -> Y_ArrayObject of all values across all T9 buckets (flattened)
+        class T9ValuesFn extends Function.NativeFunction {
+
+            @Override
+            public int arity() {
+                return 0;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                this.requireArity(arguments, 0, "T9Trie.t9Values");
+
+                yT9TrieInstance t9 = requireT9TrieThis(interpreter);
+
+                List<Variable.Variant> all = t9.data.t9Values();
+
+                ArrayList<Variable.Variant> list = new ArrayList<>(all);
+
+                return new Variable.Variant(new yArray.yArrayInstance(list));
+            }
+
+            @Override
+            public String getFnName() {
+                return "t9Values";
+            }
+        }
+
+        T9ValuesFn t9Values = new T9ValuesFn();
+        Variable t9ValuesVar = new Variable(new Variable.Variant(t9Values), true, TypeTag.OBJECT);
+        yT9Trie.yT9Trie_Instance_Prototype.set(t9Values.getFnName(), t9ValuesVar);
+
+
+        // t9.keys() -> Y_ArrayObject of all T9 digit keys stored
         class KeysFn extends Function.NativeFunction {
 
             @Override
@@ -310,18 +396,18 @@ public class Y_MapTrie {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                this.requireArity(arguments, 0, "Trie.keys");
+                this.requireArity(arguments, 0, "T9Trie.keys");
 
-                Y_MapTrieInstance trie = requireTrieThis(interpreter);
+                yT9TrieInstance t9 = requireT9TrieThis(interpreter);
 
-                List<String> keyList = trie.data.keys();
+                List<String> keyList = t9.data.keys();
 
                 ArrayList<Variable.Variant> list = new ArrayList<>();
                 for (String s : keyList) {
                     list.add(new Variable.Variant(s));
                 }
 
-                return new Variable.Variant(new Y_Array.Y_ArrayInstance(list));
+                return new Variable.Variant(new yArray.yArrayInstance(list));
             }
 
             @Override
@@ -332,45 +418,10 @@ public class Y_MapTrie {
 
         KeysFn keys = new KeysFn();
         Variable keysVar = new Variable(new Variable.Variant(keys), true, TypeTag.OBJECT);
-        Y_MapTrie.Y_MapTrie_Instance_Prototype.set(keys.getFnName(), keysVar);
+        yT9Trie.yT9Trie_Instance_Prototype.set(keys.getFnName(), keysVar);
 
 
-        // trie.values() -> Y_ArrayObject of all values
-        class ValuesFn extends Function.NativeFunction {
-
-            @Override
-            public int arity() {
-                return 0;
-            }
-
-            @Override
-            public Variable.Variant call(Interpreter interpreter,
-                                         List<Variable.Variant> arguments)
-                    throws YsharpError {
-
-                this.requireArity(arguments, 0, "Trie.values");
-
-                Y_MapTrieInstance trie = requireTrieThis(interpreter);
-
-                List<Variable.Variant> valueList = trie.data.values();
-
-                ArrayList<Variable.Variant> list = new ArrayList<>(valueList);
-
-                return new Variable.Variant(new Y_Array.Y_ArrayInstance(list));
-            }
-
-            @Override
-            public String getFnName() {
-                return "values";
-            }
-        }
-
-        ValuesFn values = new ValuesFn();
-        Variable valuesVar = new Variable(new Variable.Variant(values), true, TypeTag.OBJECT);
-        Y_MapTrie.Y_MapTrie_Instance_Prototype.set(values.getFnName(), valuesVar);
-
-
-        // trie.size() -> number of keys stored
+        // t9.size() -> total number of values stored across all buckets
         class SizeFn extends Function.NativeFunction {
 
             @Override
@@ -383,11 +434,11 @@ public class Y_MapTrie {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                this.requireArity(arguments, 0, "Trie.size");
+                this.requireArity(arguments, 0, "T9Trie.size");
 
-                Y_MapTrieInstance trie = requireTrieThis(interpreter);
+                yT9TrieInstance t9 = requireT9TrieThis(interpreter);
 
-                return new Variable.Variant(trie.data.size());
+                return new Variable.Variant(t9.data.size());
             }
 
             @Override
@@ -398,10 +449,10 @@ public class Y_MapTrie {
 
         SizeFn size = new SizeFn();
         Variable sizeVar = new Variable(new Variable.Variant(size), true, TypeTag.OBJECT);
-        Y_MapTrie.Y_MapTrie_Instance_Prototype.set(size.getFnName(), sizeVar);
+        yT9Trie.yT9Trie_Instance_Prototype.set(size.getFnName(), sizeVar);
 
 
-        // trie.isEmpty()
+        // t9.isEmpty()
         class IsEmptyFn extends Function.NativeFunction {
 
             @Override
@@ -414,11 +465,11 @@ public class Y_MapTrie {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                this.requireArity(arguments, 0, "Trie.isEmpty");
+                this.requireArity(arguments, 0, "T9Trie.isEmpty");
 
-                Y_MapTrieInstance trie = requireTrieThis(interpreter);
+                yT9TrieInstance t9 = requireT9TrieThis(interpreter);
 
-                return new Variable.Variant(trie.data.size() == 0);
+                return new Variable.Variant(t9.data.size() == 0);
             }
 
             @Override
@@ -429,10 +480,10 @@ public class Y_MapTrie {
 
         IsEmptyFn isEmpty = new IsEmptyFn();
         Variable isEmptyVar = new Variable(new Variable.Variant(isEmpty), true, TypeTag.OBJECT);
-        Y_MapTrie.Y_MapTrie_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
+        yT9Trie.yT9Trie_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
 
 
-        // trie.clear() -> deep clear (keeps root, clears children)
+        // t9.clear() -> deep clear (keeps root, wipes children)
         class ClearFn extends Function.NativeFunction {
 
             @Override
@@ -445,10 +496,10 @@ public class Y_MapTrie {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                this.requireArity(arguments, 0, "Trie.clear");
+                this.requireArity(arguments, 0, "T9Trie.clear");
 
-                Y_MapTrieInstance trie = requireTrieThis(interpreter);
-                trie.data.clear();
+                yT9TrieInstance t9 = requireT9TrieThis(interpreter);
+                t9.data.clear();
 
                 return new Variable.Variant(null);
             }
@@ -461,10 +512,10 @@ public class Y_MapTrie {
 
         ClearFn clear = new ClearFn();
         Variable clearVar = new Variable(new Variable.Variant(clear), true, TypeTag.OBJECT);
-        Y_MapTrie.Y_MapTrie_Instance_Prototype.set(clear.getFnName(), clearVar);
+        yT9Trie.yT9Trie_Instance_Prototype.set(clear.getFnName(), clearVar);
 
 
-        // trie.fastClear() -> replaces root node entirely (faster)
+        // t9.fastClear() -> replaces root node entirely (faster)
         class FastClearFn extends Function.NativeFunction {
 
             @Override
@@ -477,10 +528,10 @@ public class Y_MapTrie {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                this.requireArity(arguments, 0, "Trie.fastClear");
+                this.requireArity(arguments, 0, "T9Trie.fastClear");
 
-                Y_MapTrieInstance trie = requireTrieThis(interpreter);
-                trie.data.fastClear();
+                yT9TrieInstance t9 = requireT9TrieThis(interpreter);
+                t9.data.fastClear();
 
                 return new Variable.Variant(null);
             }
@@ -493,10 +544,10 @@ public class Y_MapTrie {
 
         FastClearFn fastClear = new FastClearFn();
         Variable fastClearVar = new Variable(new Variable.Variant(fastClear), true, TypeTag.OBJECT);
-        Y_MapTrie.Y_MapTrie_Instance_Prototype.set(fastClear.getFnName(), fastClearVar);
+        yT9Trie.yT9Trie_Instance_Prototype.set(fastClear.getFnName(), fastClearVar);
 
 
-        // trie.print() -> prints trie structure to stdout (debug)
+        // t9.print() -> prints trie structure to stdout (debug)
         class PrintFn extends Function.NativeFunction {
 
             @Override
@@ -509,10 +560,10 @@ public class Y_MapTrie {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                this.requireArity(arguments, 0, "Trie.print");
+                this.requireArity(arguments, 0, "T9Trie.print");
 
-                Y_MapTrieInstance trie = requireTrieThis(interpreter);
-                trie.data.print();
+                yT9TrieInstance t9 = requireT9TrieThis(interpreter);
+                t9.data.print();
 
                 return new Variable.Variant(null);
             }
@@ -525,19 +576,21 @@ public class Y_MapTrie {
 
         PrintFn print = new PrintFn();
         Variable printVar = new Variable(new Variable.Variant(print), true, TypeTag.OBJECT);
-        Y_MapTrie.Y_MapTrie_Instance_Prototype.set(print.getFnName(), printVar);
+        yT9Trie.yT9Trie_Instance_Prototype.set(print.getFnName(), printVar);
 
     }
-    
 
-    public static class Y_MapTrieInstance extends Y_Class.ClassObjectInstance {
 
-        // Backed by MapTrie<Variable.Variant> — keys are lowercased+trimmed strings
-        final MapTrie<Variable.Variant> data;
+    public static class yT9TrieInstance extends yClass.ClassObjectInstance {
 
-        public Y_MapTrieInstance() {
-            this.data = new MapTrie<>();
-            this.prototype = Y_MapTrie_Instance_Prototype;
+        // Backed by T9Trie<Variable.Variant>
+        // Keys are words, internally stored as T9 digit sequences
+        // Multiple words can map to the same T9 digits — stored in a LinkedList bucket
+        final T9Trie<Variable.Variant> data;
+
+        public yT9TrieInstance() {
+            this.data = new T9Trie<>();
+            this.prototype = yT9Trie_Instance_Prototype;
         }
 
         @Override
@@ -547,16 +600,16 @@ public class Y_MapTrie {
 
         @Override
         public String getType() {
-            return "MapTrie";
+            return "T9Trie";
         }
 
         @Override
         public String toString() {
-            return "<class:MapTrie>";
+            return "<class:t9-trie>";
         }
     }
 
-    public static class Y_MapTrieClass extends Y_Class.SealedClassObject {
+    public static class yT9TrieClass extends yClass.SealedClassObject {
 
         @Override
         public int arity() {
@@ -568,29 +621,29 @@ public class Y_MapTrie {
                                      List<Variable.Variant> arguments)
                 throws YsharpError {
 
-            this.requireArity(arguments, 0, "MapTrie");
+            this.requireArity(arguments, 0, "T9Trie");
 
-            Y_MapTrieInstance newTrie = new Y_MapTrieInstance();
+            yT9TrieInstance newT9 = new yT9TrieInstance();
 
-            return new Variable.Variant(newTrie);
+            return new Variable.Variant(newT9);
         }
 
         @Override
         public String getClassName() {
-            return "MapTrie";
+            return "T9Trie";
         }
 
         @Override
         public String getType() {
-            return "MapTrie";
+            return "T9Trie";
         }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
-        Y_MapTrie.Y_MapTrieClass trieCtor = new Y_MapTrie.Y_MapTrieClass();
-        Variable.Variant variant = new Variable.Variant(trieCtor);
+        yT9Trie.yT9TrieClass t9Ctor = new yT9Trie.yT9TrieClass();
+        Variable.Variant variant = new Variable.Variant(t9Ctor);
         Variable var = new Variable(variant, false, TypeTag.OBJECT);
-        interpreter.defineGlobal(trieCtor.getClassName(), var);
+        interpreter.defineGlobal(t9Ctor.getClassName(), var);
     }
 
 }

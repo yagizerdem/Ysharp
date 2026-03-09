@@ -6,10 +6,10 @@ import ysharp.parser.TypeTag;
 
 import java.util.List;
 
-public class Y_LinkedList {
+public class yLinkedList {
 
     // helper
-    private static Y_LinkedList.Y_LinkedListInstance requireLinkedListThis(Interpreter interpreter) {
+    private static yLinkedList.yLinkedListInstance requireLinkedListThis(Interpreter interpreter) {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
@@ -22,7 +22,7 @@ public class Y_LinkedList {
 
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-        if (!(obj instanceof Y_LinkedList.Y_LinkedListInstance)) {
+        if (!(obj instanceof yLinkedList.yLinkedListInstance)) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     0,
@@ -30,13 +30,13 @@ public class Y_LinkedList {
             );
         }
 
-        return (Y_LinkedList.Y_LinkedListInstance) obj;
+        return (yLinkedList.yLinkedListInstance) obj;
     }
 
-    public static RuntimeObject Y_LinkedList_Instance_Prototype;
+    public static RuntimeObject yLinkedList_Instance_Prototype;
 
     static {
-        Y_LinkedList_Instance_Prototype = new RuntimeObject() {
+        yLinkedList_Instance_Prototype = new RuntimeObject() {
 
             @Override
             public boolean isTruthy() {
@@ -48,7 +48,7 @@ public class Y_LinkedList {
                 return "linked_list_prototype";
             }
         };
-        Y_LinkedList_Instance_Prototype.prototype = Y_Class.ClassPrototype;
+        yLinkedList_Instance_Prototype.prototype = yClass.ClassPrototype;
 
         // list.toString()
         class ToStringFn extends Function.NativeFunction {
@@ -63,7 +63,7 @@ public class Y_LinkedList {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_LinkedListInstance list = requireLinkedListThis(interpreter);
+                yLinkedListInstance list = requireLinkedListThis(interpreter);
 
                 StringBuilder sb = new StringBuilder();
                 sb.append("[");
@@ -96,7 +96,7 @@ public class Y_LinkedList {
                 new Variable.Variant(toString),
                 true,
                 TypeTag.OBJECT);
-        Y_LinkedList.Y_LinkedList_Instance_Prototype.set(toString.getFnName(), toStringVar);
+        yLinkedList.yLinkedList_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
 
         // list.addFirst(value)
@@ -113,7 +113,7 @@ public class Y_LinkedList {
                     throws YsharpError {
 
                 Variable.Variant value = arguments.get(0);
-                Y_LinkedListInstance list = requireLinkedListThis(interpreter);
+                yLinkedListInstance list = requireLinkedListThis(interpreter);
 
                 Node newNode = new Node(value);
                 newNode.next = list.head;
@@ -139,7 +139,7 @@ public class Y_LinkedList {
                 new Variable.Variant(addFirst),
                 true,
                 TypeTag.OBJECT);
-        Y_LinkedList.Y_LinkedList_Instance_Prototype.set(addFirst.getFnName(), addFirstVar);
+        yLinkedList.yLinkedList_Instance_Prototype.set(addFirst.getFnName(), addFirstVar);
 
 
         // list.addLast(value)
@@ -156,7 +156,7 @@ public class Y_LinkedList {
                     throws YsharpError {
 
                 Variable.Variant value = arguments.get(0);
-                Y_LinkedListInstance list = requireLinkedListThis(interpreter);
+                yLinkedListInstance list = requireLinkedListThis(interpreter);
 
                 Node newNode = new Node(value);
 
@@ -184,7 +184,7 @@ public class Y_LinkedList {
                 new Variable.Variant(addLast),
                 true,
                 TypeTag.OBJECT);
-        Y_LinkedList.Y_LinkedList_Instance_Prototype.set(addLast.getFnName(), addLastVar);
+        yLinkedList.yLinkedList_Instance_Prototype.set(addLast.getFnName(), addLastVar);
 
 
         // list.removeFirst()
@@ -200,7 +200,7 @@ public class Y_LinkedList {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_LinkedListInstance list = requireLinkedListThis(interpreter);
+                yLinkedListInstance list = requireLinkedListThis(interpreter);
 
                 if (list.head == null) {
                     return new Variable.Variant(null);
@@ -229,7 +229,7 @@ public class Y_LinkedList {
                 new Variable.Variant(removeFirst),
                 true,
                 TypeTag.OBJECT);
-        Y_LinkedList.Y_LinkedList_Instance_Prototype.set(removeFirst.getFnName(), removeFirstVar);
+        yLinkedList.yLinkedList_Instance_Prototype.set(removeFirst.getFnName(), removeFirstVar);
 
 
         // list.removeLast()
@@ -245,7 +245,7 @@ public class Y_LinkedList {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_LinkedListInstance list = requireLinkedListThis(interpreter);
+                yLinkedListInstance list = requireLinkedListThis(interpreter);
 
                 if (list.head == null) {
                     return new Variable.Variant(null);
@@ -283,7 +283,7 @@ public class Y_LinkedList {
                 new Variable.Variant(removeLast),
                 true,
                 TypeTag.OBJECT);
-        Y_LinkedList.Y_LinkedList_Instance_Prototype.set(removeLast.getFnName(), removeLastVar);
+        yLinkedList.yLinkedList_Instance_Prototype.set(removeLast.getFnName(), removeLastVar);
 
 
         // list.peekFirst()
@@ -299,7 +299,7 @@ public class Y_LinkedList {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_LinkedListInstance list = requireLinkedListThis(interpreter);
+                yLinkedListInstance list = requireLinkedListThis(interpreter);
 
                 if (list.head == null) {
                     return new Variable.Variant(null);
@@ -319,7 +319,7 @@ public class Y_LinkedList {
                 new Variable.Variant(peekFirst),
                 true,
                 TypeTag.OBJECT);
-        Y_LinkedList.Y_LinkedList_Instance_Prototype.set(peekFirst.getFnName(), peekFirstVar);
+        yLinkedList.yLinkedList_Instance_Prototype.set(peekFirst.getFnName(), peekFirstVar);
 
 
         // list.peekLast()
@@ -335,7 +335,7 @@ public class Y_LinkedList {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_LinkedListInstance list = requireLinkedListThis(interpreter);
+                yLinkedListInstance list = requireLinkedListThis(interpreter);
 
                 if (list.tail == null) {
                     return new Variable.Variant(null);
@@ -355,7 +355,7 @@ public class Y_LinkedList {
                 new Variable.Variant(peekLast),
                 true,
                 TypeTag.OBJECT);
-        Y_LinkedList.Y_LinkedList_Instance_Prototype.set(peekLast.getFnName(), peekLastVar);
+        yLinkedList.yLinkedList_Instance_Prototype.set(peekLast.getFnName(), peekLastVar);
 
 
         // list.get(index)
@@ -372,7 +372,7 @@ public class Y_LinkedList {
                     throws YsharpError {
 
                 Variable.Variant indexVariant = arguments.get(0);
-                Y_LinkedListInstance list = requireLinkedListThis(interpreter);
+                yLinkedListInstance list = requireLinkedListThis(interpreter);
 
                 int index = ((Number) indexVariant.value).intValue();
 
@@ -403,7 +403,7 @@ public class Y_LinkedList {
                 new Variable.Variant(get),
                 true,
                 TypeTag.OBJECT);
-        Y_LinkedList.Y_LinkedList_Instance_Prototype.set(get.getFnName(), getVar);
+        yLinkedList.yLinkedList_Instance_Prototype.set(get.getFnName(), getVar);
 
 
         // list.set(index, value)
@@ -421,7 +421,7 @@ public class Y_LinkedList {
 
                 Variable.Variant indexVariant = arguments.get(0);
                 Variable.Variant value = arguments.get(1);
-                Y_LinkedListInstance list = requireLinkedListThis(interpreter);
+                yLinkedListInstance list = requireLinkedListThis(interpreter);
 
                 int index = ((Number) indexVariant.value).intValue();
 
@@ -455,7 +455,7 @@ public class Y_LinkedList {
                 new Variable.Variant(set),
                 true,
                 TypeTag.OBJECT);
-        Y_LinkedList.Y_LinkedList_Instance_Prototype.set(set.getFnName(), setVar);
+        yLinkedList.yLinkedList_Instance_Prototype.set(set.getFnName(), setVar);
 
 
         // list.contains(value)
@@ -472,7 +472,7 @@ public class Y_LinkedList {
                     throws YsharpError {
 
                 Variable.Variant target = arguments.get(0);
-                Y_LinkedListInstance list = requireLinkedListThis(interpreter);
+                yLinkedListInstance list = requireLinkedListThis(interpreter);
 
                 Node current = list.head;
                 while (current != null) {
@@ -496,7 +496,7 @@ public class Y_LinkedList {
                 new Variable.Variant(contains),
                 true,
                 TypeTag.OBJECT);
-        Y_LinkedList.Y_LinkedList_Instance_Prototype.set(contains.getFnName(), containsVar);
+        yLinkedList.yLinkedList_Instance_Prototype.set(contains.getFnName(), containsVar);
 
 
         // list.indexOf(value)
@@ -513,7 +513,7 @@ public class Y_LinkedList {
                     throws YsharpError {
 
                 Variable.Variant target = arguments.get(0);
-                Y_LinkedListInstance list = requireLinkedListThis(interpreter);
+                yLinkedListInstance list = requireLinkedListThis(interpreter);
 
                 Node current = list.head;
                 int index = 0;
@@ -540,7 +540,7 @@ public class Y_LinkedList {
                 new Variable.Variant(indexOf),
                 true,
                 TypeTag.OBJECT);
-        Y_LinkedList.Y_LinkedList_Instance_Prototype.set(indexOf.getFnName(), indexOfVar);
+        yLinkedList.yLinkedList_Instance_Prototype.set(indexOf.getFnName(), indexOfVar);
 
 
         // list.size()
@@ -556,7 +556,7 @@ public class Y_LinkedList {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_LinkedListInstance list = requireLinkedListThis(interpreter);
+                yLinkedListInstance list = requireLinkedListThis(interpreter);
 
                 return new Variable.Variant(list.size);
             }
@@ -572,7 +572,7 @@ public class Y_LinkedList {
                 new Variable.Variant(size),
                 true,
                 TypeTag.OBJECT);
-        Y_LinkedList.Y_LinkedList_Instance_Prototype.set(size.getFnName(), sizeVar);
+        yLinkedList.yLinkedList_Instance_Prototype.set(size.getFnName(), sizeVar);
 
 
         // list.isEmpty()
@@ -588,7 +588,7 @@ public class Y_LinkedList {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_LinkedListInstance list = requireLinkedListThis(interpreter);
+                yLinkedListInstance list = requireLinkedListThis(interpreter);
 
                 return new Variable.Variant(list.size == 0);
             }
@@ -604,7 +604,7 @@ public class Y_LinkedList {
                 new Variable.Variant(isEmpty),
                 true,
                 TypeTag.OBJECT);
-        Y_LinkedList.Y_LinkedList_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
+        yLinkedList.yLinkedList_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
 
 
         // list.clear()
@@ -620,7 +620,7 @@ public class Y_LinkedList {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_LinkedListInstance list = requireLinkedListThis(interpreter);
+                yLinkedListInstance list = requireLinkedListThis(interpreter);
                 list.head = null;
                 list.tail = null;
                 list.size = 0;
@@ -639,7 +639,7 @@ public class Y_LinkedList {
                 new Variable.Variant(clear),
                 true,
                 TypeTag.OBJECT);
-        Y_LinkedList.Y_LinkedList_Instance_Prototype.set(clear.getFnName(), clearVar);
+        yLinkedList.yLinkedList_Instance_Prototype.set(clear.getFnName(), clearVar);
 
 
         // list.toArray()
@@ -655,7 +655,7 @@ public class Y_LinkedList {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_LinkedListInstance list = requireLinkedListThis(interpreter);
+                yLinkedListInstance list = requireLinkedListThis(interpreter);
 
                 java.util.ArrayList<Variable.Variant> result =
                         new java.util.ArrayList<>();
@@ -666,8 +666,8 @@ public class Y_LinkedList {
                     current = current.next;
                 }
 
-                Y_Array.Y_ArrayInstance array =
-                        new Y_Array.Y_ArrayInstance(result);
+                yArray.yArrayInstance array =
+                        new yArray.yArrayInstance(result);
 
                 return new Variable.Variant(array);
             }
@@ -683,7 +683,7 @@ public class Y_LinkedList {
                 new Variable.Variant(toArray),
                 true,
                 TypeTag.OBJECT);
-        Y_LinkedList.Y_LinkedList_Instance_Prototype.set(toArray.getFnName(), toArrayVar);
+        yLinkedList.yLinkedList_Instance_Prototype.set(toArray.getFnName(), toArrayVar);
 
 
         // list.clone()
@@ -699,8 +699,8 @@ public class Y_LinkedList {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Y_LinkedListInstance original = requireLinkedListThis(interpreter);
-                Y_LinkedListInstance cloned = new Y_LinkedListInstance();
+                yLinkedListInstance original = requireLinkedListThis(interpreter);
+                yLinkedListInstance cloned = new yLinkedListInstance();
 
                 Node current = original.head;
                 while (current != null) {
@@ -730,7 +730,7 @@ public class Y_LinkedList {
                 new Variable.Variant(clone),
                 true,
                 TypeTag.OBJECT);
-        Y_LinkedList.Y_LinkedList_Instance_Prototype.set(clone.getFnName(), cloneVar);
+        yLinkedList.yLinkedList_Instance_Prototype.set(clone.getFnName(), cloneVar);
 
     }
 
@@ -745,17 +745,17 @@ public class Y_LinkedList {
         }
     }
 
-    public static class Y_LinkedListInstance extends Y_Class.ClassObjectInstance {
+    public static class yLinkedListInstance extends yClass.ClassObjectInstance {
 
         Node head;
         Node tail;
         int size;
 
-        public Y_LinkedListInstance() {
+        public yLinkedListInstance() {
             this.head = null;
             this.tail = null;
             this.size = 0;
-            this.prototype = Y_LinkedList_Instance_Prototype;
+            this.prototype = yLinkedList_Instance_Prototype;
         }
 
         @Override
@@ -774,7 +774,7 @@ public class Y_LinkedList {
         }
     }
 
-    public static class Y_LinkedListClass extends Y_Class.SealedClassObject {
+    public static class yLinkedListClass extends yClass.SealedClassObject {
 
         @Override
         public int arity() {
@@ -786,7 +786,7 @@ public class Y_LinkedList {
                                      List<Variable.Variant> arguments)
                 throws YsharpError {
 
-            Y_LinkedListInstance newList = new Y_LinkedListInstance();
+            yLinkedListInstance newList = new yLinkedListInstance();
 
             return new Variable.Variant(newList);
         }
@@ -804,7 +804,7 @@ public class Y_LinkedList {
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
-        Y_LinkedList.Y_LinkedListClass listCtor = new Y_LinkedList.Y_LinkedListClass();
+        yLinkedList.yLinkedListClass listCtor = new yLinkedList.yLinkedListClass();
         Variable.Variant variant = new Variable.Variant(listCtor);
         Variable var = new Variable(variant, false, TypeTag.OBJECT);
         interpreter.defineGlobal(listCtor.getClassName(), var);

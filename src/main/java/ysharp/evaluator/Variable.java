@@ -67,7 +67,7 @@ public class Variable {
             return this.isInt() || this.isDouble();
         }
 
-        public boolean isString() {return this.value instanceof Y_String.Y_StringInstance; }
+        public boolean isString() {return this.value instanceof yString.yStringInstance; }
 
         public boolean isFunction() {
             return this.value instanceof Function.FunctionObject;
@@ -82,11 +82,11 @@ public class Variable {
         public boolean isFunctionLike() {return isLambda() || isNativeFunction() || isFunction();}
 
         public boolean isClass() {
-            return this.value instanceof Y_Class.ClassObject;
+            return this.value instanceof yClass.ClassObject;
         }
 
         public boolean isClassInstance() {
-            return this.value instanceof Y_Class.ClassObjectInstance;
+            return this.value instanceof yClass.ClassObjectInstance;
         }
 
         public boolean canImplicitlyConvertNumber(){
@@ -141,9 +141,9 @@ public class Variable {
             return (RuntimeObject) this.value;
         }
 
-        public String asString() { return ((Y_String.Y_StringInstance) this.value).data; }
+        public String asString() { return ((yString.yStringInstance) this.value).data; }
 
-        public Y_String.Y_StringInstance asStringObject() { return ((Y_String.Y_StringInstance) this.value); }
+        public yString.yStringInstance asStringObject() { return ((yString.yStringInstance) this.value); }
 
         public Function.FunctionObject asFunction() {
             return (Function.FunctionObject) this.value;
@@ -157,12 +157,12 @@ public class Variable {
             return (Callable) this.value;
         }
 
-        public Y_Class.ClassObject asClass() {
-            return (Y_Class.ClassObject) this.value;
+        public yClass.ClassObject asClass() {
+            return (yClass.ClassObject) this.value;
         }
 
-        Y_Class.ClassObjectInstance asClassInstance() {
-            return (Y_Class.ClassObjectInstance) this.value;
+        yClass.ClassObjectInstance asClassInstance() {
+            return (yClass.ClassObjectInstance) this.value;
         }
 
         public boolean isTruthy() {

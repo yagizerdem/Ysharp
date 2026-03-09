@@ -4,11 +4,9 @@ import ysharp.YsharpError;
 import ysharp.lexer.Token;
 import ysharp.parser.TypeTag;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class Y_Class {
+public class yClass {
 
     static private RuntimeObject requireThis(Interpreter interpreter) {
         Variable thisVar = interpreter.curEnv.getValue("this");

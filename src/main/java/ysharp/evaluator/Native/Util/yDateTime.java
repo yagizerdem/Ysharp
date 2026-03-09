@@ -9,15 +9,15 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 
-public class Y_DateTime {
+public class yDateTime {
 
     static {}
 
-    public static class Y_DateTimeInstance extends Y_Class.ClassObjectInstance {
+    public static class yDateTimeInstance extends yClass.ClassObjectInstance {
 
         private ZonedDateTime internal;
 
-        public Y_DateTimeInstance(ZonedDateTime dt) {
+        public yDateTimeInstance(ZonedDateTime dt) {
             this.internal = dt;
         }
 
@@ -42,10 +42,10 @@ public class Y_DateTime {
     }
 
 
-    public static class Y_DateTimeClass extends Y_Class.SealedClassObject {
+    public static class yDateTimeClass extends yClass.SealedClassObject {
 
-        Y_DateTimeClass() {
-            this.prototype = Y_Class.ClassPrototype;
+        yDateTimeClass() {
+            this.prototype = yClass.ClassPrototype;
 
             // add static methods here
 
@@ -60,7 +60,7 @@ public class Y_DateTime {
                 @Override
                 public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
 
-                    Y_DateTimeInstance instance = new Y_DateTimeInstance(ZonedDateTime.now());
+                    yDateTimeInstance instance = new yDateTimeInstance(ZonedDateTime.now());
 
                     return new Variable.Variant(instance);
                 }
@@ -90,7 +90,7 @@ public class Y_DateTime {
                 @Override
                 public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
 
-                    Y_DateTimeInstance instance = new Y_DateTimeInstance(ZonedDateTime.now(ZoneOffset.UTC));
+                    yDateTimeInstance instance = new yDateTimeInstance(ZonedDateTime.now(ZoneOffset.UTC));
 
                     return new Variable.Variant(instance);
                 }
@@ -130,7 +130,7 @@ public class Y_DateTime {
                     int second = (int) requireInt(arguments.get(5), getClassName(), 6);
 
                     ZonedDateTime dt = ZonedDateTime.of(year, month, day, hour, minute, second, 0, ZoneOffset.UTC);
-                    Y_DateTimeInstance instance = new Y_DateTimeInstance(dt);
+                    yDateTimeInstance instance = new yDateTimeInstance(dt);
 
                     return new Variable.Variant(instance);
                 }
@@ -166,7 +166,7 @@ public class Y_DateTime {
                     ZonedDateTime dt = ZonedDateTime.ofInstant(
                             Instant.ofEpochSecond((long) epochSeconds),
                             ZoneOffset.UTC);
-                    Y_DateTimeInstance instance = new Y_DateTimeInstance(dt);
+                    yDateTimeInstance instance = new yDateTimeInstance(dt);
 
                     return new Variable.Variant(instance);
                 }
@@ -202,7 +202,7 @@ public class Y_DateTime {
 
                     try {
                         ZonedDateTime dt = ZonedDateTime.parse(raw, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-                        Y_DateTimeInstance instance = new Y_DateTimeInstance(dt);
+                        yDateTimeInstance instance = new yDateTimeInstance(dt);
                         return new Variable.Variant(instance);
                     } catch (DateTimeParseException e) {
                         throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
@@ -238,7 +238,7 @@ public class Y_DateTime {
 
                     requireArity(arguments, 1, getClassName());
 
-                    Y_DateTimeInstance dt = requireDateTime(arguments.getFirst(), getClassName(), 1);
+                    yDateTimeInstance dt = requireDateTime(arguments.getFirst(), getClassName(), 1);
                     double response = dt.getInternal().getYear();
 
                     return new Variable.Variant(response);
@@ -271,7 +271,7 @@ public class Y_DateTime {
 
                     requireArity(arguments, 1, getClassName());
 
-                    Y_DateTimeInstance dt = requireDateTime(arguments.getFirst(), getClassName(), 1);
+                    yDateTimeInstance dt = requireDateTime(arguments.getFirst(), getClassName(), 1);
                     double response = dt.getInternal().getMonthValue();
 
                     return new Variable.Variant(response);
@@ -304,7 +304,7 @@ public class Y_DateTime {
 
                     requireArity(arguments, 1, getClassName());
 
-                    Y_DateTimeInstance dt = requireDateTime(arguments.getFirst(), getClassName(), 1);
+                    yDateTimeInstance dt = requireDateTime(arguments.getFirst(), getClassName(), 1);
                     double response = dt.getInternal().getDayOfMonth();
 
                     return new Variable.Variant(response);
@@ -337,7 +337,7 @@ public class Y_DateTime {
 
                     requireArity(arguments, 1, getClassName());
 
-                    Y_DateTimeInstance dt = requireDateTime(arguments.getFirst(), getClassName(), 1);
+                    yDateTimeInstance dt = requireDateTime(arguments.getFirst(), getClassName(), 1);
                     double response = dt.getInternal().getHour();
 
                     return new Variable.Variant(response);
@@ -370,7 +370,7 @@ public class Y_DateTime {
 
                     requireArity(arguments, 1, getClassName());
 
-                    Y_DateTimeInstance dt = requireDateTime(arguments.getFirst(), getClassName(), 1);
+                    yDateTimeInstance dt = requireDateTime(arguments.getFirst(), getClassName(), 1);
                     double response = dt.getInternal().getMinute();
 
                     return new Variable.Variant(response);
@@ -403,7 +403,7 @@ public class Y_DateTime {
 
                     requireArity(arguments, 1, getClassName());
 
-                    Y_DateTimeInstance dt = requireDateTime(arguments.getFirst(), getClassName(), 1);
+                    yDateTimeInstance dt = requireDateTime(arguments.getFirst(), getClassName(), 1);
                     double response = dt.getInternal().getSecond();
 
                     return new Variable.Variant(response);
@@ -436,7 +436,7 @@ public class Y_DateTime {
 
                     requireArity(arguments, 1, getClassName());
 
-                    Y_DateTimeInstance dt = requireDateTime(arguments.getFirst(), getClassName(), 1);
+                    yDateTimeInstance dt = requireDateTime(arguments.getFirst(), getClassName(), 1);
                     double response = dt.getInternal().getDayOfWeek().getValue();
 
                     return new Variable.Variant(response);
@@ -469,7 +469,7 @@ public class Y_DateTime {
 
                     requireArity(arguments, 1, getClassName());
 
-                    Y_DateTimeInstance dt = requireDateTime(arguments.getFirst(), getClassName(), 1);
+                    yDateTimeInstance dt = requireDateTime(arguments.getFirst(), getClassName(), 1);
                     double response = dt.getInternal().getDayOfYear();
 
                     return new Variable.Variant(response);
@@ -502,7 +502,7 @@ public class Y_DateTime {
 
                     requireArity(arguments, 1, getClassName());
 
-                    Y_DateTimeInstance dt = requireDateTime(arguments.getFirst(), getClassName(), 1);
+                    yDateTimeInstance dt = requireDateTime(arguments.getFirst(), getClassName(), 1);
                     double response = (double) dt.getInternal().toEpochSecond();
 
                     return new Variable.Variant(response);
@@ -535,7 +535,7 @@ public class Y_DateTime {
 
                     requireArity(arguments, 2, getClassName());
 
-                    Y_DateTimeInstance dt      = requireDateTime(arguments.get(0), getClassName(), 1);
+                    yDateTimeInstance dt      = requireDateTime(arguments.get(0), getClassName(), 1);
                     String             pattern = requireString(arguments.get(1), getClassName(), 2);
 
                     try {
@@ -575,10 +575,10 @@ public class Y_DateTime {
 
                     requireArity(arguments, 2, getClassName());
 
-                    Y_DateTimeInstance dt   = requireDateTime(arguments.get(0), getClassName(), 1);
+                    yDateTimeInstance dt   = requireDateTime(arguments.get(0), getClassName(), 1);
                     double             days = requireNumber(arguments.get(1), getClassName(), 2);
 
-                    Y_DateTimeInstance response = new Y_DateTimeInstance(dt.getInternal().plusDays((long) days));
+                    yDateTimeInstance response = new yDateTimeInstance(dt.getInternal().plusDays((long) days));
 
                     return new Variable.Variant(response);
                 }
@@ -610,10 +610,10 @@ public class Y_DateTime {
 
                     requireArity(arguments, 2, getClassName());
 
-                    Y_DateTimeInstance dt    = requireDateTime(arguments.get(0), getClassName(), 1);
+                    yDateTimeInstance dt    = requireDateTime(arguments.get(0), getClassName(), 1);
                     double             hours = requireNumber(arguments.get(1), getClassName(), 2);
 
-                    Y_DateTimeInstance response = new Y_DateTimeInstance(dt.getInternal().plusHours((long) hours));
+                    yDateTimeInstance response = new yDateTimeInstance(dt.getInternal().plusHours((long) hours));
 
                     return new Variable.Variant(response);
                 }
@@ -645,10 +645,10 @@ public class Y_DateTime {
 
                     requireArity(arguments, 2, getClassName());
 
-                    Y_DateTimeInstance dt      = requireDateTime(arguments.get(0), getClassName(), 1);
+                    yDateTimeInstance dt      = requireDateTime(arguments.get(0), getClassName(), 1);
                     double             minutes = requireNumber(arguments.get(1), getClassName(), 2);
 
-                    Y_DateTimeInstance response = new Y_DateTimeInstance(dt.getInternal().plusMinutes((long) minutes));
+                    yDateTimeInstance response = new yDateTimeInstance(dt.getInternal().plusMinutes((long) minutes));
 
                     return new Variable.Variant(response);
                 }
@@ -680,10 +680,10 @@ public class Y_DateTime {
 
                     requireArity(arguments, 2, getClassName());
 
-                    Y_DateTimeInstance dt      = requireDateTime(arguments.get(0), getClassName(), 1);
+                    yDateTimeInstance dt      = requireDateTime(arguments.get(0), getClassName(), 1);
                     double             seconds = requireNumber(arguments.get(1), getClassName(), 2);
 
-                    Y_DateTimeInstance response = new Y_DateTimeInstance(dt.getInternal().plusSeconds((long) seconds));
+                    yDateTimeInstance response = new yDateTimeInstance(dt.getInternal().plusSeconds((long) seconds));
 
                     return new Variable.Variant(response);
                 }
@@ -715,10 +715,10 @@ public class Y_DateTime {
 
                     requireArity(arguments, 2, getClassName());
 
-                    Y_DateTimeInstance dt     = requireDateTime(arguments.get(0), getClassName(), 1);
+                    yDateTimeInstance dt     = requireDateTime(arguments.get(0), getClassName(), 1);
                     double             months = requireNumber(arguments.get(1), getClassName(), 2);
 
-                    Y_DateTimeInstance response = new Y_DateTimeInstance(dt.getInternal().plusMonths((long) months));
+                    yDateTimeInstance response = new yDateTimeInstance(dt.getInternal().plusMonths((long) months));
 
                     return new Variable.Variant(response);
                 }
@@ -750,10 +750,10 @@ public class Y_DateTime {
 
                     requireArity(arguments, 2, getClassName());
 
-                    Y_DateTimeInstance dt    = requireDateTime(arguments.get(0), getClassName(), 1);
+                    yDateTimeInstance dt    = requireDateTime(arguments.get(0), getClassName(), 1);
                     double             years = requireNumber(arguments.get(1), getClassName(), 2);
 
-                    Y_DateTimeInstance response = new Y_DateTimeInstance(dt.getInternal().plusYears((long) years));
+                    yDateTimeInstance response = new yDateTimeInstance(dt.getInternal().plusYears((long) years));
 
                     return new Variable.Variant(response);
                 }
@@ -785,8 +785,8 @@ public class Y_DateTime {
 
                     requireArity(arguments, 2, getClassName());
 
-                    Y_DateTimeInstance a = requireDateTime(arguments.get(0), getClassName(), 1);
-                    Y_DateTimeInstance b = requireDateTime(arguments.get(1), getClassName(), 2);
+                    yDateTimeInstance a = requireDateTime(arguments.get(0), getClassName(), 1);
+                    yDateTimeInstance b = requireDateTime(arguments.get(1), getClassName(), 2);
 
                     double response = (double) Duration.between(b.getInternal(), a.getInternal()).getSeconds();
 
@@ -820,8 +820,8 @@ public class Y_DateTime {
 
                     requireArity(arguments, 2, getClassName());
 
-                    Y_DateTimeInstance a = requireDateTime(arguments.get(0), getClassName(), 1);
-                    Y_DateTimeInstance b = requireDateTime(arguments.get(1), getClassName(), 2);
+                    yDateTimeInstance a = requireDateTime(arguments.get(0), getClassName(), 1);
+                    yDateTimeInstance b = requireDateTime(arguments.get(1), getClassName(), 2);
 
                     double response = (double) Duration.between(b.getInternal(), a.getInternal()).toDays();
 
@@ -855,8 +855,8 @@ public class Y_DateTime {
 
                     requireArity(arguments, 2, getClassName());
 
-                    Y_DateTimeInstance a = requireDateTime(arguments.get(0), getClassName(), 1);
-                    Y_DateTimeInstance b = requireDateTime(arguments.get(1), getClassName(), 2);
+                    yDateTimeInstance a = requireDateTime(arguments.get(0), getClassName(), 1);
+                    yDateTimeInstance b = requireDateTime(arguments.get(1), getClassName(), 2);
 
                     boolean response = a.getInternal().isBefore(b.getInternal());
 
@@ -890,8 +890,8 @@ public class Y_DateTime {
 
                     requireArity(arguments, 2, getClassName());
 
-                    Y_DateTimeInstance a = requireDateTime(arguments.get(0), getClassName(), 1);
-                    Y_DateTimeInstance b = requireDateTime(arguments.get(1), getClassName(), 2);
+                    yDateTimeInstance a = requireDateTime(arguments.get(0), getClassName(), 1);
+                    yDateTimeInstance b = requireDateTime(arguments.get(1), getClassName(), 2);
 
                     boolean response = a.getInternal().isAfter(b.getInternal());
 
@@ -925,8 +925,8 @@ public class Y_DateTime {
 
                     requireArity(arguments, 2, getClassName());
 
-                    Y_DateTimeInstance a = requireDateTime(arguments.get(0), getClassName(), 1);
-                    Y_DateTimeInstance b = requireDateTime(arguments.get(1), getClassName(), 2);
+                    yDateTimeInstance a = requireDateTime(arguments.get(0), getClassName(), 1);
+                    yDateTimeInstance b = requireDateTime(arguments.get(1), getClassName(), 2);
 
                     boolean response = a.getInternal().isEqual(b.getInternal());
 
@@ -960,8 +960,8 @@ public class Y_DateTime {
 
                     requireArity(arguments, 1, getClassName());
 
-                    Y_DateTimeInstance dt = requireDateTime(arguments.getFirst(), getClassName(), 1);
-                    Y_DateTimeInstance response = new Y_DateTimeInstance(
+                    yDateTimeInstance dt = requireDateTime(arguments.getFirst(), getClassName(), 1);
+                    yDateTimeInstance response = new yDateTimeInstance(
                             dt.getInternal().withZoneSameInstant(ZoneOffset.UTC));
 
                     return new Variable.Variant(response);
@@ -994,12 +994,12 @@ public class Y_DateTime {
 
                     requireArity(arguments, 2, getClassName());
 
-                    Y_DateTimeInstance dt     = requireDateTime(arguments.get(0), getClassName(), 1);
+                    yDateTimeInstance dt     = requireDateTime(arguments.get(0), getClassName(), 1);
                     String             zoneId = requireString(arguments.get(1), getClassName(), 2);
 
                     try {
                         ZoneId zone = ZoneId.of(zoneId);
-                        Y_DateTimeInstance response = new Y_DateTimeInstance(
+                        yDateTimeInstance response = new yDateTimeInstance(
                                 dt.getInternal().withZoneSameInstant(zone));
                         return new Variable.Variant(response);
                     } catch (Exception e) {
@@ -1036,7 +1036,7 @@ public class Y_DateTime {
 
                     requireArity(arguments, 1, getClassName());
 
-                    Y_DateTimeInstance dt = requireDateTime(arguments.getFirst(), getClassName(), 1);
+                    yDateTimeInstance dt = requireDateTime(arguments.getFirst(), getClassName(), 1);
                     String response = dt.toString();
 
                     return new Variable.Variant(response);
@@ -1075,7 +1075,7 @@ public class Y_DateTime {
             int day   = (int) requireInt(arguments.get(2), getClassName(), 3);
 
             ZonedDateTime dt = ZonedDateTime.of(year, month, day, 0, 0, 0, 0, ZoneOffset.UTC);
-            Y_DateTimeInstance instance = new Y_DateTimeInstance(dt);
+            yDateTimeInstance instance = new yDateTimeInstance(dt);
 
             return new Variable.Variant(instance);
         }
@@ -1091,10 +1091,10 @@ public class Y_DateTime {
         }
 
 
-        private Y_DateTimeInstance requireDateTime(Variable.Variant variant,
+        private yDateTimeInstance requireDateTime(Variable.Variant variant,
                                                    String className,
                                                    int argIndex) throws YsharpError {
-            if (variant.value instanceof Y_DateTimeInstance dt) {
+            if (variant.value instanceof yDateTimeInstance dt) {
                 return dt;
             }
             throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
@@ -1106,7 +1106,7 @@ public class Y_DateTime {
 
     public static void Register(Interpreter interpreter) throws Exception {
 
-        Y_DateTimeClass ctor = new Y_DateTimeClass();
+        yDateTimeClass ctor = new yDateTimeClass();
 
         Variable.Variant variant = new Variable.Variant(ctor);
         Variable var = new Variable(variant,

@@ -3,7 +3,7 @@ package ysharp.evaluator.Native.TUI.Util;
 import com.googlecode.lanterna.SGR;
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.evaluator.Native.Collections.Y_Array;
+import ysharp.evaluator.Native.Collections.yArray;
 import ysharp.parser.TypeTag;
 
 import java.util.List;
@@ -39,7 +39,7 @@ public class ySGR {
         public SGR sgr;
         public ySGREnum(SGR sgr){
             this.sgr = sgr;
-            this.prototype = Y_Class.ClassPrototype;
+            this.prototype = yClass.ClassPrototype;
         }
 
         @Override
@@ -59,10 +59,10 @@ public class ySGR {
         }
     }
 
-    public static class ySGRClass extends Y_Class.SealedClassObject {
+    public static class ySGRClass extends yClass.SealedClassObject {
 
         ySGRClass(){
-            this.prototype =  Y_Class.ClassPrototype;
+            this.prototype =  yClass.ClassPrototype;
 
             // enum constants
             Variable blinkVar = new Variable(new Variable.Variant(new ySGREnum(SGR.BLINK)), true, TypeTag.OBJECT);
@@ -132,7 +132,7 @@ public class ySGR {
                 public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
                     requireArity(arguments, arity(), getClassName());
                     SGR[] arr = SGR.values();
-                    Y_Array.Y_ArrayInstance yArray = new Y_Array.Y_ArrayInstance();
+                    yArray.yArrayInstance yArray = new yArray.yArrayInstance();
                     for(SGR sgr : arr) yArray.data.add(new Variable.Variant(new ySGREnum(sgr)));
 
                     return new Variable.Variant(yArray);

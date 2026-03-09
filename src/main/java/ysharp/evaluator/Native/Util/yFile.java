@@ -9,15 +9,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-public class Y_File {
+public class yFile {
 
-    public static RuntimeObject Y_File_Instance_Prototype;
+    public static RuntimeObject yFile_Instance_Prototype;
 
     static {}
 
-    public static class Y_File_Instance extends Y_Class.ClassObjectInstance {
+    public static class yFile_Instance extends yClass.ClassObjectInstance {
 
-        public Y_File_Instance(){}
+        public yFile_Instance(){}
 
         @Override
         public boolean isTruthy() {
@@ -35,11 +35,11 @@ public class Y_File {
         }
     }
 
-    public static class Y_FileClass extends Y_Class.SealedClassObject {
+    public static class yFileClass extends yClass.SealedClassObject {
 
-        Y_FileClass(){
+        yFileClass(){
 
-            this.prototype = Y_Class.ClassPrototype;
+            this.prototype = yClass.ClassPrototype;
 
             // File.read(path)
             class ReadFn extends Function.NativeFunction {
@@ -60,7 +60,7 @@ public class Y_File {
 
                     try {
                         String content = Files.readString(Path.of(path));
-                        return new Variable.Variant(new Y_String.Y_StringInstance(content));
+                        return new Variable.Variant(new yString.yStringInstance(content));
                     }
                     catch (IOException e){
                         throw new YsharpError(
@@ -270,7 +270,7 @@ public class Y_File {
                                      List<Variable.Variant> arguments)
                 throws YsharpError {
 
-            Y_File_Instance instance = new Y_File_Instance();
+            yFile_Instance instance = new yFile_Instance();
             return new Variable.Variant(instance);
         }
 
@@ -287,7 +287,7 @@ public class Y_File {
 
     public static void Register(Interpreter interpreter) throws Exception {
 
-        Y_FileClass ctor = new Y_FileClass();
+        yFileClass ctor = new yFileClass();
 
         Variable.Variant variant = new Variable.Variant(ctor);
 

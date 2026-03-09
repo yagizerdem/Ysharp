@@ -1,13 +1,13 @@
 package ysharp.evaluator.Native.TUI.Terminal.Abstract;
 
 import com.googlecode.lanterna.terminal.Terminal;
-import ysharp.evaluator.Y_Class;
+import ysharp.evaluator.yClass;
 
 import javax.swing.*;
 
 public class yAbstractTerminal {
 
-    public static abstract class AbstractTerminal extends Y_Class.ClassObjectInstance  {
+    public static abstract class AbstractTerminal extends yClass.ClassObjectInstance  {
         public Terminal instance;
     };
 

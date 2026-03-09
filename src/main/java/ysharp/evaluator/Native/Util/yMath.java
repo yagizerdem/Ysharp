@@ -6,16 +6,16 @@ import ysharp.parser.TypeTag;
 
 import java.util.List;
 
-public class Y_Math {
+public class yMath {
 
 
     static {
         // all the methods in math class should be static because i want so !
     }
 
-    public static class Y_MathInstance extends Y_Class.ClassObjectInstance {
+    public static class yMathInstance extends yClass.ClassObjectInstance {
 
-        public Y_MathInstance() {}
+        public yMathInstance() {}
 
         @Override
         public boolean isTruthy() {
@@ -34,10 +34,10 @@ public class Y_Math {
     }
 
 
-    public static class Y_MathClass extends Y_Class.SealedClassObject {
+    public static class yMathClass extends yClass.SealedClassObject {
 
-        Y_MathClass(){
-            this.prototype =  Y_Class.ClassPrototype;
+        yMathClass(){
+            this.prototype =  yClass.ClassPrototype;
 
             // add static methods here
 
@@ -1065,7 +1065,7 @@ public class Y_Math {
 
             requireArity(arguments,0, getClassName());
 
-            Y_MathInstance instance = new Y_MathInstance();
+            yMathInstance instance = new yMathInstance();
             return new Variable.Variant(instance);
         }
 
@@ -1082,7 +1082,7 @@ public class Y_Math {
 
     public static void Register(Interpreter interpreter) throws Exception {
 
-        Y_MathClass ctor = new Y_MathClass();
+        yMathClass ctor = new yMathClass();
 
         Variable.Variant variant = new Variable.Variant(ctor);
         Variable var = new Variable(variant,

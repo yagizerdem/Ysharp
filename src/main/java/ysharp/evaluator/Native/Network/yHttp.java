@@ -10,12 +10,12 @@ import ysharp.parser.TypeTag;
 import java.net.http.HttpClient;
 import java.util.List;
 
-public class Y_Http {
+public class yHttp {
 
-    public static RuntimeObject Y_Http_Prototype;
+    public static RuntimeObject yHttp_Prototype;
 
     static {
-        Y_Http_Prototype = new RuntimeObject() {
+        yHttp_Prototype = new RuntimeObject() {
             @Override
             public boolean isTruthy() { return true; }
 
@@ -25,13 +25,13 @@ public class Y_Http {
     }
 
 
-    public static class Y_HttpObject extends RuntimeObject {
+    public static class yHttpObject extends RuntimeObject {
 
         private final HttpClient httpClient;
 
-        public Y_HttpObject() {
+        public yHttpObject() {
             this.httpClient = HttpClient.newHttpClient();
-            this.prototype = Y_Http_Prototype;
+            this.prototype = yHttp_Prototype;
         }
 
         public HttpClient getClient() {
@@ -55,7 +55,7 @@ public class Y_Http {
     }
 
 
-    public static class Y_HttpInit extends Function.NativeFunction {
+    public static class yHttpInit extends Function.NativeFunction {
 
         @Override
         public int arity() {
@@ -68,7 +68,7 @@ public class Y_Http {
                 List<Variable.Variant> arguments
         ) throws YsharpError {
 
-            Y_HttpObject obj = new Y_HttpObject();
+            yHttpObject obj = new yHttpObject();
             return new Variable.Variant(obj);
         }
 
@@ -80,7 +80,7 @@ public class Y_Http {
 
     public static void register(Interpreter interpreter) throws Exception {
 
-        Y_HttpInit ctor = new Y_HttpInit();
+        yHttpInit ctor = new yHttpInit();
         Variable.Variant variant = new Variable.Variant(ctor);
         Variable var = new Variable(variant, false, TypeTag.OBJECT);
 

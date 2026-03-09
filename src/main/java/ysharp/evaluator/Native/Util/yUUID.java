@@ -6,16 +6,16 @@ import ysharp.parser.TypeTag;
 
 import java.util.List;
 
-public class Y_UUID {
+public class yUUID {
 
-    public static RuntimeObject Y_UUID_Instance_Prototype;
+    public static RuntimeObject yUUID_Instance_Prototype;
 
     static {}
 
 
-    public static class Y_UUID_Instance extends Y_Class.ClassObjectInstance {
+    public static class yUUID_Instance extends yClass.ClassObjectInstance {
 
-        public Y_UUID_Instance() {}
+        public yUUID_Instance() {}
 
         @Override
         public boolean isTruthy() {
@@ -34,10 +34,10 @@ public class Y_UUID {
     }
 
 
-    public static class Y_UUIDClass extends Y_Class.SealedClassObject {
+    public static class yUUIDClass extends yClass.SealedClassObject {
 
-        Y_UUIDClass(){
-            this.prototype =  Y_Class.ClassPrototype;
+        yUUIDClass(){
+            this.prototype =  yClass.ClassPrototype;
 
             // add static methods here
             // UUID.v4()
@@ -195,7 +195,7 @@ public class Y_UUID {
                                      List<Variable.Variant> arguments)
                 throws YsharpError {
 
-            Y_UUID_Instance instance = new Y_UUID_Instance();
+            yUUID_Instance instance = new yUUID_Instance();
             return new Variable.Variant(instance);
         }
 
@@ -212,7 +212,7 @@ public class Y_UUID {
 
     public static void Register(Interpreter interpreter) throws Exception {
 
-        Y_UUIDClass ctor = new Y_UUIDClass();
+        yUUIDClass ctor = new yUUIDClass();
 
         Variable.Variant variant = new Variable.Variant(ctor);
         Variable var = new Variable(variant,

@@ -3,7 +3,7 @@ package ysharp.evaluator.Native.TUI.Util.TextColor;
 import com.googlecode.lanterna.TextColor;
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.evaluator.Native.Collections.Y_Array;
+import ysharp.evaluator.Native.Collections.yArray;
 import ysharp.parser.TypeTag;
 
 import java.util.List;
@@ -39,7 +39,7 @@ public class yANSI {
         public TextColor.ANSI ansi;
         public yANSIEnum(TextColor.ANSI ansi){
             this.ansi = ansi;
-            this.prototype = Y_Class.ClassPrototype;
+            this.prototype = yClass.ClassPrototype;
         }
 
         @Override
@@ -59,10 +59,10 @@ public class yANSI {
         }
     }
 
-    public static class yANSIClass extends Y_Class.SealedClassObject {
+    public static class yANSIClass extends yClass.SealedClassObject {
 
         public yANSIClass() {
-            this.prototype =  Y_Class.ClassPrototype;
+            this.prototype =  yClass.ClassPrototype;
 
             this.set("BLACK",
                     new Variable(new Variable.Variant(
@@ -174,7 +174,7 @@ public class yANSI {
                 public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
                     requireArity(arguments, arity(), getClassName());
                     TextColor.ANSI[] arr = TextColor.ANSI.values();
-                    Y_Array.Y_ArrayInstance yArray = new Y_Array.Y_ArrayInstance();
+                    yArray.yArrayInstance yArray = new yArray.yArrayInstance();
                     for(TextColor.ANSI ansi : arr) yArray.data.add(new Variable.Variant(new yANSIEnum(ansi)));
 
                     return new Variable.Variant(yArray);
