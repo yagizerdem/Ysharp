@@ -23,7 +23,7 @@ public class Variable {
     }
 
     public static class Variant {
-        public final Object value;
+        public Object value;
 
         public Variant(Object value){
             this.value = value;

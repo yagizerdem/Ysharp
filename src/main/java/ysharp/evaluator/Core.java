@@ -29,19 +29,12 @@ public class Core {
           Register(interpreter);
 
           String program = """
-                try do
-                    throw 12;
-                end
-                catch(err) do
-                    println err;
-                    println "err occured";
-                end
-                finally do
-                    println "hit finally";
-                end
-
-                
-
+                    println "yagiz" == "yagiz";
+                    var a = 10;
+                    a >>= 4;
+                    println a;                
+                        
+                    
                 """;
 
 
