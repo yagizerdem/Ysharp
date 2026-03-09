@@ -29,7 +29,12 @@ public class Core {
           Register(interpreter);
 
           String program = """
-                
+                    println "yagiz" == "yagiz";
+                    var a = 10;
+                    a >>= 4;
+                    println a;                
+                        
+                    
                 """;
 
 
