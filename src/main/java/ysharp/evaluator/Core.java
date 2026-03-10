@@ -31,12 +31,13 @@ public class Core {
           Interpreter interpreter = new Interpreter();
           Register(interpreter);
 
-          String mainFilePath = "C:\\Users\\yagiz\\Desktop\\Ysharp\\src\\test\\resources\\main.ys";
-          String mainFileContent = new String(Files.readAllBytes(Paths.get(mainFilePath)));
+          String mainModulePath = "C:\\Users\\yagiz\\Desktop\\Ysharp\\src\\test\\resources\\main.ys";
+          String mainModuleContent = new String(Files.readAllBytes(Paths.get(mainModulePath)));
+
 
 
           Preprocess preprocess = new Preprocess();
-          List<Cursor.Pchar> buf = preprocess.process(mainFileContent);
+          List<Cursor.Pchar> buf = preprocess.process(mainModuleContent);
           if(preprocess.hadErrors()){
               printStdErr(preprocess.errors);
               return;
@@ -56,6 +57,9 @@ public class Core {
               return;
           }
 
+
+          Loader loader = new Loader(program, mainModulePath);
+          loader.loadEnv();
 
           interpreter.interpret(program.program);
           if(interpreter.hadErrors()) {
