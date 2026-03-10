@@ -31,17 +31,7 @@ public class Core {
           Register(interpreter);
 
           String program = """
-                  var t = new Thread(()=> do 
-                        for var i = 0 ; i < 999; i++ do
-                            println i;
-                        end
-                    end);
-                   
-                   t.start();
-                   
-                    for var i = 0 ; i < 999; i++ do
-                            println i;
-                    end
+                  var t = new DefaultTerminal();
                 """;
 
 
