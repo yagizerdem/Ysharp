@@ -18,7 +18,6 @@ import ysharp.lexer.Cursor;
 import ysharp.lexer.Lexer;
 import ysharp.lexer.Preprocess;
 import ysharp.parser.Parser;
-import ysharp.parser.Stmt;
 import ysharp.evaluator.Native.TUI.Util.ySGR;
 
 import java.nio.file.Files;

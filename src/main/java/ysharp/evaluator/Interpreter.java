@@ -20,6 +20,7 @@ public class Interpreter implements
     public Environment global;
     public Environment curEnv;
     public List<YsharpError> errors;
+    public List<String> exports;
 
     public boolean hadErrors() {
         return !errors.isEmpty();
@@ -28,7 +29,8 @@ public class Interpreter implements
     public Interpreter() {
         this.global = new Environment();
         this.curEnv = global;
-        errors = new ArrayList<>();
+        this.errors = new ArrayList<>();
+        this.exports = new ArrayList<>();
     }
 
     public void defineGlobal(String key, Variable variable) throws Exception {
@@ -1056,6 +1058,10 @@ public class Interpreter implements
                 TypeTag.fromString(typeTag));
 
         this.curEnv.define(stmt.identifier.lexeme, var);
+
+        if(stmt.isExported) {
+            this.exports.add(stmt.identifier.lexeme);
+        }
     }
 
     @Override
@@ -1070,6 +1076,10 @@ public class Interpreter implements
                 TypeTag.OBJECT);
 
         this.curEnv.define(funObj.declaration.name.lexeme,  var);
+
+        if(stmt.isExported) {
+            this.exports.add(stmt.name.lexeme);
+        }
     }
 
     @Override
@@ -1084,6 +1094,10 @@ public class Interpreter implements
                 TypeTag.fromString(typeTag));
 
         this.curEnv.define(stmt.identifier.lexeme, var);
+
+        if(stmt.isExported) {
+            this.exports.add(stmt.identifier.lexeme);
+        }
     }
 
     @Override
@@ -1313,6 +1327,10 @@ public class Interpreter implements
         }
 
         curEnv.define(klass.getClassName(), new Variable(new Variable.Variant(klass), true, TypeTag.OBJECT));
+
+        if(stmt.isExported) {
+            this.exports.add(stmt.name.lexeme);
+        }
     }
 
     private Function.NativeFunction methodToNativeFn(Stmt.ClassDeclaration.Method method){
