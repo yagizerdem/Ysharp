@@ -90,6 +90,7 @@ public class Token {
         PRINT, // print
         PRINTLN, // println
         USE, // use
+        EXPORT, // export
         NEW, // create new object
         THROW, // throw
 

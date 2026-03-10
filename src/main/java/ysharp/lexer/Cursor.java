@@ -64,6 +64,7 @@ public class Cursor {
     static {
         STOPCHAR_MAP.put('\0', CharMask.End.value);
         STOPCHAR_MAP.put(' ',  CharMask.Blank.value);
+        STOPCHAR_MAP.put('\r',  CharMask.Blank.value);
         STOPCHAR_MAP.put('\t', CharMask.Blank.value);
         STOPCHAR_MAP.put('\n', CharMask.Newline.value);
         STOPCHAR_MAP.put(';',  CharMask.Semi.value);

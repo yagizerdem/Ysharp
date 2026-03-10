@@ -21,6 +21,8 @@ import ysharp.parser.Parser;
 import ysharp.parser.Stmt;
 import ysharp.evaluator.Native.TUI.Util.ySGR;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 public class Core {
@@ -30,13 +32,12 @@ public class Core {
           Interpreter interpreter = new Interpreter();
           Register(interpreter);
 
-          String program = """
-                  var t = new DefaultTerminal();
-                """;
+          String mainFilePath = "C:\\Users\\yagiz\\Desktop\\Ysharp\\src\\test\\resources\\main.ys";
+          String mainFileContent = new String(Files.readAllBytes(Paths.get(mainFilePath)));
 
 
           Preprocess preprocess = new Preprocess();
-          List<Cursor.Pchar> buf = preprocess.process(program);
+          List<Cursor.Pchar> buf = preprocess.process(mainFileContent);
           if(preprocess.hadErrors()){
               printStdErr(preprocess.errors);
               return;
@@ -50,14 +51,14 @@ public class Core {
           }
 
           Parser parser = new Parser(stream);
-          List<Stmt> parseTree = parser.parse();
+          Parser.Program program = parser.parse();
           if(parser.hadErrors()) {
               printStdErr(parser.errors);
               return;
           }
 
 
-          interpreter.interpret(parseTree);
+          interpreter.interpret(program.program);
           if(interpreter.hadErrors()) {
               printStdErr(interpreter.errors);
               return;

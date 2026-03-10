@@ -8,6 +8,16 @@ import java.util.List;
 
 public class Parser {
 
+    public static class Program {
+        public List<String> useDeclaration;
+        public List<Stmt> program;
+
+        public Program(){
+            this.useDeclaration = new ArrayList<>();
+            this.program = new ArrayList<>();
+        }
+    }
+
     public List<YsharpError> errors;
 
     public boolean hadErrors (){
@@ -122,18 +132,20 @@ public class Parser {
         return list;
     }
 
-    public List<Stmt> parse() {
+    public Program parse() {
+        Program program = new Program();
+        program.useDeclaration = parseUseDeclaration();
         List<Stmt> list = new ArrayList<>();
         while (peek().type != Token.TokenType.END_OF_FILE) {
             try {
-                list.add(parseDeclaration());
+                program.program.add(parseDeclaration(true));
             }catch (YsharpError err) {
                 errors.add(err);
                 sync();
             }
         }
 
-        return list;
+        return program;
     }
 
     private boolean isLambdaAhead() {
@@ -946,17 +958,8 @@ public class Parser {
         if(match(peek(), Token.TokenType.CONTINUE)) return parseContinueStmt();
         if(match(peek(), Token.TokenType.RETURN)) return parseReturnStmt();
         if(match(peek(), Token.TokenType.SWITCH)) return parseSwitchStmt();
-        if(match(peek(), Token.TokenType.FUNCTION)) return parseFunctionDeclaration();
         if(match(peek(), Token.TokenType.THROW)) return parseThrowStmt();
         if(match(peek(), Token.TokenType.TRY)) return parseTryStmt();
-        if(match(peek(), Token.TokenType.SEALED)) {
-            consume(Token.TokenType.CLASS,
-                    "Expected 'class' after 'sealed'.");
-            return parseClassDeclaration(true);
-        }
-        if(match(peek(), Token.TokenType.CLASS)) {
-            return parseClassDeclaration(false);
-        }
 
         return  parseExprStmt();
     }
@@ -992,7 +995,7 @@ public class Parser {
         List<Stmt> stmtList = new ArrayList<>();
         while (peek().type != Token.TokenType.END_ &&
                 peek().type != Token.TokenType.END_OF_FILE) {
-            stmtList.add(parseDeclaration());
+            stmtList.add(parseDeclaration(false));
         }
 
         consume(Token.TokenType.END_,
@@ -1055,7 +1058,7 @@ public class Parser {
             initializer = null;
         }
         else if (match(peek(), Token.TokenType.VAR)) {
-            initializer = parseVarDeclaration();
+            initializer = parseVarDeclaration(false);
         }
         else {
             initializer = parseExprStmt();
@@ -1083,7 +1086,7 @@ public class Parser {
         List<Stmt> bodyStatements = new ArrayList<>();
         while (peek().type != Token.TokenType.END_ &&
                 peek().type != Token.TokenType.END_OF_FILE) {
-            bodyStatements.add(parseDeclaration());
+            bodyStatements.add(parseDeclaration(false));
         }
 
         consume(Token.TokenType.END_,
@@ -1229,14 +1232,32 @@ public class Parser {
 
     // declaration parser
 
-    private Stmt parseDeclaration() throws YsharpError {
-        if(match(peek(), Token.TokenType.VAR)) return parseVarDeclaration();
-        if(match(peek(), Token.TokenType.FUNCTION)) return parseFunctionDeclaration();
-        if(match(peek(), Token.TokenType.CONST_)) return parseConstDeclaration();
+    private Stmt parseDeclaration(boolean isGlobalDeclaration) throws YsharpError {
+
+        boolean flag = match(peek(), Token.TokenType.EXPORT);
+        if(!isGlobalDeclaration && flag) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.SYNTAX,
+                    peek().line,
+                    "Export declarations are only allowed at the top level."
+            );
+        }
+
+        if(match(peek(), Token.TokenType.VAR)) return parseVarDeclaration(flag);
+        if(match(peek(), Token.TokenType.FUNCTION)) return parseFunctionDeclaration(flag);
+        if(match(peek(), Token.TokenType.CONST_)) return parseConstDeclaration(flag);
+        if(match(peek(), Token.TokenType.SEALED)) {
+            consume(Token.TokenType.CLASS,
+                    "Expected 'class' after 'sealed'.");
+            return parseClassDeclaration(true, flag);
+        }
+        if(match(peek(), Token.TokenType.CLASS)) {
+            return parseClassDeclaration(false, isGlobalDeclaration && flag);
+        }
         return  parseStmt();
     }
 
-    private Stmt parseVarDeclaration() throws YsharpError {
+    private Stmt parseVarDeclaration(boolean isExported) throws YsharpError {
         Token identifier = advance();
         Token typeTag = null;
         Expr initializer = null;
@@ -1273,10 +1294,10 @@ public class Parser {
 
         consume(Token.TokenType.SEMI_COLON, "Expected ';' after variable declaration.");
 
-        return new Stmt.VarDeclaration(identifier, typeTag, initializer);
+        return new Stmt.VarDeclaration(identifier, typeTag, initializer, isExported);
     }
 
-    private Stmt parseFunctionDeclaration() throws YsharpError {
+    private Stmt parseFunctionDeclaration(boolean isExported) throws YsharpError {
 
         Token name = advance();
         if (name.type != Token.TokenType.IDENTIFIER) {
@@ -1349,10 +1370,10 @@ public class Parser {
 
         Stmt body = parseBlockStmt();
 
-        return new Stmt.FunctionDeclaration(name, params, returnType, body);
+        return new Stmt.FunctionDeclaration(name, params, returnType, body, isExported);
     }
 
-    private Stmt parseConstDeclaration() throws YsharpError {
+    private Stmt parseConstDeclaration(boolean isExported) throws YsharpError {
         Token identifier = advance();
         Token typeTag = null;
         Expr initializer = null;
@@ -1388,10 +1409,10 @@ public class Parser {
 
         consume(Token.TokenType.SEMI_COLON, "Expected ';' after variable declaration.");
 
-        return new Stmt.ConstDeclaration(identifier, typeTag, initializer);
+        return new Stmt.ConstDeclaration(identifier, typeTag, initializer, isExported);
     }
 
-    private Stmt parseClassDeclaration(boolean isSealed) throws YsharpError {
+    private Stmt parseClassDeclaration(boolean isSealed, boolean isExported) throws YsharpError {
 
         Token name = advance();
         if (name.type != Token.TokenType.IDENTIFIER) {
@@ -1597,7 +1618,7 @@ public class Parser {
             else if (match(peek(), Token.TokenType.VAR)) {
 
                 Stmt.VarDeclaration varDecl =
-                        (Stmt.VarDeclaration) parseVarDeclaration();
+                        (Stmt.VarDeclaration) parseVarDeclaration(false);
 
                 properties.add(
                         new Stmt.ClassDeclaration.Property(
@@ -1614,7 +1635,7 @@ public class Parser {
             else if (match(peek(), Token.TokenType.CONST_)) {
 
                 Stmt.ConstDeclaration constDecl =
-                        (Stmt.ConstDeclaration) parseConstDeclaration();
+                        (Stmt.ConstDeclaration) parseConstDeclaration(false);
 
                 properties.add(
                         new Stmt.ClassDeclaration.Property(
@@ -1644,8 +1665,28 @@ public class Parser {
                 extend,
                 methods,
                 properties,
-                isSealed
+                isSealed,
+                isExported
         );
+    }
+
+    private List<String> parseUseDeclaration() throws YsharpError {
+        ArrayList<String> useDeclarations = new ArrayList<>();
+         while (match(peek() , Token.TokenType.USE)) {
+            Token modulePath = advance();
+            if(modulePath.type != Token.TokenType.STRING) {
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.SYNTAX,
+                        modulePath.line,
+                        "Expected module path string after 'use'."
+                );
+            }
+             Token.Literal.Str str = (Token.Literal.Str) modulePath.literal;
+             useDeclarations.add(str.value());
+
+             consume(Token.TokenType.SEMI_COLON, "expected semi colon after use statement");
+         }
+        return useDeclarations;
     }
 
 }

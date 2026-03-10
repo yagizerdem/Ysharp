@@ -1,0 +1,31 @@
+
+
+for var i = 0; i < 10 ; i++ do
+    println i;
+end
+
+
+export var name = "yagiz erdem";
+export const lastName = "erdem";
+
+export function summ() do
+    println "sum";
+    var a = 10;
+end
+
+
+export class Human {
+
+
+    constructor(age) do
+         this.a = age;
+        println "cotr hit";
+
+    end
+
+    var a = 10;
+}
+
+var h = new Human(44);
+println h.a;
+
