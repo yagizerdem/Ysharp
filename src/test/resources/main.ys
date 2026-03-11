@@ -1,4 +1,5 @@
-
+use "math.ys";
+use "util.ys";
 
 for var i = 0; i < 10 ; i++ do
     println i;
