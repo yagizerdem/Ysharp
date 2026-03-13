@@ -3,6 +3,7 @@ package ysharp.evaluator.Native.TUI.Terminal.Abstract;
 import com.googlecode.lanterna.input.KeyStroke;
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
+import ysharp.evaluator.Native.TUI.Input.yKeyStroke;
 import ysharp.evaluator.Native.TUI.Util.TextColor.yTextColor;
 import ysharp.evaluator.Native.TUI.Util.ySGR;
 import ysharp.parser.TypeTag;
@@ -729,7 +730,7 @@ public class yBaseTerminal {
         yBaseTerminal_Instance_Prototype.set(writeLine.getFnName(), writeLineVar);
 
 
-        // terminal.readKey(string)
+        // terminal.readKey()
         class ReadKeyFn extends Function.NativeFunction implements Callable {
 
             @Override
@@ -746,9 +747,7 @@ public class yBaseTerminal {
 
                 try {
                     KeyStroke key = terminal.instance.readInput();
-
-
-                    return new Variable.Variant(key);
+                    return new Variable.Variant(new yKeyStroke.yKeyStrokeInstance(key));
 
                 }
                 catch(IOException ex) {
@@ -774,6 +773,111 @@ public class yBaseTerminal {
 
         yBaseTerminal_Instance_Prototype.set(readKey.getFnName(), readKeyVar);
 
+
+        // terminal.pollKey()
+        class PollKeyFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 0;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+
+                yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
+
+                try {
+
+                    KeyStroke key = terminal.instance.pollInput();
+
+                    if (key == null) {
+                        return new Variable.Variant(null);
+                    }
+
+                    return new Variable.Variant(
+                            new yKeyStroke.yKeyStrokeInstance(key)
+                    );
+
+                }
+                catch(IOException ex) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            -1,
+                            "Terminal.pollKey: " + ex.getMessage()
+                    );
+                }
+            }
+
+            @Override
+            public String getFnName() {
+                return "pollKey";
+            }
+        }
+
+        PollKeyFn pollKey = new PollKeyFn();
+        Variable pollKeyVar = new Variable(
+                new Variable.Variant(pollKey),
+                true,
+                TypeTag.OBJECT);
+
+        yBaseTerminal_Instance_Prototype.set(pollKey.getFnName(), pollKeyVar);
+
+        // terminal.clearInputBuffer();
+        class ClearInputBufferFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 0;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+
+                yAbstractTerminal.AbstractTerminal terminal =
+                        requireTerminalThis(interpreter);
+
+                try {
+
+                    KeyStroke key;
+
+                    while ((key = terminal.instance.pollInput()) != null) {
+                        // discard
+                    }
+
+                }
+                catch(IOException ex) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            -1,
+                            "Terminal.clearInputBuffer: " + ex.getMessage()
+                    );
+                }
+
+                return new Variable.Variant(null);
+            }
+
+            @Override
+            public String getFnName() {
+                return "clearInputBuffer";
+            }
+        }
+
+        ClearInputBufferFn clearInputBuffer = new ClearInputBufferFn();
+        Variable clearInputBufferVar = new Variable(
+                new Variable.Variant(clearInputBuffer),
+                true,
+                TypeTag.OBJECT);
+
+        yBaseTerminal_Instance_Prototype.set(clearInputBuffer.getFnName(), clearInputBufferVar);
     }
 
 }
