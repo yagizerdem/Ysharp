@@ -1,11 +1,13 @@
 package ysharp.evaluator.Native.TUI.Terminal.Abstract;
 
+import com.googlecode.lanterna.input.KeyStroke;
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.Native.TUI.Util.TextColor.yTextColor;
 import ysharp.evaluator.Native.TUI.Util.ySGR;
 import ysharp.parser.TypeTag;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.List;
 
@@ -629,6 +631,7 @@ public class yBaseTerminal {
                 TypeTag.OBJECT);
         yBaseTerminal_Instance_Prototype.set(setCursorVisible.getFnName(), setCursorVisibleVar);
 
+        // terminal.write(string)
         class WriteFn extends Function.NativeFunction implements Callable {
 
             @Override
@@ -676,6 +679,7 @@ public class yBaseTerminal {
                 TypeTag.OBJECT);
         yBaseTerminal_Instance_Prototype.set(write.getFnName(), writeVar);
 
+        // terminal.writeLine(string)
         class WriteLineFn extends Function.NativeFunction implements Callable {
 
             @Override
@@ -723,6 +727,52 @@ public class yBaseTerminal {
                 true,
                 TypeTag.OBJECT);
         yBaseTerminal_Instance_Prototype.set(writeLine.getFnName(), writeLineVar);
+
+
+        // terminal.readKey(string)
+        class ReadKeyFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 0;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+
+                yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
+
+                try {
+                    KeyStroke key = terminal.instance.readInput();
+
+
+                    return new Variable.Variant(key);
+
+                }
+                catch(IOException ex) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            -1,
+                            "Terminal.readKey: " + ex.getMessage()
+                    );
+                }
+            }
+
+            @Override
+            public String getFnName() {
+                return "readKey";
+            }
+        }
+
+        ReadKeyFn readKey = new ReadKeyFn();
+        Variable readKeyVar = new Variable(
+                new Variable.Variant(readKey),
+                true,
+                TypeTag.OBJECT);
+
+        yBaseTerminal_Instance_Prototype.set(readKey.getFnName(), readKeyVar);
 
     }
 

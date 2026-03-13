@@ -2,6 +2,7 @@ package ysharp.evaluator.Native.TUI;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.Interpreter;
+import ysharp.evaluator.Native.TUI.Input.yKeyStroke;
 import ysharp.evaluator.Native.TUI.Terminal.yDefaultTerminal;
 import ysharp.evaluator.Native.TUI.Terminal.yScrollSwingTerminal;
 import ysharp.evaluator.Native.TUI.Terminal.ySwingTerminal;
@@ -56,11 +57,20 @@ public class TUI {
             // foreground background color
             yTextColor.yTextColorClass textColor = new yTextColor.yTextColorClass();
             Variable textColorVar = new Variable(
-                    new Variable.Variant(sgr),
+                    new Variable.Variant(textColor),
                     true,
                     TypeTag.OBJECT
             );
             this.set(textColor.getClassName(), textColorVar);
+
+            // key stroke
+            yKeyStroke.yKeyStrokeClass keyStroke = new yKeyStroke.yKeyStrokeClass();
+            Variable yKeyStrokeVar = new Variable(
+                    new Variable.Variant(keyStroke),
+                    true,
+                    TypeTag.OBJECT
+            );
+            this.set(keyStroke.getClassName(), yKeyStrokeVar);
 
         }
 
