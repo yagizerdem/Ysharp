@@ -1,11 +1,9 @@
 package ysharp.evaluator.Native.function.core;
 
-import com.sun.jdi.Value;
 import ysharp.YsharpError;
 import ysharp.evaluator.Function;
 import ysharp.evaluator.Interpreter;
 import ysharp.evaluator.Variable;
-import ysharp.parser.TypeTag;
 
 import java.util.List;
 
@@ -22,7 +20,7 @@ public abstract class Debug  extends Function.NativeFunction {
             requireArity(args, 1, getFnName());
 
             Variable.Variant v = args.get(0);
-            return new Variable.Variant(v.getType());
+            return new Variable.Variant(i.curEnv.getType(v));
         }
 
         @Override public int arity() { return 1; }
@@ -102,7 +100,7 @@ public abstract class Debug  extends Function.NativeFunction {
         Variable typeOfFnVar = new Variable(
                 new Variable.Variant(typeOfFn),
                 true,
-                TypeTag.OBJECT
+                "function"
         );
         interpreter.defineGlobal(typeOfFn.getFnName(), typeOfFnVar);
 
@@ -112,7 +110,7 @@ public abstract class Debug  extends Function.NativeFunction {
         Variable assertVar = new Variable(
                 new Variable.Variant(assertFn),
                 true,
-                TypeTag.OBJECT
+                "function"
         );
         interpreter.defineGlobal(assertFn.getFnName(), assertVar);
 
@@ -122,7 +120,7 @@ public abstract class Debug  extends Function.NativeFunction {
         Variable traceVar = new Variable(
                 new Variable.Variant(traceFn),
                 true,
-                TypeTag.OBJECT
+                "function"
         );
         interpreter.defineGlobal(traceFn.getFnName(), traceVar);
 
@@ -132,7 +130,7 @@ public abstract class Debug  extends Function.NativeFunction {
         Variable dumpVar = new Variable(
                 new Variable.Variant(dumpFn),
                 true,
-                TypeTag.OBJECT
+                "function"
         );
         interpreter.defineGlobal(dumpFn.getFnName(), dumpVar);
     }

@@ -3,7 +3,6 @@ package ysharp.evaluator.Native.Collections;
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.Native.function.binding.BoundNativeFunction;
-import ysharp.parser.TypeTag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,7 +104,7 @@ public class yStack {
         Variable toStringVar = new Variable(
                 new Variable.Variant(toString),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yStack_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
         // arr.add(value)
@@ -138,7 +137,7 @@ public class yStack {
         Variable addVar = new Variable(
                 new Variable.Variant(push),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yStack_Instance_Prototype.set(push.getFnName(), addVar);
 
         // stack.pop()
@@ -177,7 +176,7 @@ public class yStack {
         Variable popVar = new Variable(
                 new Variable.Variant(pop),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yStack_Instance_Prototype.set(pop.getFnName(), popVar);
 
         // stack.peek()
@@ -216,7 +215,7 @@ public class yStack {
         Variable peekVar = new Variable(
                 new Variable.Variant(peek),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yStack_Instance_Prototype.set(peek.getFnName(), peekVar);
 
         // stack.empty()
@@ -247,7 +246,7 @@ public class yStack {
         Variable emptyVar = new Variable(
                 new Variable.Variant(empty),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yStack_Instance_Prototype.set(empty.getFnName(), emptyVar);
 
         // stack.search(element)
@@ -298,7 +297,7 @@ public class yStack {
         Variable searchVar = new Variable(
                 new Variable.Variant(search),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yStack_Instance_Prototype.set(search.getFnName(), searchVar);
 
         // stack.add(index, value)
@@ -352,7 +351,7 @@ public class yStack {
         Variable addAtIndexVar = new Variable(
                 new Variable.Variant(addAtIndex),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yStack_Instance_Prototype.set(addAtIndex.getFnName(), addAtIndexVar);
 
         // stack.clear()
@@ -385,7 +384,7 @@ public class yStack {
         Variable clearVar = new Variable(
                 new Variable.Variant(clear),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yStack_Instance_Prototype.set(clear.getFnName(), clearVar);
 
         // stack.clone()
@@ -422,7 +421,7 @@ public class yStack {
         Variable cloneVar = new Variable(
                 new Variable.Variant(clone),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yStack_Instance_Prototype.set(clone.getFnName(), cloneVar);
 
         // stack.contains(value)
@@ -461,7 +460,7 @@ public class yStack {
         Variable containsVar = new Variable(
                 new Variable.Variant(contains),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yStack_Instance_Prototype.set(contains.getFnName(), containsVar);
     }
 
@@ -524,7 +523,7 @@ public class yStack {
     public static void Register(Interpreter interpreter) throws Exception {
         yStack.yStackClass stackCtor = new yStack.yStackClass();
         Variable.Variant variant = new Variable.Variant(stackCtor);
-        Variable var = new Variable(variant, false, TypeTag.OBJECT);
+        Variable var = new Variable(variant, false, "function");
         interpreter.defineGlobal(stackCtor.getClassName(), var);
     }
 }

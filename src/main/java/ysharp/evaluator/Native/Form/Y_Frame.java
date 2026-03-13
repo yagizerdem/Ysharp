@@ -2,7 +2,6 @@ package ysharp.evaluator.Native.Form;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.parser.TypeTag;
 
 import javax.swing.*;
 import java.util.List;
@@ -81,7 +80,7 @@ public class Y_Frame {
         Variable peesetTitleVar = new Variable(
                 new Variable.Variant(setTitle),
                 true,
-                TypeTag.OBJECT);
+                "function");
         Y_Frame_Prototype.set(setTitle.getFnName(), peesetTitleVar);
 
         // frame.setSize(width, height)
@@ -130,7 +129,7 @@ public class Y_Frame {
         Variable setSizeVar = new Variable(
                 new Variable.Variant(setSize),
                 true,
-                TypeTag.OBJECT);
+                "function");
         Y_Frame_Prototype.set(setSize.getFnName(), setSizeVar);
 
         // frame.show()
@@ -163,7 +162,7 @@ public class Y_Frame {
         Variable showVar = new Variable(
                 new Variable.Variant(show),
                 true,
-                TypeTag.OBJECT);
+                "function");
         Y_Frame_Prototype.set(show.getFnName(), showVar);
 
         // frame.setLocation(x, y)
@@ -212,7 +211,7 @@ public class Y_Frame {
         Variable setLocationVar = new Variable(
                 new Variable.Variant(setLocation),
                 true,
-                TypeTag.OBJECT);
+                "function");
         Y_Frame_Prototype.set(setLocation.getFnName(), setLocationVar);
 
         // frame.add(component)
@@ -267,7 +266,7 @@ public class Y_Frame {
         Variable addVar = new Variable(
                 new Variable.Variant(add),
                 true,
-                TypeTag.OBJECT);
+                "function");
         Y_Frame_Prototype.set(add.getFnName(), addVar);
     }
 
@@ -319,7 +318,7 @@ public class Y_Frame {
                 new Variable(
                         new Variable.Variant(ctor),
                         false,
-                        TypeTag.OBJECT
+                        "function"
                 )
         );
     }

@@ -3,7 +3,6 @@ package ysharp.evaluator.Native.Collections.Trie;
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.Native.Collections.yArray;
-import ysharp.parser.TypeTag;
 import ysharp.evaluator.Native.Collections.Trie.Concrete.MapTrie;
 
 import java.util.ArrayList;
@@ -80,7 +79,7 @@ public class yMapTrie {
         }
 
         ToStringFn toString = new ToStringFn();
-        Variable toStringVar = new Variable(new Variable.Variant(toString), true, TypeTag.OBJECT);
+        Variable toStringVar = new Variable(new Variable.Variant(toString), true, "function");
         yMapTrie.yMapTrie_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
 
@@ -117,7 +116,7 @@ public class yMapTrie {
         }
 
         InsertFn insert = new InsertFn();
-        Variable insertVar = new Variable(new Variable.Variant(insert), true, TypeTag.OBJECT);
+        Variable insertVar = new Variable(new Variable.Variant(insert), true, "function");
         yMapTrie.yMapTrie_Instance_Prototype.set(insert.getFnName(), insertVar);
 
 
@@ -151,7 +150,7 @@ public class yMapTrie {
         }
 
         GetFn get = new GetFn();
-        Variable getVar = new Variable(new Variable.Variant(get), true, TypeTag.OBJECT);
+        Variable getVar = new Variable(new Variable.Variant(get), true, "function");
         yMapTrie.yMapTrie_Instance_Prototype.set(get.getFnName(), getVar);
 
 
@@ -183,7 +182,7 @@ public class yMapTrie {
         }
 
         ContainsFn contains = new ContainsFn();
-        Variable containsVar = new Variable(new Variable.Variant(contains), true, TypeTag.OBJECT);
+        Variable containsVar = new Variable(new Variable.Variant(contains), true, "function");
         yMapTrie.yMapTrie_Instance_Prototype.set(contains.getFnName(), containsVar);
 
 
@@ -217,7 +216,7 @@ public class yMapTrie {
         }
 
         DeleteKeyFn deleteKey = new DeleteKeyFn();
-        Variable deleteKeyVar = new Variable(new Variable.Variant(deleteKey), true, TypeTag.OBJECT);
+        Variable deleteKeyVar = new Variable(new Variable.Variant(deleteKey), true, "function");
         yMapTrie.yMapTrie_Instance_Prototype.set(deleteKey.getFnName(), deleteKeyVar);
 
 
@@ -256,7 +255,7 @@ public class yMapTrie {
         }
 
         GetKeySuggestionsFn getKeySuggestions = new GetKeySuggestionsFn();
-        Variable getKeySuggestionsVar = new Variable(new Variable.Variant(getKeySuggestions), true, TypeTag.OBJECT);
+        Variable getKeySuggestionsVar = new Variable(new Variable.Variant(getKeySuggestions), true, "function");
         yMapTrie.yMapTrie_Instance_Prototype.set(getKeySuggestions.getFnName(), getKeySuggestionsVar);
 
 
@@ -293,7 +292,7 @@ public class yMapTrie {
         }
 
         GetValueSuggestionsFn getValueSuggestions = new GetValueSuggestionsFn();
-        Variable getValueSuggestionsVar = new Variable(new Variable.Variant(getValueSuggestions), true, TypeTag.OBJECT);
+        Variable getValueSuggestionsVar = new Variable(new Variable.Variant(getValueSuggestions), true, "function");
         yMapTrie.yMapTrie_Instance_Prototype.set(getValueSuggestions.getFnName(), getValueSuggestionsVar);
 
 
@@ -331,7 +330,7 @@ public class yMapTrie {
         }
 
         KeysFn keys = new KeysFn();
-        Variable keysVar = new Variable(new Variable.Variant(keys), true, TypeTag.OBJECT);
+        Variable keysVar = new Variable(new Variable.Variant(keys), true, "function");
         yMapTrie.yMapTrie_Instance_Prototype.set(keys.getFnName(), keysVar);
 
 
@@ -366,7 +365,7 @@ public class yMapTrie {
         }
 
         ValuesFn values = new ValuesFn();
-        Variable valuesVar = new Variable(new Variable.Variant(values), true, TypeTag.OBJECT);
+        Variable valuesVar = new Variable(new Variable.Variant(values), true, "function");
         yMapTrie.yMapTrie_Instance_Prototype.set(values.getFnName(), valuesVar);
 
 
@@ -397,7 +396,7 @@ public class yMapTrie {
         }
 
         SizeFn size = new SizeFn();
-        Variable sizeVar = new Variable(new Variable.Variant(size), true, TypeTag.OBJECT);
+        Variable sizeVar = new Variable(new Variable.Variant(size), true, "function");
         yMapTrie.yMapTrie_Instance_Prototype.set(size.getFnName(), sizeVar);
 
 
@@ -428,7 +427,7 @@ public class yMapTrie {
         }
 
         IsEmptyFn isEmpty = new IsEmptyFn();
-        Variable isEmptyVar = new Variable(new Variable.Variant(isEmpty), true, TypeTag.OBJECT);
+        Variable isEmptyVar = new Variable(new Variable.Variant(isEmpty), true, "function");
         yMapTrie.yMapTrie_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
 
 
@@ -460,7 +459,7 @@ public class yMapTrie {
         }
 
         ClearFn clear = new ClearFn();
-        Variable clearVar = new Variable(new Variable.Variant(clear), true, TypeTag.OBJECT);
+        Variable clearVar = new Variable(new Variable.Variant(clear), true, "function");
         yMapTrie.yMapTrie_Instance_Prototype.set(clear.getFnName(), clearVar);
 
 
@@ -492,7 +491,7 @@ public class yMapTrie {
         }
 
         FastClearFn fastClear = new FastClearFn();
-        Variable fastClearVar = new Variable(new Variable.Variant(fastClear), true, TypeTag.OBJECT);
+        Variable fastClearVar = new Variable(new Variable.Variant(fastClear), true, "function");
         yMapTrie.yMapTrie_Instance_Prototype.set(fastClear.getFnName(), fastClearVar);
 
 
@@ -524,7 +523,7 @@ public class yMapTrie {
         }
 
         PrintFn print = new PrintFn();
-        Variable printVar = new Variable(new Variable.Variant(print), true, TypeTag.OBJECT);
+        Variable printVar = new Variable(new Variable.Variant(print), true, "function");
         yMapTrie.yMapTrie_Instance_Prototype.set(print.getFnName(), printVar);
 
     }
@@ -589,7 +588,7 @@ public class yMapTrie {
     public static void Register(Interpreter interpreter) throws Exception {
         yMapTrie.yMapTrieClass trieCtor = new yMapTrie.yMapTrieClass();
         Variable.Variant variant = new Variable.Variant(trieCtor);
-        Variable var = new Variable(variant, false, TypeTag.OBJECT);
+        Variable var = new Variable(variant, false, "function");
         interpreter.defineGlobal(trieCtor.getClassName(), var);
     }
 

@@ -1,23 +1,16 @@
 package ysharp.evaluator;
 
 import ysharp.YsharpError;
-import ysharp.lexer.Token;
-import ysharp.parser.TypeTag;
-
-import javax.swing.*;
-import java.security.PublicKey;
-import java.util.Objects;
-import java.util.concurrent.RecursiveTask;
 
 public class Variable {
 
     public Variant value;
     public final boolean isConst;
-    public final TypeTag typeTag;
+    public final String typeTag;
 
     public Variable(Variant value,
                     boolean isConst,
-                    TypeTag typeTag) {
+                    String typeTag) {
         this.value = value;
         this.isConst = isConst;
         this.typeTag = typeTag;
@@ -25,6 +18,7 @@ public class Variable {
 
     public static class Variant {
         public Object value;
+
 
         public Variant(Object value){
             this.value = value;
@@ -205,22 +199,36 @@ public class Variable {
             return this.value.toString();
         }
 
-    }
+        public String getType() {
 
-    public String getType(){
-        if(this.typeTag != TypeTag.OBJECT) {
-            return this.typeTag.toString();
-        }
+            if (this.value == null) {
+                return "null";
+            }
 
-        if (!this.value.isRuntimeObject()) {
+            if (isInt()) return "int";
+
+            if (isDouble()) return "double";
+
+            if (isBoolean()) return "bool";
+
+            if (isChar()) return "char";
+
+            if (isRuntimeObject()) {
+                RuntimeObject obj = asRuntimeObject();
+                return obj.getType();
+            }
+
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     -1,
-                    "Internal error: OBJECT typeTag but value is not a RuntimeObject."
+                    "Internal error: Unknown Variant runtime type: " + value.getClass()
             );
         }
 
-        RuntimeObject obj = this.value.asRuntimeObject();
-        return obj.getType();
     }
+
+    public String getType() {
+        return this.typeTag;
+    }
+
 }

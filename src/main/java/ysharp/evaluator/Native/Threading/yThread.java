@@ -2,7 +2,6 @@ package ysharp.evaluator.Native.Threading;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.parser.TypeTag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,7 +95,7 @@ public class yThread {
         Variable startVar = new Variable(
                 new Variable.Variant(start),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yThread_Instance_Prototype.set(start.getFnName(), startVar);
 
         // thread.join();
@@ -130,7 +129,7 @@ public class yThread {
         Variable joinVar = new Variable(
                 new Variable.Variant(join),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yThread_Instance_Prototype.set(join.getFnName(), joinVar);
 
 
@@ -159,7 +158,7 @@ public class yThread {
         Variable isAliveVar = new Variable(
                 new Variable.Variant(isAlive),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yThread_Instance_Prototype.set(isAlive.getFnName(), isAliveVar);
 
         // thread.interrupt()
@@ -202,7 +201,7 @@ public class yThread {
         Variable interruptVar = new Variable(
                 new Variable.Variant(interrupt),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yThread_Instance_Prototype.set(interrupt.getFnName(), interruptVar);
 
     }
@@ -317,7 +316,7 @@ public class yThread {
     public static void Register(Interpreter interpreter) throws Exception {
         yThreadClass ctor = new yThreadClass();
         Variable.Variant variant = new Variable.Variant(ctor);
-        Variable var = new Variable(variant, false, TypeTag.OBJECT);
+        Variable var = new Variable(variant, false, "function");
         interpreter.defineGlobal(ctor.getClassName(), var);
     }
 

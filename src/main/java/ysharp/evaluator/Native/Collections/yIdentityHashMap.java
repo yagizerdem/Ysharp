@@ -2,7 +2,6 @@ package ysharp.evaluator.Native.Collections;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.parser.TypeTag;
 
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
@@ -93,7 +92,7 @@ public class yIdentityHashMap {
         }
 
         ToStringFn toString = new ToStringFn();
-        Variable toStringVar = new Variable(new Variable.Variant(toString), true, TypeTag.OBJECT);
+        Variable toStringVar = new Variable(new Variable.Variant(toString), true, "function");
         yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
 
@@ -128,7 +127,7 @@ public class yIdentityHashMap {
         }
 
         PutFn put = new PutFn();
-        Variable putVar = new Variable(new Variable.Variant(put), true, TypeTag.OBJECT);
+        Variable putVar = new Variable(new Variable.Variant(put), true, "function");
         yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(put.getFnName(), putVar);
 
 
@@ -172,7 +171,7 @@ public class yIdentityHashMap {
         }
 
         PutAllFn putAll = new PutAllFn();
-        Variable putAllVar = new Variable(new Variable.Variant(putAll), true, TypeTag.OBJECT);
+        Variable putAllVar = new Variable(new Variable.Variant(putAll), true, "function");
         yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(putAll.getFnName(), putAllVar);
 
 
@@ -206,7 +205,7 @@ public class yIdentityHashMap {
         }
 
         GetFn get = new GetFn();
-        Variable getVar = new Variable(new Variable.Variant(get), true, TypeTag.OBJECT);
+        Variable getVar = new Variable(new Variable.Variant(get), true, "function");
         yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(get.getFnName(), getVar);
 
 
@@ -240,7 +239,7 @@ public class yIdentityHashMap {
         }
 
         RemoveFn remove = new RemoveFn();
-        Variable removeVar = new Variable(new Variable.Variant(remove), true, TypeTag.OBJECT);
+        Variable removeVar = new Variable(new Variable.Variant(remove), true, "function");
         yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(remove.getFnName(), removeVar);
 
 
@@ -272,7 +271,7 @@ public class yIdentityHashMap {
         }
 
         ContainsKeyFn containsKey = new ContainsKeyFn();
-        Variable containsKeyVar = new Variable(new Variable.Variant(containsKey), true, TypeTag.OBJECT);
+        Variable containsKeyVar = new Variable(new Variable.Variant(containsKey), true, "function");
         yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(containsKey.getFnName(), containsKeyVar);
 
 
@@ -304,7 +303,7 @@ public class yIdentityHashMap {
         }
 
         ContainsValueFn containsValue = new ContainsValueFn();
-        Variable containsValueVar = new Variable(new Variable.Variant(containsValue), true, TypeTag.OBJECT);
+        Variable containsValueVar = new Variable(new Variable.Variant(containsValue), true, "function");
         yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(containsValue.getFnName(), containsValueVar);
 
 
@@ -337,7 +336,7 @@ public class yIdentityHashMap {
         }
 
         KeySetFn keySet = new KeySetFn();
-        Variable keySetVar = new Variable(new Variable.Variant(keySet), true, TypeTag.OBJECT);
+        Variable keySetVar = new Variable(new Variable.Variant(keySet), true, "function");
         yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(keySet.getFnName(), keySetVar);
 
 
@@ -370,7 +369,7 @@ public class yIdentityHashMap {
         }
 
         ValuesFn values = new ValuesFn();
-        Variable valuesVar = new Variable(new Variable.Variant(values), true, TypeTag.OBJECT);
+        Variable valuesVar = new Variable(new Variable.Variant(values), true, "function");
         yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(values.getFnName(), valuesVar);
 
 
@@ -410,7 +409,7 @@ public class yIdentityHashMap {
         }
 
         EntrySetFn entrySet = new EntrySetFn();
-        Variable entrySetVar = new Variable(new Variable.Variant(entrySet), true, TypeTag.OBJECT);
+        Variable entrySetVar = new Variable(new Variable.Variant(entrySet), true, "function");
         yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(entrySet.getFnName(), entrySetVar);
 
 
@@ -449,7 +448,7 @@ public class yIdentityHashMap {
         }
 
         EqualsFn equals = new EqualsFn();
-        Variable equalsVar = new Variable(new Variable.Variant(equals), true, TypeTag.OBJECT);
+        Variable equalsVar = new Variable(new Variable.Variant(equals), true, "function");
         yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(equals.getFnName(), equalsVar);
 
 
@@ -480,7 +479,7 @@ public class yIdentityHashMap {
         }
 
         HashCodeFn hashCode = new HashCodeFn();
-        Variable hashCodeVar = new Variable(new Variable.Variant(hashCode), true, TypeTag.OBJECT);
+        Variable hashCodeVar = new Variable(new Variable.Variant(hashCode), true, "function");
         yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(hashCode.getFnName(), hashCodeVar);
 
 
@@ -511,7 +510,7 @@ public class yIdentityHashMap {
         }
 
         SizeFn size = new SizeFn();
-        Variable sizeVar = new Variable(new Variable.Variant(size), true, TypeTag.OBJECT);
+        Variable sizeVar = new Variable(new Variable.Variant(size), true, "function");
         yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(size.getFnName(), sizeVar);
 
 
@@ -542,7 +541,7 @@ public class yIdentityHashMap {
         }
 
         IsEmptyFn isEmpty = new IsEmptyFn();
-        Variable isEmptyVar = new Variable(new Variable.Variant(isEmpty), true, TypeTag.OBJECT);
+        Variable isEmptyVar = new Variable(new Variable.Variant(isEmpty), true, "function");
         yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
 
 
@@ -574,7 +573,7 @@ public class yIdentityHashMap {
         }
 
         ClearFn clear = new ClearFn();
-        Variable clearVar = new Variable(new Variable.Variant(clear), true, TypeTag.OBJECT);
+        Variable clearVar = new Variable(new Variable.Variant(clear), true, "function");
         yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(clear.getFnName(), clearVar);
 
 
@@ -608,7 +607,7 @@ public class yIdentityHashMap {
         }
 
         CloneFn clone = new CloneFn();
-        Variable cloneVar = new Variable(new Variable.Variant(clone), true, TypeTag.OBJECT);
+        Variable cloneVar = new Variable(new Variable.Variant(clone), true, "function");
         yIdentityHashMap.yIdentityHashMap_Instance_Prototype.set(clone.getFnName(), cloneVar);
 
     }
@@ -672,7 +671,7 @@ public class yIdentityHashMap {
     public static void Register(Interpreter interpreter) throws Exception {
         yIdentityHashMap.yIdentityHashMapClass ihmCtor = new yIdentityHashMap.yIdentityHashMapClass();
         Variable.Variant variant = new Variable.Variant(ihmCtor);
-        Variable var = new Variable(variant, false, TypeTag.OBJECT);
+        Variable var = new Variable(variant, false, "function");
         interpreter.defineGlobal(ihmCtor.getClassName(), var);
     }
 

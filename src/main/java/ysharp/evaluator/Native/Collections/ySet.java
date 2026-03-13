@@ -3,7 +3,6 @@ package ysharp.evaluator.Native.Collections;
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.Native.function.binding.BoundNativeFunction;
-import ysharp.parser.TypeTag;
 
 import java.util.*;
 
@@ -107,7 +106,7 @@ public class ySet {
         Variable toStringVar = new Variable(
                 new Variable.Variant(toString),
                 true,
-                TypeTag.OBJECT);
+                "function");
         ySet_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
         // set.add("data")
@@ -135,7 +134,7 @@ public class ySet {
         Variable addVar = new Variable(
                 new Variable.Variant(add),
                 true,
-                TypeTag.OBJECT
+                "function"
         );
         ySet_Instance_Prototype.set(add.getFnName(), addVar);
 
@@ -165,7 +164,7 @@ public class ySet {
         Variable removeVar = new Variable(
                 new Variable.Variant(remove),
                 true,
-                TypeTag.OBJECT
+                "function"
         );
         ySet_Instance_Prototype.set(remove.getFnName(),removeVar);
 
@@ -194,7 +193,7 @@ public class ySet {
         Variable containsVar = new Variable(
                 new Variable.Variant(contains),
                 true,
-                TypeTag.OBJECT
+                "function"
         );
         ySet_Instance_Prototype.set(contains.getFnName(), containsVar);
 
@@ -224,7 +223,7 @@ public class ySet {
         Variable clearVar = new Variable(
                 new Variable.Variant(clear),
                 true,
-                TypeTag.OBJECT
+                "function"
         );
         ySet_Instance_Prototype.set(clear.getFnName(), clearVar);
 
@@ -252,7 +251,7 @@ public class ySet {
         Variable sizeVar = new Variable(
                 new Variable.Variant(size),
                 true,
-                TypeTag.OBJECT
+                "function"
         );
         ySet_Instance_Prototype.set(size.getFnName(), sizeVar);
 
@@ -288,7 +287,7 @@ public class ySet {
         Variable cloneVar = new Variable(
                 new Variable.Variant(clone),
                 true,
-                TypeTag.OBJECT
+                "function"
         );
         ySet_Instance_Prototype.set(clone.getFnName(), cloneVar);
 
@@ -339,7 +338,7 @@ public class ySet {
         Variable unionVar = new Variable(
                 new Variable.Variant(union),
                 true,
-                TypeTag.OBJECT
+                "function"
         );
         ySet_Instance_Prototype.set(union.getFnName(), unionVar);
 
@@ -390,7 +389,7 @@ public class ySet {
         Variable intersectionVar = new Variable(
                 new Variable.Variant(intersection),
                 true,
-                TypeTag.OBJECT
+                "function"
         );
         ySet_Instance_Prototype.set(intersection.getFnName(), intersectionVar);
 
@@ -441,7 +440,7 @@ public class ySet {
         Variable differenceVar = new Variable(
                 new Variable.Variant(difference),
                 true,
-                TypeTag.OBJECT
+                "function"
         );
         ySet_Instance_Prototype.set(difference.getFnName(), differenceVar);
 
@@ -488,7 +487,7 @@ public class ySet {
         Variable isSubsetVar = new Variable(
                 new Variable.Variant(isSubset),
                 true,
-                TypeTag.OBJECT
+                "function"
         );
         ySet_Instance_Prototype.set(isSubset.getFnName(), isSubsetVar);
 
@@ -516,7 +515,7 @@ public class ySet {
         Variable emptyVar = new Variable(
                 new Variable.Variant(empty),
                 true,
-                TypeTag.OBJECT
+                "function"
         );
         ySet_Instance_Prototype.set(empty.getFnName(), emptyVar);
 
@@ -563,7 +562,7 @@ public class ySet {
         Variable isSupersetVar = new Variable(
                 new Variable.Variant(isSuperset),
                 true,
-                TypeTag.OBJECT
+                "function"
         );
         ySet_Instance_Prototype.set(isSuperset.getFnName(), isSupersetVar);
 
@@ -610,7 +609,7 @@ public class ySet {
         Variable equalsVar = new Variable(
                 new Variable.Variant(equals),
                 true,
-                TypeTag.OBJECT
+                "function"
         );
         ySet_Instance_Prototype.set(equals.getFnName(), equalsVar);
     }
@@ -674,6 +673,6 @@ public class ySet {
                 new Variable(
                         new Variable.Variant(ctor),
                         false,
-                        TypeTag.OBJECT));
+                        "function"));
     }
 }

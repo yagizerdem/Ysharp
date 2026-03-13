@@ -3,7 +3,6 @@ package ysharp.evaluator.Native.Collections.Trie;
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.Native.Collections.yArray;
-import ysharp.parser.TypeTag;
 import ysharp.evaluator.Native.Collections.Trie.Concrete.T9Trie;
 
 import java.util.ArrayList;
@@ -81,7 +80,7 @@ public class yT9Trie {
         }
 
         ToStringFn toString = new ToStringFn();
-        Variable toStringVar = new Variable(new Variable.Variant(toString), true, TypeTag.OBJECT);
+        Variable toStringVar = new Variable(new Variable.Variant(toString), true, "function");
         yT9Trie.yT9Trie_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
 
@@ -117,7 +116,7 @@ public class yT9Trie {
         }
 
         InsertValueFn insertValue = new InsertValueFn();
-        Variable insertValueVar = new Variable(new Variable.Variant(insertValue), true, TypeTag.OBJECT);
+        Variable insertValueVar = new Variable(new Variable.Variant(insertValue), true, "function");
         yT9Trie.yT9Trie_Instance_Prototype.set(insertValue.getFnName(), insertValueVar);
 
 
@@ -165,7 +164,7 @@ public class yT9Trie {
         }
 
         InsertFn insert = new InsertFn();
-        Variable insertVar = new Variable(new Variable.Variant(insert), true, TypeTag.OBJECT);
+        Variable insertVar = new Variable(new Variable.Variant(insert), true, "function");
         yT9Trie.yT9Trie_Instance_Prototype.set(insert.getFnName(), insertVar);
 
 
@@ -201,7 +200,7 @@ public class yT9Trie {
         }
 
         GetFn get = new GetFn();
-        Variable getVar = new Variable(new Variable.Variant(get), true, TypeTag.OBJECT);
+        Variable getVar = new Variable(new Variable.Variant(get), true, "function");
         yT9Trie.yT9Trie_Instance_Prototype.set(get.getFnName(), getVar);
 
 
@@ -233,7 +232,7 @@ public class yT9Trie {
         }
 
         ContainsFn contains = new ContainsFn();
-        Variable containsVar = new Variable(new Variable.Variant(contains), true, TypeTag.OBJECT);
+        Variable containsVar = new Variable(new Variable.Variant(contains), true, "function");
         yT9Trie.yT9Trie_Instance_Prototype.set(contains.getFnName(), containsVar);
 
 
@@ -267,7 +266,7 @@ public class yT9Trie {
         }
 
         DeleteKeyFn deleteKey = new DeleteKeyFn();
-        Variable deleteKeyVar = new Variable(new Variable.Variant(deleteKey), true, TypeTag.OBJECT);
+        Variable deleteKeyVar = new Variable(new Variable.Variant(deleteKey), true, "function");
         yT9Trie.yT9Trie_Instance_Prototype.set(deleteKey.getFnName(), deleteKeyVar);
 
 
@@ -306,7 +305,7 @@ public class yT9Trie {
         }
 
         GetKeySuggestionsFn getKeySuggestions = new GetKeySuggestionsFn();
-        Variable getKeySuggestionsVar = new Variable(new Variable.Variant(getKeySuggestions), true, TypeTag.OBJECT);
+        Variable getKeySuggestionsVar = new Variable(new Variable.Variant(getKeySuggestions), true, "function");
         yT9Trie.yT9Trie_Instance_Prototype.set(getKeySuggestions.getFnName(), getKeySuggestionsVar);
 
 
@@ -344,7 +343,7 @@ public class yT9Trie {
         }
 
         GetT9ValueSuggestionsFn getT9ValueSuggestions = new GetT9ValueSuggestionsFn();
-        Variable getT9ValueSuggestionsVar = new Variable(new Variable.Variant(getT9ValueSuggestions), true, TypeTag.OBJECT);
+        Variable getT9ValueSuggestionsVar = new Variable(new Variable.Variant(getT9ValueSuggestions), true, "function");
         yT9Trie.yT9Trie_Instance_Prototype.set(getT9ValueSuggestions.getFnName(), getT9ValueSuggestionsVar);
 
 
@@ -379,7 +378,7 @@ public class yT9Trie {
         }
 
         T9ValuesFn t9Values = new T9ValuesFn();
-        Variable t9ValuesVar = new Variable(new Variable.Variant(t9Values), true, TypeTag.OBJECT);
+        Variable t9ValuesVar = new Variable(new Variable.Variant(t9Values), true, "function");
         yT9Trie.yT9Trie_Instance_Prototype.set(t9Values.getFnName(), t9ValuesVar);
 
 
@@ -417,7 +416,7 @@ public class yT9Trie {
         }
 
         KeysFn keys = new KeysFn();
-        Variable keysVar = new Variable(new Variable.Variant(keys), true, TypeTag.OBJECT);
+        Variable keysVar = new Variable(new Variable.Variant(keys), true, "function");
         yT9Trie.yT9Trie_Instance_Prototype.set(keys.getFnName(), keysVar);
 
 
@@ -448,7 +447,7 @@ public class yT9Trie {
         }
 
         SizeFn size = new SizeFn();
-        Variable sizeVar = new Variable(new Variable.Variant(size), true, TypeTag.OBJECT);
+        Variable sizeVar = new Variable(new Variable.Variant(size), true, "function");
         yT9Trie.yT9Trie_Instance_Prototype.set(size.getFnName(), sizeVar);
 
 
@@ -479,7 +478,7 @@ public class yT9Trie {
         }
 
         IsEmptyFn isEmpty = new IsEmptyFn();
-        Variable isEmptyVar = new Variable(new Variable.Variant(isEmpty), true, TypeTag.OBJECT);
+        Variable isEmptyVar = new Variable(new Variable.Variant(isEmpty), true, "function");
         yT9Trie.yT9Trie_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
 
 
@@ -511,7 +510,7 @@ public class yT9Trie {
         }
 
         ClearFn clear = new ClearFn();
-        Variable clearVar = new Variable(new Variable.Variant(clear), true, TypeTag.OBJECT);
+        Variable clearVar = new Variable(new Variable.Variant(clear), true, "function");
         yT9Trie.yT9Trie_Instance_Prototype.set(clear.getFnName(), clearVar);
 
 
@@ -543,7 +542,7 @@ public class yT9Trie {
         }
 
         FastClearFn fastClear = new FastClearFn();
-        Variable fastClearVar = new Variable(new Variable.Variant(fastClear), true, TypeTag.OBJECT);
+        Variable fastClearVar = new Variable(new Variable.Variant(fastClear), true, "function");
         yT9Trie.yT9Trie_Instance_Prototype.set(fastClear.getFnName(), fastClearVar);
 
 
@@ -575,7 +574,7 @@ public class yT9Trie {
         }
 
         PrintFn print = new PrintFn();
-        Variable printVar = new Variable(new Variable.Variant(print), true, TypeTag.OBJECT);
+        Variable printVar = new Variable(new Variable.Variant(print), true, "function");
         yT9Trie.yT9Trie_Instance_Prototype.set(print.getFnName(), printVar);
 
     }
@@ -642,7 +641,7 @@ public class yT9Trie {
     public static void Register(Interpreter interpreter) throws Exception {
         yT9Trie.yT9TrieClass t9Ctor = new yT9Trie.yT9TrieClass();
         Variable.Variant variant = new Variable.Variant(t9Ctor);
-        Variable var = new Variable(variant, false, TypeTag.OBJECT);
+        Variable var = new Variable(variant, false, "function");
         interpreter.defineGlobal(t9Ctor.getClassName(), var);
     }
 

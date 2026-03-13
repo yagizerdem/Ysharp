@@ -2,7 +2,6 @@ package ysharp.evaluator.Native.Util;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.parser.TypeTag;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -75,7 +74,7 @@ public class yDateTime {
             Variable nowVar = new Variable(
                     new Variable.Variant(now),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(now.getFnName(), nowVar);
 
 
@@ -105,7 +104,7 @@ public class yDateTime {
             Variable utcNowVar = new Variable(
                     new Variable.Variant(utcNow),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(utcNow.getFnName(), utcNowVar);
 
 
@@ -145,7 +144,7 @@ public class yDateTime {
             Variable ofVar = new Variable(
                     new Variable.Variant(of),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(of.getFnName(), ofVar);
 
 
@@ -181,7 +180,7 @@ public class yDateTime {
             Variable fromEpochVar = new Variable(
                     new Variable.Variant(fromEpoch),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(fromEpoch.getFnName(), fromEpochVar);
 
 
@@ -221,7 +220,7 @@ public class yDateTime {
             Variable parseVar = new Variable(
                     new Variable.Variant(parse),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(parse.getFnName(), parseVar);
 
 
@@ -254,7 +253,7 @@ public class yDateTime {
             Variable yearVar = new Variable(
                     new Variable.Variant(year),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(year.getFnName(), yearVar);
 
 
@@ -287,7 +286,7 @@ public class yDateTime {
             Variable monthVar = new Variable(
                     new Variable.Variant(month),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(month.getFnName(), monthVar);
 
 
@@ -320,7 +319,7 @@ public class yDateTime {
             Variable dayVar = new Variable(
                     new Variable.Variant(day),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(day.getFnName(), dayVar);
 
 
@@ -353,7 +352,7 @@ public class yDateTime {
             Variable hourVar = new Variable(
                     new Variable.Variant(hour),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(hour.getFnName(), hourVar);
 
 
@@ -386,7 +385,7 @@ public class yDateTime {
             Variable minuteVar = new Variable(
                     new Variable.Variant(minute),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(minute.getFnName(), minuteVar);
 
 
@@ -419,7 +418,7 @@ public class yDateTime {
             Variable secondVar = new Variable(
                     new Variable.Variant(second),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(second.getFnName(), secondVar);
 
 
@@ -452,7 +451,7 @@ public class yDateTime {
             Variable dayOfWeekVar = new Variable(
                     new Variable.Variant(dayOfWeek),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(dayOfWeek.getFnName(), dayOfWeekVar);
 
 
@@ -485,7 +484,7 @@ public class yDateTime {
             Variable dayOfYearVar = new Variable(
                     new Variable.Variant(dayOfYear),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(dayOfYear.getFnName(), dayOfYearVar);
 
 
@@ -518,7 +517,7 @@ public class yDateTime {
             Variable toEpochVar = new Variable(
                     new Variable.Variant(toEpoch),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(toEpoch.getFnName(), toEpochVar);
 
 
@@ -558,7 +557,7 @@ public class yDateTime {
             Variable formatVar = new Variable(
                     new Variable.Variant(format),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(format.getFnName(), formatVar);
 
 
@@ -593,7 +592,7 @@ public class yDateTime {
             Variable addDaysVar = new Variable(
                     new Variable.Variant(addDays),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(addDays.getFnName(), addDaysVar);
 
 
@@ -628,7 +627,7 @@ public class yDateTime {
             Variable addHoursVar = new Variable(
                     new Variable.Variant(addHours),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(addHours.getFnName(), addHoursVar);
 
 
@@ -663,7 +662,7 @@ public class yDateTime {
             Variable addMinutesVar = new Variable(
                     new Variable.Variant(addMinutes),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(addMinutes.getFnName(), addMinutesVar);
 
 
@@ -698,7 +697,7 @@ public class yDateTime {
             Variable addSecondsVar = new Variable(
                     new Variable.Variant(addSeconds),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(addSeconds.getFnName(), addSecondsVar);
 
 
@@ -733,7 +732,7 @@ public class yDateTime {
             Variable addMonthsVar = new Variable(
                     new Variable.Variant(addMonths),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(addMonths.getFnName(), addMonthsVar);
 
 
@@ -768,7 +767,7 @@ public class yDateTime {
             Variable addYearsVar = new Variable(
                     new Variable.Variant(addYears),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(addYears.getFnName(), addYearsVar);
 
 
@@ -803,7 +802,7 @@ public class yDateTime {
             Variable diffSecondsVar = new Variable(
                     new Variable.Variant(diffSeconds),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(diffSeconds.getFnName(), diffSecondsVar);
 
 
@@ -838,7 +837,7 @@ public class yDateTime {
             Variable diffDaysVar = new Variable(
                     new Variable.Variant(diffDays),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(diffDays.getFnName(), diffDaysVar);
 
 
@@ -873,7 +872,7 @@ public class yDateTime {
             Variable isBeforeVar = new Variable(
                     new Variable.Variant(isBefore),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(isBefore.getFnName(), isBeforeVar);
 
 
@@ -908,7 +907,7 @@ public class yDateTime {
             Variable isAfterVar = new Variable(
                     new Variable.Variant(isAfter),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(isAfter.getFnName(), isAfterVar);
 
 
@@ -943,7 +942,7 @@ public class yDateTime {
             Variable isEqualVar = new Variable(
                     new Variable.Variant(isEqual),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(isEqual.getFnName(), isEqualVar);
 
 
@@ -977,7 +976,7 @@ public class yDateTime {
             Variable toUtcVar = new Variable(
                     new Variable.Variant(toUtc),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(toUtc.getFnName(), toUtcVar);
 
 
@@ -1019,7 +1018,7 @@ public class yDateTime {
             Variable withZoneVar = new Variable(
                     new Variable.Variant(withZone),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(withZone.getFnName(), withZoneVar);
 
 
@@ -1052,7 +1051,7 @@ public class yDateTime {
             Variable toStringVar = new Variable(
                     new Variable.Variant(toStringFn),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(toStringFn.getFnName(), toStringVar);
         }
 
@@ -1111,7 +1110,7 @@ public class yDateTime {
         Variable.Variant variant = new Variable.Variant(ctor);
         Variable var = new Variable(variant,
                 true,
-                TypeTag.OBJECT);
+                "function");
 
         interpreter.defineGlobal(ctor.getClassName(), var);
     }

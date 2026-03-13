@@ -2,7 +2,6 @@ package ysharp.evaluator.Native.Util;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.parser.TypeTag;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -89,7 +88,7 @@ public class yCrypto {
             Variable md5Var = new Variable(
                     new Variable.Variant(md5),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(md5.getFnName(), md5Var);
 
 
@@ -130,7 +129,7 @@ public class yCrypto {
             Variable sha1Var = new Variable(
                     new Variable.Variant(sha1),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(sha1.getFnName(), sha1Var);
 
 
@@ -171,7 +170,7 @@ public class yCrypto {
             Variable sha256Var = new Variable(
                     new Variable.Variant(sha256),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(sha256.getFnName(), sha256Var);
 
 
@@ -212,7 +211,7 @@ public class yCrypto {
             Variable sha512Var = new Variable(
                     new Variable.Variant(sha512),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(sha512.getFnName(), sha512Var);
 
 
@@ -257,7 +256,7 @@ public class yCrypto {
             Variable hmacSha256Var = new Variable(
                     new Variable.Variant(hmacSha256),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(hmacSha256.getFnName(), hmacSha256Var);
 
 
@@ -302,7 +301,7 @@ public class yCrypto {
             Variable hmacSha512Var = new Variable(
                     new Variable.Variant(hmacSha512),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(hmacSha512.getFnName(), hmacSha512Var);
 
 
@@ -337,7 +336,7 @@ public class yCrypto {
             Variable base64EncodeVar = new Variable(
                     new Variable.Variant(base64Encode),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(base64Encode.getFnName(), base64EncodeVar);
 
 
@@ -377,7 +376,7 @@ public class yCrypto {
             Variable base64DecodeVar = new Variable(
                     new Variable.Variant(base64Decode),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(base64Decode.getFnName(), base64DecodeVar);
 
 
@@ -412,7 +411,7 @@ public class yCrypto {
             Variable toHexVar = new Variable(
                     new Variable.Variant(toHex),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(toHex.getFnName(), toHexVar);
 
 
@@ -452,7 +451,7 @@ public class yCrypto {
             Variable fromHexVar = new Variable(
                     new Variable.Variant(fromHex),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(fromHex.getFnName(), fromHexVar);
 
 
@@ -489,7 +488,7 @@ public class yCrypto {
             Variable randomBytesVar = new Variable(
                     new Variable.Variant(randomBytes),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(randomBytes.getFnName(), randomBytesVar);
 
 
@@ -519,7 +518,7 @@ public class yCrypto {
             Variable uuidVar = new Variable(
                     new Variable.Variant(uuid),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(uuid.getFnName(), uuidVar);
 
 
@@ -557,7 +556,7 @@ public class yCrypto {
             Variable aesGenerateKeyVar = new Variable(
                     new Variable.Variant(aesGenerateKey),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(aesGenerateKey.getFnName(), aesGenerateKeyVar);
 
 
@@ -612,7 +611,7 @@ public class yCrypto {
             Variable aesEncryptVar = new Variable(
                     new Variable.Variant(aesEncrypt),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(aesEncrypt.getFnName(), aesEncryptVar);
 
 
@@ -667,7 +666,7 @@ public class yCrypto {
             Variable aesDecryptVar = new Variable(
                     new Variable.Variant(aesDecrypt),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(aesDecrypt.getFnName(), aesDecryptVar);
 
             // Crypto.aesGcmEncrypt(plaintext: string, base64Key: string) -> string  (base64: iv + tag + ciphertext)
@@ -721,7 +720,7 @@ public class yCrypto {
             Variable aesGcmEncryptVar = new Variable(
                     new Variable.Variant(aesGcmEncrypt),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(aesGcmEncrypt.getFnName(), aesGcmEncryptVar);
 
 
@@ -776,7 +775,7 @@ public class yCrypto {
             Variable aesGcmDecryptVar = new Variable(
                     new Variable.Variant(aesGcmDecrypt),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(aesGcmDecrypt.getFnName(), aesGcmDecryptVar);
 
 
@@ -818,7 +817,7 @@ public class yCrypto {
             Variable rsaGenerateKeyPairVar = new Variable(
                     new Variable.Variant(rsaGenerateKeyPair),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(rsaGenerateKeyPair.getFnName(), rsaGenerateKeyPairVar);
 
 
@@ -866,7 +865,7 @@ public class yCrypto {
             Variable rsaEncryptVar = new Variable(
                     new Variable.Variant(rsaEncrypt),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(rsaEncrypt.getFnName(), rsaEncryptVar);
 
 
@@ -914,7 +913,7 @@ public class yCrypto {
             Variable rsaDecryptVar = new Variable(
                     new Variable.Variant(rsaDecrypt),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(rsaDecrypt.getFnName(), rsaDecryptVar);
 
 
@@ -963,7 +962,7 @@ public class yCrypto {
             Variable rsaSignVar = new Variable(
                     new Variable.Variant(rsaSign),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(rsaSign.getFnName(), rsaSignVar);
 
 
@@ -1012,7 +1011,7 @@ public class yCrypto {
             Variable rsaVerifyVar = new Variable(
                     new Variable.Variant(rsaVerify),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(rsaVerify.getFnName(), rsaVerifyVar);
 
 
@@ -1058,7 +1057,7 @@ public class yCrypto {
             Variable constantTimeEqualsVar = new Variable(
                     new Variable.Variant(constantTimeEquals),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(constantTimeEquals.getFnName(), constantTimeEqualsVar);
 
 
@@ -1117,7 +1116,7 @@ public class yCrypto {
             Variable pbkdf2Var = new Variable(
                     new Variable.Variant(pbkdf2),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(pbkdf2.getFnName(), pbkdf2Var);
 
 
@@ -1176,7 +1175,7 @@ public class yCrypto {
             Variable scryptVar = new Variable(
                     new Variable.Variant(scrypt),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(scrypt.getFnName(), scryptVar);
 
 
@@ -1219,7 +1218,7 @@ public class yCrypto {
             Variable randomStringVar = new Variable(
                     new Variable.Variant(randomString),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(randomString.getFnName(), randomStringVar);
 
 
@@ -1278,7 +1277,7 @@ public class yCrypto {
             Variable deriveKeyVar = new Variable(
                     new Variable.Variant(deriveKey),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(deriveKey.getFnName(), deriveKeyVar);
 
         }
@@ -1319,7 +1318,7 @@ public class yCrypto {
         Variable.Variant variant = new Variable.Variant(ctor);
         Variable var = new Variable(variant,
                 true,
-                TypeTag.OBJECT);
+                "function");
 
         interpreter.defineGlobal(ctor.getClassName(), var);
     }

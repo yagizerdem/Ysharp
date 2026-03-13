@@ -1,7 +1,5 @@
 package ysharp.evaluator.Native.TUI.Terminal;
 
-import com.googlecode.lanterna.terminal.swing.SwingTerminal;
-import com.googlecode.lanterna.terminal.swing.SwingTerminalFrame;
 import ysharp.YsharpError;
 import ysharp.evaluator.Interpreter;
 import ysharp.evaluator.Native.TUI.Terminal.Abstract.yAbstractTerminal;
@@ -9,10 +7,7 @@ import ysharp.evaluator.Native.TUI.Terminal.Abstract.yBaseTerminal;
 import ysharp.evaluator.RuntimeObject;
 import ysharp.evaluator.Variable;
 import ysharp.evaluator.yClass;
-import ysharp.parser.TypeTag;
 
-import javax.swing.*;
-import java.awt.*;
 import java.util.List;
 
 public class ySwingTerminal {
@@ -40,7 +35,7 @@ public class ySwingTerminal {
         public ySwingTerminalInstance() {
             this.prototype = ySwingTerminal_Instance_Prototype;
 
-            Variable autoFlushVar = new Variable(new Variable.Variant(false), false, TypeTag.BOOL);
+            Variable autoFlushVar = new Variable(new Variable.Variant(false), false, "bool");
             this.set("autoFlush", autoFlushVar);
         }
 
@@ -101,7 +96,7 @@ public class ySwingTerminal {
         Variable.Variant variant = new Variable.Variant(ctor);
         Variable var = new Variable(variant,
                 true,
-                TypeTag.OBJECT);
+                "function");
 
         interpreter.defineGlobal(ctor.getClassName(), var);
     }

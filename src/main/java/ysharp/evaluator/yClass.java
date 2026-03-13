@@ -2,7 +2,6 @@ package ysharp.evaluator;
 
 import ysharp.YsharpError;
 import ysharp.lexer.Token;
-import ysharp.parser.TypeTag;
 
 import java.util.List;
 
@@ -61,7 +60,7 @@ public class yClass {
         Variable getTypeVar = new Variable(
                 new Variable.Variant(getType),
                 true,
-                TypeTag.OBJECT);
+                "function");
             ClassPrototype.set(getType.getFnName(), getTypeVar);
 
     }

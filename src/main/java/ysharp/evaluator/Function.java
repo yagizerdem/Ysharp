@@ -3,7 +3,6 @@ package ysharp.evaluator;
 import ysharp.YsharpError;
 import ysharp.parser.Expr;
 import ysharp.parser.Stmt;
-import ysharp.parser.TypeTag;
 
 import java.util.List;
 
@@ -67,9 +66,9 @@ public abstract class Function extends RuntimeObject implements Callable {
 
                 Variable.Variant arg = arguments.get(i);
 
-                TypeTag typeTag = null;
+                String typeTag = "any";
                 if (param.type != null) {
-                    typeTag = TypeTag.fromString(param.type.lexeme);
+                    typeTag = param.type.lexeme;
                 }
 
                 Variable newVar = new Variable(arg, true, typeTag);
@@ -145,9 +144,9 @@ public abstract class Function extends RuntimeObject implements Callable {
 
                 Variable.Variant arg = arguments.get(i);
 
-                TypeTag typeTag = null;
+                String typeTag = null;
                 if (param.type != null) {
-                    typeTag = TypeTag.fromString(param.type.lexeme);
+                    typeTag = param.type.lexeme;
                 }
 
                 Variable newVar = new Variable(arg, true, typeTag);

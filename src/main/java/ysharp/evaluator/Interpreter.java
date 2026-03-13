@@ -7,7 +7,6 @@ import ysharp.evaluator.Native.function.binding.BoundNativeFunction;
 import ysharp.lexer.Token;
 import ysharp.parser.Expr;
 import ysharp.parser.Stmt;
-import ysharp.parser.TypeTag;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -470,6 +469,20 @@ public class Interpreter implements
                         YsharpError.YsharpErrorType.PROCESS,
                         expr.op.line,
                         "Cannot assign to constant variable '" + lvalue.lexeme + "'."
+                );
+            }
+
+            if(!Interpreter.typeChecker(identifier, right)) {
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.PROCESS,
+                        expr.op.line,
+                        "Type mismatch: cannot assign value of type '" +
+                                right.getType() +
+                                "' to variable '" +
+                                lvalue.lexeme +
+                                "' of type '" +
+                                identifier.getType() +
+                                "'."
                 );
             }
 
@@ -1026,7 +1039,7 @@ public class Interpreter implements
             Environment oldEnv = this.curEnv;
             try {
                 Environment newEnv = new Environment(curEnv);
-                newEnv.define(stmt.errIdentifier.lexeme, new Variable(sig.value, true, TypeTag.ANY));
+                newEnv.define(stmt.errIdentifier.lexeme, new Variable(sig.value, true, "any"));
                 this.curEnv = newEnv;
                 this.execute(stmt.catchBlock);
             }
@@ -1055,7 +1068,7 @@ public class Interpreter implements
         Variable var = new Variable(
                 value,
                 false,
-                TypeTag.fromString(typeTag));
+                typeTag);
 
         this.curEnv.define(stmt.identifier.lexeme, var);
 
@@ -1073,7 +1086,7 @@ public class Interpreter implements
 
         Variable var = new Variable(new Variable.Variant(funObj),
                 false,
-                TypeTag.OBJECT);
+                "function");
 
         this.curEnv.define(funObj.declaration.name.lexeme,  var);
 
@@ -1091,7 +1104,7 @@ public class Interpreter implements
         Variable var = new Variable(
                 value,
                 true,
-                TypeTag.fromString(typeTag));
+                typeTag);
 
         this.curEnv.define(stmt.identifier.lexeme, var);
 
@@ -1178,7 +1191,7 @@ public class Interpreter implements
                                             new Variable.Variant(interpreter.evaluate(prop.initializer)):
                                             new Variable.Variant(null),
                                                     prop.isConst,
-                                                    prop.type == null ? TypeTag.ANY : TypeTag.fromString(prop.type.lexeme)));
+                                                    prop.type.lexeme));
                 }
 
                 // add instance properties of super class to child class
@@ -1191,9 +1204,7 @@ public class Interpreter implements
                         newEnv.define(constructorFn.params.get(i).name.lexeme, new Variable(
                                 arguments.get(i),
                                 true,
-                                constructorFn.params.get(i).type == null
-                                        ? TypeTag.ANY
-                                        : TypeTag.fromString(constructorFn.params.get(i).type.lexeme)
+                                constructorFn.params.get(i).type.lexeme
                         ));
                     }
 
@@ -1203,7 +1214,7 @@ public class Interpreter implements
                             new Variable(
                                     new Variable.Variant(instance),
                                     true,
-                                    TypeTag.OBJECT
+                                    stmt.name.lexeme
                             )
                     );
 
@@ -1218,7 +1229,7 @@ public class Interpreter implements
                                 new Variable(
                                         new Variable.Variant(parentClass),
                                         true,
-                                        TypeTag.OBJECT
+                                        stmt.superName.lexeme
                                 )
                         );
                     }
@@ -1245,7 +1256,7 @@ public class Interpreter implements
             klass.set(method.name.lexeme, new Variable(
                     new Variable.Variant(methodToNativeFn(method)),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             ));
         }
 
@@ -1263,7 +1274,7 @@ public class Interpreter implements
             klass.set(prop.name.lexeme, new Variable(
                     prop.initializer == null ? new Variable.Variant(null) : this.evaluate(prop.initializer),
                     prop.isConst,
-                    prop.type == null ? TypeTag.ANY : TypeTag.fromString(prop.type.lexeme)
+                    prop.type.lexeme
             ));
         }
 
@@ -1284,7 +1295,7 @@ public class Interpreter implements
             klass.InstancePrototype .set(method.name.lexeme, new Variable(
                     new Variable.Variant(methodToNativeFn(method)),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             ));
         }
 
@@ -1293,7 +1304,7 @@ public class Interpreter implements
             klass.InstancePrototype .set(constructorFn.name.lexeme, new Variable(
                     new Variable.Variant(methodToNativeFn(constructorFn)),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             ));
         }
 
@@ -1326,7 +1337,7 @@ public class Interpreter implements
             klass.InstancePrototype.prototype = yClass.ClassPrototype; // root prototype
         }
 
-        curEnv.define(klass.getClassName(), new Variable(new Variable.Variant(klass), true, TypeTag.OBJECT));
+        curEnv.define(klass.getClassName(), new Variable(new Variable.Variant(klass), true, klass.getClassName()));
 
         if(stmt.isExported) {
             this.exports.add(stmt.name.lexeme);
@@ -1349,7 +1360,7 @@ public class Interpreter implements
                         newEnv.define(method.params.get(i).name.lexeme, new Variable(
                                 arguments.get(i),
                                 true,
-                                method.params.get(i).type == null ? TypeTag.ANY : TypeTag.fromString(method.params.get(i).type.lexeme)
+                                method.params.get(i).type.lexeme
                         ));
                     }
 
@@ -1369,4 +1380,34 @@ public class Interpreter implements
 
     }
 
+    public static boolean typeChecker(Variable variable, Variable.Variant variant) {
+
+        if(variant.isNull()) return true;
+
+        String type = variable.typeTag;
+
+        switch (type) {
+
+            case "int":
+                return variant.isInt();
+
+            case "double":
+                return variant.isDouble();
+
+            case "number":
+                return variant.isNumber();
+
+            case "bool":
+                return variant.isBoolean();
+
+            case "char":
+                return variant.isChar();
+
+            case "any":
+                return true;
+
+            default:
+                return variable.getType().equals(variant.getType());
+        }
+    }
 }

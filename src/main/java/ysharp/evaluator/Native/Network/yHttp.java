@@ -5,7 +5,6 @@ import ysharp.evaluator.Function;
 import ysharp.evaluator.Interpreter;
 import ysharp.evaluator.RuntimeObject;
 import ysharp.evaluator.Variable;
-import ysharp.parser.TypeTag;
 
 import java.net.http.HttpClient;
 import java.util.List;
@@ -82,7 +81,7 @@ public class yHttp {
 
         yHttpInit ctor = new yHttpInit();
         Variable.Variant variant = new Variable.Variant(ctor);
-        Variable var = new Variable(variant, false, TypeTag.OBJECT);
+        Variable var = new Variable(variant, false, "function");
 
         interpreter.defineGlobal(ctor.getFnName(), var);
     }

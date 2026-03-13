@@ -2,7 +2,6 @@ package ysharp.evaluator.Native.Collections;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.parser.TypeTag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +90,7 @@ public class yTreeMap {
         }
 
         ToStringFn toString = new ToStringFn();
-        Variable toStringVar = new Variable(new Variable.Variant(toString), true, TypeTag.OBJECT);
+        Variable toStringVar = new Variable(new Variable.Variant(toString), true, "function");
         yTreeMap.yTreeMap_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
 
@@ -124,7 +123,7 @@ public class yTreeMap {
         }
 
         PutFn put = new PutFn();
-        Variable putVar = new Variable(new Variable.Variant(put), true, TypeTag.OBJECT);
+        Variable putVar = new Variable(new Variable.Variant(put), true, "function");
         yTreeMap.yTreeMap_Instance_Prototype.set(put.getFnName(), putVar);
 
 
@@ -156,7 +155,7 @@ public class yTreeMap {
         }
 
         GetFn get = new GetFn();
-        Variable getVar = new Variable(new Variable.Variant(get), true, TypeTag.OBJECT);
+        Variable getVar = new Variable(new Variable.Variant(get), true, "function");
         yTreeMap.yTreeMap_Instance_Prototype.set(get.getFnName(), getVar);
 
 
@@ -189,7 +188,7 @@ public class yTreeMap {
         }
 
         GetOrDefaultFn getOrDefault = new GetOrDefaultFn();
-        Variable getOrDefaultVar = new Variable(new Variable.Variant(getOrDefault), true, TypeTag.OBJECT);
+        Variable getOrDefaultVar = new Variable(new Variable.Variant(getOrDefault), true, "function");
         yTreeMap.yTreeMap_Instance_Prototype.set(getOrDefault.getFnName(), getOrDefaultVar);
 
 
@@ -221,7 +220,7 @@ public class yTreeMap {
         }
 
         RemoveFn remove = new RemoveFn();
-        Variable removeVar = new Variable(new Variable.Variant(remove), true, TypeTag.OBJECT);
+        Variable removeVar = new Variable(new Variable.Variant(remove), true, "function");
         yTreeMap.yTreeMap_Instance_Prototype.set(remove.getFnName(), removeVar);
 
 
@@ -251,7 +250,7 @@ public class yTreeMap {
         }
 
         ContainsKeyFn containsKey = new ContainsKeyFn();
-        Variable containsKeyVar = new Variable(new Variable.Variant(containsKey), true, TypeTag.OBJECT);
+        Variable containsKeyVar = new Variable(new Variable.Variant(containsKey), true, "function");
         yTreeMap.yTreeMap_Instance_Prototype.set(containsKey.getFnName(), containsKeyVar);
 
 
@@ -281,7 +280,7 @@ public class yTreeMap {
         }
 
         ContainsValueFn containsValue = new ContainsValueFn();
-        Variable containsValueVar = new Variable(new Variable.Variant(containsValue), true, TypeTag.OBJECT);
+        Variable containsValueVar = new Variable(new Variable.Variant(containsValue), true, "function");
         yTreeMap.yTreeMap_Instance_Prototype.set(containsValue.getFnName(), containsValueVar);
 
 
@@ -314,7 +313,7 @@ public class yTreeMap {
         }
 
         PutIfAbsentFn putIfAbsent = new PutIfAbsentFn();
-        Variable putIfAbsentVar = new Variable(new Variable.Variant(putIfAbsent), true, TypeTag.OBJECT);
+        Variable putIfAbsentVar = new Variable(new Variable.Variant(putIfAbsent), true, "function");
         yTreeMap.yTreeMap_Instance_Prototype.set(putIfAbsent.getFnName(), putIfAbsentVar);
 
 
@@ -347,7 +346,7 @@ public class yTreeMap {
         }
 
         FirstKeyFn firstKey = new FirstKeyFn();
-        Variable firstKeyVar = new Variable(new Variable.Variant(firstKey), true, TypeTag.OBJECT);
+        Variable firstKeyVar = new Variable(new Variable.Variant(firstKey), true, "function");
         yTreeMap.yTreeMap_Instance_Prototype.set(firstKey.getFnName(), firstKeyVar);
 
 
@@ -380,7 +379,7 @@ public class yTreeMap {
         }
 
         LastKeyFn lastKey = new LastKeyFn();
-        Variable lastKeyVar = new Variable(new Variable.Variant(lastKey), true, TypeTag.OBJECT);
+        Variable lastKeyVar = new Variable(new Variable.Variant(lastKey), true, "function");
         yTreeMap.yTreeMap_Instance_Prototype.set(lastKey.getFnName(), lastKeyVar);
 
 
@@ -412,7 +411,7 @@ public class yTreeMap {
         }
 
         FloorKeyFn floorKey = new FloorKeyFn();
-        Variable floorKeyVar = new Variable(new Variable.Variant(floorKey), true, TypeTag.OBJECT);
+        Variable floorKeyVar = new Variable(new Variable.Variant(floorKey), true, "function");
         yTreeMap.yTreeMap_Instance_Prototype.set(floorKey.getFnName(), floorKeyVar);
 
 
@@ -444,7 +443,7 @@ public class yTreeMap {
         }
 
         CeilingKeyFn ceilingKey = new CeilingKeyFn();
-        Variable ceilingKeyVar = new Variable(new Variable.Variant(ceilingKey), true, TypeTag.OBJECT);
+        Variable ceilingKeyVar = new Variable(new Variable.Variant(ceilingKey), true, "function");
         yTreeMap.yTreeMap_Instance_Prototype.set(ceilingKey.getFnName(), ceilingKeyVar);
 
 
@@ -476,7 +475,7 @@ public class yTreeMap {
         }
 
         LowerKeyFn lowerKey = new LowerKeyFn();
-        Variable lowerKeyVar = new Variable(new Variable.Variant(lowerKey), true, TypeTag.OBJECT);
+        Variable lowerKeyVar = new Variable(new Variable.Variant(lowerKey), true, "function");
         yTreeMap.yTreeMap_Instance_Prototype.set(lowerKey.getFnName(), lowerKeyVar);
 
 
@@ -508,7 +507,7 @@ public class yTreeMap {
         }
 
         HigherKeyFn higherKey = new HigherKeyFn();
-        Variable higherKeyVar = new Variable(new Variable.Variant(higherKey), true, TypeTag.OBJECT);
+        Variable higherKeyVar = new Variable(new Variable.Variant(higherKey), true, "function");
         yTreeMap.yTreeMap_Instance_Prototype.set(higherKey.getFnName(), higherKeyVar);
 
 
@@ -547,7 +546,7 @@ public class yTreeMap {
         }
 
         PollFirstEntryFn pollFirstEntry = new PollFirstEntryFn();
-        Variable pollFirstEntryVar = new Variable(new Variable.Variant(pollFirstEntry), true, TypeTag.OBJECT);
+        Variable pollFirstEntryVar = new Variable(new Variable.Variant(pollFirstEntry), true, "function");
         yTreeMap.yTreeMap_Instance_Prototype.set(pollFirstEntry.getFnName(), pollFirstEntryVar);
 
 
@@ -586,7 +585,7 @@ public class yTreeMap {
         }
 
         PollLastEntryFn pollLastEntry = new PollLastEntryFn();
-        Variable pollLastEntryVar = new Variable(new Variable.Variant(pollLastEntry), true, TypeTag.OBJECT);
+        Variable pollLastEntryVar = new Variable(new Variable.Variant(pollLastEntry), true, "function");
         yTreeMap.yTreeMap_Instance_Prototype.set(pollLastEntry.getFnName(), pollLastEntryVar);
 
 
@@ -620,7 +619,7 @@ public class yTreeMap {
         }
 
         SubMapFn subMap = new SubMapFn();
-        Variable subMapVar = new Variable(new Variable.Variant(subMap), true, TypeTag.OBJECT);
+        Variable subMapVar = new Variable(new Variable.Variant(subMap), true, "function");
         yTreeMap.yTreeMap_Instance_Prototype.set(subMap.getFnName(), subMapVar);
 
 
@@ -653,7 +652,7 @@ public class yTreeMap {
         }
 
         HeadMapFn headMap = new HeadMapFn();
-        Variable headMapVar = new Variable(new Variable.Variant(headMap), true, TypeTag.OBJECT);
+        Variable headMapVar = new Variable(new Variable.Variant(headMap), true, "function");
         yTreeMap.yTreeMap_Instance_Prototype.set(headMap.getFnName(), headMapVar);
 
 
@@ -686,7 +685,7 @@ public class yTreeMap {
         }
 
         TailMapFn tailMap = new TailMapFn();
-        Variable tailMapVar = new Variable(new Variable.Variant(tailMap), true, TypeTag.OBJECT);
+        Variable tailMapVar = new Variable(new Variable.Variant(tailMap), true, "function");
         yTreeMap.yTreeMap_Instance_Prototype.set(tailMap.getFnName(), tailMapVar);
 
 
@@ -717,7 +716,7 @@ public class yTreeMap {
         }
 
         KeysFn keys = new KeysFn();
-        Variable keysVar = new Variable(new Variable.Variant(keys), true, TypeTag.OBJECT);
+        Variable keysVar = new Variable(new Variable.Variant(keys), true, "function");
         yTreeMap.yTreeMap_Instance_Prototype.set(keys.getFnName(), keysVar);
 
 
@@ -748,7 +747,7 @@ public class yTreeMap {
         }
 
         ValuesFn values = new ValuesFn();
-        Variable valuesVar = new Variable(new Variable.Variant(values), true, TypeTag.OBJECT);
+        Variable valuesVar = new Variable(new Variable.Variant(values), true, "function");
         yTreeMap.yTreeMap_Instance_Prototype.set(values.getFnName(), valuesVar);
 
 
@@ -786,7 +785,7 @@ public class yTreeMap {
         }
 
         EntriesFn entries = new EntriesFn();
-        Variable entriesVar = new Variable(new Variable.Variant(entries), true, TypeTag.OBJECT);
+        Variable entriesVar = new Variable(new Variable.Variant(entries), true, "function");
         yTreeMap.yTreeMap_Instance_Prototype.set(entries.getFnName(), entriesVar);
 
 
@@ -815,7 +814,7 @@ public class yTreeMap {
         }
 
         SizeFn size = new SizeFn();
-        Variable sizeVar = new Variable(new Variable.Variant(size), true, TypeTag.OBJECT);
+        Variable sizeVar = new Variable(new Variable.Variant(size), true, "function");
         yTreeMap.yTreeMap_Instance_Prototype.set(size.getFnName(), sizeVar);
 
 
@@ -844,7 +843,7 @@ public class yTreeMap {
         }
 
         IsEmptyFn isEmpty = new IsEmptyFn();
-        Variable isEmptyVar = new Variable(new Variable.Variant(isEmpty), true, TypeTag.OBJECT);
+        Variable isEmptyVar = new Variable(new Variable.Variant(isEmpty), true, "function");
         yTreeMap.yTreeMap_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
 
 
@@ -874,7 +873,7 @@ public class yTreeMap {
         }
 
         ClearFn clear = new ClearFn();
-        Variable clearVar = new Variable(new Variable.Variant(clear), true, TypeTag.OBJECT);
+        Variable clearVar = new Variable(new Variable.Variant(clear), true, "function");
         yTreeMap.yTreeMap_Instance_Prototype.set(clear.getFnName(), clearVar);
 
 
@@ -906,7 +905,7 @@ public class yTreeMap {
         }
 
         CloneFn clone = new CloneFn();
-        Variable cloneVar = new Variable(new Variable.Variant(clone), true, TypeTag.OBJECT);
+        Variable cloneVar = new Variable(new Variable.Variant(clone), true, "function");
         yTreeMap.yTreeMap_Instance_Prototype.set(clone.getFnName(), cloneVar);
 
     }
@@ -980,7 +979,7 @@ public class yTreeMap {
     public static void Register(Interpreter interpreter) throws Exception {
         yTreeMapClass tmCtor = new yTreeMapClass();
         Variable.Variant variant = new Variable.Variant(tmCtor);
-        Variable var = new Variable(variant, false, TypeTag.OBJECT);
+        Variable var = new Variable(variant, false, "function");
         interpreter.defineGlobal(tmCtor.getClassName(), var);
     }
 

@@ -2,7 +2,6 @@ package ysharp.evaluator.Native.Util;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.parser.TypeTag;
 
 import java.util.List;
 
@@ -68,7 +67,7 @@ public class yUUID {
             Variable v4Var = new Variable(
                     new Variable.Variant(v4),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             );
 
             this.set(v4.getFnName(), v4Var);
@@ -99,7 +98,7 @@ public class yUUID {
             Variable nilVar = new Variable(
                     new Variable.Variant(nil),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             );
 
             this.set(nil.getFnName(), nilVar);
@@ -141,7 +140,7 @@ public class yUUID {
             Variable isValidVar = new Variable(
                     new Variable.Variant(isValid),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             );
 
             this.set(isValid.getFnName(), isValidVar);
@@ -178,7 +177,7 @@ public class yUUID {
             Variable parseVar = new Variable(
                     new Variable.Variant(parse),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             );
 
             this.set(parse.getFnName(), parseVar);
@@ -217,7 +216,7 @@ public class yUUID {
         Variable.Variant variant = new Variable.Variant(ctor);
         Variable var = new Variable(variant,
                 true,
-                TypeTag.OBJECT);
+                "function");
 
         interpreter.defineGlobal(ctor.getClassName(), var);
     }

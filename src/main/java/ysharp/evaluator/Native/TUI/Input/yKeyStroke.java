@@ -4,7 +4,7 @@ import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.parser.TypeTag;
+
 import java.util.List;
 
 public class yKeyStroke {
@@ -108,7 +108,7 @@ public class yKeyStroke {
             Variable getCharacterVar = new Variable(
                     new Variable.Variant(getCharacter),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             yKeyStroke_Instance_Prototype.set(getCharacter.getFnName(), getCharacterVar);
 
 
@@ -143,7 +143,7 @@ public class yKeyStroke {
             Variable getEventTimeVar = new Variable(
                     new Variable.Variant(getEventTime),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             yKeyStroke_Instance_Prototype.set(getEventTime.getFnName(), getEventTimeVar);
 
             // key.hashCode()
@@ -178,7 +178,7 @@ public class yKeyStroke {
             Variable hashCodeVar = new Variable(
                     new Variable.Variant(hashCode),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             yKeyStroke_Instance_Prototype.set(hashCode.getFnName(), hashCodeVar);
 
@@ -214,7 +214,7 @@ public class yKeyStroke {
             Variable isAltDownVar = new Variable(
                     new Variable.Variant(isAltDown),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             yKeyStroke_Instance_Prototype.set(isAltDown.getFnName(), isAltDownVar);
 
@@ -250,7 +250,7 @@ public class yKeyStroke {
             Variable isCtrlDownVar = new Variable(
                     new Variable.Variant(isCtrlDown),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             yKeyStroke_Instance_Prototype.set(isCtrlDown.getFnName(), isCtrlDownVar);
 
@@ -287,7 +287,7 @@ public class yKeyStroke {
             Variable isShiftDownVar = new Variable(
                     new Variable.Variant(isShiftDown),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             yKeyStroke_Instance_Prototype.set(isShiftDown.getFnName(), isShiftDownVar);
         }
@@ -344,7 +344,7 @@ public class yKeyStroke {
             }
 
             FromKeyTypeFn f1 = new FromKeyTypeFn();
-            this.set(f1.getFnName(), new Variable(new Variable.Variant(f1), true, TypeTag.OBJECT));
+            this.set(f1.getFnName(), new Variable(new Variable.Variant(f1), true, "function"));
 
 
             class FromKeyTypeModsFn extends Function.NativeFunction {
@@ -375,7 +375,7 @@ public class yKeyStroke {
             }
 
             FromKeyTypeModsFn f2 = new FromKeyTypeModsFn();
-            this.set(f2.getFnName(), new Variable(new Variable.Variant(f2), true, TypeTag.OBJECT));
+            this.set(f2.getFnName(), new Variable(new Variable.Variant(f2), true, "function"));
 
 
             class FromKeyTypeFullFn extends Function.NativeFunction {
@@ -407,7 +407,7 @@ public class yKeyStroke {
             }
 
             FromKeyTypeFullFn f3 = new FromKeyTypeFullFn();
-            this.set(f3.getFnName(), new Variable(new Variable.Variant(f3), true, TypeTag.OBJECT));
+            this.set(f3.getFnName(), new Variable(new Variable.Variant(f3), true, "function"));
 
             class FromCharFn extends Function.NativeFunction {
 
@@ -437,7 +437,7 @@ public class yKeyStroke {
             }
 
             FromCharFn f4 = new FromCharFn();
-            this.set(f4.getFnName(), new Variable(new Variable.Variant(f4), true, TypeTag.OBJECT));
+            this.set(f4.getFnName(), new Variable(new Variable.Variant(f4), true, "function"));
 
             class FromCharFullFn extends Function.NativeFunction {
 
@@ -468,7 +468,7 @@ public class yKeyStroke {
             }
 
             FromCharFullFn f5 = new FromCharFullFn();
-            this.set(f5.getFnName(), new Variable(new Variable.Variant(f5), true, TypeTag.OBJECT));
+            this.set(f5.getFnName(), new Variable(new Variable.Variant(f5), true, "function"));
 
         }
 

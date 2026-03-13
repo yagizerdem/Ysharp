@@ -2,4 +2,13 @@
 
 var a : number = 10;
 
-println typeOf(a);
+class Human {}
+
+var h  = new Human();
+
+var d : Human ;
+
+d  = h;
+d = null;
+
+println typeOf(d);

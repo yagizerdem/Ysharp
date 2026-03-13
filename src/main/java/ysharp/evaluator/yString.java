@@ -1,7 +1,6 @@
 package ysharp.evaluator;
 
 import ysharp.YsharpError;
-import ysharp.parser.TypeTag;
 
 import java.util.List;
 
@@ -53,7 +52,7 @@ public class yString  {
         Variable lengthVar = new Variable(
                 new Variable.Variant(length),
                 true,
-                TypeTag.OBJECT);
+                "function");
 
         yString_Instance_Prototype.set(length.getFnName(), lengthVar);
 
@@ -110,7 +109,7 @@ public class yString  {
         Variable toUpperVar = new Variable(
                 new Variable.Variant(toUpper),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yString_Instance_Prototype.set(toUpper.getFnName(), toUpperVar);
 
         // str.toLower()
@@ -165,7 +164,7 @@ public class yString  {
         Variable toLowerVar = new Variable(
                 new Variable.Variant(toLower),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yString_Instance_Prototype.set(toLower.getFnName(), toLowerVar);
 
         // str.charAt(index)
@@ -240,7 +239,7 @@ public class yString  {
         Variable charAtVar = new Variable(
                 new Variable.Variant(charAt),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yString_Instance_Prototype.set(charAt.getFnName(), charAtVar);
 
         // str.substring(start, end)
@@ -321,7 +320,7 @@ public class yString  {
         Variable substringVar = new Variable(
                 new Variable.Variant(substring),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yString_Instance_Prototype.set(substring.getFnName(), substringVar);
 
         // str.equals(other)
@@ -388,7 +387,7 @@ public class yString  {
         Variable equalsVar = new Variable(
                 new Variable.Variant(equals),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yString_Instance_Prototype.set(equals.getFnName(), equalsVar);
 
         // str.indexOf(other)
@@ -463,7 +462,7 @@ public class yString  {
         Variable indexOfVar = new Variable(
                 new Variable.Variant(indexOf),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yString_Instance_Prototype.set(indexOf.getFnName(), indexOfVar);
 
         // str.contains(other)
@@ -538,7 +537,7 @@ public class yString  {
         Variable containsVar = new Variable(
                 new Variable.Variant(contains),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yString_Instance_Prototype.set(contains.getFnName(), containsVar);
 
         // str.trim()
@@ -591,7 +590,7 @@ public class yString  {
         Variable trimVar = new Variable(
                 new Variable.Variant(trim),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yString_Instance_Prototype.set(trim.getFnName(), trimVar);
 
         // str.trimLeft()
@@ -644,7 +643,7 @@ public class yString  {
         Variable trimLeftVar = new Variable(
                 new Variable.Variant(trimLeft),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yString_Instance_Prototype.set(trimLeft.getFnName(), trimLeftVar);
 
         // str.trimRight()
@@ -697,7 +696,7 @@ public class yString  {
         Variable trimRightVar = new Variable(
                 new Variable.Variant(trimRight),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yString_Instance_Prototype.set(trimRight.getFnName(), trimRightVar);
 
         // str.repeat(n)
@@ -776,7 +775,7 @@ public class yString  {
         Variable repeatVar = new Variable(
                 new Variable.Variant(repeat),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yString_Instance_Prototype.set(repeat.getFnName(), repeatVar);
 
         // str.startsWith(other)
@@ -844,7 +843,7 @@ public class yString  {
         Variable startsWithVar = new Variable(
                 new Variable.Variant(startsWith),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yString_Instance_Prototype.set(startsWith.getFnName(), startsWithVar);
 
         // str.endsWith(other)
@@ -912,7 +911,7 @@ public class yString  {
         Variable endsWithVar = new Variable(
                 new Variable.Variant(endsWith),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yString_Instance_Prototype.set(endsWith.getFnName(), endsWithVar);
 
         // str.replace(old, new)
@@ -989,7 +988,7 @@ public class yString  {
         Variable replaceVar = new Variable(
                 new Variable.Variant(replace),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yString_Instance_Prototype.set(replace.getFnName(), replaceVar);
 
         // str.isEmpty()
@@ -1040,7 +1039,7 @@ public class yString  {
         Variable isEmptyVar = new Variable(
                 new Variable.Variant(isEmpty),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yString_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
 
         // str.reverse()
@@ -1098,7 +1097,7 @@ public class yString  {
         Variable reverseVar = new Variable(
                 new Variable.Variant(reverse),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yString_Instance_Prototype.set(reverse.getFnName(), reverseVar);
 
         // str.padLeft(len, padStr)
@@ -1190,7 +1189,7 @@ public class yString  {
         Variable padLeftVar = new Variable(
                 new Variable.Variant(padLeft),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yString_Instance_Prototype.set(padLeft.getFnName(), padLeftVar);
 
         // str.padRight(len, padStr)
@@ -1282,7 +1281,7 @@ public class yString  {
         Variable padRightVar = new Variable(
                 new Variable.Variant(padRight),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yString_Instance_Prototype.set(padRight.getFnName(), padRightVar);
 
         // str.compareTo(other)
@@ -1350,7 +1349,7 @@ public class yString  {
         Variable compareToVar = new Variable(
                 new Variable.Variant(compareTo),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yString_Instance_Prototype.set(compareTo.getFnName(), compareToVar);
 
         // str.capitalize()
@@ -1412,7 +1411,7 @@ public class yString  {
         Variable capitalizeVar = new Variable(
                 new Variable.Variant(capitalize),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yString_Instance_Prototype.set(capitalize.getFnName(), capitalizeVar);
 
         // str.toString()
@@ -1461,7 +1460,7 @@ public class yString  {
         Variable toStringVar = new Variable(
                 new Variable.Variant(toString),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yString_Instance_Prototype.set(toString.getFnName(), toStringVar);
     }
 
@@ -1482,7 +1481,7 @@ public class yString  {
 
         @Override
         public String getType() {
-            return "String";
+            return "string";
         }
 
         @Override
@@ -1551,7 +1550,7 @@ public class yString  {
     public static void Register(Interpreter interpreter) throws Exception {
         yStringClass stringCtor = new yStringClass();
         Variable.Variant variant = new Variable.Variant(stringCtor);
-        Variable var = new Variable(variant, false, TypeTag.OBJECT);
+        Variable var = new Variable(variant, false, "function");
         interpreter.defineGlobal(stringCtor.getClassName(), var);
     }
 

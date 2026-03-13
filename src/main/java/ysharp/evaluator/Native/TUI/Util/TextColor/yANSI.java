@@ -4,7 +4,6 @@ import com.googlecode.lanterna.TextColor;
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.Native.Collections.yArray;
-import ysharp.parser.TypeTag;
 
 import java.util.List;
 
@@ -68,49 +67,49 @@ public class yANSI {
                     new Variable(new Variable.Variant(
                             new yTextColor.yTextColorEnum(TextColor.ANSI.BLACK)),
                             true,
-                            TypeTag.OBJECT));
+                            "function"));
 
             this.set("RED",
                     new Variable(new Variable.Variant(
                             new yTextColor.yTextColorEnum(TextColor.ANSI.RED)),
                             true,
-                            TypeTag.OBJECT));
+                            "function"));
 
             this.set("GREEN",
                     new Variable(new Variable.Variant(
                             new yTextColor.yTextColorEnum(TextColor.ANSI.GREEN)),
                             true,
-                            TypeTag.OBJECT));
+                            "function"));
 
             this.set("YELLOW",
                     new Variable(new Variable.Variant(
                             new yTextColor.yTextColorEnum(TextColor.ANSI.YELLOW)),
                             true,
-                            TypeTag.OBJECT));
+                            "function"));
 
             this.set("BLUE",
                     new Variable(new Variable.Variant(
                             new yTextColor.yTextColorEnum(TextColor.ANSI.BLUE)),
                             true,
-                            TypeTag.OBJECT));
+                            "function"));
 
             this.set("MAGENTA",
                     new Variable(new Variable.Variant(
                             new yTextColor.yTextColorEnum(TextColor.ANSI.MAGENTA)),
                             true,
-                            TypeTag.OBJECT));
+                            "function"));
 
             this.set("CYAN",
                     new Variable(new Variable.Variant(
                             new yTextColor.yTextColorEnum(TextColor.ANSI.CYAN)),
                             true,
-                            TypeTag.OBJECT));
+                            "function"));
 
             this.set("WHITE",
                     new Variable(new Variable.Variant(
                             new yTextColor.yTextColorEnum(TextColor.ANSI.WHITE)),
                             true,
-                            TypeTag.OBJECT));
+                            "function"));
 
             // bright
 
@@ -118,19 +117,19 @@ public class yANSI {
                     new Variable(new Variable.Variant(
                             new yTextColor.yTextColorEnum(TextColor.ANSI.RED_BRIGHT)),
                             true,
-                            TypeTag.OBJECT));
+                            "function"));
 
             this.set("BRIGHT_GREEN",
                     new Variable(new Variable.Variant(
                             new yTextColor.yTextColorEnum(TextColor.ANSI.GREEN_BRIGHT)),
                             true,
-                            TypeTag.OBJECT));
+                            "function"));
 
             this.set("BRIGHT_BLUE",
                     new Variable(new Variable.Variant(
                             new yTextColor.yTextColorEnum(TextColor.ANSI.BLUE_BRIGHT)),
                             true,
-                            TypeTag.OBJECT));
+                            "function"));
 
 
             // TextColor.ANSI.valueOf(string) // Returns the enum constant of this type with the specified name. The string must match exactly an identifier used to declare an enum constant in this type. (Extraneous whitespace characters are not permitted.)
@@ -158,7 +157,7 @@ public class yANSI {
             Variable valueOfVar = new Variable(
                     new Variable.Variant(valueOf),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(valueOf.getFnName(), valueOfVar);
 
 
@@ -190,7 +189,7 @@ public class yANSI {
             Variable valuesVar = new Variable(
                     new Variable.Variant(values),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(values.getFnName(), valuesVar);
         }
 
