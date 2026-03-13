@@ -14,8 +14,34 @@ for var i = 0 ; i < 10 ; i++ do
 end
 
 
-var c = TUI.KeyStroke.fromChar('a', true, true);
-println c;
+var keyPress = TUI.KeyStroke.fromChar('a', false, true);
+println keyPress.getCharacter();
+println keyPress.isAltDown();
+println keyPress.isCtrlDown();
+println keyPress.hashCode();
+
+
+var a = 10;
+
+switch a do
+
+    case 2 : do
+        print "hit case 2";
+    end
+
+    case 10 : do
+        print "hit case 10";
+        break;
+    end
+
+    case 11 : do
+        println "hit case  11";
+    end
+
+    default : do
+        print "default";
+    end
+end
 
 Time.sleep(2000);
 terminal.close();

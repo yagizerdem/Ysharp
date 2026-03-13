@@ -4,11 +4,13 @@ import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
+import ysharp.evaluator.Native.Collections.yArray;
 import ysharp.parser.TypeTag;
 import java.util.List;
 
 public class yKeyStroke {
 
+    // helper
     public static KeyType requireKeyType(
             Variable.Variant variant,
             String fn,
@@ -23,6 +25,30 @@ public class yKeyStroke {
         }
 
         return (KeyType) variant.value;
+    }
+
+    private static yKeyStrokeInstance requireKeyStrokeThis (Interpreter interpreter) {
+        Variable thisVar = interpreter.curEnv.getValue("this");
+
+        if (thisVar == null) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    0,
+                    "KeyStroke method called without a valid 'this' context."
+            );
+        }
+
+        RuntimeObject obj = thisVar.value.asRuntimeObject();
+
+        if (!(obj instanceof yKeyStrokeInstance)) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    0,
+                    "KeyStroke method can only be called on KeyStroke objects."
+            );
+        }
+
+        return  (yKeyStrokeInstance) obj;
     }
 
 
@@ -51,6 +77,220 @@ public class yKeyStroke {
         public yKeyStrokeInstance(KeyStroke data) {
             this.data = data;
             this.prototype = yKeyStroke_Instance_Prototype;
+
+            // arr.getCharacter()
+            class getCharacterFn extends Function.NativeFunction implements Callable {
+
+                @Override
+                public int arity() {
+                    return 0;
+                }
+
+                @Override
+                public Variable.Variant call(Interpreter interpreter,
+                                             List<Variable.Variant> arguments)
+                        throws YsharpError {
+
+                    requireArity(arguments, arity(), getFnName());
+
+                    yKeyStrokeInstance keyStroke = requireKeyStrokeThis(interpreter);
+                    Character ch = keyStroke.data.getCharacter();
+
+                    return new Variable.Variant(ch);
+                }
+
+                @Override
+                public String getFnName() {
+                    return "getCharacter";
+                }
+            }
+
+            getCharacterFn getCharacter = new getCharacterFn();
+            Variable getCharacterVar = new Variable(
+                    new Variable.Variant(getCharacter),
+                    true,
+                    TypeTag.OBJECT);
+            yKeyStroke_Instance_Prototype.set(getCharacter.getFnName(), getCharacterVar);
+
+
+            // arr.getEventTime()
+            class getEventTimeFn extends Function.NativeFunction implements Callable {
+
+                @Override
+                public int arity() {
+                    return 0;
+                }
+
+                @Override
+                public Variable.Variant call(Interpreter interpreter,
+                                             List<Variable.Variant> arguments)
+                        throws YsharpError {
+
+                    requireArity(arguments, arity(), getFnName());
+
+                    yKeyStrokeInstance keyStroke = requireKeyStrokeThis(interpreter);
+                    double eventTime = keyStroke.data.getEventTime();
+
+                    return new Variable.Variant(eventTime);
+                }
+
+                @Override
+                public String getFnName() {
+                    return "getEventTime";
+                }
+            }
+
+            getEventTimeFn getEventTime = new getEventTimeFn();
+            Variable getEventTimeVar = new Variable(
+                    new Variable.Variant(getEventTime),
+                    true,
+                    TypeTag.OBJECT);
+            yKeyStroke_Instance_Prototype.set(getEventTime.getFnName(), getEventTimeVar);
+
+            // key.hashCode()
+            class hashCodeFn extends Function.NativeFunction implements Callable {
+
+                @Override
+                public int arity() {
+                    return 0;
+                }
+
+                @Override
+                public Variable.Variant call(Interpreter interpreter,
+                                             List<Variable.Variant> arguments)
+                        throws YsharpError {
+
+                    requireArity(arguments, arity(), getFnName());
+
+                    yKeyStrokeInstance keyStroke = requireKeyStrokeThis(interpreter);
+
+                    int hash = keyStroke.data.hashCode();
+
+                    return new Variable.Variant(hash);
+                }
+
+                @Override
+                public String getFnName() {
+                    return "hashCode";
+                }
+            }
+
+            hashCodeFn hashCode = new hashCodeFn();
+            Variable hashCodeVar = new Variable(
+                    new Variable.Variant(hashCode),
+                    true,
+                    TypeTag.OBJECT);
+
+            yKeyStroke_Instance_Prototype.set(hashCode.getFnName(), hashCodeVar);
+
+            // key.isAltDown()
+            class isAltDownFn extends Function.NativeFunction implements Callable {
+
+                @Override
+                public int arity() {
+                    return 0;
+                }
+
+                @Override
+                public Variable.Variant call(Interpreter interpreter,
+                                             List<Variable.Variant> arguments)
+                        throws YsharpError {
+
+                    requireArity(arguments, arity(), getFnName());
+
+                    yKeyStrokeInstance keyStroke = requireKeyStrokeThis(interpreter);
+
+                    boolean value = keyStroke.data.isAltDown();
+
+                    return new Variable.Variant(value);
+                }
+
+                @Override
+                public String getFnName() {
+                    return "isAltDown";
+                }
+            }
+
+            isAltDownFn isAltDown = new isAltDownFn();
+            Variable isAltDownVar = new Variable(
+                    new Variable.Variant(isAltDown),
+                    true,
+                    TypeTag.OBJECT);
+
+            yKeyStroke_Instance_Prototype.set(isAltDown.getFnName(), isAltDownVar);
+
+            // key.isCtrlDown()
+            class isCtrlDownFn extends Function.NativeFunction implements Callable {
+
+                @Override
+                public int arity() {
+                    return 0;
+                }
+
+                @Override
+                public Variable.Variant call(Interpreter interpreter,
+                                             List<Variable.Variant> arguments)
+                        throws YsharpError {
+
+                    requireArity(arguments, arity(), getFnName());
+
+                    yKeyStrokeInstance keyStroke = requireKeyStrokeThis(interpreter);
+
+                    boolean value = keyStroke.data.isCtrlDown();
+
+                    return new Variable.Variant(value);
+                }
+
+                @Override
+                public String getFnName() {
+                    return "isCtrlDown";
+                }
+            }
+
+            isCtrlDownFn isCtrlDown = new isCtrlDownFn();
+            Variable isCtrlDownVar = new Variable(
+                    new Variable.Variant(isCtrlDown),
+                    true,
+                    TypeTag.OBJECT);
+
+            yKeyStroke_Instance_Prototype.set(isCtrlDown.getFnName(), isCtrlDownVar);
+
+
+            // key.isShiftDown()
+            class isShiftDownFn extends Function.NativeFunction implements Callable {
+
+                @Override
+                public int arity() {
+                    return 0;
+                }
+
+                @Override
+                public Variable.Variant call(Interpreter interpreter,
+                                             List<Variable.Variant> arguments)
+                        throws YsharpError {
+
+                    requireArity(arguments, arity(), getFnName());
+
+                    yKeyStrokeInstance keyStroke = requireKeyStrokeThis(interpreter);
+
+                    boolean value = keyStroke.data.isShiftDown();
+
+                    return new Variable.Variant(value);
+                }
+
+                @Override
+                public String getFnName() {
+                    return "isShiftDown";
+                }
+            }
+
+            isShiftDownFn isShiftDown = new isShiftDownFn();
+            Variable isShiftDownVar = new Variable(
+                    new Variable.Variant(isShiftDown),
+                    true,
+                    TypeTag.OBJECT);
+
+            yKeyStroke_Instance_Prototype.set(isShiftDown.getFnName(), isShiftDownVar);
         }
 
         @Override
@@ -95,7 +335,7 @@ public class yKeyStroke {
 
                     KeyStroke key = new KeyStroke(keyType);
 
-                    return new Variable.Variant(key);
+                    return new Variable.Variant(new yKeyStrokeInstance(key));
                 }
 
                 @Override
@@ -126,7 +366,7 @@ public class yKeyStroke {
 
                     KeyStroke key = new KeyStroke(keyType, ctrl, alt);
 
-                    return new Variable.Variant(key);
+                    return new Variable.Variant(new yKeyStrokeInstance(key));
                 }
 
                 @Override
@@ -158,7 +398,7 @@ public class yKeyStroke {
 
                     KeyStroke key = new KeyStroke(keyType, ctrl, alt, shift);
 
-                    return new Variable.Variant(key);
+                    return new Variable.Variant(new yKeyStrokeInstance(key));
                 }
 
                 @Override
@@ -188,7 +428,7 @@ public class yKeyStroke {
 
                     KeyStroke key = new KeyStroke(ch, ctrl, alt);
 
-                    return new Variable.Variant(key);
+                    return new Variable.Variant(new yKeyStrokeInstance(key));
                 }
 
                 @Override
@@ -219,7 +459,7 @@ public class yKeyStroke {
 
                     KeyStroke key = new KeyStroke(ch, ctrl, alt, shift);
 
-                    return new Variable.Variant(key);
+                    return new Variable.Variant(new yKeyStrokeInstance(key));
                 }
 
                 @Override
