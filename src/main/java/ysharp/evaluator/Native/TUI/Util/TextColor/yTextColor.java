@@ -62,7 +62,7 @@ public class yTextColor {
 
     public static class yTextColorClass extends yClass.SealedClassObject {
 
-        yTextColorClass(){
+        public yTextColorClass(){
 
             this.prototype = yClass.ClassPrototype;
 
