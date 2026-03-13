@@ -1,6 +1,0 @@
-use "util.ys" ;
-
-println "math";
-
-
-setFullName("ahmet");
