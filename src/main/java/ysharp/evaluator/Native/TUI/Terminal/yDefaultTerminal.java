@@ -14,6 +14,7 @@ import ysharp.parser.TypeTag;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.security.PublicKey;
 import java.util.List;
 
 public class yDefaultTerminal {
@@ -78,7 +79,7 @@ public class yDefaultTerminal {
 
     public static class yDefaultTerminalClass extends yClass.SealedClassObject {
 
-        yDefaultTerminalClass(){
+        public yDefaultTerminalClass(){
             this.prototype =  yClass.ClassPrototype;
 
         }

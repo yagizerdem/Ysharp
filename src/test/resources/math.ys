@@ -2,11 +2,5 @@ use "util.ys" ;
 
 println "math";
 
-export function add(a, b) do
-    return a + b;
-end
 
-println "math ....";
-test();
-println "----";
-
+setFullName("ahmet");

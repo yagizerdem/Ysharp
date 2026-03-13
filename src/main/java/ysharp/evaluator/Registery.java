@@ -7,10 +7,9 @@ import ysharp.evaluator.Native.Collections.Trie.yT9Trie;
 import ysharp.evaluator.Native.Form.Y_Button;
 import ysharp.evaluator.Native.Form.Y_Frame;
 import ysharp.evaluator.Native.Network.yHttp;
-import ysharp.evaluator.Native.TUI.Terminal.yDefaultTerminal;
+import ysharp.evaluator.Native.TUI.TUI;
 import ysharp.evaluator.Native.TUI.Terminal.ySwingTerminal;
 import ysharp.evaluator.Native.TUI.Util.TextColor.yTextColor;
-import ysharp.evaluator.Native.TUI.Util.ySGR;
 import ysharp.evaluator.Native.Threading.ySemaphore;
 import ysharp.evaluator.Native.Threading.yThread;
 import ysharp.evaluator.Native.Util.*;
@@ -62,10 +61,7 @@ public class Registery {
         yCrypto.Register(interpreter);
 
         // TUI
-        yDefaultTerminal.Register(interpreter);
-        ySwingTerminal.Register(interpreter);
-        ySGR.Register(interpreter);
-        yTextColor.Register(interpreter);
+        TUI.Register(interpreter);
 
     }
 }

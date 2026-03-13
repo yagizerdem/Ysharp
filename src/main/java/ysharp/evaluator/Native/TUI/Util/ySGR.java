@@ -61,7 +61,7 @@ public class ySGR {
 
     public static class ySGRClass extends yClass.SealedClassObject {
 
-        ySGRClass(){
+        public ySGRClass(){
             this.prototype =  yClass.ClassPrototype;
 
             // enum constants

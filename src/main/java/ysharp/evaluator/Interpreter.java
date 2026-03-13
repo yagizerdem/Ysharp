@@ -791,12 +791,12 @@ public class Interpreter implements
     @Override
     public Variable.Variant visitNexExpr(Expr.NewExpr expr) {
 
-        Variable.Variant callee = this.curEnv.getValue(expr.name).value;
+        Variable.Variant callee = evaluate(expr.qualifiedName);
 
         if (!callee.isCallable()) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
-                    expr.name.line,
+                    ((Expr.CallExpr)expr.qualifiedName).leftParen.line,
                     "Attempted to call a non-callable value of type '" +
                             callee.getType() + "'."
             );
@@ -805,7 +805,7 @@ public class Interpreter implements
         if (!callee.isClass()) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
-                    expr.name.line,
+                    ((Expr.CallExpr)expr.qualifiedName).leftParen.line,
                     "Attempted to instantiate a non-class value of type '" +
                             callee.getType() + "'."
             );

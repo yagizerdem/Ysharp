@@ -61,7 +61,7 @@ public class yScrollSwingTerminal {
 
     public static class yScrollSwingTerminalClass extends yClass.SealedClassObject {
 
-        yScrollSwingTerminalClass(){
+        public yScrollSwingTerminalClass(){
             this.prototype =  yClass.ClassPrototype;
         }
 

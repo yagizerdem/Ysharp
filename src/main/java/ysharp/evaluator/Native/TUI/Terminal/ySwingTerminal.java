@@ -62,7 +62,7 @@ public class ySwingTerminal {
 
     public static class ySwingTerminalClass extends yClass.SealedClassObject {
 
-        ySwingTerminalClass(){
+        public ySwingTerminalClass(){
             this.prototype =  yClass.ClassPrototype;
         }
 

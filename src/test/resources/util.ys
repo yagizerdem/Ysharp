@@ -24,3 +24,14 @@ Employee.test = "emp";
 export function test() do
     println "test";
 end
+
+
+var fullName = "yagiz erdem";
+
+export function getFullName() do
+    return fullName;
+end
+
+export function setFullName(name) do
+    fullName = name;
+end

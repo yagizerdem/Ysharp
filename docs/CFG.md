@@ -20,7 +20,7 @@ lambda
 - unary &rarr;  ( "!" | "-" | "+" | "~" | "++" | "--" ) unary | postfix 
 - postfix &rarr; call ( "++" | "--" )*
 - call &rarr; primary ( "(" arguments? ")"  | "." IDENTIFIER )*
-- primary &rarr; array | map | atom | newExpr
+- primary &rarr; array | map | atom | new_expr
 - atom &rarr;
 IDENTIFIER |
 NUMBER |
@@ -38,7 +38,8 @@ null |
   | "&=" | "^=" | "|="
 - lvalue &rarr; postfix
 - lambda &rarr; "(" parameters? ")" ( ":" type )? "=>" ( block | expr )
-- newExpr &rarr; "new" IDENTIFIER "(" arguments? ")"
+- new_expr &rarr; "new" qualified_name  "(" arguments? ")"
+- qualified_name &rarr; IDENTIFIER ("." IDENTIFIER)*
 
 ### declaration grammar
 - declaration &rarr; classDecl | 

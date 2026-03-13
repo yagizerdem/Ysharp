@@ -331,12 +331,12 @@ abstract public class Expr {
 
     public static final class NewExpr extends Expr {
 
-        public final Token name;
+        public final Expr qualifiedName;
         public final List<Expr> arguments;
 
-        public NewExpr(Token name,
+        public NewExpr(Expr qualifiedName,
                        List<Expr> arguments) {
-            this.name = name;
+            this.qualifiedName = qualifiedName;
             this.arguments = arguments;
         }
 

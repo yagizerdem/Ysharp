@@ -1,16 +1,18 @@
-use "math.ys";
-use "util.ys";
+const terminal = new TUI.DefaultTerminal();
 
-println "main" ;
+terminal.autoFlush = true;
 
-println add(3,4);
+terminal.enableSgr(TUI.SGR.UNDERLINE);
+terminal.enableSgr(TUI.SGR.BOLD);
 
+for var i = 0 ; i < 10 ; i++ do
+    if i > 5 then do
+        terminal.disableSgr(TUI.SGR.BOLD);
+    end
+    // terminal.setCursorPosition(0,i);
+    terminal.write("yagiz erdem");
+end
 
-const e = new Employee();
-println e.a;
+Time.sleep(2000);
+terminal.close();
 
-println Employee.test;
-
-
-println "--";
-test();
