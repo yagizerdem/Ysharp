@@ -1,5 +1,6 @@
 package ysharp.evaluator;
 
+import ysharp.YsharpError;
 import ysharp.lexer.Token;
 import ysharp.parser.TypeTag;
 
@@ -27,19 +28,6 @@ public class Variable {
 
         public Variant(Object value){
             this.value = value;
-        }
-
-
-        public String getType() {
-            return switch (value) {
-                case Integer i        -> "int";
-                case Double d         -> "double";
-                case Boolean b        -> "bool";
-                case Character c      -> "char";
-                case RuntimeObject o  -> o.getType();
-                case null             -> "null";
-                default               -> "unknown";
-            };
         }
 
         // primitives
@@ -219,4 +207,20 @@ public class Variable {
 
     }
 
+    public String getType(){
+        if(this.typeTag != TypeTag.OBJECT) {
+            return this.typeTag.toString();
+        }
+
+        if (!this.value.isRuntimeObject()) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    -1,
+                    "Internal error: OBJECT typeTag but value is not a RuntimeObject."
+            );
+        }
+
+        RuntimeObject obj = this.value.asRuntimeObject();
+        return obj.getType();
+    }
 }

@@ -132,6 +132,7 @@ statement
 - type = "int" | 
 "bool" |
 "double" | 
+"number" |
 "string" | 
 "char" |
 "fun" |

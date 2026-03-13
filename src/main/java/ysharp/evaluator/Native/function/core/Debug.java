@@ -1,9 +1,11 @@
 package ysharp.evaluator.Native.function.core;
 
+import com.sun.jdi.Value;
 import ysharp.YsharpError;
 import ysharp.evaluator.Function;
 import ysharp.evaluator.Interpreter;
 import ysharp.evaluator.Variable;
+import ysharp.parser.TypeTag;
 
 import java.util.List;
 
@@ -92,4 +94,46 @@ public abstract class Debug  extends Function.NativeFunction {
         @Override public String getFnName() { return "dump"; }
     }
 
+
+    public static void Register(Interpreter interpreter) throws Exception {
+
+        // typeof
+        TypeOf typeOfFn = new TypeOf();
+        Variable typeOfFnVar = new Variable(
+                new Variable.Variant(typeOfFn),
+                true,
+                TypeTag.OBJECT
+        );
+        interpreter.defineGlobal(typeOfFn.getFnName(), typeOfFnVar);
+
+
+        // assert
+        Assert assertFn = new Assert();
+        Variable assertVar = new Variable(
+                new Variable.Variant(assertFn),
+                true,
+                TypeTag.OBJECT
+        );
+        interpreter.defineGlobal(assertFn.getFnName(), assertVar);
+
+
+        // trace
+        Trace traceFn = new Trace();
+        Variable traceVar = new Variable(
+                new Variable.Variant(traceFn),
+                true,
+                TypeTag.OBJECT
+        );
+        interpreter.defineGlobal(traceFn.getFnName(), traceVar);
+
+
+        // dump
+        Dump dumpFn = new Dump();
+        Variable dumpVar = new Variable(
+                new Variable.Variant(dumpFn),
+                true,
+                TypeTag.OBJECT
+        );
+        interpreter.defineGlobal(dumpFn.getFnName(), dumpVar);
+    }
 }

@@ -13,6 +13,7 @@ import ysharp.evaluator.Native.TUI.Util.TextColor.yTextColor;
 import ysharp.evaluator.Native.Threading.ySemaphore;
 import ysharp.evaluator.Native.Threading.yThread;
 import ysharp.evaluator.Native.Util.*;
+import ysharp.evaluator.Native.function.core.Debug;
 
 public class Registery {
 
@@ -63,5 +64,8 @@ public class Registery {
         // TUI
         TUI.Register(interpreter);
 
+
+        // global functions
+        Debug.Register(interpreter);
     }
 }

@@ -1,21 +1,5 @@
-const terminal = new TUI.DefaultTerminal();
-
-terminal.autoFlush = true;
-
-terminal.enableSgr(TUI.SGR.UNDERLINE);
-terminal.enableSgr(TUI.SGR.BOLD);
 
 
-while true do
+var a : number = 10;
 
-   var key = terminal.pollKey();
-
-    if key != null then do
-        println key;
-        terminal.clearInputBuffer();
-    end
-
-end
-
-terminal.close();
-
+println typeOf(a);

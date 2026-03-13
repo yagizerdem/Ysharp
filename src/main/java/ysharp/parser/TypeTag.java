@@ -4,6 +4,7 @@ public enum TypeTag {
     // primitive
     INT,
     DOUBLE,
+    NUMBER,
     BOOL,
     CHAR,
     NULL,
@@ -15,11 +16,26 @@ public enum TypeTag {
         return switch (tag) {
             case "int" -> INT;
             case "double" -> DOUBLE;
+            case "number" -> NUMBER;
             case "bool" -> BOOL;
             case "char" -> CHAR;
             case "null" -> NULL;
             case "any" -> ANY;
             default -> OBJECT;
+        };
+    }
+
+    @Override
+    public String toString() {
+        return switch (this) {
+            case INT -> "int";
+            case DOUBLE -> "double";
+            case NUMBER -> "number";
+            case BOOL -> "bool";
+            case CHAR -> "char";
+            case NULL -> "null";
+            case ANY -> "any";
+            case OBJECT -> "object";
         };
     }
 }
