@@ -46,6 +46,7 @@ funDecl |
 varDecl | 
 constDecl |
 useDecl |
+exportDecl |
 statement 
 
 - classDecl &rarr; ("sealed")? "class" IDENTIFIER ( "extends" IDENTIFIER )?
@@ -54,6 +55,7 @@ statement
 - varDecl &rarr; "var" IDENTIFIER (":" type )? ("=" expression)? ";"
 - constDecl &rarr; "const" IDENTIFIER (":" type )? "=" expression ";"
 - useDecl &rarr; "use" STRING ";"
+- exportDecl &rarr; "export" ( classDecl | funDecl | varDecl | constDecl )
 
 ### statement grammar
 - statement &rarr; 

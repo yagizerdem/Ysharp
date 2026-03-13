@@ -270,15 +270,18 @@ public abstract class Stmt {
         public final Token identifier;
         public final Token type;
         public final Expr initializer;
+        public final boolean isExported;
 
         public VarDeclaration(
                 Token identifier,
                 Token type,
-                Expr initializer
+                Expr initializer,
+                boolean isExported
         ) {
             this.identifier = identifier;
             this.type = type;
             this.initializer = initializer;
+            this.isExported = isExported;
         }
 
         @Override
@@ -291,15 +294,18 @@ public abstract class Stmt {
         public final Token identifier;
         public final Token type;
         public final Expr initializer;
+        public final boolean isExported;
 
         public ConstDeclaration(
                 Token identifier,
                 Token type,
-                Expr initializer
+                Expr initializer,
+                boolean isExported
         ) {
             this.identifier = identifier;
             this.type = type;
             this.initializer = initializer;
+            this.isExported = isExported;
         }
 
         @Override
@@ -314,15 +320,18 @@ public abstract class Stmt {
         public final List<Param> params;
         public final Token returnType; // nullable
         public final Stmt body;
+        public final boolean isExported;
 
         public FunctionDeclaration(Token name,
                             List<Param> params,
                             Token returnType,
-                            Stmt body) {
+                            Stmt body,
+                            boolean isExported) {
             this.name = name;
             this.params = params;
             this.returnType = returnType;
             this.body = body;
+            this.isExported = isExported;
         }
 
         public static class Param {
@@ -349,17 +358,20 @@ public abstract class Stmt {
         public final List<Method> methods;
         public final List<Property> properties;
         public final boolean isSealed;
+        public final boolean isExported;
 
         public ClassDeclaration (Token name,
                                 Token superName,
                                 List<Method> methods,
                                 List<Property> properties,
-                                 boolean isSealed) {
+                                 boolean isSealed,
+                                 boolean isExported) {
                 this.name = name;
                 this.superName = superName;
                 this.methods = methods;
                 this.properties = properties;
                 this.isSealed = isSealed;
+                this.isExported = isExported;
         }
 
         public static class Method {

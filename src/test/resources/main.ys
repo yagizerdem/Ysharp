@@ -1,0 +1,16 @@
+use "math.ys";
+use "util.ys";
+
+println "main" ;
+
+println add(3,4);
+
+
+const e = new Employee();
+println e.a;
+
+println Employee.test;
+
+
+println "--";
+test();

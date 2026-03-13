@@ -60,6 +60,7 @@ public class Lexer {
         KEYWORD_MAP.put("print", Token.TokenType.PRINT);
         KEYWORD_MAP.put("println", Token.TokenType.PRINTLN);
         KEYWORD_MAP.put("use", Token.TokenType.USE);
+        KEYWORD_MAP.put("export", Token.TokenType.EXPORT);
 
         // type keywords
 //        KEYWORD_MAP.put("int", Token.TokenType.TYPE_INT);
