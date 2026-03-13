@@ -1,32 +1,16 @@
 use "math.ys";
 use "util.ys";
 
-for var i = 0; i < 10 ; i++ do
-    println i;
-end
+println "main" ;
+
+println add(3,4);
 
 
-export var name = "yagiz erdem";
-export const lastName = "erdem";
+const e = new Employee();
+println e.a;
 
-export function summ() do
-    println "sum";
-    var a = 10;
-end
+println Employee.test;
 
 
-export class Human {
-
-
-    constructor(age) do
-         this.a = age;
-        println "cotr hit";
-
-    end
-
-    var a = 10;
-}
-
-var h = new Human(44);
-println h.a;
-
+println "--";
+test();

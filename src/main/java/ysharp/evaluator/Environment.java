@@ -109,4 +109,5 @@ public class Environment {
         Environment env = ancestor(distance);
         return env.values.containsKey(name);
     }
+
 }

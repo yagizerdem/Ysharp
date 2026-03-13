@@ -1,3 +1,12 @@
-use "util.ys";
+use "util.ys" ;
 
-class Matrix {}
+println "math";
+
+export function add(a, b) do
+    return a + b;
+end
+
+println "math ....";
+test();
+println "----";
+

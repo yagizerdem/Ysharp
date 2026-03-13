@@ -1,6 +1,26 @@
 
+println "util";
 
 
-function getFile() do
+export class Human {
 
+    var a = "f_name";
+
+
+}
+
+export sealed class Employee extends Human {
+
+    static var test = "flajfajf";
+    var a = "ahmet";
+    constructor() do
+        super();
+        this.a = "ahmet";
+    end
+}
+
+Employee.test = "emp";
+
+export function test() do
+    println "test";
 end

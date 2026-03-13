@@ -1,27 +1,14 @@
 package ysharp.evaluator;
 
 import ysharp.YsharpError;
-import ysharp.evaluator.Native.Collections.*;
-import ysharp.evaluator.Native.Collections.Trie.yMapTrie;
-import ysharp.evaluator.Native.Collections.Trie.ySortedMapTrie;
-import ysharp.evaluator.Native.Collections.Trie.yT9Trie;
-import ysharp.evaluator.Native.Form.Y_Button;
-import ysharp.evaluator.Native.Form.Y_Frame;
-import ysharp.evaluator.Native.Network.yHttp;
-import ysharp.evaluator.Native.TUI.Terminal.yDefaultTerminal;
-import ysharp.evaluator.Native.TUI.Terminal.ySwingTerminal;
-import ysharp.evaluator.Native.TUI.Util.TextColor.yTextColor;
-import ysharp.evaluator.Native.Threading.ySemaphore;
-import ysharp.evaluator.Native.Threading.yThread;
-import ysharp.evaluator.Native.Util.*;
 import ysharp.lexer.Cursor;
 import ysharp.lexer.Lexer;
 import ysharp.lexer.Preprocess;
 import ysharp.parser.Parser;
-import ysharp.evaluator.Native.TUI.Util.ySGR;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Hashtable;
 import java.util.List;
 
 public class Core {
@@ -33,7 +20,6 @@ public class Core {
 
           String mainModulePath = "C:\\Users\\yagiz\\Desktop\\Ysharp\\src\\test\\resources\\main.ys";
           String mainModuleContent = new String(Files.readAllBytes(Paths.get(mainModulePath)));
-
 
 
           Preprocess preprocess = new Preprocess();
@@ -59,7 +45,13 @@ public class Core {
 
 
           Loader loader = new Loader(program, mainModulePath);
-          loader.loadEnv();
+          Hashtable<String, Variable> exportRegistry = loader.loadEnv();
+
+          for (String key : exportRegistry.keySet()) {
+              if(!interpreter.global.existsAt(0, key)) {
+                  interpreter.global.define(key, exportRegistry.get(key));
+              }
+          }
 
           interpreter.interpret(program.program);
           if(interpreter.hadErrors()) {
