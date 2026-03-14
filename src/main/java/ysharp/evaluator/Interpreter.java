@@ -1182,6 +1182,11 @@ public class Interpreter implements
             }
 
             @Override
+            public String toString() {
+                return "<class:" + stmt.name.lexeme + ">";
+            }
+
+            @Override
             public int arity() {
                 if(constructorFn == null) return 0;
                 return constructorFn.params.size();
@@ -1205,6 +1210,11 @@ public class Interpreter implements
                     @Override
                     public String getType() {
                         return stmt.name.lexeme;
+                    }
+
+                    @Override
+                    public String toString() {
+                        return "<instance:" + stmt.name.lexeme + ">";
                     }
                 };
 
@@ -1314,6 +1324,11 @@ public class Interpreter implements
             @Override
             public String getType() {
                 return "__" + stmt.name.lexeme + "__";
+            }
+
+            @Override
+            public String toString() {
+                return "<prototype:" + stmt.name.lexeme + ">";
             }
         };
 

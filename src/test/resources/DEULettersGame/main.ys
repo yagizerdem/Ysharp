@@ -1,12 +1,26 @@
 
+class Human {
+    foo() do
+        return "foo";
+    end
+}
 
+class Employee extends Human {
 
-class Human {}
-
-class Employee extends Human {}
+    toString() do
+        return "af";
+    end
+}
 
 var h = new Employee();
 
-println h.getPrototype().getType();
+println h.getPrototype().getPrototype().foo();
+println Employee.getPrototype();
 
+
+function sum(a,b): any do
+    return a + b;
+end
+
+println sum(2,4);
 

@@ -34,7 +34,12 @@ public class yClass {
 
             @Override
             public String getType() {
-                return "__ClassPrototype__";
+                return "__RootPrototype__";
+            }
+
+            @Override
+            public String toString() {
+                return "<prototype:root>";
             }
         };
         // this is root prototype of the object prototype chain ,
