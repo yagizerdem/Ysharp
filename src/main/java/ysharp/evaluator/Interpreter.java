@@ -1217,7 +1217,7 @@ public class Interpreter implements
                                             new Variable.Variant(interpreter.evaluate(prop.initializer)):
                                             new Variable.Variant(null),
                                                     prop.isConst,
-                                                    prop.type.lexeme));
+                                                    prop.type == null ? "any" :  prop.type.lexeme));
                 }
 
                 // add instance properties of super class to child class
@@ -1230,7 +1230,7 @@ public class Interpreter implements
                         newEnv.define(constructorFn.params.get(i).name.lexeme, new Variable(
                                 arguments.get(i),
                                 true,
-                                constructorFn.params.get(i).type.lexeme
+                                constructorFn.params.get(i).type == null ? "any" : constructorFn.params.get(i).type.lexeme
                         ));
                     }
 
@@ -1381,8 +1381,36 @@ public class Interpreter implements
             @Override
             public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
                 try {
+
+                    if (arguments.size() != method.params.size()) {
+                        throw new YsharpError(
+                                YsharpError.YsharpErrorType.PROCESS,
+                                method.name.line,
+                                method.name.lexeme + " Expected " + method.params.size() +
+                                        " arguments but got " + arguments.size()
+                        );
+                    }
+
                     Environment newEnv = new Environment(curEnv);
                     for(int i = 0; i < method.params.size(); i++) {
+
+                        Stmt.ClassDeclaration.Method.Param param = method.params.get(i);
+                        Variable.Variant arg = arguments.get(i);
+
+                        String typeTag = param.type != null ? param.type.lexeme : "any";
+
+                        if (!Interpreter.typeChecker(typeTag, arg)) {
+                            throw new YsharpError(
+                                    YsharpError.YsharpErrorType.PROCESS,
+                                    method.name.line,
+                                    "Parameter '" + param.name.lexeme +
+                                            "' type mismatch. Expected '" +
+                                            typeTag + "' but got '" +
+                                            arg.getType() + "'."
+                            );
+                        }
+
+
                         newEnv.define(method.params.get(i).name.lexeme, new Variable(
                                 arguments.get(i),
                                 true,
@@ -1392,6 +1420,22 @@ public class Interpreter implements
 
                     interpreter.executeBlock((Stmt.BlockStmt) method.body, newEnv);
                 }catch (Signal.ReturnSignal sig) {
+                    String expectedType = "any";
+
+                    if (method.returnType != null) {
+                        expectedType = method.returnType.lexeme;
+                    }
+
+                    if (!Interpreter.typeChecker(expectedType, sig.value)) {
+                        throw new YsharpError(
+                                YsharpError.YsharpErrorType.PROCESS,
+                                method.name.line,
+                                "Return type mismatch. Expected '" +
+                                        expectedType + "' but got '" +
+                                        sig.value.getType() + "'."
+                        );
+                    }
+
                     return sig.value;
                 }
 

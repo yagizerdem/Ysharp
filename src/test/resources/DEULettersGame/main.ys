@@ -1,26 +1,21 @@
 
 
-var a : number = 10;
 
-class Human {}
+class Human {
 
-var h  = new Human();
+    test(a : string)  : number do
+        println a;
+        return 12;
+    end
 
-var cc  = Human;
+    var a ;
+    constructor(a : any) do
+        this.a = a;
+    end
+}
 
-var ccc : Human = new cc();
-println typeOf(ccc);
+var h  = new Human("ljf");
 
-var d : Human;
+println h.test("hitter");
+println h.a;
 
-d  = h;
-d = null;
-
-function test(a : int, b : string) : string do
-    println "test";
-    var k : string = b;
-    return k;
-end
-
-
-var c = test(12, "yagiz");
