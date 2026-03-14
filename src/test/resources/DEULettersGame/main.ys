@@ -6,9 +6,21 @@ class Human {}
 
 var h  = new Human();
 
-var d : Human ;
+var cc  = Human;
+
+var ccc : Human = new cc();
+println typeOf(ccc);
+
+var d : Human;
 
 d  = h;
 d = null;
 
-println typeOf(d);
+function test(a : int, b : string) : string do
+    println "test";
+    var k : string = b;
+    return k;
+end
+
+
+var c = test(12, "yagiz");

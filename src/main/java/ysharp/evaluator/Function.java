@@ -71,6 +71,16 @@ public abstract class Function extends RuntimeObject implements Callable {
                     typeTag = param.type.lexeme;
                 }
 
+                if(!Interpreter.typeChecker(typeTag, arg)) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            declaration.name.line,
+                            "Parameter : " + declaration.params.get(i).name.lexeme + " type mismatch. Expected '" +
+                                    typeTag + "' but got '" +
+                                    arg.getType() + "'."
+                    );
+                }
+
                 Variable newVar = new Variable(arg, true, typeTag);
 
                 newEnv.define(param.name.lexeme, newVar);
@@ -82,6 +92,23 @@ public abstract class Function extends RuntimeObject implements Callable {
                         newEnv
                 );
             } catch (Signal.ReturnSignal returnValue) {
+
+                String expectedType = "any";
+
+                if (declaration.returnType != null) {
+                    expectedType = declaration.returnType.lexeme;
+                }
+
+                if (!Interpreter.typeChecker(expectedType, returnValue.value)) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            declaration.name.line,
+                            "Return type mismatch. Expected '" +
+                                    expectedType + "' but got '" +
+                                    returnValue.value.getType() + "'."
+                    );
+                }
+
                 return returnValue.value;
             }
 

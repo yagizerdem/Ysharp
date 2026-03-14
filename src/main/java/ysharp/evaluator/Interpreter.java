@@ -1065,6 +1065,19 @@ public class Interpreter implements
 
         String typeTag = stmt.type != null ? stmt.type.lexeme : "any";
 
+        if (value != null && !Interpreter.typeChecker(typeTag, value)) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    stmt.identifier.line,
+                    "Type mismatch. Cannot assign value of type '" +
+                            curEnv.getType(value) +
+                            "' to variable '" +
+                            stmt.identifier.lexeme +
+                            "' of type '" +
+                            typeTag + "'."
+            );
+        }
+
         Variable var = new Variable(
                 value,
                 false,
@@ -1100,6 +1113,19 @@ public class Interpreter implements
         Variable.Variant value = this.evaluate(stmt.initializer);
 
         String typeTag = stmt.type != null ? stmt.type.lexeme : "any";
+
+        if (value != null && !Interpreter.typeChecker(typeTag, value)) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    stmt.identifier.line,
+                    "Type mismatch. Cannot assign value of type '" +
+                            curEnv.getType(value) +
+                            "' to variable '" +
+                            stmt.identifier.lexeme +
+                            "' of type '" +
+                            typeTag + "'."
+            );
+        }
 
         Variable var = new Variable(
                 value,
@@ -1408,6 +1434,34 @@ public class Interpreter implements
 
             default:
                 return variable.getType().equals(variant.getType());
+        }
+    }
+
+    public static boolean typeChecker(String type, Variable.Variant variant) {
+        if(variant.isNull()) return true;
+
+        switch (type) {
+
+            case "int":
+                return variant.isInt();
+
+            case "double":
+                return variant.isDouble();
+
+            case "number":
+                return variant.isNumber();
+
+            case "bool":
+                return variant.isBoolean();
+
+            case "char":
+                return variant.isChar();
+
+            case "any":
+                return true;
+
+            default:
+                return type.equals(variant.getType());
         }
     }
 }
