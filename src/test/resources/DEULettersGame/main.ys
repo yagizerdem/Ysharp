@@ -1,21 +1,12 @@
 
 
 
-class Human {
+class Human {}
 
-    test(a : string)  : number do
-        println a;
-        return 12;
-    end
+class Employee extends Human {}
 
-    var a ;
-    constructor(a : any) do
-        this.a = a;
-    end
-}
+var h = new Employee();
 
-var h  = new Human("ljf");
+println h.getPrototype().getType();
 
-println h.test("hitter");
-println h.a;
 

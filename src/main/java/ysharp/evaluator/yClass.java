@@ -7,6 +7,10 @@ import java.util.List;
 
 public class yClass {
 
+    static private interface IBasePrototype {
+         RuntimeObject getPrototype();
+    }
+
     static private RuntimeObject requireThis(Interpreter interpreter) {
         Variable thisVar = interpreter.curEnv.getValue("this");
         if (thisVar == null) {
@@ -30,7 +34,7 @@ public class yClass {
 
             @Override
             public String getType() {
-                return "__class_prototype__";
+                return "__ClassPrototype__";
             }
         };
         // this is root prototype of the object prototype chain ,
@@ -63,13 +67,44 @@ public class yClass {
                 "function");
             ClassPrototype.set(getType.getFnName(), getTypeVar);
 
+        class GetPrototypeFn extends Function.NativeFunction {
+
+            @Override
+            public int arity() {
+                return 0;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                return new Variable.Variant(requireThis(interpreter).getPrototype());
+            }
+
+            @Override
+            public String getFnName() {
+                return "getPrototype";
+            }
+
+        }
+
+        GetPrototypeFn getPrototype = new GetPrototypeFn();
+        Variable getPrototypeVar = new Variable(
+                new Variable.Variant(getPrototype),
+                true,
+                "function");
+        ClassPrototype.set(getPrototype.getFnName(), getPrototypeVar);
+
     }
 
-    static abstract public class ClassObject extends RuntimeObject implements Callable {
+    static abstract public class ClassObject extends RuntimeObject implements Callable, IBasePrototype {
 
         public abstract boolean isSealed();
 
         public abstract String getClassName();
+
+        @Override
+        public RuntimeObject getPrototype() {
+            return this.prototype;
+        }
 
         public Token superClassName;
 
@@ -83,13 +118,23 @@ public class yClass {
         }
     }
 
-    static abstract public class SealedClassObject extends ClassObject {
+    static abstract public class SealedClassObject extends ClassObject implements IBasePrototype {
         @Override
         public boolean isSealed() {
             return true;
         }
+
+        @Override
+        public RuntimeObject getPrototype() {
+            return super.getPrototype();
+        }
     }
 
-    static abstract public class ClassObjectInstance extends RuntimeObject { }
+    static abstract public class ClassObjectInstance extends RuntimeObject implements IBasePrototype{
+        @Override
+        public RuntimeObject getPrototype() {
+            return this.prototype;
+        }
+    }
 
 }

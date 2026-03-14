@@ -129,7 +129,7 @@ public class Interpreter implements
     @Override
     public Variable.Variant visitBinaryExpr(Expr.BinaryExpr expr) {
         switch (expr.op.type) {
-            case Token.TokenType.PLUS -> {
+            case PLUS -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 if(left.canImplicitlyConvertNumber() && right.canImplicitlyConvertNumber()) {
@@ -177,7 +177,7 @@ public class Interpreter implements
                                 + left.getType() + "' and '" + right.getType() + "'."
                 );
             }
-            case Token.TokenType.MINUS -> {
+            case MINUS -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 requireNumberOperands(left, right, expr.op);
@@ -185,7 +185,7 @@ public class Interpreter implements
                 double diff = left.implicitlyConvertNumber() - right.implicitlyConvertNumber();
                 return new Variable.Variant(diff);
             }
-            case Token.TokenType.MULTIPLY -> {
+            case MULTIPLY -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 requireNumberOperands(left, right, expr.op);
@@ -193,7 +193,7 @@ public class Interpreter implements
                 double mul = left.asNumber() * right.asNumber();
                 return new Variable.Variant(mul);
             }
-            case Token.TokenType.DIVIDE -> {
+            case DIVIDE -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 if(right.asNumber() == 0)
@@ -207,7 +207,7 @@ public class Interpreter implements
                 double div = left.asNumber() / right.asNumber();
                 return new Variable.Variant(div);
             }
-            case Token.TokenType.MODULO -> {
+            case MODULO -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 requireNumberOperands(left, right, expr.op);
@@ -219,72 +219,72 @@ public class Interpreter implements
                 double mod = left.asNumber() % right.asNumber();
                 return new Variable.Variant(mod);
             }
-            case Token.TokenType.BITWISE_AND -> {
+            case BITWISE_AND -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 requireIntegerOperands(left, right, expr.op);
                 int result = left.asInt() & right.asInt();
                 return new Variable.Variant(result);
             }
-            case Token.TokenType.BITWISE_OR -> {
+            case BITWISE_OR -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 requireIntegerOperands(left, right, expr.op);
                 int result = left.asInt() | right.asInt();
                 return new Variable.Variant(result);
             }
-            case Token.TokenType.BITWISE_XOR -> {
+            case BITWISE_XOR -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 requireIntegerOperands(left, right, expr.op);
                 int result = left.asInt() ^ right.asInt();
                 return new Variable.Variant(result);
             }
-            case Token.TokenType.LEFT_SHIFT -> {
+            case LEFT_SHIFT -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 requireIntegerOperands(left, right, expr.op);
                 int result = left.asInt() << right.asInt();
                 return new Variable.Variant(result);
             }
-            case Token.TokenType.RIGHT_SHIFT -> {
+            case RIGHT_SHIFT -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 requireIntegerOperands(left, right, expr.op);
                 int result = left.asInt() >> right.asInt();
                 return new Variable.Variant(result);
             }
-            case Token.TokenType.GREATER_THAN -> {
+            case GREATER_THAN -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 requireNumberOperands(left, right, expr.op);
                 return new Variable.Variant(left.implicitlyConvertNumber() > right.implicitlyConvertNumber());
             }
-            case Token.TokenType.GREATER_OR_EQUAL -> {
+            case GREATER_OR_EQUAL -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 requireNumberOperands(left, right, expr.op);
                 return new Variable.Variant(left.implicitlyConvertNumber() >= right.implicitlyConvertNumber());
 
             }
-            case Token.TokenType.LESS_THAN -> {
+            case LESS_THAN -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 requireNumberOperands(left, right, expr.op);
                 return new Variable.Variant(left.implicitlyConvertNumber() < right.implicitlyConvertNumber());
             }
-            case Token.TokenType.LESS_OR_EQUAL -> {
+            case LESS_OR_EQUAL -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 requireNumberOperands(left, right, expr.op);
                     return new Variable.Variant(left.implicitlyConvertNumber() <= right.implicitlyConvertNumber());
             }
-            case Token.TokenType.EQUAL_EQUAL -> {
+            case EQUAL_EQUAL -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 return new Variable.Variant(left.equals(right));
             }
-            case Token.TokenType.BANG_EQUAL -> {
+            case BANG_EQUAL -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 return new Variable.Variant(!left.equals(right));
@@ -299,7 +299,7 @@ public class Interpreter implements
     @Override
     public Variable.Variant visitUnaryExpr(Expr.UnaryExpr expr) {
         switch (expr.op.type) {
-            case Token.TokenType.PLUS -> {
+            case PLUS -> {
                 Variable.Variant var = this.evaluate(expr.expr);
                 if(!var.isNumber()) {
                     throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
@@ -308,7 +308,7 @@ public class Interpreter implements
                 }
                 return var;
             }
-            case Token.TokenType.MINUS -> {
+            case MINUS -> {
                 Variable.Variant var = this.evaluate(expr.expr);
                 if(var.isInt()) {
                     return new Variable.Variant(var.asInt() * -1);
@@ -321,11 +321,11 @@ public class Interpreter implements
                         expr.op.line,
                         "Operand must be a number.");
             }
-            case Token.TokenType.BANG -> {
+            case BANG -> {
                 Variable.Variant var = this.evaluate(expr.expr);
                 return new Variable.Variant(!var.isTruthy());
             }
-            case Token.TokenType.BITWISE_NOT -> {
+            case BITWISE_NOT -> {
                 Variable.Variant var = this.evaluate(expr.expr);
                 if(var.isInt()) {
                     return new Variable.Variant(~var.asInt());
@@ -336,7 +336,7 @@ public class Interpreter implements
                         "Operand must be a int.");
 
             }
-            case Token.TokenType.PLUS_PLUS -> {
+            case PLUS_PLUS -> {
 
                 if (!(expr.expr instanceof Expr.VariableExpr)) {
                     throw new YsharpError(
@@ -362,7 +362,7 @@ public class Interpreter implements
                 }
                 return new Variable.Variant(oldValue);
             }
-            case Token.TokenType.MINUS_MINUS -> {
+            case MINUS_MINUS -> {
 
                 if (!(expr.expr instanceof Expr.VariableExpr)) {
                     throw new YsharpError(
@@ -432,7 +432,7 @@ public class Interpreter implements
 
         switch (expr.op.type) {
 
-            case Token.TokenType.PLUS_PLUS -> {
+            case PLUS_PLUS -> {
                 if (var.isInt()) {
                     var.value = var.asInt() + 1;
                 } else {
@@ -440,7 +440,7 @@ public class Interpreter implements
                 }
             }
 
-            case Token.TokenType.MINUS_MINUS -> {
+            case MINUS_MINUS -> {
                 if (var.isInt()) {
                     var.value = var.asInt() - 1;
                 } else {
@@ -487,11 +487,11 @@ public class Interpreter implements
             }
 
             switch (expr.op.type) {
-                case Token.TokenType.ASSIGN ->  {
+                case ASSIGN ->  {
                     this.curEnv.assign(lvalue, right);
                     return right;
                 }
-                case Token.TokenType.PLUS_ASSIGN -> {
+                case PLUS_ASSIGN -> {
                     Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
                     requireNumberOperands(left, right, expr.op);
                         Variable.Variant result;
@@ -503,7 +503,7 @@ public class Interpreter implements
                         curEnv.assign(lvalue, result);
                         return result;
                 }
-                case Token.TokenType.MINUS_ASSIGN -> {
+                case MINUS_ASSIGN -> {
                     Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
                     requireNumberOperands(left, right, expr.op);
                     Variable.Variant result;
@@ -515,7 +515,7 @@ public class Interpreter implements
                     curEnv.assign(lvalue, result);
                     return result;
                 }
-                case Token.TokenType.MULTIPLY_ASSIGN -> {
+                case MULTIPLY_ASSIGN -> {
                     Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
                     requireNumberOperands(left, right, expr.op);
                     Variable.Variant result;
@@ -527,7 +527,7 @@ public class Interpreter implements
                     curEnv.assign(lvalue, result);
                     return result;
                 }
-                case Token.TokenType.DIVIDE_ASSIGN -> {
+                case DIVIDE_ASSIGN -> {
                     Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
                     requireNumberOperands(left, right, expr.op);
                     if(right.asNumber() == 0)
@@ -545,7 +545,7 @@ public class Interpreter implements
                     curEnv.assign(lvalue, result);
                     return result;
                 }
-                case Token.TokenType.MODULO_ASSIGN -> {
+                case MODULO_ASSIGN -> {
                     Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
                     requireNumberOperands(left, right, expr.op);
                     Variable.Variant result;
@@ -557,7 +557,7 @@ public class Interpreter implements
                     curEnv.assign(lvalue, result);
                     return result;
                 }
-                case Token.TokenType.LEFT_SHIFT_ASSIGN -> {
+                case LEFT_SHIFT_ASSIGN -> {
                     Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
                     requireIntegerOperands(left, right, expr.op);
                     Variable.Variant result;
@@ -565,7 +565,7 @@ public class Interpreter implements
                     curEnv.assign(lvalue, result);
                     return result;
                 }
-                case Token.TokenType.RIGHT_SHIFT_ASSIGN -> {
+                case RIGHT_SHIFT_ASSIGN -> {
                     Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
                     requireIntegerOperands(left, right, expr.op);
                     Variable.Variant result;
@@ -573,7 +573,7 @@ public class Interpreter implements
                     curEnv.assign(lvalue, result);
                     return result;
                 }
-                case Token.TokenType.BITWISE_AND_ASSIGN -> {
+                case BITWISE_AND_ASSIGN -> {
                     Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
                     requireIntegerOperands(left, right, expr.op);
                     Variable.Variant result;
@@ -581,7 +581,7 @@ public class Interpreter implements
                     curEnv.assign(lvalue, result);
                     return result;
                 }
-                case Token.TokenType.BITWISE_OR_ASSIGN -> {
+                case BITWISE_OR_ASSIGN -> {
                     Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
                     requireIntegerOperands(left, right, expr.op);
                     Variable.Variant result;
@@ -589,7 +589,7 @@ public class Interpreter implements
                     curEnv.assign(lvalue, result);
                     return result;
                 }
-                case Token.TokenType.BITWISE_XOR_ASSIGN -> {
+                case BITWISE_XOR_ASSIGN -> {
                     Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
                     requireIntegerOperands(left, right, expr.op);
                     Variable.Variant result;
@@ -1070,7 +1070,7 @@ public class Interpreter implements
                     YsharpError.YsharpErrorType.PROCESS,
                     stmt.identifier.line,
                     "Type mismatch. Cannot assign value of type '" +
-                            curEnv.getType(value) +
+                            value.getType() +
                             "' to variable '" +
                             stmt.identifier.lexeme +
                             "' of type '" +
@@ -1119,7 +1119,7 @@ public class Interpreter implements
                     YsharpError.YsharpErrorType.PROCESS,
                     stmt.identifier.line,
                     "Type mismatch. Cannot assign value of type '" +
-                            curEnv.getType(value) +
+                            value.getType() +
                             "' to variable '" +
                             stmt.identifier.lexeme +
                             "' of type '" +
@@ -1274,6 +1274,7 @@ public class Interpreter implements
                 return stmt.name.lexeme;
             }
         };
+        klass.prototype = yClass.ClassPrototype;
 
         klass.superClassName = stmt.superName; // allowed to be null
 

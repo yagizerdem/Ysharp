@@ -47,7 +47,7 @@ public class yArray {
 
             @Override
             public String getType() {
-                return "array_prototype";
+                return "__Array__";
             }
         };
         yArray_Instance_Prototype.prototype = yClass.ClassPrototype;
