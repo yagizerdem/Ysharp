@@ -46,7 +46,12 @@ public class yWeakHashMap {
 
             @Override
             public String getType() {
-                return "weak_hash_map_prototype";
+                return "__WeakHashMap__";
+            }
+
+            @Override
+            public String toString() {
+                return "<prototype:WeakHashMap>";
             }
         };
         yWeakHashMap_Instance_Prototype.prototype = yClass.ClassPrototype;
@@ -597,7 +602,7 @@ public class yWeakHashMap {
 
         @Override
         public String toString() {
-            return "<class:weak-hash-map>";
+            return "<instance:WeakHashMap>";
         }
     }
 
@@ -627,12 +632,17 @@ public class yWeakHashMap {
         public String getType() {
             return "WeakHashMap";
         }
+        @Override
+        public String toString() {
+            return "<class:WeakHashMap>";
+        }
+
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
         yWeakHashMap.yWeakHashMapClass whmCtor = new yWeakHashMap.yWeakHashMapClass();
         Variable.Variant variant = new Variable.Variant(whmCtor);
-        Variable var = new Variable(variant, false, "function");
+        Variable var = new Variable(variant, false, whmCtor.getType());
         interpreter.defineGlobal(whmCtor.getClassName(), var);
     }
 

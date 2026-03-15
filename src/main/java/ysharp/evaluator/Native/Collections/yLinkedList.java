@@ -44,7 +44,12 @@ public class yLinkedList {
 
             @Override
             public String getType() {
-                return "linked_list_prototype";
+                return "__LinkedList__";
+            }
+
+            @Override
+            public String toString() {
+                return "<prototype:LinkedList>";
             }
         };
         yLinkedList_Instance_Prototype.prototype = yClass.ClassPrototype;
@@ -769,7 +774,7 @@ public class yLinkedList {
 
         @Override
         public String toString() {
-            return "<class:linked-list>";
+            return "<instance:LinkedList>";
         }
     }
 
@@ -800,12 +805,16 @@ public class yLinkedList {
             return "LinkedList";
         }
 
+        @Override
+        public String toString() {
+            return "<class:LinkedList>";
+        }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
         yLinkedList.yLinkedListClass listCtor = new yLinkedList.yLinkedListClass();
         Variable.Variant variant = new Variable.Variant(listCtor);
-        Variable var = new Variable(variant, false, "function");
+        Variable var = new Variable(variant, false, listCtor.getType());
         interpreter.defineGlobal(listCtor.getClassName(), var);
     }
 

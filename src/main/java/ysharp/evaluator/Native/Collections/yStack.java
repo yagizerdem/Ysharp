@@ -48,7 +48,12 @@ public class yStack {
 
             @Override
             public String getType() {
-                return "stack_prototype";
+                return "__Stack__";
+            }
+
+            @Override
+            public String toString() {
+                return "<prototype:Stack>";
             }
         };
         yStack_Instance_Prototype.prototype = yClass.ClassPrototype;
@@ -490,7 +495,7 @@ public class yStack {
 
         @Override
         public String toString() {
-            return "<class:stack>";
+            return "<instance:Stack>";
         }
     }
 
@@ -518,12 +523,17 @@ public class yStack {
         public String getType() {
             return "Stack";
         }
+
+        @Override
+        public String toString() {
+            return "<class:Stack>";
+        }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
         yStack.yStackClass stackCtor = new yStack.yStackClass();
         Variable.Variant variant = new Variable.Variant(stackCtor);
-        Variable var = new Variable(variant, false, "function");
+        Variable var = new Variable(variant, false, stackCtor.getType());
         interpreter.defineGlobal(stackCtor.getClassName(), var);
     }
 }

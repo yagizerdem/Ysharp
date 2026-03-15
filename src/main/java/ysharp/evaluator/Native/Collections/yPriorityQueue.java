@@ -45,7 +45,12 @@ public class yPriorityQueue {
 
             @Override
             public String getType() {
-                return "priority_queue_prototype";
+                return "__PriorityQueue__";
+            }
+
+            @Override
+            public String toString() {
+                return "<prototype:PriorityQueue>";
             }
         };
         yPriorityQueue_Instance_Prototype.prototype = yClass.ClassPrototype;
@@ -686,7 +691,7 @@ public class yPriorityQueue {
 
         @Override
         public String toString() {
-            return "<class:priority-queue>";
+            return "<instance:PriorityQueue>";
         }
     }
 
@@ -716,12 +721,18 @@ public class yPriorityQueue {
         public String getType() {
             return "PriorityQueue";
         }
+
+        @Override
+        public String toString() {
+            return "<class:PriorityQueue>";
+        }
+
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
         yPriorityQueue.yPriorityQueueClass pqCtor = new yPriorityQueue.yPriorityQueueClass();
         Variable.Variant variant = new Variable.Variant(pqCtor);
-        Variable var = new Variable(variant, false, "function");
+        Variable var = new Variable(variant, false, pqCtor.getType());
         interpreter.defineGlobal(pqCtor.getClassName(), var);
     }
 

@@ -49,6 +49,11 @@ public class yArray {
             public String getType() {
                 return "__Array__";
             }
+
+            @Override
+            public String toString() {
+                return "<prototype:Array>";
+            }
         };
         yArray_Instance_Prototype.prototype = yClass.ClassPrototype;
 
@@ -652,7 +657,7 @@ public class yArray {
 
         @Override
         public String toString() {
-            return "<class:array>";
+            return "<instance:Array>";
         }
     }
 
@@ -684,12 +689,17 @@ public class yArray {
         public String getType() {
             return "Array";
         }
+
+        @Override
+        public String toString() {
+            return "<class:Array>";
+        }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
         yArrayClass arrayCtor = new yArrayClass();
         Variable.Variant variant = new Variable.Variant(arrayCtor);
-        Variable var = new Variable(variant, false, "function");
+        Variable var = new Variable(variant, false, arrayCtor.getType());
         interpreter.defineGlobal(arrayCtor.getClassName(), var);
     }
 

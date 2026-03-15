@@ -47,7 +47,12 @@ public class yMapTrie {
 
             @Override
             public String getType() {
-                return "trie_prototype";
+                return "__MapTrie__";
+            }
+
+            @Override
+            public String toString() {
+                return "<prototype:MapTrie>";
             }
         };
         yMapTrie_Instance_Prototype.prototype = yClass.ClassPrototype;
@@ -551,7 +556,7 @@ public class yMapTrie {
 
         @Override
         public String toString() {
-            return "<class:MapTrie>";
+            return "<instance:MapTrie>";
         }
     }
 
@@ -583,12 +588,17 @@ public class yMapTrie {
         public String getType() {
             return "MapTrie";
         }
+
+        @Override
+        public String toString() {
+            return "<class:MapTrie>";
+        }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
         yMapTrie.yMapTrieClass trieCtor = new yMapTrie.yMapTrieClass();
         Variable.Variant variant = new Variable.Variant(trieCtor);
-        Variable var = new Variable(variant, false, "function");
+        Variable var = new Variable(variant, false, trieCtor.getType());
         interpreter.defineGlobal(trieCtor.getClassName(), var);
     }
 

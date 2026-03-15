@@ -46,7 +46,12 @@ public class yHashTable {
 
             @Override
             public String getType() {
-                return "map_prototype";
+                return "__HashTable__";
+            }
+
+            @Override
+            public String toString() {
+                return "<prototype:HashTable>";
             }
         };
         yMap_Instance_Prototype.prototype = yClass.ClassPrototype;
@@ -544,7 +549,7 @@ public class yHashTable {
 
         @Override
         public String toString() {
-            return "<class:hash-table>";
+            return "<instance:HashTable>";
         }
     }
 
@@ -572,12 +577,17 @@ public class yHashTable {
         public String getType() {
             return "HashTable";
         }
+
+        @Override
+        public String toString() {
+            return "<class:HashTable>";
+        }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
         yMapClass mapCtor = new yMapClass();
         Variable.Variant variant = new Variable.Variant(mapCtor);
-        Variable var = new Variable(variant, false, "function");
+        Variable var = new Variable(variant, false, mapCtor.getType());
         interpreter.defineGlobal(mapCtor.getClassName(), var);
     }
 

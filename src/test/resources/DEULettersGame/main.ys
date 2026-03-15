@@ -14,8 +14,17 @@ class Employee extends Human {
 
 var h = new Employee();
 
-println h.getPrototype().getPrototype().foo();
-println Employee.getPrototype();
+var t = new Human();
+
+println t;
+println h;
+println new Array();
+println [];
+println Human;
+println Array;
+println Array.getPrototype();
+var a = new Array();
+println a.getPrototype().getType();
 
 
 function sum(a,b): any do
@@ -23,4 +32,12 @@ function sum(a,b): any do
 end
 
 println sum(2,4);
+
+var q = new Queue();
+
+q.add(10);
+
+println q;
+println q.toString();
+
 

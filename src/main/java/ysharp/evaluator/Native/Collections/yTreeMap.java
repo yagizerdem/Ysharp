@@ -46,7 +46,12 @@ public class yTreeMap {
 
             @Override
             public String getType() {
-                return "tree_map_prototype";
+                return "__TreeMap__";
+            }
+
+            @Override
+            public String toString() {
+                return "<prototype:TreeMap>";
             }
         };
         yTreeMap_Instance_Prototype.prototype = yClass.ClassPrototype;
@@ -944,7 +949,7 @@ public class yTreeMap {
 
         @Override
         public String toString() {
-            return "<class:tree-map>";
+            return "<instance:TreeMap>";
         }
     }
 
@@ -974,12 +979,17 @@ public class yTreeMap {
         public String getType() {
             return "TreeMap";
         }
+
+        @Override
+        public String toString() {
+            return "<class:TreeMap>";
+        }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
         yTreeMapClass tmCtor = new yTreeMapClass();
         Variable.Variant variant = new Variable.Variant(tmCtor);
-        Variable var = new Variable(variant, false, "function");
+        Variable var = new Variable(variant, false, tmCtor.getType());
         interpreter.defineGlobal(tmCtor.getClassName(), var);
     }
 

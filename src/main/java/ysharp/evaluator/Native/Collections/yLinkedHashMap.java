@@ -46,7 +46,12 @@ public class yLinkedHashMap {
 
             @Override
             public String getType() {
-                return "linked_hash_map_prototype";
+                return "__LinkedHashMap__";
+            }
+
+            @Override
+            public String toString() {
+                return "<prototype:LinkedHashMap>";
             }
         };
         yLinkedHashMap_Instance_Prototype.prototype = yClass.ClassPrototype;
@@ -705,9 +710,8 @@ public class yLinkedHashMap {
             return "LinkedHashMap";
         }
 
-        @Override
         public String toString() {
-            return "<class:linked-hash-map>";
+            return "<instance:LinkedHashMap>";
         }
     }
 
@@ -738,12 +742,16 @@ public class yLinkedHashMap {
             return "LinkedHashMap";
         }
 
+        public String toString() {
+            return "<class:LinkedHashMap>";
+        }
+
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
         yLinkedHashMap.yLinkedHashMapClass lhmCtor = new yLinkedHashMap.yLinkedHashMapClass();
         Variable.Variant variant = new Variable.Variant(lhmCtor);
-        Variable var = new Variable(variant, false, "function");
+        Variable var = new Variable(variant, false, lhmCtor.getType());
         interpreter.defineGlobal(lhmCtor.getClassName(), var);
     }
 

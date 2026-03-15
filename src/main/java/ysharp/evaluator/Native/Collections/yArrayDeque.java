@@ -46,7 +46,12 @@ public class yArrayDeque {
 
             @Override
             public String getType() {
-                return "array_deque_prototype";
+                return "__ArrayDeque__";
+            }
+
+            @Override
+            public String toString() {
+                return "<prototype:ArrayDeque>";
             }
         };
         yArrayDeque_Instance_Prototype.prototype = yClass.ClassPrototype;
@@ -687,7 +692,7 @@ public class yArrayDeque {
 
         @Override
         public String toString() {
-            return "<class:array-deque>";
+            return "<instance:ArrayDeque>";
         }
     }
 
@@ -717,12 +722,17 @@ public class yArrayDeque {
         public String getType() {
             return "ArrayDeque";
         }
+
+        @Override
+        public String toString() {
+            return "<class:ArrayDeque>";
+        }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
         yArrayDequeClass dequeCtor = new yArrayDequeClass();
         Variable.Variant variant = new Variable.Variant(dequeCtor);
-        Variable var = new Variable(variant, false, "function");
+        Variable var = new Variable(variant, false, dequeCtor.getType());
         interpreter.defineGlobal(dequeCtor.getClassName(), var);
     }
 

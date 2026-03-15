@@ -46,7 +46,12 @@ public class yIdentityHashMap {
 
             @Override
             public String getType() {
-                return "identity_hash_map_prototype";
+                return "__IdentityHashMap__";
+            }
+
+            @Override
+            public String toString() {
+                return "<prototype:IdentityHashMap>";
             }
         };
         yIdentityHashMap_Instance_Prototype.prototype = yClass.ClassPrototype;
@@ -634,7 +639,7 @@ public class yIdentityHashMap {
 
         @Override
         public String toString() {
-            return "<class:identity-hash-map>";
+            return "<instance:IdentityHashMap>";
         }
     }
 
@@ -666,12 +671,17 @@ public class yIdentityHashMap {
         public String getType() {
             return "IdentityHashMap";
         }
+
+        @Override
+        public String toString() {
+            return "<class:IdentityHashMap>";
+        }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
         yIdentityHashMap.yIdentityHashMapClass ihmCtor = new yIdentityHashMap.yIdentityHashMapClass();
         Variable.Variant variant = new Variable.Variant(ihmCtor);
-        Variable var = new Variable(variant, false, "function");
+        Variable var = new Variable(variant, false, ihmCtor.getType());
         interpreter.defineGlobal(ihmCtor.getClassName(), var);
     }
 

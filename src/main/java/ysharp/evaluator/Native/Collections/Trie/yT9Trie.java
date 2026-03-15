@@ -48,7 +48,12 @@ public class yT9Trie {
 
             @Override
             public String getType() {
-                return "t9_trie_prototype";
+                return "__T9Trie__";
+            }
+
+            @Override
+            public String toString() {
+                return "<prototype:T9Trie>";
             }
         };
         yT9Trie_Instance_Prototype.prototype = yClass.ClassPrototype;
@@ -604,7 +609,7 @@ public class yT9Trie {
 
         @Override
         public String toString() {
-            return "<class:t9-trie>";
+            return "<instance:T9Trie>";
         }
     }
 
@@ -635,6 +640,11 @@ public class yT9Trie {
         @Override
         public String getType() {
             return "T9Trie";
+        }
+
+        @Override
+        public String toString() {
+            return "<class:T9Trie>";
         }
     }
 

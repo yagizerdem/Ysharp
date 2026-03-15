@@ -42,7 +42,12 @@ public class ySet {
             public boolean isTruthy() { return true; }
 
             @Override
-            public String getType() { return "set_prototype"; }
+            public String getType() { return "__Set__"; }
+
+            @Override
+            public String toString() {
+                return "<prototype:Set>";
+            }
         };
         ySet_Instance_Prototype.prototype = yClass.ClassPrototype;
 
@@ -636,7 +641,9 @@ public class ySet {
         public String getType() { return "Set"; }
 
         @Override
-        public String toString() { return "<class:set>"; }
+        public String toString() {
+            return "<instance:Set>";
+        }
     }
 
     public static class ySetClass extends yClass.SealedClassObject {
@@ -662,6 +669,11 @@ public class ySet {
         public String getType() {
             return "Set";
         }
+
+        @Override
+        public String toString() {
+            return "<class:Set>";
+        }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
@@ -673,6 +685,6 @@ public class ySet {
                 new Variable(
                         new Variable.Variant(ctor),
                         false,
-                        "function"));
+                        ctor.getType()));
     }
 }

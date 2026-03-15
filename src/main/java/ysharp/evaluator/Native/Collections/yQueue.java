@@ -46,7 +46,12 @@ public class yQueue {
 
             @Override
             public String getType() {
-                return "queue_prototype";
+                return "__Queue__";
+            }
+
+            @Override
+            public String toString() {
+                return "<prototype:Queue>";
             }
         };
         yQueue_Instance_Prototype.prototype = yClass.ClassPrototype;
@@ -355,7 +360,7 @@ public class yQueue {
 
         @Override
         public String toString() {
-            return "<class:queue>";
+            return "<instance:Queue>";
         }
     }
 
@@ -383,12 +388,17 @@ public class yQueue {
         public String getType() {
             return "Queue";
         }
+
+        @Override
+        public String toString() {
+            return "<class:Queue>";
+        }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
         yQueue.yQueueClass queueCtor = new yQueue.yQueueClass();
         Variable.Variant variant = new Variable.Variant(queueCtor);
-        Variable var = new Variable(variant, false, "function");
+        Variable var = new Variable(variant, false, queueCtor.getType());
         interpreter.defineGlobal(queueCtor.getClassName(), var);
     }
 }

@@ -47,7 +47,12 @@ public class ySortedMapTrie {
 
             @Override
             public String getType() {
-                return "trie_prototype";
+                return "__SortedMapTrie__";
+            }
+
+            @Override
+            public String toString() {
+                return "<prototype:SortedMapTrie>";
             }
         };
         ySortedMapTrie_Instance_Prototype.prototype = yClass.ClassPrototype;
@@ -550,7 +555,7 @@ public class ySortedMapTrie {
 
         @Override
         public String toString() {
-            return "<class:SortedMapTrie>";
+            return "<instance:SortedMapTrie>";
         }
     }
 
@@ -582,12 +587,17 @@ public class ySortedMapTrie {
         public String getType() {
             return "SortedMapTrie";
         }
+
+        @Override
+        public String toString() {
+            return "<class:SortedMapTrie>";
+        }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
         ySortedMapTrie.ySortedMapTrieClass trieCtor = new ySortedMapTrie.ySortedMapTrieClass();
         Variable.Variant variant = new Variable.Variant(trieCtor);
-        Variable var = new Variable(variant, false, "function");
+        Variable var = new Variable(variant, false, trieCtor.getType());
         interpreter.defineGlobal(trieCtor.getClassName(), var);
     }
 

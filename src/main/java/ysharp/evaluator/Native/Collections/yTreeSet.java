@@ -46,7 +46,12 @@ public class yTreeSet {
 
             @Override
             public String getType() {
-                return "tree_set_prototype";
+                return "__TreeSet__";
+            }
+
+            @Override
+            public String toString() {
+                return "<prototype:TreeSet>";
             }
         };
         yTreeSet_Instance_Prototype.prototype = yClass.ClassPrototype;
@@ -956,7 +961,7 @@ public class yTreeSet {
 
         @Override
         public String toString() {
-            return "<class:tree-set>";
+            return "<instnace:TreeSet>";
         }
     }
 
@@ -986,12 +991,17 @@ public class yTreeSet {
         public String getType() {
             return "TreeSet";
         }
+
+        @Override
+        public String toString() {
+            return "<class:TreeSet>";
+        }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
         yTreeSet.yTreeSetClass tsCtor = new yTreeSet.yTreeSetClass();
         Variable.Variant variant = new Variable.Variant(tsCtor);
-        Variable var = new Variable(variant, false, "function");
+        Variable var = new Variable(variant, false, tsCtor.getType());
         interpreter.defineGlobal(tsCtor.getClassName(), var);
     }
 
