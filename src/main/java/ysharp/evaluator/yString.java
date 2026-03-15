@@ -1,10 +1,37 @@
 package ysharp.evaluator;
 
 import ysharp.YsharpError;
+import ysharp.evaluator.Native.Collections.yArray;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class yString  {
+
+    private static yString.yStringInstance requireStringThis (Interpreter interpreter, String fnName) {
+        Variable thisVar = interpreter.curEnv.getValue("this");
+
+        if (thisVar == null) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    -1,
+                    "Method " + "'" + fnName+ "'" + "called without a valid 'this' context."
+            );
+        }
+
+        RuntimeObject obj = thisVar.value.asRuntimeObject();
+
+        if (!(obj instanceof yString.yStringInstance)) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    -1,
+                    "Method '" + fnName + "' expected 'string' as 'this' but got '" + obj.getType() + "'."
+            );
+        }
+
+        return  (yString.yStringInstance) obj;
+    }
 
     public static RuntimeObject yString_Instance_Prototype;
 
@@ -222,11 +249,9 @@ public class yString  {
                     );
                 }
 
-                String ch = String.valueOf(instance.data.charAt(index));
+                char ch = instance.data.charAt(index);
 
-                yStringInstance newStr = new yStringInstance(ch);
-
-                return new Variable.Variant(newStr);
+                return new Variable.Variant(ch);
             }
 
             @Override
@@ -1414,54 +1439,44 @@ public class yString  {
                 "function");
         yString_Instance_Prototype.set(capitalize.getFnName(), capitalizeVar);
 
-        // str.toString()
-        class ToStringFn extends Function.NativeFunction implements Callable {
+        // str.split(string)
+        class SplitFn extends Function.NativeFunction implements Callable {
 
             @Override
             public int arity() {
-                return 0;
+                return 1;
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
 
-                Variable thisVar = interpreter.curEnv.getValue("this");
+                    requireArity(arguments, arity(), getFnName());
+                    yStringInstance instance = requireStringThis(interpreter, getFnName());
 
-                if (thisVar == null) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "Method 'compareTo' called without a valid 'this' context."
-                    );
-                }
+                    String regex = requireString(arguments.getFirst(), getFnName(), 1);
 
-                RuntimeObject obj = thisVar.value.asRuntimeObject();
+                    String[] arr = instance.data.split(regex);
+                    ArrayList<Variable.Variant> list = new ArrayList<>();
+                    for (var it : arr) list.add(new Variable.Variant(it));
 
-                if (!(obj instanceof yStringInstance)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "'compareTo' can only be called on string objects."
-                    );
-                }
-
-                yStringInstance instance = (yStringInstance) obj;
-
-                return new Variable.Variant("\"" + instance.data + "\"");
+                    yArray.yArrayInstance yArray = new yArray.yArrayInstance(list);
+                    return new Variable.Variant(yArray);
             }
 
             @Override
             public String getFnName() {
-                return "toString";
+                return "split";
             }
         }
 
-        ToStringFn toString = new ToStringFn();
-        Variable toStringVar = new Variable(
-                new Variable.Variant(toString),
+        SplitFn split = new SplitFn();
+        Variable splitVar = new Variable(
+                new Variable.Variant(split),
                 true,
                 "function");
-        yString_Instance_Prototype.set(toString.getFnName(), toStringVar);
+        yString_Instance_Prototype.set(split.getFnName(), splitVar);
     }
 
     public static class yStringInstance extends yClass.ClassObjectInstance {
@@ -1501,7 +1516,6 @@ public class yString  {
             return data.hashCode();
         }
     }
-
 
     public static class yStringClass extends yClass.SealedClassObject {
 
@@ -1550,7 +1564,7 @@ public class yString  {
     public static void Register(Interpreter interpreter) throws Exception {
         yStringClass stringCtor = new yStringClass();
         Variable.Variant variant = new Variable.Variant(stringCtor);
-        Variable var = new Variable(variant, false, "function");
+        Variable var = new Variable(variant, false, stringCtor.getType());
         interpreter.defineGlobal(stringCtor.getClassName(), var);
     }
 

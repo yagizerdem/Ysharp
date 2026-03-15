@@ -1,8 +1,17 @@
 
-println Type.getType(Type.Converter);
-println Type.Converter;
 
-var a : any = Type.Converter.toDouble('a');
+var a = new String("yagiz erdem");
 
 println a;
-println Type.getType(a);
+println Type.getType(String);
+
+println a.length();
+
+
+var arr = a.split(" ");
+
+println arr;
+
+println arr.toString();
+
+
