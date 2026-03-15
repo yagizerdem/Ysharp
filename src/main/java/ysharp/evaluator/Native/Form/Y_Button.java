@@ -2,7 +2,6 @@ package ysharp.evaluator.Native.Form;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.parser.TypeTag;
 
 import javax.swing.*;
 import java.util.List;
@@ -83,7 +82,7 @@ public class Y_Button {
         Variable setTextVar = new Variable(
                 new Variable.Variant(setText),
                 true,
-                TypeTag.OBJECT);
+                "function");
 
         Y_Button_Prototype.set(setText.getFnName(), setTextVar);
     }
@@ -143,7 +142,7 @@ public class Y_Button {
                 new Variable(
                         new Variable.Variant(ctor),
                         false,
-                        TypeTag.OBJECT
+                        "function"
                 )
         );
     }

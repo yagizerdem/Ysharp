@@ -4,7 +4,6 @@ import com.googlecode.lanterna.SGR;
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.Native.Collections.yArray;
-import ysharp.parser.TypeTag;
 
 import java.util.List;
 
@@ -65,31 +64,31 @@ public class ySGR {
             this.prototype =  yClass.ClassPrototype;
 
             // enum constants
-            Variable blinkVar = new Variable(new Variable.Variant(new ySGREnum(SGR.BLINK)), true, TypeTag.OBJECT);
+            Variable blinkVar = new Variable(new Variable.Variant(new ySGREnum(SGR.BLINK)), true, "function");
             this.set("BLINK", blinkVar);
 
-            Variable boldVar = new Variable(new Variable.Variant(new ySGREnum(SGR.BOLD)), true, TypeTag.OBJECT);
+            Variable boldVar = new Variable(new Variable.Variant(new ySGREnum(SGR.BOLD)), true, "function");
             this.set("BOLD", boldVar);
 
-            Variable borderedVar = new Variable(new Variable.Variant(new ySGREnum(SGR.BORDERED)), true, TypeTag.OBJECT);
+            Variable borderedVar = new Variable(new Variable.Variant(new ySGREnum(SGR.BORDERED)), true, "function");
             this.set("BORDERED", borderedVar);
 
-            Variable circledVar = new Variable(new Variable.Variant(new ySGREnum(SGR.CIRCLED)), true, TypeTag.OBJECT);
+            Variable circledVar = new Variable(new Variable.Variant(new ySGREnum(SGR.CIRCLED)), true, "function");
             this.set("CIRCLED", circledVar);
 
-            Variable crossedOutVar = new Variable(new Variable.Variant(new ySGREnum(SGR.CROSSED_OUT)), true, TypeTag.OBJECT);
+            Variable crossedOutVar = new Variable(new Variable.Variant(new ySGREnum(SGR.CROSSED_OUT)), true, "function");
             this.set("CROSSED_OUT", crossedOutVar);
 
-            Variable frakturVar = new Variable(new Variable.Variant(new ySGREnum(SGR.FRAKTUR)), true, TypeTag.OBJECT);
+            Variable frakturVar = new Variable(new Variable.Variant(new ySGREnum(SGR.FRAKTUR)), true, "function");
             this.set("FRAKTUR", frakturVar);
 
-            Variable italicVar = new Variable(new Variable.Variant(new ySGREnum(SGR.ITALIC)), true, TypeTag.OBJECT);
+            Variable italicVar = new Variable(new Variable.Variant(new ySGREnum(SGR.ITALIC)), true, "function");
             this.set("ITALIC", italicVar);
 
-            Variable reverseVar = new Variable(new Variable.Variant(new ySGREnum(SGR.REVERSE)), true, TypeTag.OBJECT);
+            Variable reverseVar = new Variable(new Variable.Variant(new ySGREnum(SGR.REVERSE)), true, "function");
             this.set("REVERSE", reverseVar);
 
-            Variable underlineVar = new Variable(new Variable.Variant(new ySGREnum(SGR.UNDERLINE)), true, TypeTag.OBJECT);
+            Variable underlineVar = new Variable(new Variable.Variant(new ySGREnum(SGR.UNDERLINE)), true, "function");
             this.set("UNDERLINE", underlineVar);
 
             // SGR.valueOf(string) // Returns the enum constant of this type with the specified name.
@@ -117,7 +116,7 @@ public class ySGR {
             Variable valueOfVar = new Variable(
                     new Variable.Variant(valueOf),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(valueOf.getFnName(), valueOfVar);
 
             // SGR.values() Returns an array containing the constants of this enum type, in the order they are declared.
@@ -148,7 +147,7 @@ public class ySGR {
             Variable valuesVar = new Variable(
                     new Variable.Variant(values),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(values.getFnName(), valuesVar);
         }
 
@@ -181,7 +180,7 @@ public class ySGR {
     public static void Register(Interpreter interpreter) throws Exception {
         ySGRClass ctor = new ySGRClass();
         Variable.Variant variant = new Variable.Variant(ctor);
-        Variable var = new Variable(variant, true, TypeTag.OBJECT);
+        Variable var = new Variable(variant, true, "function");
         interpreter.defineGlobal(ctor.getClassName(), var);
     }
 }

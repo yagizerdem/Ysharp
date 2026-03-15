@@ -2,7 +2,6 @@ package ysharp.evaluator.Native.Collections;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.parser.TypeTag;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -47,7 +46,12 @@ public class yHashTable {
 
             @Override
             public String getType() {
-                return "map_prototype";
+                return "__HashTable__";
+            }
+
+            @Override
+            public String toString() {
+                return "<prototype:HashTable>";
             }
         };
         yMap_Instance_Prototype.prototype = yClass.ClassPrototype;
@@ -100,7 +104,7 @@ public class yHashTable {
         Variable toStringVar = new Variable(
                 new Variable.Variant(toString),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yHashTable.yMap_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
         //  map.put(10, 100)
@@ -130,7 +134,7 @@ public class yHashTable {
         Variable putVar = new Variable(
                 new Variable.Variant(put),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yHashTable.yMap_Instance_Prototype.set(put.getFnName(), putVar);
 
 
@@ -169,7 +173,7 @@ public class yHashTable {
         Variable getVar = new Variable(
                 new Variable.Variant(get),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yHashTable.yMap_Instance_Prototype.set(get.getFnName(), getVar);
 
 
@@ -208,7 +212,7 @@ public class yHashTable {
         Variable removeVar = new Variable(
                 new Variable.Variant(remove),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yHashTable.yMap_Instance_Prototype.set(remove.getFnName(), removeVar);
 
 
@@ -243,7 +247,7 @@ public class yHashTable {
         Variable containsKeyVar = new Variable(
                 new Variable.Variant(containsKey),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yHashTable.yMap_Instance_Prototype.set(containsKey.getFnName(), containsKeyVar);
 
 
@@ -275,7 +279,7 @@ public class yHashTable {
         Variable sizeVar = new Variable(
                 new Variable.Variant(size),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yHashTable.yMap_Instance_Prototype.set(size.getFnName(), sizeVar);
 
 
@@ -308,7 +312,7 @@ public class yHashTable {
         Variable clearVar = new Variable(
                 new Variable.Variant(clear),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yHashTable.yMap_Instance_Prototype.set(clear.getFnName(), clearVar);
 
         // map.isEmpty()
@@ -339,7 +343,7 @@ public class yHashTable {
         Variable isEmptyVar = new Variable(
                 new Variable.Variant(isEmpty),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yHashTable.yMap_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
 
         // map.keys()
@@ -380,7 +384,7 @@ public class yHashTable {
         Variable keysVar = new Variable(
                 new Variable.Variant(keys),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yHashTable.yMap_Instance_Prototype.set(keys.getFnName(), keysVar);
 
 
@@ -422,7 +426,7 @@ public class yHashTable {
         Variable valuesVar = new Variable(
                 new Variable.Variant(values),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yHashTable.yMap_Instance_Prototype.set(values.getFnName(), valuesVar);
 
 
@@ -474,7 +478,7 @@ public class yHashTable {
         Variable entriesVar = new Variable(
                 new Variable.Variant(entries),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yHashTable.yMap_Instance_Prototype.set(entries.getFnName(), entriesVar);
 
 
@@ -512,7 +516,7 @@ public class yHashTable {
         Variable cloneVar = new Variable(
                 new Variable.Variant(clone),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yHashTable.yMap_Instance_Prototype.set(clone.getFnName(), cloneVar);
 
     }
@@ -545,7 +549,7 @@ public class yHashTable {
 
         @Override
         public String toString() {
-            return "<class:hash-table>";
+            return "<instance:HashTable>";
         }
     }
 
@@ -573,12 +577,17 @@ public class yHashTable {
         public String getType() {
             return "HashTable";
         }
+
+        @Override
+        public String toString() {
+            return "<class:HashTable>";
+        }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
         yMapClass mapCtor = new yMapClass();
         Variable.Variant variant = new Variable.Variant(mapCtor);
-        Variable var = new Variable(variant, false, TypeTag.OBJECT);
+        Variable var = new Variable(variant, false, mapCtor.getType());
         interpreter.defineGlobal(mapCtor.getClassName(), var);
     }
 

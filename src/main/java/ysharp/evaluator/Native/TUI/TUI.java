@@ -10,7 +10,7 @@ import ysharp.evaluator.Native.TUI.Util.TextColor.yTextColor;
 import ysharp.evaluator.Native.TUI.Util.ySGR;
 import ysharp.evaluator.Variable;
 import ysharp.evaluator.yClass;
-import ysharp.parser.TypeTag;
+
 import java.util.List;
 
 public class TUI {
@@ -25,7 +25,7 @@ public class TUI {
             Variable defaultTerminalVar = new Variable(
                     new Variable.Variant(defaultTerminal),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             );
             this.set(defaultTerminal.getClassName(), defaultTerminalVar);
 
@@ -33,7 +33,7 @@ public class TUI {
             Variable swingTerminalVar = new Variable(
                     new Variable.Variant(swingTerminal),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             );
             this.set(swingTerminal.getClassName(), swingTerminalVar);
 
@@ -41,7 +41,7 @@ public class TUI {
             Variable scrollSwingTerminalVar = new Variable(
                     new Variable.Variant(swingTerminal),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             );
             this.set(scrollSwingTerminal.getClassName(), scrollSwingTerminalVar);
 
@@ -50,7 +50,7 @@ public class TUI {
             Variable sgrVar = new Variable(
                     new Variable.Variant(sgr),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             );
             this.set(sgr.getClassName(), sgrVar);
 
@@ -59,7 +59,7 @@ public class TUI {
             Variable textColorVar = new Variable(
                     new Variable.Variant(textColor),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             );
             this.set(textColor.getClassName(), textColorVar);
 
@@ -68,7 +68,7 @@ public class TUI {
             Variable yKeyStrokeVar = new Variable(
                     new Variable.Variant(keyStroke),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             );
             this.set(keyStroke.getClassName(), yKeyStrokeVar);
 
@@ -108,7 +108,7 @@ public class TUI {
         Variable.Variant variant = new Variable.Variant(ctor);
         Variable var = new Variable(variant,
                 true,
-                TypeTag.OBJECT);
+                "function");
 
         interpreter.defineGlobal(ctor.getClassName(), var);
     }

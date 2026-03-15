@@ -2,44 +2,16 @@ package ysharp.evaluator.Native.Util;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.parser.TypeTag;
 
 import java.util.List;
 
 public class yMath {
 
 
-    static {
-        // all the methods in math class should be static because i want so !
-    }
-
-    public static class yMathInstance extends yClass.ClassObjectInstance {
-
-        public yMathInstance() {}
-
-        @Override
-        public boolean isTruthy() {
-            return true;
-        }
-
-        @Override
-        public String getType() {
-            return "Math";
-        }
-
-        @Override
-        public String toString() {
-            return "<instance:Math>";
-        }
-    }
-
-
     public static class yMathClass extends yClass.SealedClassObject {
 
-        yMathClass(){
+        private yMathClass(){
             this.prototype =  yClass.ClassPrototype;
-
-            // add static methods here
 
             // Math.pow(a: number, b: int)
             class PowFn extends Function.NativeFunction {
@@ -70,7 +42,7 @@ public class yMath {
             Variable powVar = new Variable(
                     new Variable.Variant(pow),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(pow.getFnName(), powVar);
 
             // Math.sqrt(a: number)
@@ -102,7 +74,7 @@ public class yMath {
             Variable sqrtVar = new Variable(
                     new Variable.Variant(sqrt),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             this.set(sqrt.getFnName(), sqrtVar);
 
@@ -136,7 +108,7 @@ public class yMath {
             Variable absVar = new Variable(
                     new Variable.Variant(abs),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             this.set(abs.getFnName(), absVar);
 
@@ -170,7 +142,7 @@ public class yMath {
             Variable floorVar = new Variable(
                     new Variable.Variant(floor),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             this.set(floor.getFnName(), floorVar);
 
@@ -204,7 +176,7 @@ public class yMath {
             Variable ceilVar = new Variable(
                     new Variable.Variant(ceil),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             this.set(ceil.getFnName(), ceilVar);
 
@@ -240,7 +212,7 @@ public class yMath {
             Variable maxVar = new Variable(
                     new Variable.Variant(max),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             this.set(max.getFnName(), maxVar);
 
@@ -276,7 +248,7 @@ public class yMath {
             Variable minVar = new Variable(
                     new Variable.Variant(min),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             this.set(min.getFnName(), minVar);
 
@@ -310,7 +282,7 @@ public class yMath {
             Variable sinVar = new Variable(
                     new Variable.Variant(sin),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             this.set(sin.getFnName(), sinVar);
 
@@ -344,7 +316,7 @@ public class yMath {
             Variable cosVar = new Variable(
                     new Variable.Variant(cos),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             this.set(cos.getFnName(), cosVar);
 
@@ -378,7 +350,7 @@ public class yMath {
             Variable tanVar = new Variable(
                     new Variable.Variant(tan),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             this.set(tan.getFnName(), tanVar);
 
@@ -412,7 +384,7 @@ public class yMath {
             Variable logVar = new Variable(
                     new Variable.Variant(log),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             this.set(log.getFnName(), logVar);
 
@@ -446,7 +418,7 @@ public class yMath {
             Variable expVar = new Variable(
                     new Variable.Variant(exp),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             this.set(exp.getFnName(), expVar);
 
@@ -480,7 +452,7 @@ public class yMath {
             Variable roundVar = new Variable(
                     new Variable.Variant(round),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             this.set(round.getFnName(), roundVar);
 
@@ -511,7 +483,7 @@ public class yMath {
             Variable randomVar = new Variable(
                     new Variable.Variant(random),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             this.set(random.getFnName(), randomVar);
 
@@ -548,7 +520,7 @@ public class yMath {
             Variable clampVar = new Variable(
                     new Variable.Variant(clamp),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             this.set(clamp.getFnName(), clampVar);
 
@@ -581,7 +553,7 @@ public class yMath {
             Variable atanVar = new Variable(
                     new Variable.Variant(atan),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             this.set(atan.getFnName(), atanVar);
 
@@ -617,7 +589,7 @@ public class yMath {
             Variable atan2Var = new Variable(
                     new Variable.Variant(atan2),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             this.set(atan2.getFnName(), atan2Var);
 
@@ -653,7 +625,7 @@ public class yMath {
             Variable hypotVar = new Variable(
                     new Variable.Variant(hypot),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             this.set(hypot.getFnName(), hypotVar);
 
@@ -687,7 +659,7 @@ public class yMath {
             Variable signVar = new Variable(
                     new Variable.Variant(sign),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             this.set(sign.getFnName(), signVar);
 
@@ -721,7 +693,7 @@ public class yMath {
             Variable degToRadVar = new Variable(
                     new Variable.Variant(degToRad),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             this.set(degToRad.getFnName(), degToRadVar);
 
@@ -755,7 +727,7 @@ public class yMath {
             Variable radToDegVar = new Variable(
                     new Variable.Variant(radToDeg),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             this.set(radToDeg.getFnName(), radToDegVar);
 
@@ -792,7 +764,7 @@ public class yMath {
             Variable lerpVar = new Variable(
                     new Variable.Variant(lerp),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             this.set(lerp.getFnName(), lerpVar);
 
@@ -826,7 +798,7 @@ public class yMath {
             Variable asinVar = new Variable(
                     new Variable.Variant(asin),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             this.set(asin.getFnName(), asinVar);
 
@@ -860,7 +832,7 @@ public class yMath {
             Variable acosVar = new Variable(
                     new Variable.Variant(acos),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             this.set(acos.getFnName(), acosVar);
 
@@ -894,7 +866,7 @@ public class yMath {
             Variable log10Var = new Variable(
                     new Variable.Variant(log10),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             this.set(log10.getFnName(), log10Var);
 
@@ -928,7 +900,7 @@ public class yMath {
             Variable log2Var = new Variable(
                     new Variable.Variant(log2),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             this.set(log2.getFnName(), log2Var);
 
@@ -962,7 +934,7 @@ public class yMath {
             Variable cbrtVar = new Variable(
                     new Variable.Variant(cbrt),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             this.set(cbrt.getFnName(), cbrtVar);
 
@@ -997,7 +969,7 @@ public class yMath {
             Variable truncVar = new Variable(
                     new Variable.Variant(trunc),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             this.set(trunc.getFnName(), truncVar);
 
@@ -1032,7 +1004,7 @@ public class yMath {
             Variable fractVar = new Variable(
                     new Variable.Variant(fract),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             this.set(fract.getFnName(), fractVar);
 
@@ -1041,14 +1013,14 @@ public class yMath {
             Variable PI_var  = new Variable(
                     new Variable.Variant(Math.PI),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             );
             this.set("PI", PI_var);
 
             Variable E_var  = new Variable(
                     new Variable.Variant(Math.E),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             );
             this.set("E", E_var);
         }
@@ -1063,10 +1035,11 @@ public class yMath {
                                      List<Variable.Variant> arguments)
                 throws YsharpError {
 
-            requireArity(arguments,0, getClassName());
-
-            yMathInstance instance = new yMathInstance();
-            return new Variable.Variant(instance);
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    -1,
+                    "Cannot create instance of static class '" + getClassName() + "'."
+            );
         }
 
         @Override
@@ -1087,7 +1060,7 @@ public class yMath {
         Variable.Variant variant = new Variable.Variant(ctor);
         Variable var = new Variable(variant,
                 true,
-                TypeTag.OBJECT);
+                ctor.getType());
 
         interpreter.defineGlobal(ctor.getClassName(), var);
     }

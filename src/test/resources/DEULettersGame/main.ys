@@ -1,21 +1,10 @@
-const terminal = new TUI.DefaultTerminal();
 
-terminal.autoFlush = true;
-
-terminal.enableSgr(TUI.SGR.UNDERLINE);
-terminal.enableSgr(TUI.SGR.BOLD);
-
-
-while true do
-
-   var key = terminal.pollKey();
-
-    if key != null then do
-        println key;
-        terminal.clearInputBuffer();
-    end
+function test() do
 
 end
 
-terminal.close();
+class Human {}
 
+println Type.isFunction(test);
+println Type.isFunction(Human);
+println Type.isFunction(new Human());

@@ -3,7 +3,6 @@ package ysharp.evaluator;
 import ysharp.YsharpError;
 import ysharp.parser.Expr;
 import ysharp.parser.Stmt;
-import ysharp.parser.TypeTag;
 
 import java.util.List;
 
@@ -67,9 +66,19 @@ public abstract class Function extends RuntimeObject implements Callable {
 
                 Variable.Variant arg = arguments.get(i);
 
-                TypeTag typeTag = null;
+                String typeTag = "any";
                 if (param.type != null) {
-                    typeTag = TypeTag.fromString(param.type.lexeme);
+                    typeTag = param.type.lexeme;
+                }
+
+                if(!Interpreter.typeChecker(typeTag, arg)) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            declaration.name.line,
+                            "Parameter : " + declaration.params.get(i).name.lexeme + " type mismatch. Expected '" +
+                                    typeTag + "' but got '" +
+                                    arg.getType() + "'."
+                    );
                 }
 
                 Variable newVar = new Variable(arg, true, typeTag);
@@ -83,6 +92,23 @@ public abstract class Function extends RuntimeObject implements Callable {
                         newEnv
                 );
             } catch (Signal.ReturnSignal returnValue) {
+
+                String expectedType = "any";
+
+                if (declaration.returnType != null) {
+                    expectedType = declaration.returnType.lexeme;
+                }
+
+                if (!Interpreter.typeChecker(expectedType, returnValue.value)) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            declaration.name.line,
+                            "Return type mismatch. Expected '" +
+                                    expectedType + "' but got '" +
+                                    returnValue.value.getType() + "'."
+                    );
+                }
+
                 return returnValue.value;
             }
 
@@ -109,7 +135,7 @@ public abstract class Function extends RuntimeObject implements Callable {
 
         @Override
         public String getType() {
-            return "lambda";
+            return "function";
         }
 
         @Override
@@ -145,9 +171,9 @@ public abstract class Function extends RuntimeObject implements Callable {
 
                 Variable.Variant arg = arguments.get(i);
 
-                TypeTag typeTag = null;
+                String typeTag = null;
                 if (param.type != null) {
-                    typeTag = TypeTag.fromString(param.type.lexeme);
+                    typeTag = param.type.lexeme;
                 }
 
                 Variable newVar = new Variable(arg, true, typeTag);

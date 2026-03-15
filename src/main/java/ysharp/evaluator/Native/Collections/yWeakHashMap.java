@@ -2,7 +2,6 @@ package ysharp.evaluator.Native.Collections;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.parser.TypeTag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +46,12 @@ public class yWeakHashMap {
 
             @Override
             public String getType() {
-                return "weak_hash_map_prototype";
+                return "__WeakHashMap__";
+            }
+
+            @Override
+            public String toString() {
+                return "<prototype:WeakHashMap>";
             }
         };
         yWeakHashMap_Instance_Prototype.prototype = yClass.ClassPrototype;
@@ -91,7 +95,7 @@ public class yWeakHashMap {
         }
 
         ToStringFn toString = new ToStringFn();
-        Variable toStringVar = new Variable(new Variable.Variant(toString), true, TypeTag.OBJECT);
+        Variable toStringVar = new Variable(new Variable.Variant(toString), true, "function");
         yWeakHashMap.yWeakHashMap_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
 
@@ -124,7 +128,7 @@ public class yWeakHashMap {
         }
 
         PutFn put = new PutFn();
-        Variable putVar = new Variable(new Variable.Variant(put), true, TypeTag.OBJECT);
+        Variable putVar = new Variable(new Variable.Variant(put), true, "function");
         yWeakHashMap.yWeakHashMap_Instance_Prototype.set(put.getFnName(), putVar);
 
 
@@ -156,7 +160,7 @@ public class yWeakHashMap {
         }
 
         GetFn get = new GetFn();
-        Variable getVar = new Variable(new Variable.Variant(get), true, TypeTag.OBJECT);
+        Variable getVar = new Variable(new Variable.Variant(get), true, "function");
         yWeakHashMap.yWeakHashMap_Instance_Prototype.set(get.getFnName(), getVar);
 
 
@@ -189,7 +193,7 @@ public class yWeakHashMap {
         }
 
         GetOrDefaultFn getOrDefault = new GetOrDefaultFn();
-        Variable getOrDefaultVar = new Variable(new Variable.Variant(getOrDefault), true, TypeTag.OBJECT);
+        Variable getOrDefaultVar = new Variable(new Variable.Variant(getOrDefault), true, "function");
         yWeakHashMap.yWeakHashMap_Instance_Prototype.set(getOrDefault.getFnName(), getOrDefaultVar);
 
 
@@ -221,7 +225,7 @@ public class yWeakHashMap {
         }
 
         RemoveFn remove = new RemoveFn();
-        Variable removeVar = new Variable(new Variable.Variant(remove), true, TypeTag.OBJECT);
+        Variable removeVar = new Variable(new Variable.Variant(remove), true, "function");
         yWeakHashMap.yWeakHashMap_Instance_Prototype.set(remove.getFnName(), removeVar);
 
 
@@ -251,7 +255,7 @@ public class yWeakHashMap {
         }
 
         ContainsKeyFn containsKey = new ContainsKeyFn();
-        Variable containsKeyVar = new Variable(new Variable.Variant(containsKey), true, TypeTag.OBJECT);
+        Variable containsKeyVar = new Variable(new Variable.Variant(containsKey), true, "function");
         yWeakHashMap.yWeakHashMap_Instance_Prototype.set(containsKey.getFnName(), containsKeyVar);
 
 
@@ -281,7 +285,7 @@ public class yWeakHashMap {
         }
 
         ContainsValueFn containsValue = new ContainsValueFn();
-        Variable containsValueVar = new Variable(new Variable.Variant(containsValue), true, TypeTag.OBJECT);
+        Variable containsValueVar = new Variable(new Variable.Variant(containsValue), true, "function");
         yWeakHashMap.yWeakHashMap_Instance_Prototype.set(containsValue.getFnName(), containsValueVar);
 
 
@@ -314,7 +318,7 @@ public class yWeakHashMap {
         }
 
         PutIfAbsentFn putIfAbsent = new PutIfAbsentFn();
-        Variable putIfAbsentVar = new Variable(new Variable.Variant(putIfAbsent), true, TypeTag.OBJECT);
+        Variable putIfAbsentVar = new Variable(new Variable.Variant(putIfAbsent), true, "function");
         yWeakHashMap.yWeakHashMap_Instance_Prototype.set(putIfAbsent.getFnName(), putIfAbsentVar);
 
 
@@ -347,7 +351,7 @@ public class yWeakHashMap {
         }
 
         ReplaceFn replace = new ReplaceFn();
-        Variable replaceVar = new Variable(new Variable.Variant(replace), true, TypeTag.OBJECT);
+        Variable replaceVar = new Variable(new Variable.Variant(replace), true, "function");
         yWeakHashMap.yWeakHashMap_Instance_Prototype.set(replace.getFnName(), replaceVar);
 
 
@@ -378,7 +382,7 @@ public class yWeakHashMap {
         }
 
         KeysFn keys = new KeysFn();
-        Variable keysVar = new Variable(new Variable.Variant(keys), true, TypeTag.OBJECT);
+        Variable keysVar = new Variable(new Variable.Variant(keys), true, "function");
         yWeakHashMap.yWeakHashMap_Instance_Prototype.set(keys.getFnName(), keysVar);
 
 
@@ -409,7 +413,7 @@ public class yWeakHashMap {
         }
 
         ValuesFn values = new ValuesFn();
-        Variable valuesVar = new Variable(new Variable.Variant(values), true, TypeTag.OBJECT);
+        Variable valuesVar = new Variable(new Variable.Variant(values), true, "function");
         yWeakHashMap.yWeakHashMap_Instance_Prototype.set(values.getFnName(), valuesVar);
 
 
@@ -447,7 +451,7 @@ public class yWeakHashMap {
         }
 
         EntriesFn entries = new EntriesFn();
-        Variable entriesVar = new Variable(new Variable.Variant(entries), true, TypeTag.OBJECT);
+        Variable entriesVar = new Variable(new Variable.Variant(entries), true, "function");
         yWeakHashMap.yWeakHashMap_Instance_Prototype.set(entries.getFnName(), entriesVar);
 
 
@@ -482,7 +486,7 @@ public class yWeakHashMap {
         }
 
         SnapshotFn snapshot = new SnapshotFn();
-        Variable snapshotVar = new Variable(new Variable.Variant(snapshot), true, TypeTag.OBJECT);
+        Variable snapshotVar = new Variable(new Variable.Variant(snapshot), true, "function");
         yWeakHashMap.yWeakHashMap_Instance_Prototype.set(snapshot.getFnName(), snapshotVar);
 
 
@@ -511,7 +515,7 @@ public class yWeakHashMap {
         }
 
         SizeFn size = new SizeFn();
-        Variable sizeVar = new Variable(new Variable.Variant(size), true, TypeTag.OBJECT);
+        Variable sizeVar = new Variable(new Variable.Variant(size), true, "function");
         yWeakHashMap.yWeakHashMap_Instance_Prototype.set(size.getFnName(), sizeVar);
 
 
@@ -540,7 +544,7 @@ public class yWeakHashMap {
         }
 
         IsEmptyFn isEmpty = new IsEmptyFn();
-        Variable isEmptyVar = new Variable(new Variable.Variant(isEmpty), true, TypeTag.OBJECT);
+        Variable isEmptyVar = new Variable(new Variable.Variant(isEmpty), true, "function");
         yWeakHashMap.yWeakHashMap_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
 
 
@@ -570,7 +574,7 @@ public class yWeakHashMap {
         }
 
         ClearFn clear = new ClearFn();
-        Variable clearVar = new Variable(new Variable.Variant(clear), true, TypeTag.OBJECT);
+        Variable clearVar = new Variable(new Variable.Variant(clear), true, "function");
         yWeakHashMap.yWeakHashMap_Instance_Prototype.set(clear.getFnName(), clearVar);
 
     }
@@ -598,7 +602,7 @@ public class yWeakHashMap {
 
         @Override
         public String toString() {
-            return "<class:weak-hash-map>";
+            return "<instance:WeakHashMap>";
         }
     }
 
@@ -628,12 +632,17 @@ public class yWeakHashMap {
         public String getType() {
             return "WeakHashMap";
         }
+        @Override
+        public String toString() {
+            return "<class:WeakHashMap>";
+        }
+
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
         yWeakHashMap.yWeakHashMapClass whmCtor = new yWeakHashMap.yWeakHashMapClass();
         Variable.Variant variant = new Variable.Variant(whmCtor);
-        Variable var = new Variable(variant, false, TypeTag.OBJECT);
+        Variable var = new Variable(variant, false, whmCtor.getType());
         interpreter.defineGlobal(whmCtor.getClassName(), var);
     }
 

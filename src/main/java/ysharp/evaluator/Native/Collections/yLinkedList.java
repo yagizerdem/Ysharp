@@ -2,7 +2,6 @@ package ysharp.evaluator.Native.Collections;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.parser.TypeTag;
 
 import java.util.List;
 
@@ -45,7 +44,12 @@ public class yLinkedList {
 
             @Override
             public String getType() {
-                return "linked_list_prototype";
+                return "__LinkedList__";
+            }
+
+            @Override
+            public String toString() {
+                return "<prototype:LinkedList>";
             }
         };
         yLinkedList_Instance_Prototype.prototype = yClass.ClassPrototype;
@@ -95,7 +99,7 @@ public class yLinkedList {
         Variable toStringVar = new Variable(
                 new Variable.Variant(toString),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yLinkedList.yLinkedList_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
 
@@ -138,7 +142,7 @@ public class yLinkedList {
         Variable addFirstVar = new Variable(
                 new Variable.Variant(addFirst),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yLinkedList.yLinkedList_Instance_Prototype.set(addFirst.getFnName(), addFirstVar);
 
 
@@ -183,7 +187,7 @@ public class yLinkedList {
         Variable addLastVar = new Variable(
                 new Variable.Variant(addLast),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yLinkedList.yLinkedList_Instance_Prototype.set(addLast.getFnName(), addLastVar);
 
 
@@ -228,7 +232,7 @@ public class yLinkedList {
         Variable removeFirstVar = new Variable(
                 new Variable.Variant(removeFirst),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yLinkedList.yLinkedList_Instance_Prototype.set(removeFirst.getFnName(), removeFirstVar);
 
 
@@ -282,7 +286,7 @@ public class yLinkedList {
         Variable removeLastVar = new Variable(
                 new Variable.Variant(removeLast),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yLinkedList.yLinkedList_Instance_Prototype.set(removeLast.getFnName(), removeLastVar);
 
 
@@ -318,7 +322,7 @@ public class yLinkedList {
         Variable peekFirstVar = new Variable(
                 new Variable.Variant(peekFirst),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yLinkedList.yLinkedList_Instance_Prototype.set(peekFirst.getFnName(), peekFirstVar);
 
 
@@ -354,7 +358,7 @@ public class yLinkedList {
         Variable peekLastVar = new Variable(
                 new Variable.Variant(peekLast),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yLinkedList.yLinkedList_Instance_Prototype.set(peekLast.getFnName(), peekLastVar);
 
 
@@ -402,7 +406,7 @@ public class yLinkedList {
         Variable getVar = new Variable(
                 new Variable.Variant(get),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yLinkedList.yLinkedList_Instance_Prototype.set(get.getFnName(), getVar);
 
 
@@ -454,7 +458,7 @@ public class yLinkedList {
         Variable setVar = new Variable(
                 new Variable.Variant(set),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yLinkedList.yLinkedList_Instance_Prototype.set(set.getFnName(), setVar);
 
 
@@ -495,7 +499,7 @@ public class yLinkedList {
         Variable containsVar = new Variable(
                 new Variable.Variant(contains),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yLinkedList.yLinkedList_Instance_Prototype.set(contains.getFnName(), containsVar);
 
 
@@ -539,7 +543,7 @@ public class yLinkedList {
         Variable indexOfVar = new Variable(
                 new Variable.Variant(indexOf),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yLinkedList.yLinkedList_Instance_Prototype.set(indexOf.getFnName(), indexOfVar);
 
 
@@ -571,7 +575,7 @@ public class yLinkedList {
         Variable sizeVar = new Variable(
                 new Variable.Variant(size),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yLinkedList.yLinkedList_Instance_Prototype.set(size.getFnName(), sizeVar);
 
 
@@ -603,7 +607,7 @@ public class yLinkedList {
         Variable isEmptyVar = new Variable(
                 new Variable.Variant(isEmpty),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yLinkedList.yLinkedList_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
 
 
@@ -638,7 +642,7 @@ public class yLinkedList {
         Variable clearVar = new Variable(
                 new Variable.Variant(clear),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yLinkedList.yLinkedList_Instance_Prototype.set(clear.getFnName(), clearVar);
 
 
@@ -682,7 +686,7 @@ public class yLinkedList {
         Variable toArrayVar = new Variable(
                 new Variable.Variant(toArray),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yLinkedList.yLinkedList_Instance_Prototype.set(toArray.getFnName(), toArrayVar);
 
 
@@ -729,7 +733,7 @@ public class yLinkedList {
         Variable cloneVar = new Variable(
                 new Variable.Variant(clone),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yLinkedList.yLinkedList_Instance_Prototype.set(clone.getFnName(), cloneVar);
 
     }
@@ -770,7 +774,7 @@ public class yLinkedList {
 
         @Override
         public String toString() {
-            return "<class:linked-list>";
+            return "<instance:LinkedList>";
         }
     }
 
@@ -801,12 +805,16 @@ public class yLinkedList {
             return "LinkedList";
         }
 
+        @Override
+        public String toString() {
+            return "<class:LinkedList>";
+        }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
         yLinkedList.yLinkedListClass listCtor = new yLinkedList.yLinkedListClass();
         Variable.Variant variant = new Variable.Variant(listCtor);
-        Variable var = new Variable(variant, false, TypeTag.OBJECT);
+        Variable var = new Variable(variant, false, listCtor.getType());
         interpreter.defineGlobal(listCtor.getClassName(), var);
     }
 

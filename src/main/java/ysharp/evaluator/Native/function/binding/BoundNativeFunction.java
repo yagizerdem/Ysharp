@@ -2,7 +2,6 @@ package ysharp.evaluator.Native.function.binding;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.parser.TypeTag;
 
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class BoundNativeFunction extends Function.NativeFunction {
             Variable variable = new Variable(
                     new Variable.Variant(thisObj),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
 
             env.define(key, variable);
 

@@ -2,7 +2,6 @@ package ysharp.evaluator.Native.Collections;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.parser.TypeTag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +46,12 @@ public class yTreeSet {
 
             @Override
             public String getType() {
-                return "tree_set_prototype";
+                return "__TreeSet__";
+            }
+
+            @Override
+            public String toString() {
+                return "<prototype:TreeSet>";
             }
         };
         yTreeSet_Instance_Prototype.prototype = yClass.ClassPrototype;
@@ -89,7 +93,7 @@ public class yTreeSet {
         }
 
         ToStringFn toString = new ToStringFn();
-        Variable toStringVar = new Variable(new Variable.Variant(toString), true, TypeTag.OBJECT);
+        Variable toStringVar = new Variable(new Variable.Variant(toString), true, "function");
         yTreeSet.yTreeSet_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
 
@@ -121,7 +125,7 @@ public class yTreeSet {
         }
 
         AddFn add = new AddFn();
-        Variable addVar = new Variable(new Variable.Variant(add), true, TypeTag.OBJECT);
+        Variable addVar = new Variable(new Variable.Variant(add), true, "function");
         yTreeSet.yTreeSet_Instance_Prototype.set(add.getFnName(), addVar);
 
 
@@ -153,7 +157,7 @@ public class yTreeSet {
         }
 
         RemoveFn remove = new RemoveFn();
-        Variable removeVar = new Variable(new Variable.Variant(remove), true, TypeTag.OBJECT);
+        Variable removeVar = new Variable(new Variable.Variant(remove), true, "function");
         yTreeSet.yTreeSet_Instance_Prototype.set(remove.getFnName(), removeVar);
 
 
@@ -185,7 +189,7 @@ public class yTreeSet {
         }
 
         ContainsFn contains = new ContainsFn();
-        Variable containsVar = new Variable(new Variable.Variant(contains), true, TypeTag.OBJECT);
+        Variable containsVar = new Variable(new Variable.Variant(contains), true, "function");
         yTreeSet.yTreeSet_Instance_Prototype.set(contains.getFnName(), containsVar);
 
 
@@ -220,7 +224,7 @@ public class yTreeSet {
         }
 
         FirstFn first = new FirstFn();
-        Variable firstVar = new Variable(new Variable.Variant(first), true, TypeTag.OBJECT);
+        Variable firstVar = new Variable(new Variable.Variant(first), true, "function");
         yTreeSet.yTreeSet_Instance_Prototype.set(first.getFnName(), firstVar);
 
 
@@ -255,7 +259,7 @@ public class yTreeSet {
         }
 
         LastFn last = new LastFn();
-        Variable lastVar = new Variable(new Variable.Variant(last), true, TypeTag.OBJECT);
+        Variable lastVar = new Variable(new Variable.Variant(last), true, "function");
         yTreeSet.yTreeSet_Instance_Prototype.set(last.getFnName(), lastVar);
 
 
@@ -289,7 +293,7 @@ public class yTreeSet {
         }
 
         FloorFn floor = new FloorFn();
-        Variable floorVar = new Variable(new Variable.Variant(floor), true, TypeTag.OBJECT);
+        Variable floorVar = new Variable(new Variable.Variant(floor), true, "function");
         yTreeSet.yTreeSet_Instance_Prototype.set(floor.getFnName(), floorVar);
 
 
@@ -323,7 +327,7 @@ public class yTreeSet {
         }
 
         CeilingFn ceiling = new CeilingFn();
-        Variable ceilingVar = new Variable(new Variable.Variant(ceiling), true, TypeTag.OBJECT);
+        Variable ceilingVar = new Variable(new Variable.Variant(ceiling), true, "function");
         yTreeSet.yTreeSet_Instance_Prototype.set(ceiling.getFnName(), ceilingVar);
 
 
@@ -357,7 +361,7 @@ public class yTreeSet {
         }
 
         LowerFn lower = new LowerFn();
-        Variable lowerVar = new Variable(new Variable.Variant(lower), true, TypeTag.OBJECT);
+        Variable lowerVar = new Variable(new Variable.Variant(lower), true, "function");
         yTreeSet.yTreeSet_Instance_Prototype.set(lower.getFnName(), lowerVar);
 
 
@@ -391,7 +395,7 @@ public class yTreeSet {
         }
 
         HigherFn higher = new HigherFn();
-        Variable higherVar = new Variable(new Variable.Variant(higher), true, TypeTag.OBJECT);
+        Variable higherVar = new Variable(new Variable.Variant(higher), true, "function");
         yTreeSet.yTreeSet_Instance_Prototype.set(higher.getFnName(), higherVar);
 
 
@@ -426,7 +430,7 @@ public class yTreeSet {
         }
 
         PollFirstFn pollFirst = new PollFirstFn();
-        Variable pollFirstVar = new Variable(new Variable.Variant(pollFirst), true, TypeTag.OBJECT);
+        Variable pollFirstVar = new Variable(new Variable.Variant(pollFirst), true, "function");
         yTreeSet.yTreeSet_Instance_Prototype.set(pollFirst.getFnName(), pollFirstVar);
 
 
@@ -461,7 +465,7 @@ public class yTreeSet {
         }
 
         PollLastFn pollLast = new PollLastFn();
-        Variable pollLastVar = new Variable(new Variable.Variant(pollLast), true, TypeTag.OBJECT);
+        Variable pollLastVar = new Variable(new Variable.Variant(pollLast), true, "function");
         yTreeSet.yTreeSet_Instance_Prototype.set(pollLast.getFnName(), pollLastVar);
 
 
@@ -497,7 +501,7 @@ public class yTreeSet {
         }
 
         SubSetFn subSet = new SubSetFn();
-        Variable subSetVar = new Variable(new Variable.Variant(subSet), true, TypeTag.OBJECT);
+        Variable subSetVar = new Variable(new Variable.Variant(subSet), true, "function");
         yTreeSet.yTreeSet_Instance_Prototype.set(subSet.getFnName(), subSetVar);
 
 
@@ -532,7 +536,7 @@ public class yTreeSet {
         }
 
         HeadSetFn headSet = new HeadSetFn();
-        Variable headSetVar = new Variable(new Variable.Variant(headSet), true, TypeTag.OBJECT);
+        Variable headSetVar = new Variable(new Variable.Variant(headSet), true, "function");
         yTreeSet.yTreeSet_Instance_Prototype.set(headSet.getFnName(), headSetVar);
 
 
@@ -567,7 +571,7 @@ public class yTreeSet {
         }
 
         TailSetFn tailSet = new TailSetFn();
-        Variable tailSetVar = new Variable(new Variable.Variant(tailSet), true, TypeTag.OBJECT);
+        Variable tailSetVar = new Variable(new Variable.Variant(tailSet), true, "function");
         yTreeSet.yTreeSet_Instance_Prototype.set(tailSet.getFnName(), tailSetVar);
 
 
@@ -614,7 +618,7 @@ public class yTreeSet {
         }
 
         UnionFn union = new UnionFn();
-        Variable unionVar = new Variable(new Variable.Variant(union), true, TypeTag.OBJECT);
+        Variable unionVar = new Variable(new Variable.Variant(union), true, "function");
         yTreeSet.yTreeSet_Instance_Prototype.set(union.getFnName(), unionVar);
 
 
@@ -664,7 +668,7 @@ public class yTreeSet {
         }
 
         IntersectionFn intersection = new IntersectionFn();
-        Variable intersectionVar = new Variable(new Variable.Variant(intersection), true, TypeTag.OBJECT);
+        Variable intersectionVar = new Variable(new Variable.Variant(intersection), true, "function");
         yTreeSet.yTreeSet_Instance_Prototype.set(intersection.getFnName(), intersectionVar);
 
 
@@ -714,7 +718,7 @@ public class yTreeSet {
         }
 
         DifferenceFn difference = new DifferenceFn();
-        Variable differenceVar = new Variable(new Variable.Variant(difference), true, TypeTag.OBJECT);
+        Variable differenceVar = new Variable(new Variable.Variant(difference), true, "function");
         yTreeSet.yTreeSet_Instance_Prototype.set(difference.getFnName(), differenceVar);
 
 
@@ -757,7 +761,7 @@ public class yTreeSet {
         }
 
         IsSubsetOfFn isSubsetOf = new IsSubsetOfFn();
-        Variable isSubsetOfVar = new Variable(new Variable.Variant(isSubsetOf), true, TypeTag.OBJECT);
+        Variable isSubsetOfVar = new Variable(new Variable.Variant(isSubsetOf), true, "function");
         yTreeSet.yTreeSet_Instance_Prototype.set(isSubsetOf.getFnName(), isSubsetOfVar);
 
 
@@ -790,7 +794,7 @@ public class yTreeSet {
         }
 
         ToArrayFn toArray = new ToArrayFn();
-        Variable toArrayVar = new Variable(new Variable.Variant(toArray), true, TypeTag.OBJECT);
+        Variable toArrayVar = new Variable(new Variable.Variant(toArray), true, "function");
         yTreeSet.yTreeSet_Instance_Prototype.set(toArray.getFnName(), toArrayVar);
 
 
@@ -821,7 +825,7 @@ public class yTreeSet {
         }
 
         SizeFn size = new SizeFn();
-        Variable sizeVar = new Variable(new Variable.Variant(size), true, TypeTag.OBJECT);
+        Variable sizeVar = new Variable(new Variable.Variant(size), true, "function");
         yTreeSet.yTreeSet_Instance_Prototype.set(size.getFnName(), sizeVar);
 
 
@@ -852,7 +856,7 @@ public class yTreeSet {
         }
 
         IsEmptyFn isEmpty = new IsEmptyFn();
-        Variable isEmptyVar = new Variable(new Variable.Variant(isEmpty), true, TypeTag.OBJECT);
+        Variable isEmptyVar = new Variable(new Variable.Variant(isEmpty), true, "function");
         yTreeSet.yTreeSet_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
 
 
@@ -884,7 +888,7 @@ public class yTreeSet {
         }
 
         ClearFn clear = new ClearFn();
-        Variable clearVar = new Variable(new Variable.Variant(clear), true, TypeTag.OBJECT);
+        Variable clearVar = new Variable(new Variable.Variant(clear), true, "function");
         yTreeSet.yTreeSet_Instance_Prototype.set(clear.getFnName(), clearVar);
 
 
@@ -918,7 +922,7 @@ public class yTreeSet {
         }
 
         CloneFn clone = new CloneFn();
-        Variable cloneVar = new Variable(new Variable.Variant(clone), true, TypeTag.OBJECT);
+        Variable cloneVar = new Variable(new Variable.Variant(clone), true, "function");
         yTreeSet.yTreeSet_Instance_Prototype.set(clone.getFnName(), cloneVar);
 
     }
@@ -957,7 +961,7 @@ public class yTreeSet {
 
         @Override
         public String toString() {
-            return "<class:tree-set>";
+            return "<instnace:TreeSet>";
         }
     }
 
@@ -987,12 +991,17 @@ public class yTreeSet {
         public String getType() {
             return "TreeSet";
         }
+
+        @Override
+        public String toString() {
+            return "<class:TreeSet>";
+        }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
         yTreeSet.yTreeSetClass tsCtor = new yTreeSet.yTreeSetClass();
         Variable.Variant variant = new Variable.Variant(tsCtor);
-        Variable var = new Variable(variant, false, TypeTag.OBJECT);
+        Variable var = new Variable(variant, false, tsCtor.getType());
         interpreter.defineGlobal(tsCtor.getClassName(), var);
     }
 

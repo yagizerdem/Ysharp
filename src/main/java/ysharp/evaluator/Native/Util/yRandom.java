@@ -2,38 +2,11 @@ package ysharp.evaluator.Native.Util;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.parser.TypeTag;
 
 import java.util.List;
 import java.util.Random;
 
 public class yRandom {
-
-
-    static {
-        // all the methods in random class should be static because i want so !
-    }
-
-    public static class yRandomInstance extends yClass.ClassObjectInstance {
-
-        public yRandomInstance() {}
-
-        @Override
-        public boolean isTruthy() {
-            return true;
-        }
-
-        @Override
-        public String getType() {
-            return "Random";
-        }
-
-        @Override
-        public String toString() {
-            return "<instance:Random>";
-        }
-    }
-
 
     public static class yRandomClass extends yClass.SealedClassObject {
 
@@ -70,7 +43,7 @@ public class yRandom {
             Variable nextVar = new Variable(
                     new Variable.Variant(next),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(next.getFnName(), nextVar);
 
 
@@ -90,7 +63,7 @@ public class yRandom {
                     double min = requireInt(arguments.get(0), getClassName(), 1);
                     double max = requireInt(arguments.get(1), getClassName(), 2);
 
-                    double response = (double) ((int) min + rng.nextInt((int) max - (int) min + 1));
+                    int response = ((int) min + rng.nextInt((int) max - (int) min + 1));
 
                     return new Variable.Variant(response);
                 }
@@ -105,7 +78,7 @@ public class yRandom {
             Variable nextIntVar = new Variable(
                     new Variable.Variant(nextInt),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(nextInt.getFnName(), nextIntVar);
 
 
@@ -140,7 +113,7 @@ public class yRandom {
             Variable nextFloatVar = new Variable(
                     new Variable.Variant(nextFloat),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(nextFloat.getFnName(), nextFloatVar);
 
 
@@ -170,7 +143,7 @@ public class yRandom {
             Variable nextBoolVar = new Variable(
                     new Variable.Variant(nextBool),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(nextBool.getFnName(), nextBoolVar);
 
 
@@ -200,7 +173,7 @@ public class yRandom {
             Variable nextGaussianVar = new Variable(
                     new Variable.Variant(nextGaussian),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(nextGaussian.getFnName(), nextGaussianVar);
 
 
@@ -233,7 +206,7 @@ public class yRandom {
             Variable setSeedVar = new Variable(
                     new Variable.Variant(setSeed),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(setSeed.getFnName(), setSeedVar);
 
 
@@ -266,7 +239,7 @@ public class yRandom {
             Variable chanceVar = new Variable(
                     new Variable.Variant(chance),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(chance.getFnName(), chanceVar);
 
 
@@ -299,7 +272,7 @@ public class yRandom {
             Variable pickVar = new Variable(
                     new Variable.Variant(pick),
                     true,
-                    TypeTag.OBJECT);
+                    "function");
             this.set(pick.getFnName(), pickVar);
         }
 
@@ -313,10 +286,11 @@ public class yRandom {
                                      List<Variable.Variant> arguments)
                 throws YsharpError {
 
-            requireArity(arguments, 0, getClassName());
-
-            yRandomInstance instance = new yRandomInstance();
-            return new Variable.Variant(instance);
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    -1,
+                    "Cannot create instance of static class '" + getClassName() + "'."
+            );
         }
 
         @Override
@@ -337,7 +311,7 @@ public class yRandom {
         Variable.Variant variant = new Variable.Variant(ctor);
         Variable var = new Variable(variant,
                 true,
-                TypeTag.OBJECT);
+                "function");
 
         interpreter.defineGlobal(ctor.getClassName(), var);
     }

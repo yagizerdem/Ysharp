@@ -1,22 +1,16 @@
 package ysharp.evaluator;
 
-import ysharp.lexer.Token;
-import ysharp.parser.TypeTag;
-
-import javax.swing.*;
-import java.security.PublicKey;
-import java.util.Objects;
-import java.util.concurrent.RecursiveTask;
+import ysharp.YsharpError;
 
 public class Variable {
 
     public Variant value;
     public final boolean isConst;
-    public final TypeTag typeTag;
+    public final String typeTag;
 
     public Variable(Variant value,
                     boolean isConst,
-                    TypeTag typeTag) {
+                    String typeTag) {
         this.value = value;
         this.isConst = isConst;
         this.typeTag = typeTag;
@@ -25,21 +19,9 @@ public class Variable {
     public static class Variant {
         public Object value;
 
+
         public Variant(Object value){
             this.value = value;
-        }
-
-
-        public String getType() {
-            return switch (value) {
-                case Integer i        -> "int";
-                case Double d         -> "double";
-                case Boolean b        -> "bool";
-                case Character c      -> "char";
-                case RuntimeObject o  -> o.getType();
-                case null             -> "null";
-                default               -> "unknown";
-            };
         }
 
         // primitives
@@ -70,7 +52,7 @@ public class Variable {
         public boolean isString() {return this.value instanceof yString.yStringInstance; }
 
         public boolean isFunction() {
-            return this.value instanceof Function.FunctionObject;
+            return this.value instanceof Function;
         }
 
         public boolean isNativeFunction() {
@@ -217,6 +199,36 @@ public class Variable {
             return this.value.toString();
         }
 
+        public String getType() {
+
+            if (this.value == null) {
+                return "null";
+            }
+
+            if (isInt()) return "int";
+
+            if (isDouble()) return "double";
+
+            if (isBoolean()) return "bool";
+
+            if (isChar()) return "char";
+
+            if (isRuntimeObject()) {
+                RuntimeObject obj = asRuntimeObject();
+                return obj.getType();
+            }
+
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    -1,
+                    "Internal error: Unknown Variant runtime type: " + value.getClass()
+            );
+        }
+
+    }
+
+    public String getType() {
+        return this.typeTag;
     }
 
 }

@@ -2,7 +2,6 @@ package ysharp.evaluator.Native.Util;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.parser.TypeTag;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -81,7 +80,7 @@ public class yFile {
             Variable readVar = new Variable(
                     new Variable.Variant(read),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             );
             this.set(read.getFnName(),readVar);
 
@@ -126,7 +125,7 @@ public class yFile {
             Variable writeVar = new Variable(
                     new Variable.Variant(write),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             );
             this.set(write.getFnName(),writeVar);
 
@@ -174,7 +173,7 @@ public class yFile {
             Variable appendVar = new Variable(
                     new Variable.Variant(append),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             );
             this.set(append.getFnName(),appendVar);
 
@@ -210,7 +209,7 @@ public class yFile {
             Variable existsVar = new Variable(
                     new Variable.Variant(exists),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             );
             this.set(exists.getFnName(),existsVar);
 
@@ -254,7 +253,7 @@ public class yFile {
             Variable deleteVar = new Variable(
                     new Variable.Variant(delete),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             );
             this.set(delete.getFnName(),deleteVar);
 
@@ -294,7 +293,7 @@ public class yFile {
         Variable var = new Variable(
                 variant,
                 true,
-                TypeTag.OBJECT
+                "function"
         );
 
         interpreter.defineGlobal(ctor.getClassName(),var);

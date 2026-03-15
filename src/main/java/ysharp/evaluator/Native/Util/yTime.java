@@ -2,7 +2,6 @@ package ysharp.evaluator.Native.Util;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.parser.TypeTag;
 
 import java.time.Instant;
 import java.util.List;
@@ -70,7 +69,7 @@ public class yTime {
             Variable nowVar = new Variable(
                     new Variable.Variant(now),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             );
 
             this.set(now.getFnName(), nowVar);
@@ -105,7 +104,7 @@ public class yTime {
             Variable nowMillisVar = new Variable(
                     new Variable.Variant(nowMillis),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             );
 
             this.set(nowMillis.getFnName(), nowMillisVar);
@@ -140,7 +139,7 @@ public class yTime {
             Variable nanoVar = new Variable(
                     new Variable.Variant(nano),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             );
 
             this.set(nano.getFnName(), nanoVar);
@@ -188,7 +187,7 @@ public class yTime {
             Variable sleepVar = new Variable(
                     new Variable.Variant(sleep),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             );
 
             this.set(sleep.getFnName(), sleepVar);
@@ -223,7 +222,7 @@ public class yTime {
             Variable isoVar = new Variable(
                     new Variable.Variant(iso),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             );
 
             this.set(iso.getFnName(), isoVar);
@@ -257,7 +256,7 @@ public class yTime {
             Variable secondsVar = new Variable(
                     new Variable.Variant(seconds),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             );
 
             this.set(seconds.getFnName(), secondsVar);
@@ -292,7 +291,7 @@ public class yTime {
             Variable minutesVar = new Variable(
                     new Variable.Variant(minutes),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             );
 
             this.set(minutes.getFnName(), minutesVar);
@@ -330,7 +329,7 @@ public class yTime {
             Variable formatVar = new Variable(
                     new Variable.Variant(format),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             );
 
             this.set(format.getFnName(), formatVar);
@@ -369,7 +368,7 @@ public class yTime {
             Variable parseVar = new Variable(
                     new Variable.Variant(parse),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             );
 
             this.set(parse.getFnName(), parseVar);
@@ -424,7 +423,7 @@ public class yTime {
             Variable measureVar = new Variable(
                     new Variable.Variant(measure),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             );
 
             this.set(measure.getFnName(), measureVar);
@@ -464,7 +463,7 @@ public class yTime {
         Variable var = new Variable(
                 variant,
                 true,
-                TypeTag.OBJECT
+                "function"
         );
 
         interpreter.defineGlobal(ctor.getClassName(), var);

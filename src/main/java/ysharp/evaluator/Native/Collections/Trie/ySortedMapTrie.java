@@ -3,7 +3,6 @@ package ysharp.evaluator.Native.Collections.Trie;
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.Native.Collections.yArray;
-import ysharp.parser.TypeTag;
 import ysharp.evaluator.Native.Collections.Trie.Concrete.MapTrie;
 
 import java.util.ArrayList;
@@ -48,7 +47,12 @@ public class ySortedMapTrie {
 
             @Override
             public String getType() {
-                return "trie_prototype";
+                return "__SortedMapTrie__";
+            }
+
+            @Override
+            public String toString() {
+                return "<prototype:SortedMapTrie>";
             }
         };
         ySortedMapTrie_Instance_Prototype.prototype = yClass.ClassPrototype;
@@ -80,7 +84,7 @@ public class ySortedMapTrie {
         }
 
         ToStringFn toString = new ToStringFn();
-        Variable toStringVar = new Variable(new Variable.Variant(toString), true, TypeTag.OBJECT);
+        Variable toStringVar = new Variable(new Variable.Variant(toString), true, "function");
         ySortedMapTrie.ySortedMapTrie_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
 
@@ -117,7 +121,7 @@ public class ySortedMapTrie {
         }
 
         InsertFn insert = new InsertFn();
-        Variable insertVar = new Variable(new Variable.Variant(insert), true, TypeTag.OBJECT);
+        Variable insertVar = new Variable(new Variable.Variant(insert), true, "function");
         ySortedMapTrie.ySortedMapTrie_Instance_Prototype.set(insert.getFnName(), insertVar);
 
 
@@ -151,7 +155,7 @@ public class ySortedMapTrie {
         }
 
         GetFn get = new GetFn();
-        Variable getVar = new Variable(new Variable.Variant(get), true, TypeTag.OBJECT);
+        Variable getVar = new Variable(new Variable.Variant(get), true, "function");
         ySortedMapTrie.ySortedMapTrie_Instance_Prototype.set(get.getFnName(), getVar);
 
 
@@ -183,7 +187,7 @@ public class ySortedMapTrie {
         }
 
         ContainsFn contains = new ContainsFn();
-        Variable containsVar = new Variable(new Variable.Variant(contains), true, TypeTag.OBJECT);
+        Variable containsVar = new Variable(new Variable.Variant(contains), true, "function");
         ySortedMapTrie.ySortedMapTrie_Instance_Prototype.set(contains.getFnName(), containsVar);
 
 
@@ -217,7 +221,7 @@ public class ySortedMapTrie {
         }
 
         DeleteKeyFn deleteKey = new DeleteKeyFn();
-        Variable deleteKeyVar = new Variable(new Variable.Variant(deleteKey), true, TypeTag.OBJECT);
+        Variable deleteKeyVar = new Variable(new Variable.Variant(deleteKey), true, "function");
         ySortedMapTrie.ySortedMapTrie_Instance_Prototype.set(deleteKey.getFnName(), deleteKeyVar);
 
 
@@ -256,7 +260,7 @@ public class ySortedMapTrie {
         }
 
         GetKeySuggestionsFn getKeySuggestions = new GetKeySuggestionsFn();
-        Variable getKeySuggestionsVar = new Variable(new Variable.Variant(getKeySuggestions), true, TypeTag.OBJECT);
+        Variable getKeySuggestionsVar = new Variable(new Variable.Variant(getKeySuggestions), true, "function");
         ySortedMapTrie.ySortedMapTrie_Instance_Prototype.set(getKeySuggestions.getFnName(), getKeySuggestionsVar);
 
 
@@ -293,7 +297,7 @@ public class ySortedMapTrie {
         }
 
         GetValueSuggestionsFn getValueSuggestions = new GetValueSuggestionsFn();
-        Variable getValueSuggestionsVar = new Variable(new Variable.Variant(getValueSuggestions), true, TypeTag.OBJECT);
+        Variable getValueSuggestionsVar = new Variable(new Variable.Variant(getValueSuggestions), true, "function");
         ySortedMapTrie.ySortedMapTrie_Instance_Prototype.set(getValueSuggestions.getFnName(), getValueSuggestionsVar);
 
 
@@ -331,7 +335,7 @@ public class ySortedMapTrie {
         }
 
         KeysFn keys = new KeysFn();
-        Variable keysVar = new Variable(new Variable.Variant(keys), true, TypeTag.OBJECT);
+        Variable keysVar = new Variable(new Variable.Variant(keys), true, "function");
         ySortedMapTrie.ySortedMapTrie_Instance_Prototype.set(keys.getFnName(), keysVar);
 
 
@@ -366,7 +370,7 @@ public class ySortedMapTrie {
         }
 
         ValuesFn values = new ValuesFn();
-        Variable valuesVar = new Variable(new Variable.Variant(values), true, TypeTag.OBJECT);
+        Variable valuesVar = new Variable(new Variable.Variant(values), true, "function");
         ySortedMapTrie.ySortedMapTrie_Instance_Prototype.set(values.getFnName(), valuesVar);
 
 
@@ -397,7 +401,7 @@ public class ySortedMapTrie {
         }
 
         SizeFn size = new SizeFn();
-        Variable sizeVar = new Variable(new Variable.Variant(size), true, TypeTag.OBJECT);
+        Variable sizeVar = new Variable(new Variable.Variant(size), true, "function");
         ySortedMapTrie.ySortedMapTrie_Instance_Prototype.set(size.getFnName(), sizeVar);
 
 
@@ -428,7 +432,7 @@ public class ySortedMapTrie {
         }
 
         IsEmptyFn isEmpty = new IsEmptyFn();
-        Variable isEmptyVar = new Variable(new Variable.Variant(isEmpty), true, TypeTag.OBJECT);
+        Variable isEmptyVar = new Variable(new Variable.Variant(isEmpty), true, "function");
         ySortedMapTrie.ySortedMapTrie_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
 
 
@@ -460,7 +464,7 @@ public class ySortedMapTrie {
         }
 
         ClearFn clear = new ClearFn();
-        Variable clearVar = new Variable(new Variable.Variant(clear), true, TypeTag.OBJECT);
+        Variable clearVar = new Variable(new Variable.Variant(clear), true, "function");
         ySortedMapTrie.ySortedMapTrie_Instance_Prototype.set(clear.getFnName(), clearVar);
 
 
@@ -492,7 +496,7 @@ public class ySortedMapTrie {
         }
 
         FastClearFn fastClear = new FastClearFn();
-        Variable fastClearVar = new Variable(new Variable.Variant(fastClear), true, TypeTag.OBJECT);
+        Variable fastClearVar = new Variable(new Variable.Variant(fastClear), true, "function");
         ySortedMapTrie.ySortedMapTrie_Instance_Prototype.set(fastClear.getFnName(), fastClearVar);
 
 
@@ -524,7 +528,7 @@ public class ySortedMapTrie {
         }
 
         PrintFn print = new PrintFn();
-        Variable printVar = new Variable(new Variable.Variant(print), true, TypeTag.OBJECT);
+        Variable printVar = new Variable(new Variable.Variant(print), true, "function");
         ySortedMapTrie.ySortedMapTrie_Instance_Prototype.set(print.getFnName(), printVar);
 
     }
@@ -551,7 +555,7 @@ public class ySortedMapTrie {
 
         @Override
         public String toString() {
-            return "<class:SortedMapTrie>";
+            return "<instance:SortedMapTrie>";
         }
     }
 
@@ -583,12 +587,17 @@ public class ySortedMapTrie {
         public String getType() {
             return "SortedMapTrie";
         }
+
+        @Override
+        public String toString() {
+            return "<class:SortedMapTrie>";
+        }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
         ySortedMapTrie.ySortedMapTrieClass trieCtor = new ySortedMapTrie.ySortedMapTrieClass();
         Variable.Variant variant = new Variable.Variant(trieCtor);
-        Variable var = new Variable(variant, false, TypeTag.OBJECT);
+        Variable var = new Variable(variant, false, trieCtor.getType());
         interpreter.defineGlobal(trieCtor.getClassName(), var);
     }
 

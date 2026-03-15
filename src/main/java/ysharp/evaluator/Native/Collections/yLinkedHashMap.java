@@ -2,7 +2,6 @@ package ysharp.evaluator.Native.Collections;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.parser.TypeTag;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -47,7 +46,12 @@ public class yLinkedHashMap {
 
             @Override
             public String getType() {
-                return "linked_hash_map_prototype";
+                return "__LinkedHashMap__";
+            }
+
+            @Override
+            public String toString() {
+                return "<prototype:LinkedHashMap>";
             }
         };
         yLinkedHashMap_Instance_Prototype.prototype = yClass.ClassPrototype;
@@ -91,7 +95,7 @@ public class yLinkedHashMap {
         }
 
         ToStringFn toString = new ToStringFn();
-        Variable toStringVar = new Variable(new Variable.Variant(toString), true, TypeTag.OBJECT);
+        Variable toStringVar = new Variable(new Variable.Variant(toString), true, "function");
         yLinkedHashMap.yLinkedHashMap_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
 
@@ -124,7 +128,7 @@ public class yLinkedHashMap {
         }
 
         PutFn put = new PutFn();
-        Variable putVar = new Variable(new Variable.Variant(put), true, TypeTag.OBJECT);
+        Variable putVar = new Variable(new Variable.Variant(put), true, "function");
         yLinkedHashMap.yLinkedHashMap_Instance_Prototype.set(put.getFnName(), putVar);
 
 
@@ -156,7 +160,7 @@ public class yLinkedHashMap {
         }
 
         GetFn get = new GetFn();
-        Variable getVar = new Variable(new Variable.Variant(get), true, TypeTag.OBJECT);
+        Variable getVar = new Variable(new Variable.Variant(get), true, "function");
         yLinkedHashMap.yLinkedHashMap_Instance_Prototype.set(get.getFnName(), getVar);
 
 
@@ -189,7 +193,7 @@ public class yLinkedHashMap {
         }
 
         GetOrDefaultFn getOrDefault = new GetOrDefaultFn();
-        Variable getOrDefaultVar = new Variable(new Variable.Variant(getOrDefault), true, TypeTag.OBJECT);
+        Variable getOrDefaultVar = new Variable(new Variable.Variant(getOrDefault), true, "function");
         yLinkedHashMap.yLinkedHashMap_Instance_Prototype.set(getOrDefault.getFnName(), getOrDefaultVar);
 
 
@@ -221,7 +225,7 @@ public class yLinkedHashMap {
         }
 
         RemoveFn remove = new RemoveFn();
-        Variable removeVar = new Variable(new Variable.Variant(remove), true, TypeTag.OBJECT);
+        Variable removeVar = new Variable(new Variable.Variant(remove), true, "function");
         yLinkedHashMap.yLinkedHashMap_Instance_Prototype.set(remove.getFnName(), removeVar);
 
 
@@ -251,7 +255,7 @@ public class yLinkedHashMap {
         }
 
         ContainsKeyFn containsKey = new ContainsKeyFn();
-        Variable containsKeyVar = new Variable(new Variable.Variant(containsKey), true, TypeTag.OBJECT);
+        Variable containsKeyVar = new Variable(new Variable.Variant(containsKey), true, "function");
         yLinkedHashMap.yLinkedHashMap_Instance_Prototype.set(containsKey.getFnName(), containsKeyVar);
 
 
@@ -281,7 +285,7 @@ public class yLinkedHashMap {
         }
 
         ContainsValueFn containsValue = new ContainsValueFn();
-        Variable containsValueVar = new Variable(new Variable.Variant(containsValue), true, TypeTag.OBJECT);
+        Variable containsValueVar = new Variable(new Variable.Variant(containsValue), true, "function");
         yLinkedHashMap.yLinkedHashMap_Instance_Prototype.set(containsValue.getFnName(), containsValueVar);
 
 
@@ -314,7 +318,7 @@ public class yLinkedHashMap {
         }
 
         KeysFn keys = new KeysFn();
-        Variable keysVar = new Variable(new Variable.Variant(keys), true, TypeTag.OBJECT);
+        Variable keysVar = new Variable(new Variable.Variant(keys), true, "function");
         yLinkedHashMap.yLinkedHashMap_Instance_Prototype.set(keys.getFnName(), keysVar);
 
 
@@ -347,7 +351,7 @@ public class yLinkedHashMap {
         }
 
         ValuesFn values = new ValuesFn();
-        Variable valuesVar = new Variable(new Variable.Variant(values), true, TypeTag.OBJECT);
+        Variable valuesVar = new Variable(new Variable.Variant(values), true, "function");
         yLinkedHashMap.yLinkedHashMap_Instance_Prototype.set(values.getFnName(), valuesVar);
 
 
@@ -385,7 +389,7 @@ public class yLinkedHashMap {
         }
 
         EntriesFn entries = new EntriesFn();
-        Variable entriesVar = new Variable(new Variable.Variant(entries), true, TypeTag.OBJECT);
+        Variable entriesVar = new Variable(new Variable.Variant(entries), true, "function");
         yLinkedHashMap.yLinkedHashMap_Instance_Prototype.set(entries.getFnName(), entriesVar);
 
 
@@ -418,7 +422,7 @@ public class yLinkedHashMap {
         }
 
         FirstKeyFn firstKey = new FirstKeyFn();
-        Variable firstKeyVar = new Variable(new Variable.Variant(firstKey), true, TypeTag.OBJECT);
+        Variable firstKeyVar = new Variable(new Variable.Variant(firstKey), true, "function");
         yLinkedHashMap.yLinkedHashMap_Instance_Prototype.set(firstKey.getFnName(), firstKeyVar);
 
 
@@ -456,7 +460,7 @@ public class yLinkedHashMap {
         }
 
         LastKeyFn lastKey = new LastKeyFn();
-        Variable lastKeyVar = new Variable(new Variable.Variant(lastKey), true, TypeTag.OBJECT);
+        Variable lastKeyVar = new Variable(new Variable.Variant(lastKey), true, "function");
         yLinkedHashMap.yLinkedHashMap_Instance_Prototype.set(lastKey.getFnName(), lastKeyVar);
 
 
@@ -491,7 +495,7 @@ public class yLinkedHashMap {
         }
 
         RemoveFirstFn removeFirst = new RemoveFirstFn();
-        Variable removeFirstVar = new Variable(new Variable.Variant(removeFirst), true, TypeTag.OBJECT);
+        Variable removeFirstVar = new Variable(new Variable.Variant(removeFirst), true, "function");
         yLinkedHashMap.yLinkedHashMap_Instance_Prototype.set(removeFirst.getFnName(), removeFirstVar);
 
 
@@ -529,7 +533,7 @@ public class yLinkedHashMap {
         }
 
         RemoveLastFn removeLast = new RemoveLastFn();
-        Variable removeLastVar = new Variable(new Variable.Variant(removeLast), true, TypeTag.OBJECT);
+        Variable removeLastVar = new Variable(new Variable.Variant(removeLast), true, "function");
         yLinkedHashMap.yLinkedHashMap_Instance_Prototype.set(removeLast.getFnName(), removeLastVar);
 
 
@@ -562,7 +566,7 @@ public class yLinkedHashMap {
         }
 
         PutIfAbsentFn putIfAbsent = new PutIfAbsentFn();
-        Variable putIfAbsentVar = new Variable(new Variable.Variant(putIfAbsent), true, TypeTag.OBJECT);
+        Variable putIfAbsentVar = new Variable(new Variable.Variant(putIfAbsent), true, "function");
         yLinkedHashMap.yLinkedHashMap_Instance_Prototype.set(putIfAbsent.getFnName(), putIfAbsentVar);
 
 
@@ -591,7 +595,7 @@ public class yLinkedHashMap {
         }
 
         SizeFn size = new SizeFn();
-        Variable sizeVar = new Variable(new Variable.Variant(size), true, TypeTag.OBJECT);
+        Variable sizeVar = new Variable(new Variable.Variant(size), true, "function");
         yLinkedHashMap.yLinkedHashMap_Instance_Prototype.set(size.getFnName(), sizeVar);
 
 
@@ -620,7 +624,7 @@ public class yLinkedHashMap {
         }
 
         IsEmptyFn isEmpty = new IsEmptyFn();
-        Variable isEmptyVar = new Variable(new Variable.Variant(isEmpty), true, TypeTag.OBJECT);
+        Variable isEmptyVar = new Variable(new Variable.Variant(isEmpty), true, "function");
         yLinkedHashMap.yLinkedHashMap_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
 
 
@@ -650,7 +654,7 @@ public class yLinkedHashMap {
         }
 
         ClearFn clear = new ClearFn();
-        Variable clearVar = new Variable(new Variable.Variant(clear), true, TypeTag.OBJECT);
+        Variable clearVar = new Variable(new Variable.Variant(clear), true, "function");
         yLinkedHashMap.yLinkedHashMap_Instance_Prototype.set(clear.getFnName(), clearVar);
 
 
@@ -682,7 +686,7 @@ public class yLinkedHashMap {
         }
 
         CloneFn clone = new CloneFn();
-        Variable cloneVar = new Variable(new Variable.Variant(clone), true, TypeTag.OBJECT);
+        Variable cloneVar = new Variable(new Variable.Variant(clone), true, "function");
         yLinkedHashMap.yLinkedHashMap_Instance_Prototype.set(clone.getFnName(), cloneVar);
 
     }
@@ -706,9 +710,8 @@ public class yLinkedHashMap {
             return "LinkedHashMap";
         }
 
-        @Override
         public String toString() {
-            return "<class:linked-hash-map>";
+            return "<instance:LinkedHashMap>";
         }
     }
 
@@ -739,12 +742,16 @@ public class yLinkedHashMap {
             return "LinkedHashMap";
         }
 
+        public String toString() {
+            return "<class:LinkedHashMap>";
+        }
+
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
         yLinkedHashMap.yLinkedHashMapClass lhmCtor = new yLinkedHashMap.yLinkedHashMapClass();
         Variable.Variant variant = new Variable.Variant(lhmCtor);
-        Variable var = new Variable(variant, false, TypeTag.OBJECT);
+        Variable var = new Variable(variant, false, lhmCtor.getType());
         interpreter.defineGlobal(lhmCtor.getClassName(), var);
     }
 

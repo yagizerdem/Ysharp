@@ -9,12 +9,10 @@ import ysharp.evaluator.Native.TUI.Terminal.Abstract.yBaseTerminal;
 import ysharp.evaluator.RuntimeObject;
 import ysharp.evaluator.Variable;
 import ysharp.evaluator.yClass;
-import ysharp.parser.TypeTag;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.security.PublicKey;
 import java.util.List;
 
 public class yDefaultTerminal {
@@ -57,7 +55,7 @@ public class yDefaultTerminal {
             }
 
 
-            Variable autoFlushVar = new Variable(new Variable.Variant(false), false, TypeTag.BOOL);
+            Variable autoFlushVar = new Variable(new Variable.Variant(false), false, "bool");
             this.set("autoFlush", autoFlushVar);
         }
 
@@ -119,7 +117,7 @@ public class yDefaultTerminal {
         Variable.Variant variant = new Variable.Variant(ctor);
         Variable var = new Variable(variant,
                 true,
-                TypeTag.OBJECT);
+                "function");
 
         interpreter.defineGlobal(ctor.getClassName(), var);
     }

@@ -6,9 +6,7 @@ import ysharp.evaluator.*;
 import ysharp.evaluator.Native.TUI.Input.yKeyStroke;
 import ysharp.evaluator.Native.TUI.Util.TextColor.yTextColor;
 import ysharp.evaluator.Native.TUI.Util.ySGR;
-import ysharp.parser.TypeTag;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.List;
 
@@ -97,7 +95,7 @@ public class yBaseTerminal {
         Variable putCharacterVar = new Variable(
                 new Variable.Variant(putCharacter),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yBaseTerminal_Instance_Prototype.set(putCharacter.getFnName(), putCharacterVar);
 
 
@@ -138,7 +136,7 @@ public class yBaseTerminal {
         Variable clearScreenVar = new Variable(
                 new Variable.Variant(clearScreen),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yBaseTerminal_Instance_Prototype.set(clearScreen.getFnName(), clearScreenVar);
 
 
@@ -179,7 +177,7 @@ public class yBaseTerminal {
         Variable flushVar = new Variable(
                 new Variable.Variant(flush),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yBaseTerminal_Instance_Prototype.set(flush.getFnName(), flushVar);
 
         // terminal.close()
@@ -219,7 +217,7 @@ public class yBaseTerminal {
         Variable closeVar = new Variable(
                 new Variable.Variant(close),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yBaseTerminal_Instance_Prototype.set(close.getFnName(), closeVar);
 
         // terminal.bell()
@@ -259,7 +257,7 @@ public class yBaseTerminal {
         Variable bellVar = new Variable(
                 new Variable.Variant(bell),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yBaseTerminal_Instance_Prototype.set(bell.getFnName(), bellVar);
 
 
@@ -300,7 +298,7 @@ public class yBaseTerminal {
         Variable enterPrivateModeVar = new Variable(
                 new Variable.Variant(enterPrivateMode),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yBaseTerminal_Instance_Prototype.set(enterPrivateMode.getFnName(), enterPrivateModeVar);
 
 
@@ -341,7 +339,7 @@ public class yBaseTerminal {
         Variable exitPrivateModeVar = new Variable(
                 new Variable.Variant(exitPrivateMode),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yBaseTerminal_Instance_Prototype.set(exitPrivateMode.getFnName(), exitPrivateModeVar);
 
         // terminal.setCursorPosition(x, y)
@@ -384,7 +382,7 @@ public class yBaseTerminal {
         Variable setCursorPositionVar = new Variable(
                 new Variable.Variant(setCursorPosition),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yBaseTerminal_Instance_Prototype.set(setCursorPosition.getFnName(), setCursorPositionVar);
 
 
@@ -427,7 +425,7 @@ public class yBaseTerminal {
         Variable disableSgrVar = new Variable(
                 new Variable.Variant(disableSgr),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yBaseTerminal_Instance_Prototype.set(disableSgr.getFnName(), disableSgrVar);
 
         // terminal.enableSgr(SRG)  Activates an SGR (Selected Graphic Rendition) code.
@@ -469,7 +467,7 @@ public class yBaseTerminal {
         Variable enableSgrVar = new Variable(
                 new Variable.Variant(enableSgr),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yBaseTerminal_Instance_Prototype.set(enableSgr.getFnName(), enableSgrVar);
 
         // terminal.resetColorAndSGR()
@@ -508,7 +506,7 @@ public class yBaseTerminal {
         Variable resetColorAndSGRVar = new Variable(
                 new Variable.Variant(resetColorAndSGR),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yBaseTerminal_Instance_Prototype.set(resetColorAndSGR.getFnName(), resetColorAndSGRVar);
 
         // terminal.setBackgroundColor(TextColor)
@@ -548,7 +546,7 @@ public class yBaseTerminal {
         Variable setBackgroundColorVar = new Variable(
                 new Variable.Variant(setBackgroundColor),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yBaseTerminal_Instance_Prototype.set(setBackgroundColor.getFnName(), setBackgroundColorVar);
 
 
@@ -589,7 +587,7 @@ public class yBaseTerminal {
         Variable setForegroundColorVar = new Variable(
                 new Variable.Variant(setForegroundColor),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yBaseTerminal_Instance_Prototype.set(setForegroundColor.getFnName(), setForegroundColorVar);
 
         // terminal.setCursorVisible(bool)
@@ -629,7 +627,7 @@ public class yBaseTerminal {
         Variable setCursorVisibleVar = new Variable(
                 new Variable.Variant(setCursorVisible),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yBaseTerminal_Instance_Prototype.set(setCursorVisible.getFnName(), setCursorVisibleVar);
 
         // terminal.write(string)
@@ -677,7 +675,7 @@ public class yBaseTerminal {
         Variable writeVar = new Variable(
                 new Variable.Variant(write),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yBaseTerminal_Instance_Prototype.set(write.getFnName(), writeVar);
 
         // terminal.writeLine(string)
@@ -726,7 +724,7 @@ public class yBaseTerminal {
         Variable writeLineVar = new Variable(
                 new Variable.Variant(writeLine),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yBaseTerminal_Instance_Prototype.set(writeLine.getFnName(), writeLineVar);
 
 
@@ -769,7 +767,7 @@ public class yBaseTerminal {
         Variable readKeyVar = new Variable(
                 new Variable.Variant(readKey),
                 true,
-                TypeTag.OBJECT);
+                "function");
 
         yBaseTerminal_Instance_Prototype.set(readKey.getFnName(), readKeyVar);
 
@@ -823,7 +821,7 @@ public class yBaseTerminal {
         Variable pollKeyVar = new Variable(
                 new Variable.Variant(pollKey),
                 true,
-                TypeTag.OBJECT);
+                "function");
 
         yBaseTerminal_Instance_Prototype.set(pollKey.getFnName(), pollKeyVar);
 
@@ -875,7 +873,7 @@ public class yBaseTerminal {
         Variable clearInputBufferVar = new Variable(
                 new Variable.Variant(clearInputBuffer),
                 true,
-                TypeTag.OBJECT);
+                "function");
 
         yBaseTerminal_Instance_Prototype.set(clearInputBuffer.getFnName(), clearInputBufferVar);
     }

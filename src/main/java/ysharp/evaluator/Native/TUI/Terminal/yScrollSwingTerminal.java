@@ -8,7 +8,6 @@ import ysharp.evaluator.Native.TUI.Terminal.Abstract.yBaseTerminal;
 import ysharp.evaluator.RuntimeObject;
 import ysharp.evaluator.Variable;
 import ysharp.evaluator.yClass;
-import ysharp.parser.TypeTag;
 
 import java.util.List;
 
@@ -39,7 +38,7 @@ public class yScrollSwingTerminal {
             this.instance = new ScrollingSwingTerminal();
 
 
-            Variable autoFlushVar = new Variable(new Variable.Variant(false), false, TypeTag.BOOL);
+            Variable autoFlushVar = new Variable(new Variable.Variant(false), false, "bool");
             this.set("autoFlush", autoFlushVar);
         }
 
@@ -101,7 +100,7 @@ public class yScrollSwingTerminal {
         Variable var = new Variable(
                 variant,
                 true,
-                TypeTag.OBJECT
+                "function"
         );
 
         interpreter.defineGlobal(ctor.getClassName(), var);

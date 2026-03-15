@@ -7,7 +7,6 @@ import ysharp.evaluator.Native.function.binding.BoundNativeFunction;
 import ysharp.lexer.Token;
 import ysharp.parser.Expr;
 import ysharp.parser.Stmt;
-import ysharp.parser.TypeTag;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -130,7 +129,7 @@ public class Interpreter implements
     @Override
     public Variable.Variant visitBinaryExpr(Expr.BinaryExpr expr) {
         switch (expr.op.type) {
-            case Token.TokenType.PLUS -> {
+            case PLUS -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 if(left.canImplicitlyConvertNumber() && right.canImplicitlyConvertNumber()) {
@@ -178,7 +177,7 @@ public class Interpreter implements
                                 + left.getType() + "' and '" + right.getType() + "'."
                 );
             }
-            case Token.TokenType.MINUS -> {
+            case MINUS -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 requireNumberOperands(left, right, expr.op);
@@ -186,7 +185,7 @@ public class Interpreter implements
                 double diff = left.implicitlyConvertNumber() - right.implicitlyConvertNumber();
                 return new Variable.Variant(diff);
             }
-            case Token.TokenType.MULTIPLY -> {
+            case MULTIPLY -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 requireNumberOperands(left, right, expr.op);
@@ -194,7 +193,7 @@ public class Interpreter implements
                 double mul = left.asNumber() * right.asNumber();
                 return new Variable.Variant(mul);
             }
-            case Token.TokenType.DIVIDE -> {
+            case DIVIDE -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 if(right.asNumber() == 0)
@@ -208,7 +207,7 @@ public class Interpreter implements
                 double div = left.asNumber() / right.asNumber();
                 return new Variable.Variant(div);
             }
-            case Token.TokenType.MODULO -> {
+            case MODULO -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 requireNumberOperands(left, right, expr.op);
@@ -220,72 +219,72 @@ public class Interpreter implements
                 double mod = left.asNumber() % right.asNumber();
                 return new Variable.Variant(mod);
             }
-            case Token.TokenType.BITWISE_AND -> {
+            case BITWISE_AND -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 requireIntegerOperands(left, right, expr.op);
                 int result = left.asInt() & right.asInt();
                 return new Variable.Variant(result);
             }
-            case Token.TokenType.BITWISE_OR -> {
+            case BITWISE_OR -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 requireIntegerOperands(left, right, expr.op);
                 int result = left.asInt() | right.asInt();
                 return new Variable.Variant(result);
             }
-            case Token.TokenType.BITWISE_XOR -> {
+            case BITWISE_XOR -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 requireIntegerOperands(left, right, expr.op);
                 int result = left.asInt() ^ right.asInt();
                 return new Variable.Variant(result);
             }
-            case Token.TokenType.LEFT_SHIFT -> {
+            case LEFT_SHIFT -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 requireIntegerOperands(left, right, expr.op);
                 int result = left.asInt() << right.asInt();
                 return new Variable.Variant(result);
             }
-            case Token.TokenType.RIGHT_SHIFT -> {
+            case RIGHT_SHIFT -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 requireIntegerOperands(left, right, expr.op);
                 int result = left.asInt() >> right.asInt();
                 return new Variable.Variant(result);
             }
-            case Token.TokenType.GREATER_THAN -> {
+            case GREATER_THAN -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 requireNumberOperands(left, right, expr.op);
                 return new Variable.Variant(left.implicitlyConvertNumber() > right.implicitlyConvertNumber());
             }
-            case Token.TokenType.GREATER_OR_EQUAL -> {
+            case GREATER_OR_EQUAL -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 requireNumberOperands(left, right, expr.op);
                 return new Variable.Variant(left.implicitlyConvertNumber() >= right.implicitlyConvertNumber());
 
             }
-            case Token.TokenType.LESS_THAN -> {
+            case LESS_THAN -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 requireNumberOperands(left, right, expr.op);
                 return new Variable.Variant(left.implicitlyConvertNumber() < right.implicitlyConvertNumber());
             }
-            case Token.TokenType.LESS_OR_EQUAL -> {
+            case LESS_OR_EQUAL -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 requireNumberOperands(left, right, expr.op);
                     return new Variable.Variant(left.implicitlyConvertNumber() <= right.implicitlyConvertNumber());
             }
-            case Token.TokenType.EQUAL_EQUAL -> {
+            case EQUAL_EQUAL -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 return new Variable.Variant(left.equals(right));
             }
-            case Token.TokenType.BANG_EQUAL -> {
+            case BANG_EQUAL -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 return new Variable.Variant(!left.equals(right));
@@ -300,7 +299,7 @@ public class Interpreter implements
     @Override
     public Variable.Variant visitUnaryExpr(Expr.UnaryExpr expr) {
         switch (expr.op.type) {
-            case Token.TokenType.PLUS -> {
+            case PLUS -> {
                 Variable.Variant var = this.evaluate(expr.expr);
                 if(!var.isNumber()) {
                     throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
@@ -309,7 +308,7 @@ public class Interpreter implements
                 }
                 return var;
             }
-            case Token.TokenType.MINUS -> {
+            case MINUS -> {
                 Variable.Variant var = this.evaluate(expr.expr);
                 if(var.isInt()) {
                     return new Variable.Variant(var.asInt() * -1);
@@ -322,11 +321,11 @@ public class Interpreter implements
                         expr.op.line,
                         "Operand must be a number.");
             }
-            case Token.TokenType.BANG -> {
+            case BANG -> {
                 Variable.Variant var = this.evaluate(expr.expr);
                 return new Variable.Variant(!var.isTruthy());
             }
-            case Token.TokenType.BITWISE_NOT -> {
+            case BITWISE_NOT -> {
                 Variable.Variant var = this.evaluate(expr.expr);
                 if(var.isInt()) {
                     return new Variable.Variant(~var.asInt());
@@ -337,7 +336,7 @@ public class Interpreter implements
                         "Operand must be a int.");
 
             }
-            case Token.TokenType.PLUS_PLUS -> {
+            case PLUS_PLUS -> {
 
                 if (!(expr.expr instanceof Expr.VariableExpr)) {
                     throw new YsharpError(
@@ -363,7 +362,7 @@ public class Interpreter implements
                 }
                 return new Variable.Variant(oldValue);
             }
-            case Token.TokenType.MINUS_MINUS -> {
+            case MINUS_MINUS -> {
 
                 if (!(expr.expr instanceof Expr.VariableExpr)) {
                     throw new YsharpError(
@@ -433,7 +432,7 @@ public class Interpreter implements
 
         switch (expr.op.type) {
 
-            case Token.TokenType.PLUS_PLUS -> {
+            case PLUS_PLUS -> {
                 if (var.isInt()) {
                     var.value = var.asInt() + 1;
                 } else {
@@ -441,7 +440,7 @@ public class Interpreter implements
                 }
             }
 
-            case Token.TokenType.MINUS_MINUS -> {
+            case MINUS_MINUS -> {
                 if (var.isInt()) {
                     var.value = var.asInt() - 1;
                 } else {
@@ -473,12 +472,26 @@ public class Interpreter implements
                 );
             }
 
+            if(!Interpreter.typeChecker(identifier, right)) {
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.PROCESS,
+                        expr.op.line,
+                        "Type mismatch: cannot assign value of type '" +
+                                right.getType() +
+                                "' to variable '" +
+                                lvalue.lexeme +
+                                "' of type '" +
+                                identifier.getType() +
+                                "'."
+                );
+            }
+
             switch (expr.op.type) {
-                case Token.TokenType.ASSIGN ->  {
+                case ASSIGN ->  {
                     this.curEnv.assign(lvalue, right);
                     return right;
                 }
-                case Token.TokenType.PLUS_ASSIGN -> {
+                case PLUS_ASSIGN -> {
                     Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
                     requireNumberOperands(left, right, expr.op);
                         Variable.Variant result;
@@ -490,7 +503,7 @@ public class Interpreter implements
                         curEnv.assign(lvalue, result);
                         return result;
                 }
-                case Token.TokenType.MINUS_ASSIGN -> {
+                case MINUS_ASSIGN -> {
                     Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
                     requireNumberOperands(left, right, expr.op);
                     Variable.Variant result;
@@ -502,7 +515,7 @@ public class Interpreter implements
                     curEnv.assign(lvalue, result);
                     return result;
                 }
-                case Token.TokenType.MULTIPLY_ASSIGN -> {
+                case MULTIPLY_ASSIGN -> {
                     Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
                     requireNumberOperands(left, right, expr.op);
                     Variable.Variant result;
@@ -514,7 +527,7 @@ public class Interpreter implements
                     curEnv.assign(lvalue, result);
                     return result;
                 }
-                case Token.TokenType.DIVIDE_ASSIGN -> {
+                case DIVIDE_ASSIGN -> {
                     Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
                     requireNumberOperands(left, right, expr.op);
                     if(right.asNumber() == 0)
@@ -532,7 +545,7 @@ public class Interpreter implements
                     curEnv.assign(lvalue, result);
                     return result;
                 }
-                case Token.TokenType.MODULO_ASSIGN -> {
+                case MODULO_ASSIGN -> {
                     Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
                     requireNumberOperands(left, right, expr.op);
                     Variable.Variant result;
@@ -544,7 +557,7 @@ public class Interpreter implements
                     curEnv.assign(lvalue, result);
                     return result;
                 }
-                case Token.TokenType.LEFT_SHIFT_ASSIGN -> {
+                case LEFT_SHIFT_ASSIGN -> {
                     Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
                     requireIntegerOperands(left, right, expr.op);
                     Variable.Variant result;
@@ -552,7 +565,7 @@ public class Interpreter implements
                     curEnv.assign(lvalue, result);
                     return result;
                 }
-                case Token.TokenType.RIGHT_SHIFT_ASSIGN -> {
+                case RIGHT_SHIFT_ASSIGN -> {
                     Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
                     requireIntegerOperands(left, right, expr.op);
                     Variable.Variant result;
@@ -560,7 +573,7 @@ public class Interpreter implements
                     curEnv.assign(lvalue, result);
                     return result;
                 }
-                case Token.TokenType.BITWISE_AND_ASSIGN -> {
+                case BITWISE_AND_ASSIGN -> {
                     Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
                     requireIntegerOperands(left, right, expr.op);
                     Variable.Variant result;
@@ -568,7 +581,7 @@ public class Interpreter implements
                     curEnv.assign(lvalue, result);
                     return result;
                 }
-                case Token.TokenType.BITWISE_OR_ASSIGN -> {
+                case BITWISE_OR_ASSIGN -> {
                     Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
                     requireIntegerOperands(left, right, expr.op);
                     Variable.Variant result;
@@ -576,7 +589,7 @@ public class Interpreter implements
                     curEnv.assign(lvalue, result);
                     return result;
                 }
-                case Token.TokenType.BITWISE_XOR_ASSIGN -> {
+                case BITWISE_XOR_ASSIGN -> {
                     Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
                     requireIntegerOperands(left, right, expr.op);
                     Variable.Variant result;
@@ -1026,7 +1039,7 @@ public class Interpreter implements
             Environment oldEnv = this.curEnv;
             try {
                 Environment newEnv = new Environment(curEnv);
-                newEnv.define(stmt.errIdentifier.lexeme, new Variable(sig.value, true, TypeTag.ANY));
+                newEnv.define(stmt.errIdentifier.lexeme, new Variable(sig.value, true, "any"));
                 this.curEnv = newEnv;
                 this.execute(stmt.catchBlock);
             }
@@ -1052,10 +1065,23 @@ public class Interpreter implements
 
         String typeTag = stmt.type != null ? stmt.type.lexeme : "any";
 
+        if (value != null && !Interpreter.typeChecker(typeTag, value)) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    stmt.identifier.line,
+                    "Type mismatch. Cannot assign value of type '" +
+                            value.getType() +
+                            "' to variable '" +
+                            stmt.identifier.lexeme +
+                            "' of type '" +
+                            typeTag + "'."
+            );
+        }
+
         Variable var = new Variable(
                 value,
                 false,
-                TypeTag.fromString(typeTag));
+                typeTag);
 
         this.curEnv.define(stmt.identifier.lexeme, var);
 
@@ -1073,7 +1099,7 @@ public class Interpreter implements
 
         Variable var = new Variable(new Variable.Variant(funObj),
                 false,
-                TypeTag.OBJECT);
+                "function");
 
         this.curEnv.define(funObj.declaration.name.lexeme,  var);
 
@@ -1088,10 +1114,23 @@ public class Interpreter implements
 
         String typeTag = stmt.type != null ? stmt.type.lexeme : "any";
 
+        if (value != null && !Interpreter.typeChecker(typeTag, value)) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    stmt.identifier.line,
+                    "Type mismatch. Cannot assign value of type '" +
+                            value.getType() +
+                            "' to variable '" +
+                            stmt.identifier.lexeme +
+                            "' of type '" +
+                            typeTag + "'."
+            );
+        }
+
         Variable var = new Variable(
                 value,
                 true,
-                TypeTag.fromString(typeTag));
+                typeTag);
 
         this.curEnv.define(stmt.identifier.lexeme, var);
 
@@ -1143,6 +1182,11 @@ public class Interpreter implements
             }
 
             @Override
+            public String toString() {
+                return "<class:" + stmt.name.lexeme + ">";
+            }
+
+            @Override
             public int arity() {
                 if(constructorFn == null) return 0;
                 return constructorFn.params.size();
@@ -1167,6 +1211,11 @@ public class Interpreter implements
                     public String getType() {
                         return stmt.name.lexeme;
                     }
+
+                    @Override
+                    public String toString() {
+                        return "<instance:" + stmt.name.lexeme + ">";
+                    }
                 };
 
                 instance.prototype = this.InstancePrototype;
@@ -1178,7 +1227,7 @@ public class Interpreter implements
                                             new Variable.Variant(interpreter.evaluate(prop.initializer)):
                                             new Variable.Variant(null),
                                                     prop.isConst,
-                                                    prop.type == null ? TypeTag.ANY : TypeTag.fromString(prop.type.lexeme)));
+                                                    prop.type == null ? "any" :  prop.type.lexeme));
                 }
 
                 // add instance properties of super class to child class
@@ -1191,9 +1240,7 @@ public class Interpreter implements
                         newEnv.define(constructorFn.params.get(i).name.lexeme, new Variable(
                                 arguments.get(i),
                                 true,
-                                constructorFn.params.get(i).type == null
-                                        ? TypeTag.ANY
-                                        : TypeTag.fromString(constructorFn.params.get(i).type.lexeme)
+                                constructorFn.params.get(i).type == null ? "any" : constructorFn.params.get(i).type.lexeme
                         ));
                     }
 
@@ -1203,7 +1250,7 @@ public class Interpreter implements
                             new Variable(
                                     new Variable.Variant(instance),
                                     true,
-                                    TypeTag.OBJECT
+                                    stmt.name.lexeme
                             )
                     );
 
@@ -1218,7 +1265,7 @@ public class Interpreter implements
                                 new Variable(
                                         new Variable.Variant(parentClass),
                                         true,
-                                        TypeTag.OBJECT
+                                        stmt.superName.lexeme
                                 )
                         );
                     }
@@ -1237,6 +1284,7 @@ public class Interpreter implements
                 return stmt.name.lexeme;
             }
         };
+        klass.prototype = yClass.ClassPrototype;
 
         klass.superClassName = stmt.superName; // allowed to be null
 
@@ -1245,7 +1293,7 @@ public class Interpreter implements
             klass.set(method.name.lexeme, new Variable(
                     new Variable.Variant(methodToNativeFn(method)),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             ));
         }
 
@@ -1263,7 +1311,7 @@ public class Interpreter implements
             klass.set(prop.name.lexeme, new Variable(
                     prop.initializer == null ? new Variable.Variant(null) : this.evaluate(prop.initializer),
                     prop.isConst,
-                    prop.type == null ? TypeTag.ANY : TypeTag.fromString(prop.type.lexeme)
+                    prop.type.lexeme
             ));
         }
 
@@ -1277,6 +1325,11 @@ public class Interpreter implements
             public String getType() {
                 return "__" + stmt.name.lexeme + "__";
             }
+
+            @Override
+            public String toString() {
+                return "<prototype:" + stmt.name.lexeme + ">";
+            }
         };
 
         // instance methods reside in instance prototype
@@ -1284,7 +1337,7 @@ public class Interpreter implements
             klass.InstancePrototype .set(method.name.lexeme, new Variable(
                     new Variable.Variant(methodToNativeFn(method)),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             ));
         }
 
@@ -1293,7 +1346,7 @@ public class Interpreter implements
             klass.InstancePrototype .set(constructorFn.name.lexeme, new Variable(
                     new Variable.Variant(methodToNativeFn(constructorFn)),
                     true,
-                    TypeTag.OBJECT
+                    "function"
             ));
         }
 
@@ -1326,7 +1379,7 @@ public class Interpreter implements
             klass.InstancePrototype.prototype = yClass.ClassPrototype; // root prototype
         }
 
-        curEnv.define(klass.getClassName(), new Variable(new Variable.Variant(klass), true, TypeTag.OBJECT));
+        curEnv.define(klass.getClassName(), new Variable(new Variable.Variant(klass), true, klass.getClassName()));
 
         if(stmt.isExported) {
             this.exports.add(stmt.name.lexeme);
@@ -1344,17 +1397,61 @@ public class Interpreter implements
             @Override
             public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
                 try {
+
+                    if (arguments.size() != method.params.size()) {
+                        throw new YsharpError(
+                                YsharpError.YsharpErrorType.PROCESS,
+                                method.name.line,
+                                method.name.lexeme + " Expected " + method.params.size() +
+                                        " arguments but got " + arguments.size()
+                        );
+                    }
+
                     Environment newEnv = new Environment(curEnv);
                     for(int i = 0; i < method.params.size(); i++) {
+
+                        Stmt.ClassDeclaration.Method.Param param = method.params.get(i);
+                        Variable.Variant arg = arguments.get(i);
+
+                        String typeTag = param.type != null ? param.type.lexeme : "any";
+
+                        if (!Interpreter.typeChecker(typeTag, arg)) {
+                            throw new YsharpError(
+                                    YsharpError.YsharpErrorType.PROCESS,
+                                    method.name.line,
+                                    "Parameter '" + param.name.lexeme +
+                                            "' type mismatch. Expected '" +
+                                            typeTag + "' but got '" +
+                                            arg.getType() + "'."
+                            );
+                        }
+
+
                         newEnv.define(method.params.get(i).name.lexeme, new Variable(
                                 arguments.get(i),
                                 true,
-                                method.params.get(i).type == null ? TypeTag.ANY : TypeTag.fromString(method.params.get(i).type.lexeme)
+                                method.params.get(i).type.lexeme
                         ));
                     }
 
                     interpreter.executeBlock((Stmt.BlockStmt) method.body, newEnv);
                 }catch (Signal.ReturnSignal sig) {
+                    String expectedType = "any";
+
+                    if (method.returnType != null) {
+                        expectedType = method.returnType.lexeme;
+                    }
+
+                    if (!Interpreter.typeChecker(expectedType, sig.value)) {
+                        throw new YsharpError(
+                                YsharpError.YsharpErrorType.PROCESS,
+                                method.name.line,
+                                "Return type mismatch. Expected '" +
+                                        expectedType + "' but got '" +
+                                        sig.value.getType() + "'."
+                        );
+                    }
+
                     return sig.value;
                 }
 
@@ -1369,4 +1466,62 @@ public class Interpreter implements
 
     }
 
+    public static boolean typeChecker(Variable variable, Variable.Variant variant) {
+
+        if(variant.isNull()) return true;
+
+        String type = variable.typeTag;
+
+        switch (type) {
+
+            case "int":
+                return variant.isInt();
+
+            case "double":
+                return variant.isDouble();
+
+            case "number":
+                return variant.isNumber();
+
+            case "bool":
+                return variant.isBoolean();
+
+            case "char":
+                return variant.isChar();
+
+            case "any":
+                return true;
+
+            default:
+                return variable.getType().equals(variant.getType());
+        }
+    }
+
+    public static boolean typeChecker(String type, Variable.Variant variant) {
+        if(variant.isNull()) return true;
+
+        switch (type) {
+
+            case "int":
+                return variant.isInt();
+
+            case "double":
+                return variant.isDouble();
+
+            case "number":
+                return variant.isNumber();
+
+            case "bool":
+                return variant.isBoolean();
+
+            case "char":
+                return variant.isChar();
+
+            case "any":
+                return true;
+
+            default:
+                return type.equals(variant.getType());
+        }
+    }
 }

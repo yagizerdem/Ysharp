@@ -3,7 +3,6 @@ package ysharp.evaluator.Native.Collections;
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.Native.function.binding.BoundNativeFunction;
-import ysharp.parser.TypeTag;
 
 import java.util.*;
 
@@ -47,7 +46,12 @@ public class yQueue {
 
             @Override
             public String getType() {
-                return "queue_prototype";
+                return "__Queue__";
+            }
+
+            @Override
+            public String toString() {
+                return "<prototype:Queue>";
             }
         };
         yQueue_Instance_Prototype.prototype = yClass.ClassPrototype;
@@ -115,7 +119,7 @@ public class yQueue {
         Variable toStringVar = new Variable(
                 new Variable.Variant(toString),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yQueue_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
         // queue.add(value)
@@ -150,7 +154,7 @@ public class yQueue {
         Variable addVar = new Variable(
                 new Variable.Variant(add),
                 true,
-                TypeTag.OBJECT);
+                "function");
 
         yQueue_Instance_Prototype.set(add.getFnName(), addVar);
 
@@ -190,7 +194,7 @@ public class yQueue {
         Variable removeVar = new Variable(
                 new Variable.Variant(remove),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yQueue_Instance_Prototype.set(remove.getFnName(), removeVar);
 
         // queue.poll()
@@ -227,7 +231,7 @@ public class yQueue {
         Variable pollVar = new Variable(
                 new Variable.Variant(poll),
                 true,
-                TypeTag.OBJECT);
+                "function");
 
         yQueue_Instance_Prototype.set(poll.getFnName(), pollVar);
 
@@ -263,7 +267,7 @@ public class yQueue {
         Variable peekVar = new Variable(
                 new Variable.Variant(peek),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yQueue_Instance_Prototype.set(peek.getFnName(), peekVar);
 
         // queue.size()
@@ -294,7 +298,7 @@ public class yQueue {
         Variable sizeVar = new Variable(
                 new Variable.Variant(size),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yQueue_Instance_Prototype.set(size.getFnName(), sizeVar);
 
         // queue.isEmpty()
@@ -325,7 +329,7 @@ public class yQueue {
         Variable isEmptyVar = new Variable(
                 new Variable.Variant(isEmpty),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yQueue_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
 
     }
@@ -356,7 +360,7 @@ public class yQueue {
 
         @Override
         public String toString() {
-            return "<class:queue>";
+            return "<instance:Queue>";
         }
     }
 
@@ -384,12 +388,17 @@ public class yQueue {
         public String getType() {
             return "Queue";
         }
+
+        @Override
+        public String toString() {
+            return "<class:Queue>";
+        }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
         yQueue.yQueueClass queueCtor = new yQueue.yQueueClass();
         Variable.Variant variant = new Variable.Variant(queueCtor);
-        Variable var = new Variable(variant, false, TypeTag.OBJECT);
+        Variable var = new Variable(variant, false, queueCtor.getType());
         interpreter.defineGlobal(queueCtor.getClassName(), var);
     }
 }

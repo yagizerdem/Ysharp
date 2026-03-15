@@ -3,7 +3,6 @@ package ysharp.evaluator.Native.Collections;
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.Native.function.binding.BoundNativeFunction;
-import ysharp.parser.TypeTag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +47,12 @@ public class yArray {
 
             @Override
             public String getType() {
-                return "array_prototype";
+                return "__Array__";
+            }
+
+            @Override
+            public String toString() {
+                return "<prototype:Array>";
             }
         };
         yArray_Instance_Prototype.prototype = yClass.ClassPrototype;
@@ -104,7 +108,7 @@ public class yArray {
         Variable toStringVar = new Variable(
                 new Variable.Variant(toString),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yArray_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
         // arr.add(value)
@@ -137,7 +141,7 @@ public class yArray {
         Variable addVar = new Variable(
                 new Variable.Variant(add),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yArray_Instance_Prototype.set(add.getFnName(), addVar);
 
         // arr.insert(index, value)
@@ -191,7 +195,7 @@ public class yArray {
         Variable insertVar = new Variable(
                 new Variable.Variant(insert),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yArray_Instance_Prototype.set(insert.getFnName(), insertVar);
 
         // arr.clear()
@@ -224,7 +228,7 @@ public class yArray {
         Variable clearVar = new Variable(
                 new Variable.Variant(clear),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yArray_Instance_Prototype.set(clear.getFnName(), clearVar);
 
         // arr.clone()
@@ -260,7 +264,7 @@ public class yArray {
         Variable cloneVar = new Variable(
                 new Variable.Variant(clone),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yArray_Instance_Prototype.set(clone.getFnName(), cloneVar);
 
         // arr.contains(value)
@@ -304,7 +308,7 @@ public class yArray {
         Variable containsVar = new Variable(
                 new Variable.Variant(contains),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yArray_Instance_Prototype.set(contains.getFnName(), containsVar);
 
         // arr.ensureCapacity(minCapacity)
@@ -357,7 +361,7 @@ public class yArray {
         Variable ensureCapacityVar = new Variable(
                 new Variable.Variant(ensureCapacity),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yArray_Instance_Prototype.set(
                 ensureCapacity.getFnName(),
                 ensureCapacityVar
@@ -391,7 +395,7 @@ public class yArray {
         Variable sizeVar = new Variable(
                 new Variable.Variant(size),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yArray_Instance_Prototype.set(size.getFnName(), sizeVar);
 
         // arr.remove(index)
@@ -444,7 +448,7 @@ public class yArray {
         Variable removeVar = new Variable(
                 new Variable.Variant(remove),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yArray_Instance_Prototype.set(remove.getFnName(), removeVar);
 
         // arr.set(index, value)
@@ -497,7 +501,7 @@ public class yArray {
         Variable setVar = new Variable(
                 new Variable.Variant(set),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yArray_Instance_Prototype.set(set.getFnName(), setVar);
 
         // arr.get(index)
@@ -548,7 +552,7 @@ public class yArray {
         Variable getVar = new Variable(
                 new Variable.Variant(get),
                 true,
-                TypeTag.OBJECT);
+                "function");
 
         yArray_Instance_Prototype.set(get.getFnName(), getVar);
 
@@ -591,7 +595,7 @@ public class yArray {
         Variable popVar = new Variable(
                 new Variable.Variant(pop),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yArray_Instance_Prototype.set(pop.getFnName(), popVar);
 
         class IsEmptyFn extends Function.NativeFunction implements Callable {
@@ -622,7 +626,7 @@ public class yArray {
         Variable isEmptyVar = new Variable(
                 new Variable.Variant(isEmpty),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yArray_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
     }
 
@@ -653,7 +657,7 @@ public class yArray {
 
         @Override
         public String toString() {
-            return "<class:array>";
+            return "<instance:Array>";
         }
     }
 
@@ -685,12 +689,17 @@ public class yArray {
         public String getType() {
             return "Array";
         }
+
+        @Override
+        public String toString() {
+            return "<class:Array>";
+        }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
         yArrayClass arrayCtor = new yArrayClass();
         Variable.Variant variant = new Variable.Variant(arrayCtor);
-        Variable var = new Variable(variant, false, TypeTag.OBJECT);
+        Variable var = new Variable(variant, false, arrayCtor.getType());
         interpreter.defineGlobal(arrayCtor.getClassName(), var);
     }
 

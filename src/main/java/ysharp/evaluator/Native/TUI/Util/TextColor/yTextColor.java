@@ -3,7 +3,6 @@ package ysharp.evaluator.Native.TUI.Util.TextColor;
 import com.googlecode.lanterna.TextColor;
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.parser.TypeTag;
 
 import java.util.List;
 
@@ -68,7 +67,7 @@ public class yTextColor {
 
             // ANSI COLORS
             yANSI.yANSIClass ANSI = new yANSI.yANSIClass();
-            this.set(ANSI.getClassName(), new Variable(new Variable.Variant(ANSI), true, TypeTag.OBJECT));
+            this.set(ANSI.getClassName(), new Variable(new Variable.Variant(ANSI), true, "function"));
 
         }
 
@@ -108,7 +107,7 @@ public class yTextColor {
         Variable var = new Variable(
                 variant,
                 true,
-                TypeTag.OBJECT
+                "function"
         );
 
         interpreter.defineGlobal(ctor.getClassName(), var);

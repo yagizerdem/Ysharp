@@ -2,7 +2,6 @@ package ysharp.evaluator.Native.Threading;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.parser.TypeTag;
 
 import java.util.List;
 import java.util.concurrent.Semaphore;
@@ -80,7 +79,7 @@ public class ySemaphore {
         }
 
         AcquireFn acquire = new AcquireFn();
-        Variable acquireVar = new Variable(new Variable.Variant(acquire), true, TypeTag.OBJECT);
+        Variable acquireVar = new Variable(new Variable.Variant(acquire), true, "function");
         ySemaphore_Instance_Prototype.set(acquire.getFnName(), acquireVar);
 
 
@@ -115,7 +114,7 @@ public class ySemaphore {
         }
 
         AcquireNFn acquireN = new AcquireNFn();
-        Variable acquireNVar = new Variable(new Variable.Variant(acquireN), true, TypeTag.OBJECT);
+        Variable acquireNVar = new Variable(new Variable.Variant(acquireN), true, "function");
         ySemaphore_Instance_Prototype.set(acquireN.getFnName(), acquireNVar);
 
 
@@ -142,7 +141,7 @@ public class ySemaphore {
         }
 
         AcquireUninterruptiblyFn acquireUninterruptibly = new AcquireUninterruptiblyFn();
-        Variable acquireUninterruptiblyVar = new Variable(new Variable.Variant(acquireUninterruptibly), true, TypeTag.OBJECT);
+        Variable acquireUninterruptiblyVar = new Variable(new Variable.Variant(acquireUninterruptibly), true, "function");
         ySemaphore_Instance_Prototype.set(acquireUninterruptibly.getFnName(), acquireUninterruptiblyVar);
 
 
@@ -170,7 +169,7 @@ public class ySemaphore {
         }
 
         AcquireUninterruptiblyNFn acquireUninterruptiblyN = new AcquireUninterruptiblyNFn();
-        Variable acquireUninterruptiblyNVar = new Variable(new Variable.Variant(acquireUninterruptiblyN), true, TypeTag.OBJECT);
+        Variable acquireUninterruptiblyNVar = new Variable(new Variable.Variant(acquireUninterruptiblyN), true, "function");
         ySemaphore_Instance_Prototype.set(acquireUninterruptiblyN.getFnName(), acquireUninterruptiblyNVar);
 
 
@@ -197,7 +196,7 @@ public class ySemaphore {
         }
 
         ReleaseFn release = new ReleaseFn();
-        Variable releaseVar = new Variable(new Variable.Variant(release), true, TypeTag.OBJECT);
+        Variable releaseVar = new Variable(new Variable.Variant(release), true, "function");
         ySemaphore_Instance_Prototype.set(release.getFnName(), releaseVar);
 
 
@@ -225,7 +224,7 @@ public class ySemaphore {
         }
 
         ReleaseNFn releaseN = new ReleaseNFn();
-        Variable releaseNVar = new Variable(new Variable.Variant(releaseN), true, TypeTag.OBJECT);
+        Variable releaseNVar = new Variable(new Variable.Variant(releaseN), true, "function");
         ySemaphore_Instance_Prototype.set(releaseN.getFnName(), releaseNVar);
 
 
@@ -251,7 +250,7 @@ public class ySemaphore {
         }
 
         AvailablePermitsFn availablePermits = new AvailablePermitsFn();
-        Variable availablePermitsVar = new Variable(new Variable.Variant(availablePermits), true, TypeTag.OBJECT);
+        Variable availablePermitsVar = new Variable(new Variable.Variant(availablePermits), true, "function");
         ySemaphore_Instance_Prototype.set(availablePermits.getFnName(), availablePermitsVar);
 
 
@@ -277,7 +276,7 @@ public class ySemaphore {
         }
 
         DrainPermitsFn drainPermits = new DrainPermitsFn();
-        Variable drainPermitsVar = new Variable(new Variable.Variant(drainPermits), true, TypeTag.OBJECT);
+        Variable drainPermitsVar = new Variable(new Variable.Variant(drainPermits), true, "function");
         ySemaphore_Instance_Prototype.set(drainPermits.getFnName(), drainPermitsVar);
 
 
@@ -303,7 +302,7 @@ public class ySemaphore {
         }
 
         GetQueueLengthFn getQueueLength = new GetQueueLengthFn();
-        Variable getQueueLengthVar = new Variable(new Variable.Variant(getQueueLength), true, TypeTag.OBJECT);
+        Variable getQueueLengthVar = new Variable(new Variable.Variant(getQueueLength), true, "function");
         ySemaphore_Instance_Prototype.set(getQueueLength.getFnName(), getQueueLengthVar);
 
 
@@ -329,7 +328,7 @@ public class ySemaphore {
         }
 
         HasQueuedThreadsFn hasQueuedThreads = new HasQueuedThreadsFn();
-        Variable hasQueuedThreadsVar = new Variable(new Variable.Variant(hasQueuedThreads), true, TypeTag.OBJECT);
+        Variable hasQueuedThreadsVar = new Variable(new Variable.Variant(hasQueuedThreads), true, "function");
         ySemaphore_Instance_Prototype.set(hasQueuedThreads.getFnName(), hasQueuedThreadsVar);
 
 
@@ -355,7 +354,7 @@ public class ySemaphore {
         }
 
         IsFairFn isFair = new IsFairFn();
-        Variable isFairVar = new Variable(new Variable.Variant(isFair), true, TypeTag.OBJECT);
+        Variable isFairVar = new Variable(new Variable.Variant(isFair), true, "function");
         ySemaphore_Instance_Prototype.set(isFair.getFnName(), isFairVar);
 
 
@@ -381,7 +380,7 @@ public class ySemaphore {
         }
 
         TryAcquireFn tryAcquire = new TryAcquireFn();
-        Variable tryAcquireVar = new Variable(new Variable.Variant(tryAcquire), true, TypeTag.OBJECT);
+        Variable tryAcquireVar = new Variable(new Variable.Variant(tryAcquire), true, "function");
         ySemaphore_Instance_Prototype.set(tryAcquire.getFnName(), tryAcquireVar);
 
 
@@ -408,7 +407,7 @@ public class ySemaphore {
         }
 
         TryAcquireNFn tryAcquireN = new TryAcquireNFn();
-        Variable tryAcquireNVar = new Variable(new Variable.Variant(tryAcquireN), true, TypeTag.OBJECT);
+        Variable tryAcquireNVar = new Variable(new Variable.Variant(tryAcquireN), true, "function");
         ySemaphore_Instance_Prototype.set(tryAcquireN.getFnName(), tryAcquireNVar);
 
 
@@ -450,7 +449,7 @@ public class ySemaphore {
         }
 
         TryAcquireTimeoutFn tryAcquireTimeout = new TryAcquireTimeoutFn();
-        Variable tryAcquireTimeoutVar = new Variable(new Variable.Variant(tryAcquireTimeout), true, TypeTag.OBJECT);
+        Variable tryAcquireTimeoutVar = new Variable(new Variable.Variant(tryAcquireTimeout), true, "function");
         ySemaphore_Instance_Prototype.set(tryAcquireTimeout.getFnName(), tryAcquireTimeoutVar);
 
 
@@ -493,7 +492,7 @@ public class ySemaphore {
         }
 
         TryAcquireNTimeoutFn tryAcquireNTimeout = new TryAcquireNTimeoutFn();
-        Variable tryAcquireNTimeoutVar = new Variable(new Variable.Variant(tryAcquireNTimeout), true, TypeTag.OBJECT);
+        Variable tryAcquireNTimeoutVar = new Variable(new Variable.Variant(tryAcquireNTimeout), true, "function");
         ySemaphore_Instance_Prototype.set(tryAcquireNTimeout.getFnName(), tryAcquireNTimeoutVar);
 
     }
@@ -568,7 +567,7 @@ public class ySemaphore {
     public static void Register(Interpreter interpreter) throws Exception {
         ySemaphoreClass ctor = new ySemaphoreClass();
         Variable.Variant variant = new Variable.Variant(ctor);
-        Variable var = new Variable(variant, false, TypeTag.OBJECT);
+        Variable var = new Variable(variant, false, "function");
         interpreter.defineGlobal(ctor.getClassName(), var);
     }
 }

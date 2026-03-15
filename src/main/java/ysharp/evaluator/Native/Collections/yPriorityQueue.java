@@ -2,7 +2,6 @@ package ysharp.evaluator.Native.Collections;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.parser.TypeTag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +45,12 @@ public class yPriorityQueue {
 
             @Override
             public String getType() {
-                return "priority_queue_prototype";
+                return "__PriorityQueue__";
+            }
+
+            @Override
+            public String toString() {
+                return "<prototype:PriorityQueue>";
             }
         };
         yPriorityQueue_Instance_Prototype.prototype = yClass.ClassPrototype;
@@ -91,7 +95,7 @@ public class yPriorityQueue {
         Variable toStringVar = new Variable(
                 new Variable.Variant(toString),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yPriorityQueue.yPriorityQueue_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
 
@@ -131,7 +135,7 @@ public class yPriorityQueue {
         Variable enqueueVar = new Variable(
                 new Variable.Variant(enqueue),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yPriorityQueue.yPriorityQueue_Instance_Prototype.set(enqueue.getFnName(), enqueueVar);
 
 
@@ -177,7 +181,7 @@ public class yPriorityQueue {
         Variable dequeueVar = new Variable(
                 new Variable.Variant(dequeue),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yPriorityQueue.yPriorityQueue_Instance_Prototype.set(dequeue.getFnName(), dequeueVar);
 
 
@@ -213,7 +217,7 @@ public class yPriorityQueue {
         Variable peekVar = new Variable(
                 new Variable.Variant(peek),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yPriorityQueue.yPriorityQueue_Instance_Prototype.set(peek.getFnName(), peekVar);
 
 
@@ -249,7 +253,7 @@ public class yPriorityQueue {
         Variable peekPriorityVar = new Variable(
                 new Variable.Variant(peekPriority),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yPriorityQueue.yPriorityQueue_Instance_Prototype.set(peekPriority.getFnName(), peekPriorityVar);
 
 
@@ -288,7 +292,7 @@ public class yPriorityQueue {
         Variable containsVar = new Variable(
                 new Variable.Variant(contains),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yPriorityQueue.yPriorityQueue_Instance_Prototype.set(contains.getFnName(), containsVar);
 
 
@@ -333,7 +337,7 @@ public class yPriorityQueue {
         Variable changePriorityVar = new Variable(
                 new Variable.Variant(changePriority),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yPriorityQueue.yPriorityQueue_Instance_Prototype.set(changePriority.getFnName(), changePriorityVar);
 
 
@@ -381,7 +385,7 @@ public class yPriorityQueue {
         Variable removeVar = new Variable(
                 new Variable.Variant(remove),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yPriorityQueue.yPriorityQueue_Instance_Prototype.set(remove.getFnName(), removeVar);
 
 
@@ -413,7 +417,7 @@ public class yPriorityQueue {
         Variable sizeVar = new Variable(
                 new Variable.Variant(size),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yPriorityQueue.yPriorityQueue_Instance_Prototype.set(size.getFnName(), sizeVar);
 
 
@@ -445,7 +449,7 @@ public class yPriorityQueue {
         Variable isEmptyVar = new Variable(
                 new Variable.Variant(isEmpty),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yPriorityQueue.yPriorityQueue_Instance_Prototype.set(isEmpty.getFnName(), isEmptyVar);
 
 
@@ -478,7 +482,7 @@ public class yPriorityQueue {
         Variable clearVar = new Variable(
                 new Variable.Variant(clear),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yPriorityQueue.yPriorityQueue_Instance_Prototype.set(clear.getFnName(), clearVar);
 
 
@@ -520,7 +524,7 @@ public class yPriorityQueue {
         Variable toArrayVar = new Variable(
                 new Variable.Variant(toArray),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yPriorityQueue.yPriorityQueue_Instance_Prototype.set(toArray.getFnName(), toArrayVar);
 
 
@@ -569,7 +573,7 @@ public class yPriorityQueue {
         Variable drainSortedVar = new Variable(
                 new Variable.Variant(drainSorted),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yPriorityQueue.yPriorityQueue_Instance_Prototype.set(drainSorted.getFnName(), drainSortedVar);
 
 
@@ -606,7 +610,7 @@ public class yPriorityQueue {
         Variable cloneVar = new Variable(
                 new Variable.Variant(clone),
                 true,
-                TypeTag.OBJECT);
+                "function");
         yPriorityQueue.yPriorityQueue_Instance_Prototype.set(clone.getFnName(), cloneVar);
 
     }
@@ -687,7 +691,7 @@ public class yPriorityQueue {
 
         @Override
         public String toString() {
-            return "<class:priority-queue>";
+            return "<instance:PriorityQueue>";
         }
     }
 
@@ -717,12 +721,18 @@ public class yPriorityQueue {
         public String getType() {
             return "PriorityQueue";
         }
+
+        @Override
+        public String toString() {
+            return "<class:PriorityQueue>";
+        }
+
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
         yPriorityQueue.yPriorityQueueClass pqCtor = new yPriorityQueue.yPriorityQueueClass();
         Variable.Variant variant = new Variable.Variant(pqCtor);
-        Variable var = new Variable(variant, false, TypeTag.OBJECT);
+        Variable var = new Variable(variant, false, pqCtor.getType());
         interpreter.defineGlobal(pqCtor.getClassName(), var);
     }
 
