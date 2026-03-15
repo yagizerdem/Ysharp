@@ -1,8 +1,12 @@
+var s = "yagiz erdem";
 
-println Type.getType(Type.Converter);
-println Type.Converter;
 
-var a : any = Type.Converter.toDouble('a');
+println s.lastIndexOf("e");
+println s.indexOf("e");
+println s.lastIndexOf("423");
+println s.matches(".*m");
+println s.count("e");
 
-println a;
-println Type.getType(a);
+
+println s.charCodeAt(1);
+println s.slice(2, 0);

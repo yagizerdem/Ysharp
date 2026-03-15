@@ -1,10 +1,37 @@
 package ysharp.evaluator;
 
 import ysharp.YsharpError;
+import ysharp.evaluator.Native.Collections.yArray;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class yString  {
+
+    private static yString.yStringInstance requireStringThis (Interpreter interpreter, String fnName) {
+        Variable thisVar = interpreter.curEnv.getValue("this");
+
+        if (thisVar == null) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    -1,
+                    "Method " + "'" + fnName+ "'" + "called without a valid 'this' context."
+            );
+        }
+
+        RuntimeObject obj = thisVar.value.asRuntimeObject();
+
+        if (!(obj instanceof yString.yStringInstance)) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    -1,
+                    "Method '" + fnName + "' expected 'string' as 'this' but got '" + obj.getType() + "'."
+            );
+        }
+
+        return  (yString.yStringInstance) obj;
+    }
 
     public static RuntimeObject yString_Instance_Prototype;
 
@@ -29,16 +56,9 @@ public class yString  {
 
             @Override
             public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
-                Variable thisVar = interpreter.curEnv.getValue("this");
-                if(thisVar == null) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "Method 'length' called without a valid 'this' context."
-                    );
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
 
-                }
-                yStringInstance instance = (yStringInstance) thisVar.value.value;
                 return new Variable.Variant((int)instance.data.length());
             }
 
@@ -70,27 +90,8 @@ public class yString  {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Variable thisVar = interpreter.curEnv.getValue("this");
-
-                if (thisVar == null) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "Method 'toUpper' called without a valid 'this' context."
-                    );
-                }
-
-                RuntimeObject obj = thisVar.value.asRuntimeObject();
-
-                if (!(obj instanceof yStringInstance)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "'toUpper' can only be called on string objects."
-                    );
-                }
-
-                yStringInstance instance = (yStringInstance) obj;
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
 
                 String upper = instance.data.toUpperCase();
 
@@ -125,27 +126,8 @@ public class yString  {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Variable thisVar = interpreter.curEnv.getValue("this");
-
-                if (thisVar == null) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "Method 'toLower' called without a valid 'this' context."
-                    );
-                }
-
-                RuntimeObject obj = thisVar.value.asRuntimeObject();
-
-                if (!(obj instanceof yStringInstance)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "'toLower' can only be called on string objects."
-                    );
-                }
-
-                yStringInstance instance = (yStringInstance) obj;
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
 
                 String lower = instance.data.toLowerCase();
 
@@ -180,27 +162,8 @@ public class yString  {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Variable thisVar = interpreter.curEnv.getValue("this");
-
-                if (thisVar == null) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "Method 'charAt' called without a valid 'this' context."
-                    );
-                }
-
-                RuntimeObject obj = thisVar.value.asRuntimeObject();
-
-                if (!(obj instanceof yStringInstance)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "'charAt' can only be called on string objects."
-                    );
-                }
-
-                yStringInstance instance = (yStringInstance) obj;
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
 
                 Variable.Variant indexVar = arguments.get(0);
 
@@ -222,11 +185,9 @@ public class yString  {
                     );
                 }
 
-                String ch = String.valueOf(instance.data.charAt(index));
+                char ch = instance.data.charAt(index);
 
-                yStringInstance newStr = new yStringInstance(ch);
-
-                return new Variable.Variant(newStr);
+                return new Variable.Variant(ch);
             }
 
             @Override
@@ -255,27 +216,8 @@ public class yString  {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Variable thisVar = interpreter.curEnv.getValue("this");
-
-                if (thisVar == null) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "Method 'substring' called without a valid 'this' context."
-                    );
-                }
-
-                RuntimeObject obj = thisVar.value.asRuntimeObject();
-
-                if (!(obj instanceof yStringInstance)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "'substring' can only be called on string objects."
-                    );
-                }
-
-                yStringInstance instance = (yStringInstance) obj;
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
 
                 Variable.Variant startVar = arguments.get(0);
                 Variable.Variant endVar   = arguments.get(1);
@@ -336,27 +278,8 @@ public class yString  {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Variable thisVar = interpreter.curEnv.getValue("this");
-
-                if (thisVar == null) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "Method 'equals' called without a valid 'this' context."
-                    );
-                }
-
-                RuntimeObject obj = thisVar.value.asRuntimeObject();
-
-                if (!(obj instanceof yStringInstance)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "'equals' can only be called on string objects."
-                    );
-                }
-
-                yStringInstance instance = (yStringInstance) obj;
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
 
                 Variable.Variant otherVar = arguments.get(0);
 
@@ -403,27 +326,8 @@ public class yString  {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Variable thisVar = interpreter.curEnv.getValue("this");
-
-                if (thisVar == null) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "Method 'indexOf' called without a valid 'this' context."
-                    );
-                }
-
-                RuntimeObject obj = thisVar.value.asRuntimeObject();
-
-                if (!(obj instanceof yStringInstance)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "'indexOf' can only be called on string objects."
-                    );
-                }
-
-                yStringInstance instance = (yStringInstance) obj;
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
 
                 Variable.Variant otherVar = arguments.get(0);
 
@@ -478,27 +382,8 @@ public class yString  {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Variable thisVar = interpreter.curEnv.getValue("this");
-
-                if (thisVar == null) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "Method 'contains' called without a valid 'this' context."
-                    );
-                }
-
-                RuntimeObject obj = thisVar.value.asRuntimeObject();
-
-                if (!(obj instanceof yStringInstance)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "'contains' can only be called on string objects."
-                    );
-                }
-
-                yStringInstance instance = (yStringInstance) obj;
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
 
                 Variable.Variant otherVar = arguments.get(0);
 
@@ -553,27 +438,8 @@ public class yString  {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Variable thisVar = interpreter.curEnv.getValue("this");
-
-                if (thisVar == null) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "Method 'trim' called without a valid 'this' context."
-                    );
-                }
-
-                RuntimeObject obj = thisVar.value.asRuntimeObject();
-
-                if (!(obj instanceof yStringInstance)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "'trim' can only be called on string objects."
-                    );
-                }
-
-                yStringInstance instance = (yStringInstance) obj;
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
 
                 String trimmed = instance.data.trim();
 
@@ -606,27 +472,8 @@ public class yString  {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Variable thisVar = interpreter.curEnv.getValue("this");
-
-                if (thisVar == null) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "Method 'trimLeft' called without a valid 'this' context."
-                    );
-                }
-
-                RuntimeObject obj = thisVar.value.asRuntimeObject();
-
-                if (!(obj instanceof yStringInstance)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "'trimLeft' can only be called on string objects."
-                    );
-                }
-
-                yStringInstance instance = (yStringInstance) obj;
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
 
                 String trimmed = instance.data.replaceAll("^\\s+", "");
 
@@ -645,6 +492,7 @@ public class yString  {
                 true,
                 "function");
         yString_Instance_Prototype.set(trimLeft.getFnName(), trimLeftVar);
+        yString_Instance_Prototype.set("trimStart", trimLeftVar); // added trimStart alias
 
         // str.trimRight()
         class TrimRightFn extends Function.NativeFunction implements Callable {
@@ -659,27 +507,8 @@ public class yString  {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Variable thisVar = interpreter.curEnv.getValue("this");
-
-                if (thisVar == null) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "Method 'trimRight' called without a valid 'this' context."
-                    );
-                }
-
-                RuntimeObject obj = thisVar.value.asRuntimeObject();
-
-                if (!(obj instanceof yStringInstance)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "'trimRight' can only be called on string objects."
-                    );
-                }
-
-                yStringInstance instance = (yStringInstance) obj;
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
 
                 String trimmed = instance.data.replaceAll("\\s+$", "");
 
@@ -698,6 +527,7 @@ public class yString  {
                 true,
                 "function");
         yString_Instance_Prototype.set(trimRight.getFnName(), trimRightVar);
+        yString_Instance_Prototype.set("trimEnd", trimRightVar);
 
         // str.repeat(n)
         class RepeatFn extends Function.NativeFunction implements Callable {
@@ -712,27 +542,8 @@ public class yString  {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Variable thisVar = interpreter.curEnv.getValue("this");
-
-                if (thisVar == null) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "Method 'repeat' called without a valid 'this' context."
-                    );
-                }
-
-                RuntimeObject obj = thisVar.value.asRuntimeObject();
-
-                if (!(obj instanceof yStringInstance)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "'repeat' can only be called on string objects."
-                    );
-                }
-
-                yStringInstance instance = (yStringInstance) obj;
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
 
                 Variable.Variant countVar = arguments.get(0);
 
@@ -791,27 +602,8 @@ public class yString  {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Variable thisVar = interpreter.curEnv.getValue("this");
-
-                if (thisVar == null) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "Method 'startsWith' called without a valid 'this' context."
-                    );
-                }
-
-                RuntimeObject obj = thisVar.value.asRuntimeObject();
-
-                if (!(obj instanceof yStringInstance)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "'startsWith' can only be called on string objects."
-                    );
-                }
-
-                yStringInstance instance = (yStringInstance) obj;
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
 
                 Variable.Variant otherVar = arguments.get(0);
 
@@ -859,27 +651,8 @@ public class yString  {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Variable thisVar = interpreter.curEnv.getValue("this");
-
-                if (thisVar == null) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "Method 'endsWith' called without a valid 'this' context."
-                    );
-                }
-
-                RuntimeObject obj = thisVar.value.asRuntimeObject();
-
-                if (!(obj instanceof yStringInstance)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "'endsWith' can only be called on string objects."
-                    );
-                }
-
-                yStringInstance instance = (yStringInstance) obj;
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
 
                 Variable.Variant otherVar = arguments.get(0);
 
@@ -927,27 +700,8 @@ public class yString  {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Variable thisVar = interpreter.curEnv.getValue("this");
-
-                if (thisVar == null) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "Method 'replace' called without a valid 'this' context."
-                    );
-                }
-
-                RuntimeObject obj = thisVar.value.asRuntimeObject();
-
-                if (!(obj instanceof yStringInstance)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "'replace' can only be called on string objects."
-                    );
-                }
-
-                yStringInstance instance = (yStringInstance) obj;
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
 
                 Variable.Variant oldVar = arguments.get(0);
                 Variable.Variant newVar = arguments.get(1);
@@ -1004,27 +758,8 @@ public class yString  {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Variable thisVar = interpreter.curEnv.getValue("this");
-
-                if (thisVar == null) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "Method 'isEmpty' called without a valid 'this' context."
-                    );
-                }
-
-                RuntimeObject obj = thisVar.value.asRuntimeObject();
-
-                if (!(obj instanceof yStringInstance)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "'isEmpty' can only be called on string objects."
-                    );
-                }
-
-                yStringInstance instance = (yStringInstance) obj;
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
 
                 return new Variable.Variant(instance.data.isEmpty());
             }
@@ -1055,27 +790,8 @@ public class yString  {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Variable thisVar = interpreter.curEnv.getValue("this");
-
-                if (thisVar == null) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "Method 'reverse' called without a valid 'this' context."
-                    );
-                }
-
-                RuntimeObject obj = thisVar.value.asRuntimeObject();
-
-                if (!(obj instanceof yStringInstance)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "'reverse' can only be called on string objects."
-                    );
-                }
-
-                yStringInstance instance = (yStringInstance) obj;
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
 
                 String reversed =
                         new StringBuilder(instance.data)
@@ -1113,27 +829,8 @@ public class yString  {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Variable thisVar = interpreter.curEnv.getValue("this");
-
-                if (thisVar == null) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "Method 'padLeft' called without a valid 'this' context."
-                    );
-                }
-
-                RuntimeObject obj = thisVar.value.asRuntimeObject();
-
-                if (!(obj instanceof yStringInstance)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "'padLeft' can only be called on string objects."
-                    );
-                }
-
-                yStringInstance instance = (yStringInstance) obj;
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
 
                 Variable.Variant lenVar = arguments.get(0);
                 Variable.Variant padVar = arguments.get(1);
@@ -1205,27 +902,8 @@ public class yString  {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Variable thisVar = interpreter.curEnv.getValue("this");
-
-                if (thisVar == null) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "Method 'padRight' called without a valid 'this' context."
-                    );
-                }
-
-                RuntimeObject obj = thisVar.value.asRuntimeObject();
-
-                if (!(obj instanceof yStringInstance)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "'padRight' can only be called on string objects."
-                    );
-                }
-
-                yStringInstance instance = (yStringInstance) obj;
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
 
                 Variable.Variant lenVar = arguments.get(0);
                 Variable.Variant padVar = arguments.get(1);
@@ -1297,27 +975,8 @@ public class yString  {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Variable thisVar = interpreter.curEnv.getValue("this");
-
-                if (thisVar == null) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "Method 'compareTo' called without a valid 'this' context."
-                    );
-                }
-
-                RuntimeObject obj = thisVar.value.asRuntimeObject();
-
-                if (!(obj instanceof yStringInstance)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "'compareTo' can only be called on string objects."
-                    );
-                }
-
-                yStringInstance instance = (yStringInstance) obj;
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
 
                 Variable.Variant otherVar = arguments.get(0);
 
@@ -1365,33 +1024,8 @@ public class yString  {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Variable thisVar = interpreter.curEnv.getValue("this");
-
-                if (thisVar == null) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "Method 'capitalize' called without a valid 'this' context."
-                    );
-                }
-
-                RuntimeObject obj = thisVar.value.asRuntimeObject();
-
-                if (!(obj instanceof yStringInstance)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "'capitalize' can only be called on string objects."
-                    );
-                }
-
-                yStringInstance instance = (yStringInstance) obj;
-
-                if (instance.data.isEmpty()) {
-                    return new Variable.Variant(
-                            new yStringInstance(instance.data)
-                    );
-                }
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
 
                 String first = instance.data.substring(0, 1).toUpperCase();
                 String rest  = instance.data.substring(1);
@@ -1414,8 +1048,232 @@ public class yString  {
                 "function");
         yString_Instance_Prototype.set(capitalize.getFnName(), capitalizeVar);
 
-        // str.toString()
-        class ToStringFn extends Function.NativeFunction implements Callable {
+        // str.split(string)
+        class SplitFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 1;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                    requireArity(arguments, arity(), getFnName());
+                    yStringInstance instance = requireStringThis(interpreter, getFnName());
+
+                    String regex = requireString(arguments.getFirst(), getFnName(), 1);
+
+                    String[] arr = instance.data.split(regex);
+                    ArrayList<Variable.Variant> list = new ArrayList<>();
+                    for (var it : arr) list.add(new Variable.Variant(it));
+
+                    yArray.yArrayInstance yArray = new yArray.yArrayInstance(list);
+                    return new Variable.Variant(yArray);
+            }
+
+            @Override
+            public String getFnName() {
+                return "split";
+            }
+        }
+
+        SplitFn split = new SplitFn();
+        Variable splitVar = new Variable(
+                new Variable.Variant(split),
+                true,
+                "function");
+        yString_Instance_Prototype.set(split.getFnName(), splitVar);
+
+        // str.replaceAll(regex, replacement)
+        class ReplaceAllFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 2;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
+
+                Variable.Variant regexVar = arguments.get(0);
+                Variable.Variant replVar  = arguments.get(1);
+
+                if (!regexVar.isRuntimeObject() ||
+                        !(regexVar.asRuntimeObject() instanceof yStringInstance) ||
+                        !replVar.isRuntimeObject() ||
+                        !(replVar.asRuntimeObject() instanceof yStringInstance)) {
+
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            0,
+                            "'replaceAll' arguments must be strings."
+                    );
+                }
+
+                yStringInstance regex =
+                        (yStringInstance) regexVar.asRuntimeObject();
+
+                yStringInstance repl =
+                        (yStringInstance) replVar.asRuntimeObject();
+
+                String result = instance.data.replaceAll(regex.data, repl.data);
+
+                return new Variable.Variant(
+                        new yStringInstance(result)
+                );
+            }
+
+            @Override
+            public String getFnName() {
+                return "replaceAll";
+            }
+        }
+
+        ReplaceAllFn replaceAll = new ReplaceAllFn();
+        Variable replaceAllVar = new Variable(
+                new Variable.Variant(replaceAll),
+                true,
+                "function");
+        yString_Instance_Prototype.set(replaceAll.getFnName(), replaceAllVar);
+
+
+        // str.join(array)
+        class JoinFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 1;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
+
+                Variable.Variant arrVar = arguments.get(0);
+
+                if (!arrVar.isRuntimeObject() ||
+                        !(arrVar.asRuntimeObject() instanceof yArray.yArrayInstance)) {
+
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            0,
+                            "'join' argument must be an array."
+                    );
+                }
+
+                yArray.yArrayInstance arr =
+                        (yArray.yArrayInstance) arrVar.asRuntimeObject();
+
+                List<String> parts = new ArrayList<>();
+
+                for (Variable.Variant v : arr.data) {
+                    parts.add(v.toString());
+                }
+
+                String result = String.join(instance.data, parts);
+
+                return new Variable.Variant(
+                        new yStringInstance(result)
+                );
+            }
+
+            @Override
+            public String getFnName() {
+                return "join";
+            }
+        }
+
+        JoinFn join = new JoinFn();
+        Variable joinVar = new Variable(
+                new Variable.Variant(join),
+                true,
+                "function");
+        yString_Instance_Prototype.set(join.getFnName(), joinVar);
+
+
+        // str.format(...)
+        class FormatFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return -1; // variadic
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
+
+                Object[] args = new Object[arguments.size()];
+
+                for (int i = 0; i < arguments.size(); i++) {
+                    Variable.Variant v = arguments.get(i);
+
+                    if (v.isInt())
+                        args[i] = v.asInt();
+                    else if (v.isDouble())
+                        args[i] = v.asDouble();
+                    else if (v.isBoolean())
+                        args[i] = v.asBoolean();
+                    else if (v.isChar())
+                        args[i] = v.asCharacter();
+                    else if (v.isNull())
+                        args[i] = null;
+                    else if (v.isString())
+                        args[i] = v.asString();
+                    else
+                        args[i] = v.toString();
+                }
+
+                String result;
+
+                try {
+                    result = String.format(instance.data, args);
+                }
+                catch (Exception e) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            0,
+                            "Invalid format string."
+                    );
+                }
+
+                return new Variable.Variant(
+                        new yStringInstance(result)
+                );
+            }
+
+            @Override
+            public String getFnName() {
+                return "format";
+            }
+        }
+
+        FormatFn format = new FormatFn();
+        Variable formatVar = new Variable(
+                new Variable.Variant(format),
+                true,
+                "function");
+
+        yString_Instance_Prototype.set(format.getFnName(), formatVar);
+
+
+        // str.toCharArray()
+        class ToCharArrayFn extends Function.NativeFunction implements Callable {
 
             @Override
             public int arity() {
@@ -1423,45 +1281,386 @@ public class yString  {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
 
-                Variable thisVar = interpreter.curEnv.getValue("this");
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
 
-                if (thisVar == null) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "Method 'compareTo' called without a valid 'this' context."
-                    );
+                ArrayList<Variable.Variant> list =
+                        new ArrayList<>(instance.data.length());
+
+                for (int i = 0; i < instance.data.length(); i++) {
+                    list.add(new Variable.Variant(instance.data.charAt(i)));
                 }
 
-                RuntimeObject obj = thisVar.value.asRuntimeObject();
+                yArray.yArrayInstance arr =
+                        new yArray.yArrayInstance(list);
 
-                if (!(obj instanceof yStringInstance)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "'compareTo' can only be called on string objects."
-                    );
-                }
-
-                yStringInstance instance = (yStringInstance) obj;
-
-                return new Variable.Variant("\"" + instance.data + "\"");
+                return new Variable.Variant(arr);
             }
 
             @Override
             public String getFnName() {
-                return "toString";
+                return "toCharArray";
             }
         }
 
-        ToStringFn toString = new ToStringFn();
-        Variable toStringVar = new Variable(
-                new Variable.Variant(toString),
+        ToCharArrayFn toCharArray = new ToCharArrayFn();
+        Variable toCharArrayVar = new Variable(
+                new Variable.Variant(toCharArray),
                 true,
                 "function");
-        yString_Instance_Prototype.set(toString.getFnName(), toStringVar);
+
+        yString_Instance_Prototype.set(
+                toCharArray.getFnName(),
+                toCharArrayVar
+        );
+
+
+        // str.matches(regex)
+        class MatchesFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 1;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
+
+                String regex = requireString(
+                        arguments.getFirst(),
+                        getFnName(),
+                        1
+                );
+
+                boolean result =
+                        instance.data.matches(regex);
+
+                return new Variable.Variant(result);
+            }
+
+            @Override
+            public String getFnName() {
+                return "matches";
+            }
+        }
+
+        MatchesFn matches = new MatchesFn();
+        Variable matchesVar = new Variable(
+                new Variable.Variant(matches),
+                true,
+                "function");
+
+        yString_Instance_Prototype.set(
+                matches.getFnName(),
+                matchesVar
+        );
+
+
+        // str.replaceFirst(regex, repl)
+        class ReplaceFirstFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 2;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
+
+                String regex = requireString(
+                        arguments.get(0),
+                        getFnName(),
+                        1
+                );
+
+                String repl = requireString(
+                        arguments.get(1),
+                        getFnName(),
+                        2
+                );
+
+                String result =
+                        instance.data.replaceFirst(regex, repl);
+
+                return new Variable.Variant(
+                        new yStringInstance(result)
+                );
+            }
+
+            @Override
+            public String getFnName() {
+                return "replaceFirst";
+            }
+        }
+
+        ReplaceFirstFn replaceFirst = new ReplaceFirstFn();
+        Variable replaceFirstVar = new Variable(
+                new Variable.Variant(replaceFirst),
+                true,
+                "function");
+
+        yString_Instance_Prototype.set(
+                replaceFirst.getFnName(),
+                replaceFirstVar
+        );
+
+        // str.lastIndexOf(str)
+        class LastIndexOfFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 1;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
+
+                String search = requireString(
+                        arguments.getFirst(),
+                        getFnName(),
+                        1
+                );
+
+                int index =
+                        instance.data.lastIndexOf(search);
+
+                return new Variable.Variant(index);
+            }
+
+            @Override
+            public String getFnName() {
+                return "lastIndexOf";
+            }
+        }
+
+        LastIndexOfFn lastIndexOf = new LastIndexOfFn();
+        Variable lastIndexOfVar = new Variable(
+                new Variable.Variant(lastIndexOf),
+                true,
+                "function");
+
+        yString_Instance_Prototype.set(
+                lastIndexOf.getFnName(),
+                lastIndexOfVar
+        );
+
+
+        // str.count(substr)
+        class CountFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 1;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
+
+                String needle = requireString(
+                        arguments.getFirst(),
+                        getFnName(),
+                        1
+                );
+
+                if (needle.isEmpty()) {
+                    return new Variable.Variant(0);
+                }
+
+                String text = instance.data;
+
+                int count = 0;
+                int index = 0;
+
+                while (true) {
+                    index = text.indexOf(needle, index);
+                    if (index == -1) break;
+
+                    count++;
+                    index += needle.length();
+                }
+
+                return new Variable.Variant(count);
+            }
+
+            @Override
+            public String getFnName() {
+                return "count";
+            }
+        }
+
+        CountFn count = new CountFn();
+        Variable countVar = new Variable(
+                new Variable.Variant(count),
+                true,
+                "function"
+        );
+
+        yString_Instance_Prototype.set(count.getFnName(), countVar);
+
+
+        // str.charCodeAt(index)
+        class CharCodeAtFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 1;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
+
+                Variable.Variant indexVar = arguments.get(0);
+
+                if (!indexVar.canImplicitlyConvertNumber()) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            0,
+                            "'charCodeAt' index must be a number."
+                    );
+                }
+
+                int index = (int) indexVar.implicitlyConvertNumber();
+
+                if (index < 0 || index >= instance.data.length()) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            0,
+                            "String index out of bounds."
+                    );
+                }
+
+                int code = instance.data.charAt(index);
+
+                return new Variable.Variant(code);
+            }
+
+            @Override
+            public String getFnName() {
+                return "charCodeAt";
+            }
+        }
+
+        CharCodeAtFn charCodeAt = new CharCodeAtFn();
+        Variable charCodeAtVar = new Variable(
+                new Variable.Variant(charCodeAt),
+                true,
+                "function");
+
+        yString_Instance_Prototype.set(charCodeAt.getFnName(), charCodeAtVar);
+
+
+        // str.slice(start, end?)
+        class SliceFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return -1; // 1 or 2 arg
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                if (arguments.size() < 1 || arguments.size() > 2) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            0,
+                            "'slice' expects 1 or 2 arguments."
+                    );
+                }
+
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
+
+                Variable.Variant startVar = arguments.get(0);
+
+                if (!startVar.canImplicitlyConvertNumber()) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            0,
+                            "'slice' start must be a number."
+                    );
+                }
+
+                int start = (int) startVar.implicitlyConvertNumber();
+
+                int end;
+
+                if (arguments.size() == 2) {
+                    Variable.Variant endVar = arguments.get(1);
+
+                    if (!endVar.canImplicitlyConvertNumber()) {
+                        throw new YsharpError(
+                                YsharpError.YsharpErrorType.PROCESS,
+                                0,
+                                "'slice' end must be a number."
+                        );
+                    }
+
+                    end = (int) endVar.implicitlyConvertNumber();
+                } else {
+                    end = instance.data.length();
+                }
+
+                int len = instance.data.length();
+
+                if (start < 0) start = len + start;
+                if (end < 0) end = len + end;
+
+                start = Math.max(0, Math.min(start, len));
+                end   = Math.max(0, Math.min(end, len));
+
+                if (end < start) end = start;
+
+                String result = instance.data.substring(start, end);
+
+                return new Variable.Variant(
+                        new yStringInstance(result)
+                );
+            }
+
+            @Override
+            public String getFnName() {
+                return "slice";
+            }
+        }
+
+        SliceFn slice = new SliceFn();
+        Variable sliceVar = new Variable(
+                new Variable.Variant(slice),
+                true,
+                "function");
+
+        yString_Instance_Prototype.set(slice.getFnName(), sliceVar);
     }
 
     public static class yStringInstance extends yClass.ClassObjectInstance {
@@ -1501,7 +1700,6 @@ public class yString  {
             return data.hashCode();
         }
     }
-
 
     public static class yStringClass extends yClass.SealedClassObject {
 
@@ -1550,7 +1748,7 @@ public class yString  {
     public static void Register(Interpreter interpreter) throws Exception {
         yStringClass stringCtor = new yStringClass();
         Variable.Variant variant = new Variable.Variant(stringCtor);
-        Variable var = new Variable(variant, false, "function");
+        Variable var = new Variable(variant, false, stringCtor.getType());
         interpreter.defineGlobal(stringCtor.getClassName(), var);
     }
 
