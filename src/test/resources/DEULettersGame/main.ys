@@ -10,3 +10,15 @@ println s.count("e");
 
 println s.charCodeAt(1);
 println s.slice(2, 0);
+
+println s.getPrototype();
+println Type.getType(s.getPrototype());
+println String;
+println String.getType();
+
+var ss : string = "test";
+
+println ss;
+println ss.getType();
+println Type.getType(ss);
+println Type.getTypeTag(ss);

@@ -3,6 +3,7 @@ package ysharp.evaluator;
 import ysharp.YsharpError;
 import ysharp.evaluator.Native.Collections.yArray;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,7 +43,12 @@ public class yString  {
             public boolean isTruthy() { return true; }
 
             @Override
-            public String getType() { return "string_prototype"; }
+            public String getType() { return "__string__"; }
+
+            @Override
+            public String toString() {
+                return "<prototype:string>";
+            }
         };
         yString_Instance_Prototype.prototype = yClass.ClassPrototype;
 
@@ -1699,6 +1705,7 @@ public class yString  {
         public int hashCode() {
             return data.hashCode();
         }
+
     }
 
     public static class yStringClass extends yClass.SealedClassObject {
@@ -1741,7 +1748,12 @@ public class yString  {
 
         @Override
         public String getType() {
-            return "String";
+            return "string";
+        }
+
+        @Override
+        public String toString() {
+            return "<class:string>";
         }
     }
 
