@@ -1,15 +1,12 @@
-var arr = [1, 2, 3, 4];
-arr.add("test");
-
-arr.add("yagiz");
-arr.add("erdem");
+var s = "yagiz erdem";
 
 
-var s = "   [" + ", ".join(arr) + "]";
-s = s.trim();
+println s.lastIndexOf("e");
+println s.indexOf("e");
+println s.lastIndexOf("423");
+println s.matches(".*m");
+println s.count("e");
 
-println s;
 
-arr.remove(2);
-println arr.toString();
-
+println s.charCodeAt(1);
+println s.slice(2, 0);

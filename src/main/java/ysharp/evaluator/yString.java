@@ -492,6 +492,7 @@ public class yString  {
                 true,
                 "function");
         yString_Instance_Prototype.set(trimLeft.getFnName(), trimLeftVar);
+        yString_Instance_Prototype.set("trimStart", trimLeftVar); // added trimStart alias
 
         // str.trimRight()
         class TrimRightFn extends Function.NativeFunction implements Callable {
@@ -526,6 +527,7 @@ public class yString  {
                 true,
                 "function");
         yString_Instance_Prototype.set(trimRight.getFnName(), trimRightVar);
+        yString_Instance_Prototype.set("trimEnd", trimRightVar);
 
         // str.repeat(n)
         class RepeatFn extends Function.NativeFunction implements Callable {
@@ -1268,6 +1270,397 @@ public class yString  {
                 "function");
 
         yString_Instance_Prototype.set(format.getFnName(), formatVar);
+
+
+        // str.toCharArray()
+        class ToCharArrayFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 0;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
+
+                ArrayList<Variable.Variant> list =
+                        new ArrayList<>(instance.data.length());
+
+                for (int i = 0; i < instance.data.length(); i++) {
+                    list.add(new Variable.Variant(instance.data.charAt(i)));
+                }
+
+                yArray.yArrayInstance arr =
+                        new yArray.yArrayInstance(list);
+
+                return new Variable.Variant(arr);
+            }
+
+            @Override
+            public String getFnName() {
+                return "toCharArray";
+            }
+        }
+
+        ToCharArrayFn toCharArray = new ToCharArrayFn();
+        Variable toCharArrayVar = new Variable(
+                new Variable.Variant(toCharArray),
+                true,
+                "function");
+
+        yString_Instance_Prototype.set(
+                toCharArray.getFnName(),
+                toCharArrayVar
+        );
+
+
+        // str.matches(regex)
+        class MatchesFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 1;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
+
+                String regex = requireString(
+                        arguments.getFirst(),
+                        getFnName(),
+                        1
+                );
+
+                boolean result =
+                        instance.data.matches(regex);
+
+                return new Variable.Variant(result);
+            }
+
+            @Override
+            public String getFnName() {
+                return "matches";
+            }
+        }
+
+        MatchesFn matches = new MatchesFn();
+        Variable matchesVar = new Variable(
+                new Variable.Variant(matches),
+                true,
+                "function");
+
+        yString_Instance_Prototype.set(
+                matches.getFnName(),
+                matchesVar
+        );
+
+
+        // str.replaceFirst(regex, repl)
+        class ReplaceFirstFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 2;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
+
+                String regex = requireString(
+                        arguments.get(0),
+                        getFnName(),
+                        1
+                );
+
+                String repl = requireString(
+                        arguments.get(1),
+                        getFnName(),
+                        2
+                );
+
+                String result =
+                        instance.data.replaceFirst(regex, repl);
+
+                return new Variable.Variant(
+                        new yStringInstance(result)
+                );
+            }
+
+            @Override
+            public String getFnName() {
+                return "replaceFirst";
+            }
+        }
+
+        ReplaceFirstFn replaceFirst = new ReplaceFirstFn();
+        Variable replaceFirstVar = new Variable(
+                new Variable.Variant(replaceFirst),
+                true,
+                "function");
+
+        yString_Instance_Prototype.set(
+                replaceFirst.getFnName(),
+                replaceFirstVar
+        );
+
+        // str.lastIndexOf(str)
+        class LastIndexOfFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 1;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
+
+                String search = requireString(
+                        arguments.getFirst(),
+                        getFnName(),
+                        1
+                );
+
+                int index =
+                        instance.data.lastIndexOf(search);
+
+                return new Variable.Variant(index);
+            }
+
+            @Override
+            public String getFnName() {
+                return "lastIndexOf";
+            }
+        }
+
+        LastIndexOfFn lastIndexOf = new LastIndexOfFn();
+        Variable lastIndexOfVar = new Variable(
+                new Variable.Variant(lastIndexOf),
+                true,
+                "function");
+
+        yString_Instance_Prototype.set(
+                lastIndexOf.getFnName(),
+                lastIndexOfVar
+        );
+
+
+        // str.count(substr)
+        class CountFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 1;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
+
+                String needle = requireString(
+                        arguments.getFirst(),
+                        getFnName(),
+                        1
+                );
+
+                if (needle.isEmpty()) {
+                    return new Variable.Variant(0);
+                }
+
+                String text = instance.data;
+
+                int count = 0;
+                int index = 0;
+
+                while (true) {
+                    index = text.indexOf(needle, index);
+                    if (index == -1) break;
+
+                    count++;
+                    index += needle.length();
+                }
+
+                return new Variable.Variant(count);
+            }
+
+            @Override
+            public String getFnName() {
+                return "count";
+            }
+        }
+
+        CountFn count = new CountFn();
+        Variable countVar = new Variable(
+                new Variable.Variant(count),
+                true,
+                "function"
+        );
+
+        yString_Instance_Prototype.set(count.getFnName(), countVar);
+
+
+        // str.charCodeAt(index)
+        class CharCodeAtFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 1;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
+
+                Variable.Variant indexVar = arguments.get(0);
+
+                if (!indexVar.canImplicitlyConvertNumber()) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            0,
+                            "'charCodeAt' index must be a number."
+                    );
+                }
+
+                int index = (int) indexVar.implicitlyConvertNumber();
+
+                if (index < 0 || index >= instance.data.length()) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            0,
+                            "String index out of bounds."
+                    );
+                }
+
+                int code = instance.data.charAt(index);
+
+                return new Variable.Variant(code);
+            }
+
+            @Override
+            public String getFnName() {
+                return "charCodeAt";
+            }
+        }
+
+        CharCodeAtFn charCodeAt = new CharCodeAtFn();
+        Variable charCodeAtVar = new Variable(
+                new Variable.Variant(charCodeAt),
+                true,
+                "function");
+
+        yString_Instance_Prototype.set(charCodeAt.getFnName(), charCodeAtVar);
+
+
+        // str.slice(start, end?)
+        class SliceFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return -1; // 1 or 2 arg
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                if (arguments.size() < 1 || arguments.size() > 2) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            0,
+                            "'slice' expects 1 or 2 arguments."
+                    );
+                }
+
+                yStringInstance instance = requireStringThis(interpreter, getFnName());
+
+                Variable.Variant startVar = arguments.get(0);
+
+                if (!startVar.canImplicitlyConvertNumber()) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            0,
+                            "'slice' start must be a number."
+                    );
+                }
+
+                int start = (int) startVar.implicitlyConvertNumber();
+
+                int end;
+
+                if (arguments.size() == 2) {
+                    Variable.Variant endVar = arguments.get(1);
+
+                    if (!endVar.canImplicitlyConvertNumber()) {
+                        throw new YsharpError(
+                                YsharpError.YsharpErrorType.PROCESS,
+                                0,
+                                "'slice' end must be a number."
+                        );
+                    }
+
+                    end = (int) endVar.implicitlyConvertNumber();
+                } else {
+                    end = instance.data.length();
+                }
+
+                int len = instance.data.length();
+
+                if (start < 0) start = len + start;
+                if (end < 0) end = len + end;
+
+                start = Math.max(0, Math.min(start, len));
+                end   = Math.max(0, Math.min(end, len));
+
+                if (end < start) end = start;
+
+                String result = instance.data.substring(start, end);
+
+                return new Variable.Variant(
+                        new yStringInstance(result)
+                );
+            }
+
+            @Override
+            public String getFnName() {
+                return "slice";
+            }
+        }
+
+        SliceFn slice = new SliceFn();
+        Variable sliceVar = new Variable(
+                new Variable.Variant(slice),
+                true,
+                "function");
+
+        yString_Instance_Prototype.set(slice.getFnName(), sliceVar);
     }
 
     public static class yStringInstance extends yClass.ClassObjectInstance {
