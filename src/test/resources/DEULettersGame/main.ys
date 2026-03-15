@@ -1,17 +1,15 @@
+var arr = [1, 2, 3, 4];
+arr.add("test");
+
+arr.add("yagiz");
+arr.add("erdem");
 
 
-var a = new String("yagiz erdem");
+var s = "   [" + ", ".join(arr) + "]";
+s = s.trim();
 
-println a;
-println Type.getType(String);
+println s;
 
-println a.length();
-
-
-var arr = a.split(" ");
-
-println arr;
-
+arr.remove(2);
 println arr.toString();
-
 
