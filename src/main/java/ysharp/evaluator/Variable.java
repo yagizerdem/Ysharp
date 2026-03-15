@@ -52,7 +52,7 @@ public class Variable {
         public boolean isString() {return this.value instanceof yString.yStringInstance; }
 
         public boolean isFunction() {
-            return this.value instanceof Function.FunctionObject;
+            return this.value instanceof Function;
         }
 
         public boolean isNativeFunction() {

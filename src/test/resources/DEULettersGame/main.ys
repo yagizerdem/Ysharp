@@ -1,43 +1,10 @@
 
-class Human {
-    foo() do
-        return "foo";
-    end
-}
+function test() do
 
-class Employee extends Human {
-
-    toString() do
-        return "af";
-    end
-}
-
-var h = new Employee();
-
-var t = new Human();
-
-println t;
-println h;
-println new Array();
-println [];
-println Human;
-println Array;
-println Array.getPrototype();
-var a = new Array();
-println a.getPrototype().getType();
-
-
-function sum(a,b): any do
-    return a + b;
 end
 
-println sum(2,4);
+class Human {}
 
-var q = new Queue();
-
-q.add(10);
-
-println q;
-println q.toString();
-
-
+println Type.isFunction(test);
+println Type.isFunction(Human);
+println Type.isFunction(new Human());

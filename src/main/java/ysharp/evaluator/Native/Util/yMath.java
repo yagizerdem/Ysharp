@@ -8,37 +8,10 @@ import java.util.List;
 public class yMath {
 
 
-    static {
-        // all the methods in math class should be static because i want so !
-    }
-
-    public static class yMathInstance extends yClass.ClassObjectInstance {
-
-        public yMathInstance() {}
-
-        @Override
-        public boolean isTruthy() {
-            return true;
-        }
-
-        @Override
-        public String getType() {
-            return "Math";
-        }
-
-        @Override
-        public String toString() {
-            return "<instance:Math>";
-        }
-    }
-
-
     public static class yMathClass extends yClass.SealedClassObject {
 
-        yMathClass(){
+        private yMathClass(){
             this.prototype =  yClass.ClassPrototype;
-
-            // add static methods here
 
             // Math.pow(a: number, b: int)
             class PowFn extends Function.NativeFunction {
@@ -1062,10 +1035,11 @@ public class yMath {
                                      List<Variable.Variant> arguments)
                 throws YsharpError {
 
-            requireArity(arguments,0, getClassName());
-
-            yMathInstance instance = new yMathInstance();
-            return new Variable.Variant(instance);
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    -1,
+                    "Cannot create instance of static class '" + getClassName() + "'."
+            );
         }
 
         @Override
@@ -1086,7 +1060,7 @@ public class yMath {
         Variable.Variant variant = new Variable.Variant(ctor);
         Variable var = new Variable(variant,
                 true,
-                "function");
+                ctor.getType());
 
         interpreter.defineGlobal(ctor.getClassName(), var);
     }

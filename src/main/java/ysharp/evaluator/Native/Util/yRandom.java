@@ -8,32 +8,6 @@ import java.util.Random;
 
 public class yRandom {
 
-
-    static {
-        // all the methods in random class should be static because i want so !
-    }
-
-    public static class yRandomInstance extends yClass.ClassObjectInstance {
-
-        public yRandomInstance() {}
-
-        @Override
-        public boolean isTruthy() {
-            return true;
-        }
-
-        @Override
-        public String getType() {
-            return "Random";
-        }
-
-        @Override
-        public String toString() {
-            return "<instance:Random>";
-        }
-    }
-
-
     public static class yRandomClass extends yClass.SealedClassObject {
 
         private static final Random rng = new Random();
@@ -89,7 +63,7 @@ public class yRandom {
                     double min = requireInt(arguments.get(0), getClassName(), 1);
                     double max = requireInt(arguments.get(1), getClassName(), 2);
 
-                    double response = (double) ((int) min + rng.nextInt((int) max - (int) min + 1));
+                    int response = ((int) min + rng.nextInt((int) max - (int) min + 1));
 
                     return new Variable.Variant(response);
                 }
@@ -312,10 +286,11 @@ public class yRandom {
                                      List<Variable.Variant> arguments)
                 throws YsharpError {
 
-            requireArity(arguments, 0, getClassName());
-
-            yRandomInstance instance = new yRandomInstance();
-            return new Variable.Variant(instance);
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    -1,
+                    "Cannot create instance of static class '" + getClassName() + "'."
+            );
         }
 
         @Override

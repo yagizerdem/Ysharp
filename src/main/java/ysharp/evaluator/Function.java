@@ -135,7 +135,7 @@ public abstract class Function extends RuntimeObject implements Callable {
 
         @Override
         public String getType() {
-            return "lambda";
+            return "function";
         }
 
         @Override

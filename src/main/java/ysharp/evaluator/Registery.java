@@ -13,6 +13,7 @@ import ysharp.evaluator.Native.TUI.Util.TextColor.yTextColor;
 import ysharp.evaluator.Native.Threading.ySemaphore;
 import ysharp.evaluator.Native.Threading.yThread;
 import ysharp.evaluator.Native.Util.*;
+import ysharp.evaluator.Native.Util.Type.Type;
 import ysharp.evaluator.Native.function.core.Debug;
 
 public class Registery {
@@ -60,6 +61,7 @@ public class Registery {
         yRandom.Register(interpreter);
         yDateTime.Register(interpreter);
         yCrypto.Register(interpreter);
+        Type.Register(interpreter);
 
         // TUI
         TUI.Register(interpreter);
