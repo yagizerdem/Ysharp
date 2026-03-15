@@ -1,10 +1,8 @@
 
-function test() do
+println Type.getType(Type.Converter);
+println Type.Converter;
 
-end
+var a : any = Type.Converter.toDouble('a');
 
-class Human {}
-
-println Type.isFunction(test);
-println Type.isFunction(Human);
-println Type.isFunction(new Human());
+println a;
+println Type.getType(a);
