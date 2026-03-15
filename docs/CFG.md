@@ -135,9 +135,9 @@ statement
 "number" |
 "string" | 
 "char" |
-"fun" |
+"function" |
 "any" |
-IDENTIFIER
+IDENTIFIER = [class name]
 
 ### program
 ``this is the start point of program``

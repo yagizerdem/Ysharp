@@ -154,6 +154,12 @@ public class Type {
                     true,
                     "function");
             this.set(isFunction.getFnName(), isFunctionVar);
+
+            Converter.ConverterClass converter = new Converter.ConverterClass();
+            this.set(converter.getClassName(), new Variable(
+                    new Variable.Variant(converter),
+                    true,
+                    converter.getType()));
         }
 
         @Override
