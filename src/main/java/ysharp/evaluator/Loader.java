@@ -81,6 +81,14 @@ public class Loader {
 
             Interpreter interpreter = new Interpreter();
 
+            Resolver resolver = new Resolver(interpreter);
+            resolver.resolve(curNode.program.program);
+
+            if(resolver.hadErrors()) {
+                StdIO.printStdErr(resolver.errors);
+                System.exit(1);
+            }
+
             if(!curNode.neighbors.isEmpty()) {
                 for(GraphNode neighbor : curNode.neighbors) {
                     neighbor.exports.forEach(e -> {
@@ -138,21 +146,21 @@ public class Loader {
         List<Cursor.Pchar> buf = preprocess.process(moduleContent);
         if(preprocess.hadErrors()){
             StdIO.printStdErr(preprocess.errors);
-            return null;
+            System.exit(1);
         }
 
         Lexer lexer = new Lexer(buf);
         var stream = lexer.scanTokens();
         if(lexer.hadErrors()) {
             StdIO.printStdErr(lexer.errors);
-            return null;
+            System.exit(1);
         }
 
         Parser parser = new Parser(stream);
         Parser.Program program = parser.parse();
         if(parser.hadErrors()) {
             StdIO.printStdErr(parser.errors);
-            return null;
+            System.exit(1);
         }
 
 

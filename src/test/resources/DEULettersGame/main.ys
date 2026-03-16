@@ -1,3 +1,4 @@
+
 class Human {
 
     var a = 10;
@@ -17,3 +18,18 @@ class Human {
 
 var h = new Human();
 h.test();
+h.a = 100;
+h.test();
+
+
+ class Board {
+    var board = [];
+
+    constructor() do
+        println "board crated";
+    end
+}
+
+const b = new Board();
+
+println b.board.toString();

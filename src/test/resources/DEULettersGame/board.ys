@@ -1,0 +1,9 @@
+
+
+export class Board {
+    var board = [];
+
+    constructor() do
+        println "board crated";
+    end
+}
