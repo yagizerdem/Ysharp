@@ -1436,6 +1436,94 @@ public class yArray {
                 true,
                 "function");
         yArray_Instance_Prototype.set(sort.getFnName(), sortVar);
+
+
+        // arr.findIndex(callback) returns the index of the first element that satisfies the testing function
+        class FindIndexFn extends Function.NativeFunction implements Callable {
+            @Override
+            public int arity() { return 1; }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+                yArrayInstance array = requireArrayThis(interpreter, getFnName());
+                Callable callback = requireCallable(arguments.getFirst(), getFnName(), 1);
+
+                for (int i = 0; i < array.data.size(); i++) {
+                    List<Variable.Variant> args = new ArrayList<>();
+                    args.add(array.data.get(i));
+                    args.add(new Variable.Variant(i));
+                    args.add(new Variable.Variant(array));
+
+                    Variable.Variant result = callback.call(interpreter, args);
+                    if (result.isTruthy()) {
+                        return new Variable.Variant(i);
+                    }
+                }
+
+                return new Variable.Variant(-1);
+            }
+
+            @Override
+            public String getFnName() {
+                return "findIndex";
+            }
+        }
+
+        FindIndexFn findIndex = new FindIndexFn();
+        Variable findIndexVar = new Variable(
+                new Variable.Variant(findIndex),
+                true,
+                "function");
+        yArray_Instance_Prototype.set(findIndex.getFnName(), findIndexVar);
+
+
+        // arr.concat(otherArray) merges two arrays and returns a new array
+        class ConcatFn extends Function.NativeFunction implements Callable {
+            @Override
+            public int arity() { return 1; }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+                yArrayInstance array = requireArrayThis(interpreter, getFnName());
+
+                Variable.Variant otherVar = arguments.get(0);
+                if (!(otherVar.value instanceof yArrayInstance)) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            0,
+                            "'concat' argument must be an array."
+                    );
+                }
+
+                yArrayInstance otherArray = (yArrayInstance) otherVar.value;
+                yArrayInstance newArray = new yArrayInstance();
+
+                newArray.data.addAll(array.data);
+                newArray.data.addAll(otherArray.data);
+
+                return new Variable.Variant(newArray);
+            }
+
+            @Override
+            public String getFnName() {
+                return "concat";
+            }
+        }
+
+        ConcatFn concat = new ConcatFn();
+        Variable concatVar = new Variable(
+                new Variable.Variant(concat),
+                true,
+                "function");
+        yArray_Instance_Prototype.set(concat.getFnName(), concatVar);
     }
 
     public static class yArrayInstance extends yClass.ClassObjectInstance {

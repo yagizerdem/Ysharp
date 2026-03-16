@@ -1074,7 +1074,7 @@ public class yString  {
 
                     String[] arr = instance.data.split(regex);
                     ArrayList<Variable.Variant> list = new ArrayList<>();
-                    for (var it : arr) list.add(new Variable.Variant(it));
+                    for (var it : arr) list.add(new Variable.Variant(new yString.yStringInstance(it)));
 
                     yArray.yArrayInstance yArray = new yArray.yArrayInstance(list);
                     return new Variable.Variant(yArray);
