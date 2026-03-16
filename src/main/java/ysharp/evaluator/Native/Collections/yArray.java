@@ -4,7 +4,9 @@ import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.Native.function.binding.BoundNativeFunction;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class yArray {
@@ -1372,13 +1374,13 @@ public class yArray {
         yArray_Instance_Prototype.set(fill.getFnName(), fillVar);
 
 
-        // arr.sort(callback) sorts the array elements in-place using a custom comparator function
+        // arr.sort(callback?) sorts the array elements in-place using a custom comparator function
         // callback = (cur, other) =>
         class SortFn extends Function.NativeFunction implements Callable {
 
             @Override
             public int arity() {
-                return 1;
+                return -1;
             }
 
             @Override
@@ -1386,46 +1388,69 @@ public class yArray {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                requireArity(arguments, arity(), getFnName());
                 yArrayInstance array = requireArrayThis(interpreter, getFnName());
-                Callable callback = requireCallable(arguments.getFirst(), getFnName(), 1);
 
-                final YsharpError[] sortError = new YsharpError[1];
-
-                try {
-                    array.data.sort((cur, other) -> {
-                        List<Variable.Variant> args = new ArrayList<>();
-                        args.add(cur);
-                        args.add(other);
-
-                        try {
-                            Variable.Variant result = callback.call(interpreter, args);
-
-                            if (result.canImplicitlyConvertNumber()) {
-                                double val = result.implicitlyConvertNumber();
-                                if (val > 0) return 1;
-                                if (val < 0) return -1;
-                                return 0;
-                            }
-
-                            return result.isTruthy() ? 1 : -1;
-
-                        } catch (YsharpError e) {
-                            sortError[0] = e;
-                            return 0;
-                        }
-                    });
-                } catch (IllegalArgumentException e) {
+                if (arguments.size() > 1) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.PROCESS,
                             0,
-                            "Comparison method violates its general contract in 'sort'. Ensure consistent return values."
+                            "'sort' expects 0 or 1 argument."
                     );
                 }
 
-                // If an error occurred inside the callback, rethrow it here
-                if (sortError[0] != null) {
-                    throw sortError[0];
+                if (arguments.isEmpty()) {
+                    array.data.sort((a, b) -> {
+                        if (a == null || a.value == null) return 1;
+                        if (b == null || b.value == null) return -1;
+
+                        if (a.canImplicitlyConvertNumber() && b.canImplicitlyConvertNumber()) {
+                            double numA = a.implicitlyConvertNumber();
+                            double numB = b.implicitlyConvertNumber();
+                            return Double.compare(numA, numB);
+                        }
+
+                        String strA = a.value.toString();
+                        String strB = b.value.toString();
+                        return strA.compareTo(strB);
+                    });
+                } else {
+                    Callable callback = requireCallable(arguments.getFirst(), getFnName(), 1);
+                    final YsharpError[] sortError = new YsharpError[1];
+
+                    try {
+                        array.data.sort((cur, other) -> {
+                            List<Variable.Variant> args = new ArrayList<>();
+                            args.add(cur);
+                            args.add(other);
+
+                            try {
+                                Variable.Variant result = callback.call(interpreter, args);
+
+                                if (result.canImplicitlyConvertNumber()) {
+                                    double val = result.implicitlyConvertNumber();
+                                    if (val > 0) return 1;
+                                    if (val < 0) return -1;
+                                    return 0;
+                                }
+
+                                return result.isTruthy() ? 1 : -1;
+
+                            } catch (YsharpError e) {
+                                sortError[0] = e;
+                                return 0;
+                            }
+                        });
+                    } catch (IllegalArgumentException e) {
+                        throw new YsharpError(
+                                YsharpError.YsharpErrorType.PROCESS,
+                                0,
+                                "Comparison method violates its general contract in 'sort'. Ensure consistent return values."
+                        );
+                    }
+
+                    if (sortError[0] != null) {
+                        throw sortError[0];
+                    }
                 }
 
                 return new Variable.Variant(array);
@@ -1532,6 +1557,363 @@ public class yArray {
                 true,
                 "function");
         yArray_Instance_Prototype.set(concat.getFnName(), concatVar);
+
+
+        // arr.max() returns the maximum numeric value in the array
+        class MaxFn extends Function.NativeFunction implements Callable {
+            @Override
+            public int arity() { return 0; }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+                yArrayInstance array = requireArrayThis(interpreter, getFnName());
+
+                if (array.data.isEmpty()) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            0,
+                            "'max' cannot be called on an empty array."
+                    );
+                }
+
+                Variable.Variant maxVar = array.data.get(0);
+                double maxVal = maxVar.canImplicitlyConvertNumber()
+                        ? maxVar.implicitlyConvertNumber()
+                        : Double.MIN_VALUE;
+
+                for (int i = 1; i < array.data.size(); i++) {
+                    Variable.Variant current = array.data.get(i);
+                    if (current.canImplicitlyConvertNumber()) {
+                        double currentVal = current.implicitlyConvertNumber();
+                        if (currentVal > maxVal) {
+                            maxVal = currentVal;
+                            maxVar = current;
+                        }
+                    }
+                }
+
+                return maxVar;
+            }
+
+            @Override
+            public String getFnName() {
+                return "max";
+            }
+        }
+
+        MaxFn max = new MaxFn();
+        Variable maxVar = new Variable(
+                new Variable.Variant(max),
+                true,
+                "function");
+        yArray_Instance_Prototype.set(max.getFnName(), maxVar);
+
+
+        // arr.min() returns the minimum numeric value in the array
+        class MinFn extends Function.NativeFunction implements Callable {
+            @Override
+            public int arity() { return 0; }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+                yArrayInstance array = requireArrayThis(interpreter, getFnName());
+
+                if (array.data.isEmpty()) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            0,
+                            "'min' cannot be called on an empty array."
+                    );
+                }
+
+                Variable.Variant minVar = array.data.get(0);
+                double minVal = minVar.canImplicitlyConvertNumber()
+                        ? minVar.implicitlyConvertNumber()
+                        : Double.MAX_VALUE;
+
+                for (int i = 1; i < array.data.size(); i++) {
+                    Variable.Variant current = array.data.get(i);
+                    if (current.canImplicitlyConvertNumber()) {
+                        double currentVal = current.implicitlyConvertNumber();
+                        if (currentVal < minVal) {
+                            minVal = currentVal;
+                            minVar = current;
+                        }
+                    }
+                }
+
+                return minVar;
+            }
+
+            @Override
+            public String getFnName() {
+                return "min";
+            }
+        }
+
+        MinFn min = new MinFn();
+        Variable minVar = new Variable(
+                new Variable.Variant(min),
+                true,
+                "function");
+        yArray_Instance_Prototype.set(min.getFnName(), minVar);
+
+
+        // arr.take(n) returns a new array with the first n elements
+        class TakeFn extends Function.NativeFunction implements Callable {
+            @Override
+            public int arity() { return 1; }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+                yArrayInstance array = requireArrayThis(interpreter, getFnName());
+                int n = requireInt(arguments.getFirst(), getFnName(), 1);
+
+                int limit = Math.max(0, Math.min(n, array.data.size()));
+
+                yArrayInstance newArray = new yArrayInstance();
+                newArray.data.addAll(array.data.subList(0, limit));
+
+                return new Variable.Variant(newArray);
+            }
+
+            @Override
+            public String getFnName() { return "take"; }
+        }
+
+        TakeFn take = new TakeFn();
+        Variable takeVar = new Variable(
+                new Variable.Variant(take),
+                true,
+                "function");
+        yArray_Instance_Prototype.set(take.getFnName(), takeVar);
+
+
+        // arr.skip(n) returns a new array skipping the first n elements
+        class SkipFn extends Function.NativeFunction implements Callable {
+            @Override
+            public int arity() { return 1; }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+                yArrayInstance array = requireArrayThis(interpreter, getFnName());
+                int n = requireInt(arguments.getFirst(), getFnName(), 1);
+
+                int start = Math.max(0, Math.min(n, array.data.size()));
+
+                yArrayInstance newArray = new yArrayInstance();
+                newArray.data.addAll(array.data.subList(start, array.data.size()));
+
+                return new Variable.Variant(newArray);
+            }
+
+            @Override
+            public String getFnName() { return "skip"; }
+        }
+
+        SkipFn skip = new SkipFn();
+        Variable skipVar = new Variable(
+                new Variable.Variant(skip),
+                true,
+                "function");
+        yArray_Instance_Prototype.set(skip.getFnName(), skipVar);
+
+
+        // arr.sum() returns the sum of all numeric values in the array
+        class SumFn extends Function.NativeFunction implements Callable {
+            @Override
+            public int arity() { return 0; }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+                yArrayInstance array = requireArrayThis(interpreter, getFnName());
+
+                double sum = 0;
+
+                for (int i = 0; i < array.data.size(); i++) {
+                    Variable.Variant current = array.data.get(i);
+                    if (current != null && current.canImplicitlyConvertNumber()) {
+                        sum += current.implicitlyConvertNumber();
+                    }
+                }
+
+                return new Variable.Variant(sum);
+            }
+
+            @Override
+            public String getFnName() {
+                return "sum";
+            }
+        }
+
+        SumFn sum = new SumFn();
+        Variable sumVar = new Variable(
+                new Variable.Variant(sum),
+                true,
+                "function");
+        yArray_Instance_Prototype.set(sum.getFnName(), sumVar);
+
+
+        // arr.average() returns the average of all numeric values in the array
+        class AverageFn extends Function.NativeFunction implements Callable {
+            @Override
+            public int arity() { return 0; }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+                yArrayInstance array = requireArrayThis(interpreter, getFnName());
+
+                if (array.data.isEmpty()) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            0,
+                            "'average' cannot be called on an empty array."
+                    );
+                }
+
+                double sum = 0;
+                int count = 0;
+
+                for (int i = 0; i < array.data.size(); i++) {
+                    Variable.Variant current = array.data.get(i);
+                    if (current != null && current.canImplicitlyConvertNumber()) {
+                        sum += current.implicitlyConvertNumber();
+                        count++;
+                    }
+                }
+
+                if (count == 0) return new Variable.Variant(0); // Prevents division by zero
+
+                return new Variable.Variant(sum / count);
+            }
+
+            @Override
+            public String getFnName() {
+                return "average";
+            }
+        }
+
+        AverageFn average = new AverageFn();
+        Variable averageVar = new Variable(
+                new Variable.Variant(average),
+                true,
+                "function");
+        yArray_Instance_Prototype.set(average.getFnName(), averageVar);
+
+
+        // arr.unique() returns a new array with duplicate elements removed
+        class UniqueFn extends Function.NativeFunction implements Callable {
+            @Override
+            public int arity() { return 0; }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+                yArrayInstance array = requireArrayThis(interpreter, getFnName());
+
+                yArrayInstance newArray = new yArrayInstance();
+
+                for (Variable.Variant element : array.data) {
+                    boolean exists = false;
+                    for (Variable.Variant existing : newArray.data) {
+                        if ((element == null && existing == null) ||
+                                (element != null && element.equals(existing))) {
+                            exists = true;
+                            break;
+                        }
+                    }
+
+                    if (!exists) {
+                        newArray.data.add(element);
+                    }
+                }
+
+                return new Variable.Variant(newArray);
+            }
+
+            @Override
+            public String getFnName() {
+                return "unique";
+            }
+        }
+
+        UniqueFn unique = new UniqueFn();
+        Variable uniqueVar = new Variable(
+                new Variable.Variant(unique),
+                true,
+                "function");
+        yArray_Instance_Prototype.set(unique.getFnName(), uniqueVar);
+        yArray_Instance_Prototype.set("distinct", uniqueVar); // alias for unique
+
+
+        // arr.count(value) returns the number of occurrences of a specific value in the array
+        class CountFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 1;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+                yArrayInstance array = requireArrayThis(interpreter, getFnName());
+                Variable.Variant target = arguments.get(0);
+
+                int count = 0;
+
+                for (Variable.Variant element : array.data) {
+                    if ((element == null && target == null) ||
+                            (element != null && element.equals(target))) {
+                        count++;
+                    }
+                }
+
+                return new Variable.Variant(count);
+            }
+
+            @Override
+            public String getFnName() {
+                return "count";
+            }
+        }
+
+        CountFn count = new CountFn();
+        Variable countVar = new Variable(
+                new Variable.Variant(count),
+                true,
+                "function");
+        yArray_Instance_Prototype.set(count.getFnName(), countVar);
     }
 
     public static class yArrayInstance extends yClass.ClassObjectInstance {
@@ -1574,6 +1956,113 @@ public class yArray {
 
         public yArrayClass(){
             this.prototype = yClass.ClassPrototype;
+
+            // Array.isArray(value) returns true if the value is an Array instance
+            class IsArrayFn extends Function.NativeFunction implements Callable {
+                @Override
+                public int arity() { return 1; }
+
+                @Override
+                public Variable.Variant call(Interpreter interpreter,
+                                             List<Variable.Variant> arguments)
+                        throws YsharpError {
+                    requireArity(arguments, arity(), getFnName());
+                    Variable.Variant target = arguments.getFirst();
+
+                    boolean isArr = target.value instanceof yArrayInstance;
+                    return new Variable.Variant(isArr);
+                }
+
+                @Override
+                public String getFnName() { return "isArray"; }
+            }
+
+            IsArrayFn isArray = new IsArrayFn();
+            Variable isArrayVar = new Variable(
+                    new Variable.Variant(isArray),
+                    true,
+                    "function");
+            this.set(isArray.getFnName(), isArrayVar);
+
+            class OfFn extends Function.NativeFunction implements Callable {
+                @Override
+                public int arity() { return -1; } // variable arity
+
+                @Override
+                public Variable.Variant call(Interpreter interpreter,
+                                             List<Variable.Variant> arguments)
+                        throws YsharpError {
+
+                    yArrayInstance newArray = new yArrayInstance();
+                    newArray.data.addAll(arguments);
+                    return new Variable.Variant(newArray);
+                }
+
+                @Override
+                public String getFnName() { return "of"; }
+            }
+
+            OfFn of = new OfFn();
+            Variable ofVar = new Variable(new Variable.Variant(of),
+                    true,
+                    "function");
+            this.set(of.getFnName(), ofVar);
+
+
+            // Array.range(start, end, step?) generates a numeric sequence array
+            class RangeFn extends Function.NativeFunction implements Callable {
+                @Override
+                public int arity() { return -1; } // 2 or 3 arguments
+
+                @Override
+                public Variable.Variant call(Interpreter interpreter,
+                                             List<Variable.Variant> arguments)
+                        throws YsharpError {
+
+                    int size = arguments.size();
+                    if (size < 2 || size > 3) {
+                        throw new YsharpError(
+                                YsharpError.YsharpErrorType.PROCESS,
+                                0,
+                                "'range' expects 2 or 3 arguments (start, end, [step])."
+                        );
+                    }
+
+                    int start = requireInt(arguments.get(0), getFnName(), 1);
+                    int end = requireInt(arguments.get(1), getFnName(), 2);
+                    int step = size == 3 ? requireInt(arguments.get(2), getFnName(), 3) : 1;
+
+                    if (step == 0) {
+                        throw new YsharpError(
+                                YsharpError.YsharpErrorType.PROCESS,
+                                0,
+                                "'step' cannot be zero in 'range'."
+                        );
+                    }
+
+                    yArrayInstance newArray = new yArrayInstance();
+
+                    if (step > 0) {
+                        for (int i = start; i < end; i += step) {
+                            newArray.data.add(new Variable.Variant(i));
+                        }
+                    } else {
+                        for (int i = start; i > end; i += step) {
+                            newArray.data.add(new Variable.Variant(i));
+                        }
+                    }
+
+                    return new Variable.Variant(newArray);
+                }
+
+                @Override
+                public String getFnName() { return "range"; }
+            }
+
+            RangeFn range = new RangeFn();
+            Variable rangeVar = new Variable(new Variable.Variant(range), true, "function");
+            this.set(range.getFnName(), rangeVar);
+
         }
 
         @Override

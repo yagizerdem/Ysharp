@@ -1,20 +1,6 @@
-
-var arr = [1,2,4,5];
-
-
-
-for var i = 0 ; i < 100 ; i++ do
-    arr.add(Random.nextInt(0,999));
-end
-
-var t = arr.find((a)=> do return a < 40 && a > 20; end);
-println("-".repeat(30));
-
-arr = arr.sort((a,b) => do
-    if a > b then do return 1; end
-    elif b > a then do return -1; end
-    return 0;
-end);
+const arr = Array.range(0,100, 4);
 
 println arr.toString();
+
+println arr.size();
 
