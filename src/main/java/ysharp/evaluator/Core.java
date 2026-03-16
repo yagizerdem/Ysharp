@@ -43,15 +43,23 @@ public class Core {
               return;
           }
 
+          Resolver resolver = new Resolver(interpreter);
+          resolver.resolve(program.program);
 
-          Loader loader = new Loader(program, mainModulePath);
-          Hashtable<String, Variable> exportRegistry = loader.loadEnv();
-
-          for (String key : exportRegistry.keySet()) {
-              if(!interpreter.global.existsAt(0, key)) {
-                  interpreter.global.define(key, exportRegistry.get(key));
-              }
+          if(resolver.hadErrors()) {
+              StdIO.printStdErr(resolver.errors);
+              return;
           }
+
+
+//          Loader loader = new Loader(program, mainModulePath);
+//          Hashtable<String, Variable> exportRegistry = loader.loadEnv();
+//
+//          for (String key : exportRegistry.keySet()) {
+//              if(!interpreter.global.existsAt(0, key)) {
+//                  interpreter.global.define(key, exportRegistry.get(key));
+//              }
+//          }
 
           interpreter.interpret(program.program);
           if(interpreter.hadErrors()) {
