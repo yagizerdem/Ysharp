@@ -8,9 +8,7 @@ import ysharp.lexer.Token;
 import ysharp.parser.Expr;
 import ysharp.parser.Stmt;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
+import java.util.*;
 
 public class Interpreter implements
         Expr.Visitor<Variable.Variant>,
@@ -18,6 +16,7 @@ public class Interpreter implements
 
     public Environment global;
     public Environment curEnv;
+    public Map<Expr, Integer> locals;
     public List<YsharpError> errors;
     public List<String> exports;
 
@@ -25,11 +24,16 @@ public class Interpreter implements
         return !errors.isEmpty();
     }
 
+    public void resolve(Expr expr, int depth) {
+        locals.put(expr, depth);
+    }
+
     public Interpreter() {
         this.global = new Environment();
         this.curEnv = global;
         this.errors = new ArrayList<>();
         this.exports = new ArrayList<>();
+        this.locals = new HashMap<>();
     }
 
     public void defineGlobal(String key, Variable variable) throws Exception {
@@ -463,7 +467,15 @@ public class Interpreter implements
             Token lvalue = ((Expr.VariableExpr) expr.target).name;
             Variable.Variant right = this.evaluate(expr.value);
 
-            Variable identifier = this.curEnv.getValue(lvalue);
+            Integer distance = this.locals.get(expr.target);
+
+            Variable identifier;
+
+            if (distance != null) {
+                identifier = this.curEnv.getAt(distance, lvalue.lexeme);
+            } else {
+                identifier = this.curEnv.getValue(lvalue);
+            }
             if(identifier.isConst) {
                 throw new YsharpError(
                         YsharpError.YsharpErrorType.PROCESS,
@@ -487,12 +499,20 @@ public class Interpreter implements
             }
 
             switch (expr.op.type) {
-                case ASSIGN ->  {
-                    this.curEnv.assign(lvalue, right);
-                    return right;
+                case ASSIGN -> {
+                    Variable.Variant assigned;
+
+                    if (right.isRuntimeObject()) {
+                        assigned = right;
+                    } else {
+                        assigned = new Variable.Variant(right.value);
+                    }
+
+                    this.curEnv.assign(lvalue, assigned);
+                    return assigned;
                 }
                 case PLUS_ASSIGN -> {
-                    Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
+                    Variable.Variant left = identifier.value;
                     requireNumberOperands(left, right, expr.op);
                         Variable.Variant result;
                         if(left.isInt() && right.isInt())
@@ -504,7 +524,7 @@ public class Interpreter implements
                         return result;
                 }
                 case MINUS_ASSIGN -> {
-                    Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
+                    Variable.Variant left = identifier.value;
                     requireNumberOperands(left, right, expr.op);
                     Variable.Variant result;
                     if(left.isInt() && right.isInt())
@@ -516,7 +536,7 @@ public class Interpreter implements
                     return result;
                 }
                 case MULTIPLY_ASSIGN -> {
-                    Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
+                    Variable.Variant left = identifier.value;
                     requireNumberOperands(left, right, expr.op);
                     Variable.Variant result;
                     if(left.isInt() && right.isInt())
@@ -528,7 +548,7 @@ public class Interpreter implements
                     return result;
                 }
                 case DIVIDE_ASSIGN -> {
-                    Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
+                    Variable.Variant left = identifier.value;
                     requireNumberOperands(left, right, expr.op);
                     if(right.asNumber() == 0)
                         throw new YsharpError(
@@ -546,7 +566,7 @@ public class Interpreter implements
                     return result;
                 }
                 case MODULO_ASSIGN -> {
-                    Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
+                    Variable.Variant left = identifier.value;
                     requireNumberOperands(left, right, expr.op);
                     Variable.Variant result;
                     if(left.isInt() && right.isInt())
@@ -558,7 +578,7 @@ public class Interpreter implements
                     return result;
                 }
                 case LEFT_SHIFT_ASSIGN -> {
-                    Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
+                    Variable.Variant left = identifier.value;
                     requireIntegerOperands(left, right, expr.op);
                     Variable.Variant result;
                     result = new Variable.Variant(left.asInt() << right.asInt());
@@ -566,7 +586,7 @@ public class Interpreter implements
                     return result;
                 }
                 case RIGHT_SHIFT_ASSIGN -> {
-                    Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
+                    Variable.Variant left = identifier.value;
                     requireIntegerOperands(left, right, expr.op);
                     Variable.Variant result;
                     result = new Variable.Variant(left.asInt() >> right.asInt());
@@ -574,7 +594,7 @@ public class Interpreter implements
                     return result;
                 }
                 case BITWISE_AND_ASSIGN -> {
-                    Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
+                    Variable.Variant left = identifier.value;
                     requireIntegerOperands(left, right, expr.op);
                     Variable.Variant result;
                     result = new Variable.Variant(left.asInt() & right.asInt());
@@ -582,7 +602,7 @@ public class Interpreter implements
                     return result;
                 }
                 case BITWISE_OR_ASSIGN -> {
-                    Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
+                    Variable.Variant left = identifier.value;
                     requireIntegerOperands(left, right, expr.op);
                     Variable.Variant result;
                     result = new Variable.Variant(left.asInt() | right.asInt());
@@ -590,7 +610,7 @@ public class Interpreter implements
                     return result;
                 }
                 case BITWISE_XOR_ASSIGN -> {
-                    Variable.Variant left = (this.curEnv.getValue(lvalue)).value;
+                    Variable.Variant left = identifier.value;
                     requireIntegerOperands(left, right, expr.op);
                     Variable.Variant result;
                     result = new Variable.Variant(left.asInt() ^ right.asInt());
@@ -761,7 +781,14 @@ public class Interpreter implements
 
     @Override
     public Variable.Variant visitVariableExpr(Expr.VariableExpr expr) {
-        return ((Variable)this.curEnv.getValue(expr.name)).value;
+
+        Integer distance = this.locals.get(expr);
+
+        if (distance != null) {
+            return ((Variable)this.curEnv.getAt(distance, expr.name.lexeme)).value;
+        } else {
+            return ((Variable)this.curEnv.getValue(expr.name)).value;
+        }
     }
 
     @Override
@@ -1224,7 +1251,7 @@ public class Interpreter implements
                     instance.set(prop.name.lexeme,
                             new Variable(
                                     prop.initializer != null ?
-                                            new Variable.Variant(interpreter.evaluate(prop.initializer)):
+                                            interpreter.evaluate(prop.initializer):
                                             new Variable.Variant(null),
                                                     prop.isConst,
                                                     prop.type == null ? "any" :  prop.type.lexeme));

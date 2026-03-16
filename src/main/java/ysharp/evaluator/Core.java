@@ -43,6 +43,14 @@ public class Core {
               return;
           }
 
+          Resolver resolver = new Resolver(interpreter);
+          resolver.resolve(program.program);
+
+          if(resolver.hadErrors()) {
+              StdIO.printStdErr(resolver.errors);
+              return;
+          }
+
 
           Loader loader = new Loader(program, mainModulePath);
           Hashtable<String, Variable> exportRegistry = loader.loadEnv();

@@ -1,24 +1,19 @@
-var s = "yagiz erdem";
+var arr = [1,2].concat([2,3,4,5]);
 
+var s : string  = "ajf";
+var ss : string = new String("hit");
 
-println s.lastIndexOf("e");
-println s.indexOf("e");
-println s.lastIndexOf("423");
-println s.matches(".*m");
-println s.count("e");
+s = "   " + s + " " + ss + " " + 55 + "  ";
+println s;
 
+println  s.split(" ").toString();
 
-println s.charCodeAt(1);
-println s.slice(2, 0);
+var a = s.split(" ").filter((x ,i ,_) => do
+    if Type.getType(x) == "string" && x.trim().length() > 0 then do
+        return true;
+    end
+    return Type.getType(x) != "string"  ? true : false ;
+end);
+println a.toString();
 
-println s.getPrototype();
-println Type.getType(s.getPrototype());
-println String;
-println String.getType();
-
-var ss : string = "test";
-
-println ss;
-println ss.getType();
-println Type.getType(ss);
-println Type.getTypeTag(ss);
+println arr.findIndex((x, i , _) => x  % 2  == 0);
