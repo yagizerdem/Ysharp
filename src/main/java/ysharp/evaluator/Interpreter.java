@@ -499,9 +499,17 @@ public class Interpreter implements
             }
 
             switch (expr.op.type) {
-                case ASSIGN ->  {
-                    this.curEnv.assign(lvalue, right);
-                    return right;
+                case ASSIGN -> {
+                    Variable.Variant assigned;
+
+                    if (right.isRuntimeObject()) {
+                        assigned = right;
+                    } else {
+                        assigned = new Variable.Variant(right.value);
+                    }
+
+                    this.curEnv.assign(lvalue, assigned);
+                    return assigned;
                 }
                 case PLUS_ASSIGN -> {
                     Variable.Variant left = identifier.value;

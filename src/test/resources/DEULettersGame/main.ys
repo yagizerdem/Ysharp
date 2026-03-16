@@ -1,41 +1,16 @@
 
-class Human {
+var arr  = [];
 
-    var a = 10;
+for var i = 0 ; i< 100; i++ do
+    arr.push(Random.nextInt(1,999));
+end
 
+arr = arr.sort((a,b) => do
+    if a > b then do return 1; end
+    elif b > a then do return -1 ; end
+    return 0;
+end);
 
-    test() do
-        var a = 99;
-        println a;
-        println this.a;
-        println this.nested();
-    end
-
-    nested() do
-        return 44;
-    end
-}
-
-var h = new Human();
-h.test();
-h.a = 100;
-h.test();
-
-
-
-
- class Board {
-    var b = 10;
-    var board = [];
-
-    constructor() do
-        println "board crated";
-    end
-}
-
-const b = new Board();
-
-println b.board;
-println b.b;
-b.board.add(4);
-println b.board.toString();
+arr.forEach((x, i , old) => do
+    println x;
+end);
