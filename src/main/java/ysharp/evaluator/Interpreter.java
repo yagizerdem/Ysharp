@@ -1243,7 +1243,7 @@ public class Interpreter implements
                     instance.set(prop.name.lexeme,
                             new Variable(
                                     prop.initializer != null ?
-                                            new Variable.Variant(interpreter.evaluate(prop.initializer)):
+                                            interpreter.evaluate(prop.initializer):
                                             new Variable.Variant(null),
                                                     prop.isConst,
                                                     prop.type == null ? "any" :  prop.type.lexeme));

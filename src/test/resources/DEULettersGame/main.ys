@@ -22,7 +22,10 @@ h.a = 100;
 h.test();
 
 
+
+
  class Board {
+    var b = 10;
     var board = [];
 
     constructor() do
@@ -32,4 +35,7 @@ h.test();
 
 const b = new Board();
 
+println b.board;
+println b.b;
+b.board.add(4);
 println b.board.toString();
