@@ -1,9 +1,25 @@
-use "board.ys";
 
-println "-".repeat(30);
+var arr = Array.range(0,100, 4);
 
-test(1,1,1);
-
-
-println "arr is in main";
 println arr.toString();
+
+var q = arr.asQueryable().
+skip(10).
+where((x,i, oldArr) => x % 8 == 0).
+take(3).
+reverse().
+avg();
+
+println q;
+
+var a : Human = null;
+
+println a;
+
+
+
+
+
+
+
+
