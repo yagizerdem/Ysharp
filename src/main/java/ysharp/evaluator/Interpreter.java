@@ -293,6 +293,11 @@ public class Interpreter implements
                 Variable.Variant right = evaluate(expr.right);
                 return new Variable.Variant(!left.equals(right));
             }
+            case DOUBLE_QUESTION_MARK -> {
+                Variable.Variant left = evaluate(expr.left);
+                Variable.Variant right = evaluate(expr.right);
+                return left.value != null ?  left : right;
+            }
             default -> {
                 throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
                         expr.op.line, "unsupported op");

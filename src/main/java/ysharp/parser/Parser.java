@@ -218,7 +218,7 @@ public class Parser {
     }
 
     private Expr parseTernary() throws YsharpError {
-        Expr logicalOr = parseLogicalOr();
+        Expr nullCoalescing = parseNullCoalescing();
 
         // consume ?
         if(match(peek(), Token.TokenType.QUESTION_MARK)) {
@@ -230,13 +230,42 @@ public class Parser {
             Expr else_ = parseTernary();
 
             return new Expr.TernaryExpr(
-                    logicalOr, // condition
+                    nullCoalescing, // condition
                     then,
                     else_
             );
         }
 
-        return  logicalOr;
+        return  nullCoalescing;
+    }
+
+    private Expr parseNullCoalescing() throws YsharpError {
+        Expr logicalOr = parseLogicalOr();
+
+
+        if(match(peek(), Token.TokenType.DOUBLE_QUESTION_MARK)) {
+            Token op = previous();
+            Expr then = parseLogicalOr();
+            Expr.BinaryExpr binaryExpr = new Expr.BinaryExpr(
+                    logicalOr,
+                    op,
+                    then
+            );
+            while (match(peek(), Token.TokenType.DOUBLE_QUESTION_MARK)) {
+                op = previous();
+                then = parseLogicalOr();
+                Expr.BinaryExpr binaryExpr_ = new Expr.BinaryExpr(
+                        binaryExpr,
+                        op,
+                        then
+                );
+                binaryExpr = binaryExpr_;
+            }
+
+            return binaryExpr;
+        }
+
+        return logicalOr;
     }
 
     private Expr parseLogicalOr() throws YsharpError {

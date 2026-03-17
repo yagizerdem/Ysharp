@@ -14,7 +14,7 @@ println q;
 
 var a : Human = null;
 
-println a;
+println a ?? 40 ?? 100;
 
 
 

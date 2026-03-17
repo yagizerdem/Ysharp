@@ -58,6 +58,7 @@ public class Token {
 
         RIGHT_ARROW, // =>
 
+        DOUBLE_QUESTION_MARK, // ?? null_coalescing
         END_OF_FILE,
 
         // reserved keywords
