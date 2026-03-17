@@ -163,4 +163,19 @@ public class Environment {
         return env.values.containsKey(name);
     }
 
+    public boolean exists(String name) throws YsharpError {
+        return existsAt(0, name);
+    }
+
+    public void remove(String name) {
+        Variable.Variant variant = null;
+        if(this.values.containsKey(name)) {
+            variant = this.values.get(name).value;
+            this.values.remove(name);
+        }
+        if(variant != null && this.variantTypes.containsKey(variant)) {
+            this.variantTypes.remove(variant);
+        }
+    }
+
 }

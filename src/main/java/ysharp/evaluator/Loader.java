@@ -80,20 +80,38 @@ public class Loader {
             if(curNode.equals(this.root)) continue;
 
             Interpreter interpreter = new Interpreter();
+            Registery.register(interpreter);
 
             Resolver resolver = new Resolver(interpreter);
             resolver.resolve(curNode.program.program);
 
             if(resolver.hadErrors()) {
                 StdIO.printStdErr(resolver.errors);
-                System.exit(1);
+                throw new YsharpError(YsharpError.YsharpErrorType.SYNTAX,
+                        -1 ,
+                        "do not print",
+                        false);
             }
 
             if(!curNode.neighbors.isEmpty()) {
                 for(GraphNode neighbor : curNode.neighbors) {
                     neighbor.exports.forEach(e -> {
-                        if(!interpreter.global.existsAt(0, e)) {
-                            interpreter.global.define(e, neighbor.env.getAt(0, e));
+                        Variable exportedVar = neighbor.env.getValue(e);
+                        if(exportedVar.value.isFunctionOverload()) {
+                            Function.FunctionOverload overload = exportedVar.value.asFunctionOverload();
+                            List<Variable.Variant> exportsList = overload.getExported();
+                            Function.FunctionOverload newOverload = new Function.FunctionOverload(overload.name);
+                            for(var export : exportsList) {
+                                newOverload.addFunction(export, Function.getArgCount(export.asCallable()));
+                            }
+                            interpreter.global.define(e, new Variable(new Variable.Variant(newOverload),
+                                    true,
+                                    "function"));
+                        }
+                        else {
+                            if(!interpreter.global.existsAt(0, e)) {
+                                interpreter.global.define(e, exportedVar);
+                            }
                         }
                     });
                 }
@@ -101,8 +119,12 @@ public class Loader {
 
             interpreter.interpret(curNode.program.program);
             if(interpreter.hadErrors()) {
+                System.err.println("Error occured at file : " + curNode.modulePath);
                 StdIO.printStdErr(interpreter.errors);
-                System.exit(1);
+                throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                        -1 ,
+                        "do not print",
+                        false);
             }
 
             curNode.exports = interpreter.exports;
@@ -114,7 +136,22 @@ public class Loader {
         if(!this.root.neighbors.isEmpty()) {
             for(GraphNode neighbor : this.root.neighbors) {
                 neighbor.exports.forEach(e -> {
-                    exportRegistry.put(e, neighbor.env.getValue(e));
+                    Variable exportedVar = neighbor.env.getValue(e);
+                    if(exportedVar.value.isFunctionOverload()) {
+                        Function.FunctionOverload overload = exportedVar.value.asFunctionOverload();
+                        List<Variable.Variant> exportsList = overload.getExported();
+                        Function.FunctionOverload newOverload = new Function.FunctionOverload(overload.name);
+                        for(var export : exportsList) {
+                            newOverload.addFunction(export, Function.getArgCount(export.asCallable()));
+                        }
+                        exportRegistry.put(e, new Variable(new Variable.Variant(newOverload),
+                                true,
+                                "function"));
+                    }
+                    else {
+                        exportRegistry.put(e, exportedVar);
+                    }
+
                 });
             }
         }
@@ -128,6 +165,7 @@ public class Loader {
         }
 
         if (visiting.contains(curModulePath)) {
+            System.err.println("Error occured at file : " + curModulePath);
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     -1,
@@ -146,21 +184,33 @@ public class Loader {
         List<Cursor.Pchar> buf = preprocess.process(moduleContent);
         if(preprocess.hadErrors()){
             StdIO.printStdErr(preprocess.errors);
-            System.exit(1);
+            System.err.println("Error occured at file : " + curModulePath);
+            throw new YsharpError(YsharpError.YsharpErrorType.SYNTAX,
+                    -1 ,
+                    "do not print",
+                    false);
         }
 
         Lexer lexer = new Lexer(buf);
         var stream = lexer.scanTokens();
         if(lexer.hadErrors()) {
+            System.err.println("Error occured at file : " + curModulePath);
             StdIO.printStdErr(lexer.errors);
-            System.exit(1);
+            throw new YsharpError(YsharpError.YsharpErrorType.SYNTAX,
+                    -1 ,
+                    "do not print",
+                    false);
         }
 
         Parser parser = new Parser(stream);
         Parser.Program program = parser.parse();
         if(parser.hadErrors()) {
+            System.err.println("Error occured at file : " + curModulePath);
             StdIO.printStdErr(parser.errors);
-            System.exit(1);
+            throw new YsharpError(YsharpError.YsharpErrorType.SYNTAX,
+                    -1 ,
+                    "do not print",
+                    false);
         }
 
 

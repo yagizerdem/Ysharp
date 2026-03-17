@@ -2,7 +2,6 @@ package ysharp.evaluator.Native.Util.Type;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.lexer.Token;
 
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class Converter {
                         return new Variable.Variant(new yString.yStringInstance("null"));
                     else if(variant.isChar())
                         return new Variable.Variant(new yString.yStringInstance(variant.asCharacter().toString()));
-                    else if(variant.isFunction())
+                    else if(variant.isFunctionLike())
                         return new Variable.Variant(new yString.yStringInstance("function"));
                     else if(variant.isClass())
                         return new Variable.Variant(new yString.yStringInstance(variant.asClass().toString()));

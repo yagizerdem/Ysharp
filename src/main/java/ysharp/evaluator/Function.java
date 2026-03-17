@@ -4,6 +4,8 @@ import ysharp.YsharpError;
 import ysharp.parser.Expr;
 import ysharp.parser.Stmt;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public abstract class Function extends RuntimeObject implements Callable {
@@ -68,7 +70,7 @@ public abstract class Function extends RuntimeObject implements Callable {
 
         @Override
         public String toString() {
-            return "<fn:" + this.declaration.name.lexeme + ">" ;
+            return "<function:" + this.declaration.name.lexeme + ">" ;
         }
 
         @Override
@@ -249,7 +251,7 @@ public abstract class Function extends RuntimeObject implements Callable {
 
         @Override
         public String toString() {
-            return "<fn:" + this.getFnName() + ">" ;
+            return "<function:" + this.getFnName() + ">" ;
         }
 
         @Override
@@ -261,6 +263,104 @@ public abstract class Function extends RuntimeObject implements Callable {
         public String getType() {
             return "function";
         }
+    }
+
+    public static class FunctionOverload extends Function {
+        public final String name;
+        public final HashMap<Integer, FunctionWrapper> dispatcher =
+                new HashMap<>();
+
+        private static class FunctionWrapper {
+            public final Variable.Variant variant;
+            public boolean isExported;
+
+            public FunctionWrapper(Variable.Variant variant, boolean isExported) {
+                this.variant = variant;
+                this.isExported = isExported;
+            }
+        }
+
+        public FunctionOverload(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public boolean isTruthy() {
+            return true;
+        }
+
+        @Override
+        public String getType() {
+            return "function";
+        }
+
+        @Override
+        public String toString() {
+            return "<function:" + this.name + ">" ;
+        }
+
+        @Override
+        public int arity() {
+            return -1;
+        }
+
+        @Override
+        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+
+            int argCount = arguments.size();
+
+            if (this.dispatcher.containsKey(argCount)) {
+                return this.dispatcher
+                        .get(argCount)
+                        .variant
+                        .asCallable()
+                        .call(interpreter, arguments);
+            }
+
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    0,
+                    "No overload found for function '" + name +
+                            "' with " + argCount + " argument(s)."
+            );
+        }
+
+        public void addFunction(Variable.Variant fn, int argSize) {
+            this.addFunction(fn, argSize, false);
+        }
+
+        public void addFunction(Variable.Variant fn, int argSize, boolean isExported) {
+            if(this.dispatcher.containsKey(argSize)) {
+                throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,-1,
+                        "Variable '" +
+                                this.name +
+                                "' is already defined in this scope.");
+            }
+            this.dispatcher.put(argSize, new FunctionWrapper(fn, isExported));
+        }
+
+        public Variable.Variant getFunction(int argSize) {
+            if (this.dispatcher.containsKey(argSize)) {
+                return this.dispatcher.get(argSize).variant;
+            }
+
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    -1,
+                    "Function '" + this.name + "' does not have an overload that accepts " + argSize +
+                            (argSize <= 1 ? " argument." : " arguments." )
+            );
+
+        }
+
+        public List<Variable.Variant> getExported() {
+            List<Variable.Variant> list = new ArrayList<>();
+            for(FunctionWrapper wrapper : this.dispatcher.values()) {
+                if(wrapper.isExported) list.add(wrapper.variant);
+            }
+            return list;
+        }
+
     }
 
 }

@@ -360,7 +360,14 @@ public class Resolver implements Expr.Visitor<Void> ,
                 declare(arg.name);
                 define(arg.name);
             }
-            resolve(method.body);
+            if(method.body instanceof Stmt.BlockStmt) {
+                Stmt.BlockStmt block = (Stmt.BlockStmt) method.body;
+                for(int i = 0 ; i < block.stmtList.size(); i++) resolve(block.stmtList.get(i));
+            }
+            else {
+                // normally this should happen but i put this as fallback , idk maybe i shouldn't !!
+                resolve(method.body);
+            }
             endScope();
         }
 

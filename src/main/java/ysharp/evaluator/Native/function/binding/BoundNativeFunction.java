@@ -55,4 +55,19 @@ public class BoundNativeFunction extends Function.NativeFunction {
     public String getFnName() {
         return "bound";
     }
+
+    @Override
+    public String toString() {
+        if(original instanceof Function.FunctionObject) {
+            return "<function:" + ((FunctionObject)original).declaration.name.lexeme + ">";
+        }
+        else if(original instanceof Function.NativeFunction) {
+            return "<function:" + ((NativeFunction)original).getFnName() + ">";
+        }
+        else if(original instanceof Function.FunctionOverload) {
+            return "<function:" + ((FunctionOverload)original).name + ">";
+        }
+
+        return toString();
+    }
 }

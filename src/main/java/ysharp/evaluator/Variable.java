@@ -51,17 +51,20 @@ public class Variable {
 
         public boolean isString() {return this.value instanceof yString.yStringInstance; }
 
-        public boolean isFunction() {
-            return this.value instanceof Function;
+        public boolean isFunctionObject() {
+            return this.value instanceof Function.FunctionObject;
         }
 
         public boolean isNativeFunction() {
             return this.value instanceof Function.NativeFunction;
         }
 
-        public boolean isLambda() { return this.value instanceof Function.LambdaObject;}
 
-        public boolean isFunctionLike() {return isLambda() || isNativeFunction() || isFunction();}
+        public boolean isLambda() { return this.value instanceof Function.LambdaObject;}
+        public boolean isFunctionLike() {return this.value instanceof Function; }
+
+        public boolean isFunctionOverload() {return this.value instanceof Function.FunctionOverload; }
+
 
         public boolean isClass() {
             return this.value instanceof yClass.ClassObject;
@@ -127,10 +130,13 @@ public class Variable {
 
         public yString.yStringInstance asStringObject() { return ((yString.yStringInstance) this.value); }
 
-        public Function.FunctionObject asFunction() {
+        public Function.FunctionObject asFunctionObject() {
             return (Function.FunctionObject) this.value;
         }
 
+        public Function.FunctionOverload asFunctionOverload() {
+            return (Function.FunctionOverload) this.value;
+        }
         public Function.NativeFunction asNativeFunction() {
             return (Function.NativeFunction) this.value;
         }

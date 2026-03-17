@@ -1,6 +1,9 @@
-const arr = Array.range(0,100, 4);
+use "board.ys";
 
+println "-".repeat(30);
+
+test(1,1,1);
+
+
+println "arr is in main";
 println arr.toString();
-
-println arr.size();
-

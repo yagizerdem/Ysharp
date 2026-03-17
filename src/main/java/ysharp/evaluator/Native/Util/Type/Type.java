@@ -139,7 +139,7 @@ public class Type {
 
                     Variable.Variant variant = arguments.getFirst();
 
-                    return new Variable.Variant(variant.isFunction());
+                    return new Variable.Variant(variant.isFunctionLike());
                 }
 
                 @Override

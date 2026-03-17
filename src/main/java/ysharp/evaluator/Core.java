@@ -66,15 +66,12 @@ public class Core {
               StdIO.printStdErr(interpreter.errors);
               return;
           }
-
-
-          int a = 10;
-
-
       }
       catch (YsharpError err) {
-          StdIO.printStdErr("Runtime error:");
-          StdIO.printStdErr(err.toString());
+          if(err.getPrintMessage()) {
+              StdIO.printStdErr("Runtime error:");
+              StdIO.printStdErr(err.toString());
+          }
       }
       catch (Signal.ThrowSignal ex) {
           StdIO.printStdErr("Uncaught throw:");

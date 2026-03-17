@@ -668,6 +668,7 @@ public class Interpreter implements
     public Variable.Variant visitGetExpr(Expr.GetExpr expr) {
 
         Variable.Variant object = evaluate(expr.object);
+        boolean isStatic = object.isClass();
 
         if (!object.isRuntimeObject()) {
             throw new YsharpError(
@@ -689,14 +690,27 @@ public class Interpreter implements
             );
         }
 
-        if (field.value.isNativeFunction()) {
-            Function.NativeFunction fn = field.value.asNativeFunction();
+        // class itself does not need this keyword only insntaces need this keyword
+        if(!isStatic) {
+            if (field.value.isNativeFunction()) {
+                Function.NativeFunction fn = field.value.asNativeFunction();
 
-            BoundNativeFunction bound =
-                    new BoundNativeFunction(fn, instance, "this");
+                BoundNativeFunction bound =
+                        new BoundNativeFunction(fn, instance, "this");
 
-            return new Variable.Variant(bound);
+                return new Variable.Variant(bound);
+            }
+
+            if (field.value.isFunctionOverload()) {
+                Function.FunctionOverload fn = field.value.asFunctionOverload();
+
+                BoundNativeFunction bound =
+                        new BoundNativeFunction(fn, instance, "this");
+
+                return new Variable.Variant(bound);
+            }
         }
+
 
         return field.value;
     }
@@ -732,6 +746,10 @@ public class Interpreter implements
         List<Variable.Variant> args = new ArrayList<>();
         for(Expr expr_ : expr.arguments) {
             args.add(evaluate(expr_));
+        }
+
+        if(calee.isFunctionOverload()) {
+            calee = calee.asFunctionOverload().getFunction(args.size());
         }
 
         if(!calee.isFunctionLike()) {
@@ -1122,15 +1140,52 @@ public class Interpreter implements
         Function.FunctionObject funObj =
                 new Function.FunctionObject(
                         stmt,
-                        curEnv); // take recursive deep copy to handle closures
+                        curEnv);
 
-        Variable var = new Variable(new Variable.Variant(funObj),
-                false,
-                "function");
+        int argSize = Function.getArgCount(funObj);
 
-        this.curEnv.define(funObj.declaration.name.lexeme,  var);
 
-        if(stmt.isExported) {
+        String name = funObj.declaration.name.lexeme;
+        if(curEnv.exists(name)) {
+            Variable.Variant prevFn = curEnv.getValue(name).value;
+            int prevArgSize = Function.getArgCount(prevFn.asCallable());
+
+            if(prevFn.isFunctionOverload()) {
+                Function.FunctionOverload overload = prevFn.asFunctionOverload();
+                overload.addFunction(new Variable.Variant(funObj), argSize, stmt.isExported);
+            }
+            else if(prevFn.isFunctionLike()){
+                boolean isPrevExported =  this.exports.contains(stmt.name.lexeme);
+                this.curEnv.remove(name);
+                Function.FunctionOverload overload = new Function.FunctionOverload(name);
+                overload.addFunction(new Variable.Variant(funObj), argSize, stmt.isExported);
+                overload.addFunction(prevFn, prevArgSize, isPrevExported);
+                Variable var = new Variable(new Variable.Variant(overload),
+                        false,
+                        "function");
+                this.curEnv.define(funObj.declaration.name.lexeme,  var);
+            }
+            else {
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.PROCESS,
+                        -1,
+                        "Variable '" +
+                                name +
+                                "' is already defined in this scope."
+                );
+            }
+
+        }else {
+            Variable var = new Variable(new Variable.Variant(funObj),
+                    false,
+                    "function");
+            this.curEnv.define(funObj.declaration.name.lexeme,  var);
+        }
+
+
+        // if function or functionOverload is exported mark its name to exported map
+        //if functionOverload is exported mark exported to overload objects map as well
+        if(stmt.isExported && !this.exports.contains(stmt.name.lexeme)) {
             this.exports.add(stmt.name.lexeme);
         }
     }
@@ -1315,14 +1370,40 @@ public class Interpreter implements
 
         klass.superClassName = stmt.superName; // allowed to be null
 
-        // static methods reside in class constructor itself
+        // static methods reside in class itself
+        HashMap<String, List<Function.NativeFunction>> staticMethodsFn = new HashMap<>();
         for(Stmt.ClassDeclaration.Method method : staticMethods) {
-            klass.set(method.name.lexeme, new Variable(
-                    new Variable.Variant(methodToNativeFn(method)),
-                    true,
-                    "function"
-            ));
+            if(staticMethodsFn.containsKey(method.name.lexeme)) {
+                staticMethodsFn.get(method.name.lexeme).add(methodToNativeFn(method));
+            }
+            else {
+                staticMethodsFn.computeIfAbsent(method.name.lexeme, k -> new ArrayList<>())
+                        .add(methodToNativeFn(method));
+            }
         }
+
+        for(String key: staticMethodsFn.keySet()) {
+            List<Function.NativeFunction> list = staticMethodsFn.get(key);
+            if(list.size() == 1) {
+                klass.set(key, new Variable(
+                        new Variable.Variant(list.get(0)),
+                        true,
+                        "function"
+                ));
+            }
+            else {
+                Function.FunctionOverload overload  = new Function.FunctionOverload(key);
+                for(Function.NativeFunction nf : list) {
+                    overload.addFunction(new Variable.Variant(nf), Function.getArgCount(nf));
+                }
+                klass.set(key, new Variable(
+                        new Variable.Variant(overload),
+                        true,
+                        "function"
+                ));
+            }
+        }
+        //
 
         // static props reside in class constructor itself
         for(Stmt.ClassDeclaration.Property prop : staticProperty) {
@@ -1338,7 +1419,7 @@ public class Interpreter implements
             klass.set(prop.name.lexeme, new Variable(
                     prop.initializer == null ? new Variable.Variant(null) : this.evaluate(prop.initializer),
                     prop.isConst,
-                    prop.type.lexeme
+                    prop.type == null ? "any" : prop.type.lexeme
             ));
         }
 
@@ -1360,13 +1441,39 @@ public class Interpreter implements
         };
 
         // instance methods reside in instance prototype
+        HashMap<String, List<Function.NativeFunction>> instanceMethodsFn = new HashMap<>();
         for(Stmt.ClassDeclaration.Method method : instanceMethods) {
-            klass.InstancePrototype .set(method.name.lexeme, new Variable(
-                    new Variable.Variant(methodToNativeFn(method)),
-                    true,
-                    "function"
-            ));
+            if(instanceMethodsFn.containsKey(method.name.lexeme)) {
+                instanceMethodsFn.get(method.name.lexeme).add(methodToNativeFn(method));
+            }
+            else {
+                instanceMethodsFn.computeIfAbsent(method.name.lexeme, k -> new ArrayList<>())
+                        .add(methodToNativeFn(method));
+            }
         }
+
+        for(String key: instanceMethodsFn.keySet()) {
+            List<Function.NativeFunction> list = instanceMethodsFn.get(key);
+            if(list.size() == 1) {
+                klass.InstancePrototype.set(key, new Variable(
+                        new Variable.Variant(list.get(0)),
+                        true,
+                        "function"
+                ));
+            }
+            else {
+                Function.FunctionOverload overload  = new Function.FunctionOverload(key);
+                for(Function.NativeFunction nf : list) {
+                    overload.addFunction(new Variable.Variant(nf), Function.getArgCount(nf));
+                }
+                klass.InstancePrototype.set(key, new Variable(
+                        new Variable.Variant(overload),
+                        true,
+                        "function"
+                ));
+            }
+        }
+        //
 
         if(constructorFn != null) {
             klass.constructor = methodToNativeFn(constructorFn);
@@ -1434,7 +1541,7 @@ public class Interpreter implements
                         );
                     }
 
-                    Environment newEnv = new Environment(curEnv);
+                    Environment newEnv = new Environment(interpreter.curEnv);
                     for(int i = 0; i < method.params.size(); i++) {
 
                         Stmt.ClassDeclaration.Method.Param param = method.params.get(i);
@@ -1457,7 +1564,7 @@ public class Interpreter implements
                         newEnv.define(method.params.get(i).name.lexeme, new Variable(
                                 arguments.get(i),
                                 true,
-                                method.params.get(i).type.lexeme
+                                typeTag
                         ));
                     }
 
@@ -1488,6 +1595,11 @@ public class Interpreter implements
             @Override
             public String getFnName() {
                 return method.name.lexeme;
+            }
+
+            @Override
+            public String toString() {
+                return "<function:" + method.name.lexeme + ">";
             }
         };
 
