@@ -79,35 +79,26 @@ public class Parser {
     }
 
     private void sync() {
+        advance();
 
         while (peek().type != Token.TokenType.END_OF_FILE) {
 
-            if(previous() == null) {
-                advance();
-                return;
-            }
-
             if (previous().type == Token.TokenType.SEMI_COLON) {
-                advance();
                 return;
             }
 
             switch (peek().type) {
+                case CLASS:
+                case FUNCTION:
                 case VAR:
                 case CONST_:
                 case IF:
-                case ELIF:
-                case ELSE:
                 case TRY:
-                case CATCH:
-                case FINALLY:
                 case USE:
                 case WHILE:
                 case FOR:
                 case RETURN:
                 case SWITCH:
-                case BREAK:
-                case CONTINUE:
                 case DO:
                 case PRINT:
                 case PRINTLN:

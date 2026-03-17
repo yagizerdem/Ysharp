@@ -8,8 +8,41 @@ import java.util.List;
 
 public abstract class Function extends RuntimeObject implements Callable {
 
-    // function prototype chain is closed
+    public static int getArgCount(Callable fn) {
+        if(fn instanceof FunctionObject) {
+            FunctionObject fnObj = (FunctionObject) fn;
+            return fnObj.declaration.params.size();
+        }
+        else if(fn instanceof NativeFunction) {
+            NativeFunction nativeFn = (NativeFunction) fn;
+            return nativeFn.arity();
+        }
+        else if(fn instanceof LambdaObject) {
+            LambdaObject lambda = (LambdaObject) fn;
+            return lambda.lambdaExpr.params.size();
+        }
 
+        return 0;
+    }
+
+    public static int getArgCount(Function fn) {
+        if(fn instanceof FunctionObject) {
+            FunctionObject fnObj = (FunctionObject) fn;
+            return fnObj.declaration.params.size();
+        }
+        else if(fn instanceof NativeFunction) {
+            NativeFunction nativeFn = (NativeFunction) fn;
+            return nativeFn.arity();
+        }
+        else if(fn instanceof LambdaObject) {
+            LambdaObject lambda = (LambdaObject) fn;
+            return lambda.lambdaExpr.params.size();
+        }
+
+        return 0;
+    }
+
+    // function prototype chain is closed
     public static class FunctionObject extends Function {
         public final Stmt.FunctionDeclaration declaration;
         private Environment closure;

@@ -411,6 +411,7 @@ public class yArray {
                 true,
                 "function");
         yArray_Instance_Prototype.set(size.getFnName(), sizeVar);
+        yArray_Instance_Prototype.set("length", sizeVar); // alias for size
 
         // arr.remove(index)
         class RemoveFn extends Function.NativeFunction implements Callable {
@@ -907,6 +908,7 @@ public class yArray {
                 requireArity(arguments, arity(), getFnName());
                 yArrayInstance array = requireArrayThis(interpreter, getFnName());
                 Callable callback = requireCallable(arguments.getFirst(), getFnName(),1);
+                int callbackArgSize = Function.getArgCount(callback);
 
                 yArrayInstance newArray = new yArrayInstance();
 
@@ -914,9 +916,9 @@ public class yArray {
                     Variable.Variant element = array.data.get(i);
 
                     List<Variable.Variant> args = new ArrayList<>();
-                    args.add(element);
-                    args.add(new Variable.Variant(i));
-                    args.add(new Variable.Variant(array));
+                    if(callbackArgSize >= 1) args.add(element);
+                    if(callbackArgSize >= 2) args.add(new Variable.Variant(i));
+                    if(callbackArgSize >= 3) args.add(new Variable.Variant(array));
 
                     Variable.Variant result = callback.call(interpreter, args);
                     newArray.data.add(result);
@@ -955,6 +957,7 @@ public class yArray {
                 requireArity(arguments, arity(), getFnName());
                 yArrayInstance array = requireArrayThis(interpreter, getFnName());
                 Callable callback = requireCallable(arguments.getFirst(), getFnName(), 1);
+                int callbackArgSize = Function.getArgCount(callback);
 
                 yArrayInstance newArray = new yArrayInstance();
 
@@ -962,9 +965,9 @@ public class yArray {
                     Variable.Variant element = array.data.get(i);
 
                     List<Variable.Variant> args = new ArrayList<>();
-                    args.add(element);
-                    args.add(new Variable.Variant(i));
-                    args.add(new Variable.Variant(array));
+                    if(callbackArgSize >= 1) args.add(element);
+                    if(callbackArgSize >= 2) args.add(new Variable.Variant(i));
+                    if(callbackArgSize >= 3) args.add(new Variable.Variant(array));
 
                     Variable.Variant result = callback.call(interpreter, args);
 
@@ -990,7 +993,7 @@ public class yArray {
         yArray_Instance_Prototype.set(filter.getFnName(), filterVar);
 
 
-        // arr.reduce(callback, initialValue)
+        // arr.reduce(callback, initialValue) callback = (accumulator, element, index, oldArray) =>
         class ReduceFn extends Function.NativeFunction implements Callable {
 
             @Override
@@ -1003,9 +1006,9 @@ public class yArray {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                requireArity(arguments, arity(), getFnName());
                 yArrayInstance array = requireArrayThis(interpreter, getFnName());
                 Callable callback = requireCallable(arguments.getFirst(), getFnName(), 1);
+                int callbackArgSize = Function.getArgCount(callback);
 
                 Variable.Variant accumulator;
                 int startIndex;
@@ -1022,10 +1025,10 @@ public class yArray {
                     Variable.Variant element = array.data.get(i);
 
                     List<Variable.Variant> args = new ArrayList<>();
-                    args.add(accumulator);
-                    args.add(element);
-                    args.add(new Variable.Variant(i));
-                    args.add(new Variable.Variant(array));
+                    if(callbackArgSize >= 1) args.add(accumulator);
+                    if(callbackArgSize >= 2) args.add(element);
+                    if(callbackArgSize >= 3) args.add(new Variable.Variant(i));
+                    if(callbackArgSize >= 4) args.add(new Variable.Variant(array));
 
                     accumulator = callback.call(interpreter, args);
                 }
@@ -1058,12 +1061,13 @@ public class yArray {
                 requireArity(arguments, arity(), getFnName());
                 yArrayInstance array = requireArrayThis(interpreter, getFnName());
                 Callable callback = requireCallable(arguments.getFirst(), getFnName(), 1);
+                int callbackArgSize = Function.getArgCount(callback);
 
                 for (int i = 0; i < array.data.size(); i++) {
                     List<Variable.Variant> args = new ArrayList<>();
-                    args.add(array.data.get(i));
-                    args.add(new Variable.Variant(i));
-                    args.add(new Variable.Variant(array));
+                    if(callbackArgSize >= 1) args.add(array.data.get(i));
+                    if(callbackArgSize >= 2) args.add(new Variable.Variant(i));
+                    if(callbackArgSize >= 3) args.add(new Variable.Variant(array));
 
                     Variable.Variant result = callback.call(interpreter, args);
                     if (result.isTruthy()) {
@@ -1142,14 +1146,15 @@ public class yArray {
                 requireArity(arguments, arity(), getFnName());
                 yArrayInstance array = requireArrayThis(interpreter, getFnName());
                 Callable callback = requireCallable(arguments.getFirst(), getFnName(), 1);
+                int callbackArgSize = Function.getArgCount(callback);
 
                 for (int i = 0; i < array.data.size(); i++) {
                     Variable.Variant element = array.data.get(i);
 
                     List<Variable.Variant> args = new ArrayList<>();
-                    args.add(element);
-                    args.add(new Variable.Variant(i));
-                    args.add(new Variable.Variant(array));
+                    if(callbackArgSize >= 1) args.add(element);
+                    if(callbackArgSize >= 2) args.add(new Variable.Variant(i));
+                    if(callbackArgSize >= 3) args.add(new Variable.Variant(array));
 
                     Variable.Variant result = callback.call(interpreter, args);
 
@@ -1191,14 +1196,15 @@ public class yArray {
                 requireArity(arguments, arity(), getFnName());
                 yArrayInstance array = requireArrayThis(interpreter, getFnName());
                 Callable callback = requireCallable(arguments.getFirst(), getFnName(), 1);
+                int callbackArgSize = Function.getArgCount(callback);
 
                 for (int i = 0; i < array.data.size(); i++) {
                     Variable.Variant element = array.data.get(i);
 
                     List<Variable.Variant> args = new ArrayList<>();
-                    args.add(element);
-                    args.add(new Variable.Variant(i));
-                    args.add(new Variable.Variant(array));
+                    if(callbackArgSize >= 1) args.add(element);
+                    if(callbackArgSize >= 2) args.add(new Variable.Variant(i));
+                    if(callbackArgSize >= 3) args.add(new Variable.Variant(array));
 
                     Variable.Variant result = callback.call(interpreter, args);
 
@@ -1239,14 +1245,15 @@ public class yArray {
                 requireArity(arguments, arity(), getFnName());
                 yArrayInstance array = requireArrayThis(interpreter, getFnName());
                 Callable callback = requireCallable(arguments.getFirst(), getFnName(), 1);
+                int callbackArgSize = Function.getArgCount(callback);
 
                 for (int i = 0; i < array.data.size(); i++) {
                     Variable.Variant element = array.data.get(i);
 
                     List<Variable.Variant> args = new ArrayList<>();
-                    args.add(element);
-                    args.add(new Variable.Variant(i));
-                    args.add(new Variable.Variant(array));
+                    if(callbackArgSize >= 1) args.add(element);
+                    if(callbackArgSize >= 2) args.add(new Variable.Variant(i));
+                    if(callbackArgSize >= 3) args.add(new Variable.Variant(array));
 
                     callback.call(interpreter, args);
                 }
@@ -1451,12 +1458,13 @@ public class yArray {
                 requireArity(arguments, arity(), getFnName());
                 yArrayInstance array = requireArrayThis(interpreter, getFnName());
                 Callable callback = requireCallable(arguments.getFirst(), getFnName(), 1);
+                int callbackArgSize = Function.getArgCount(callback);
 
                 for (int i = 0; i < array.data.size(); i++) {
                     List<Variable.Variant> args = new ArrayList<>();
-                    args.add(array.data.get(i));
-                    args.add(new Variable.Variant(i));
-                    args.add(new Variable.Variant(array));
+                    if(callbackArgSize >= 1) args.add(array.data.get(i));
+                    if(callbackArgSize >= 2) args.add(new Variable.Variant(i));
+                    if(callbackArgSize >= 3) args.add(new Variable.Variant(array));
 
                     Variable.Variant result = callback.call(interpreter, args);
                     if (result.isTruthy()) {
