@@ -11,8 +11,16 @@ class Human {
     test(a : int) do
         println "test2";
     end
+
+    var arr = Array.of(1,2,4);
 }
 
 const h = new Human();
 
 Human.test();
+
+function testt() do
+
+end
+
+println h.arr.toString();

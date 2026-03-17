@@ -2,7 +2,6 @@ package ysharp.evaluator.Native.Util.Type;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.lexer.Token;
 
 import java.util.List;
 

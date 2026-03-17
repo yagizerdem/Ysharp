@@ -69,7 +69,7 @@ public abstract class Function extends RuntimeObject implements Callable {
 
         @Override
         public String toString() {
-            return "<fn:" + this.declaration.name.lexeme + ">" ;
+            return "<function:" + this.declaration.name.lexeme + ">" ;
         }
 
         @Override
@@ -250,7 +250,7 @@ public abstract class Function extends RuntimeObject implements Callable {
 
         @Override
         public String toString() {
-            return "<fn:" + this.getFnName() + ">" ;
+            return "<function:" + this.getFnName() + ">" ;
         }
 
         @Override
@@ -285,7 +285,7 @@ public abstract class Function extends RuntimeObject implements Callable {
 
         @Override
         public String toString() {
-            return "<fn:" + this.name + ">" ;
+            return "<function:" + this.name + ">" ;
         }
 
         @Override

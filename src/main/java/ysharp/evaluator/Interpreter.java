@@ -1553,6 +1553,11 @@ public class Interpreter implements
             public String getFnName() {
                 return method.name.lexeme;
             }
+
+            @Override
+            public String toString() {
+                return "<function:" + method.name.lexeme + ">";
+            }
         };
 
     }
