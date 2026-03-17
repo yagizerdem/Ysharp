@@ -1,6 +1,7 @@
-const arr = Array.range(0,100, 4);
+var arr = Array.range(0,100, 4);
+
+arr = arr.shuffle();
 
 println arr.toString();
 
-println arr.size();
-
+println [1,2] == [1,2];

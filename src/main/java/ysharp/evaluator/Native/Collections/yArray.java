@@ -1914,6 +1914,37 @@ public class yArray {
                 true,
                 "function");
         yArray_Instance_Prototype.set(count.getFnName(), countVar);
+
+
+        // arr.shuffle()
+        class ShuffleFn extends Function.NativeFunction implements Callable {
+            @Override
+            public int arity() {
+                return 0;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                requireArity(arguments, arity(), getFnName());
+                yArrayInstance array = requireArrayThis(interpreter, getFnName());
+
+                java.util.Collections.shuffle(array.data);
+
+                return new Variable.Variant(array);
+            }
+
+            @Override
+            public String getFnName() {
+                return "shuffle";
+            }
+        }
+
+        ShuffleFn shuffle = new ShuffleFn();
+        Variable shuffleVar = new Variable(new Variable.Variant(shuffle),
+                true,
+                "function");
+        yArray_Instance_Prototype.set(shuffle.getFnName(), shuffleVar);
+
     }
 
     public static class yArrayInstance extends yClass.ClassObjectInstance {
@@ -1984,6 +2015,7 @@ public class yArray {
                     "function");
             this.set(isArray.getFnName(), isArrayVar);
 
+            // Array.of(...)
             class OfFn extends Function.NativeFunction implements Callable {
                 @Override
                 public int arity() { return -1; } // variable arity
