@@ -4,6 +4,7 @@ import ysharp.YsharpError;
 import ysharp.parser.Expr;
 import ysharp.parser.Stmt;
 
+import java.util.HashMap;
 import java.util.List;
 
 public abstract class Function extends RuntimeObject implements Callable {
@@ -260,6 +261,80 @@ public abstract class Function extends RuntimeObject implements Callable {
         @Override
         public String getType() {
             return "function";
+        }
+    }
+
+    public static class FunctionOverload extends Function {
+        public final String name;
+        public final HashMap<Integer, Variable.Variant> dispatcher =
+                new HashMap<>();
+
+        public FunctionOverload(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public boolean isTruthy() {
+            return true;
+        }
+
+        @Override
+        public String getType() {
+            return "function";
+        }
+
+        @Override
+        public String toString() {
+            return "<fn:" + this.name + ">" ;
+        }
+
+        @Override
+        public int arity() {
+            return -1;
+        }
+
+        @Override
+        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+
+            int argCount = arguments.size();
+
+            if (this.dispatcher.containsKey(argCount)) {
+                return this.dispatcher
+                        .get(argCount)
+                        .asCallable()
+                        .call(interpreter, arguments);
+            }
+
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    0,
+                    "No overload found for function '" + name +
+                            "' with " + argCount + " argument(s)."
+            );
+        }
+
+        public void addFunction(Variable.Variant fn, int argSize) {
+            if(this.dispatcher.containsKey(argSize)) {
+                throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,-1,
+                        "Variable '" +
+                        this.name +
+                        "' is already defined in this scope.");
+            }
+            this.dispatcher.put(argSize, fn);
+        }
+
+        public Variable.Variant getFunction(int argSize) {
+            if (this.dispatcher.containsKey(argSize)) {
+                return this.dispatcher.get(argSize);
+            }
+
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    -1,
+                    "Function '" + this.name + "' does not have an overload that accepts " + argSize +
+                            (argSize <= 1 ? " argument." : " arguments." )
+            );
+
         }
     }
 

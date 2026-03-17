@@ -1,7 +1,18 @@
-var arr = Array.range(0,100, 4);
+class Human {
 
-arr = arr.shuffle();
+    constructor() do
+        println "hit ctor";
+    end
 
-println arr.toString();
+    static test() do
+        println "test1";
+    end
 
-println [1,2] == [1,2];
+    test(a : int) do
+        println "test2";
+    end
+}
+
+const h = new Human();
+
+Human.test();
