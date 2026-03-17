@@ -2,6 +2,7 @@ package ysharp.evaluator.Native.Collections;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
+import ysharp.evaluator.Native.LINQ.Queryable;
 import ysharp.evaluator.Native.function.binding.BoundNativeFunction;
 
 import java.lang.reflect.Array;
@@ -35,7 +36,6 @@ public class yArray {
 
         return  (yArrayInstance) obj;
     }
-
 
     public static RuntimeObject yArray_Instance_Prototype;
 
@@ -1945,6 +1945,36 @@ public class yArray {
                 "function");
         yArray_Instance_Prototype.set(shuffle.getFnName(), shuffleVar);
 
+
+        // arr.asQueryable()
+        class AsQueryableFn extends Function.NativeFunction implements Callable {
+            @Override
+            public int arity() {
+                return 0;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                requireArity(arguments, arity(), getFnName());
+                yArrayInstance array = requireArrayThis(interpreter, getFnName());
+
+                Queryable.QueryableInstance queryable =
+                        new Queryable.QueryableInstance(array.data);
+
+                return new Variable.Variant(queryable);
+            }
+
+            @Override
+            public String getFnName() {
+                return "asQueryable";
+            }
+        }
+
+        AsQueryableFn asQueryable = new AsQueryableFn();
+        Variable asQueryableVar = new Variable(new Variable.Variant(asQueryable),
+                true,
+                "function");
+        yArray_Instance_Prototype.set(asQueryable.getFnName(), asQueryableVar);
     }
 
     public static class yArrayInstance extends yClass.ClassObjectInstance {
