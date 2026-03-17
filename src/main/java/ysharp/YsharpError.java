@@ -13,18 +13,30 @@ public class YsharpError extends RuntimeException {
     private final YsharpErrorType type;
     private final int line;
     private final String message;
+    private final boolean printMessage;
 
     public YsharpError(YsharpErrorType type, int line, String message) {
         super(message);
         this.type    = type;
         this.line    = line;
         this.message = message;
+        this.printMessage = true;
+    }
+
+
+    public YsharpError(YsharpErrorType type, int line, String message, boolean printMessage) {
+        super(message);
+        this.type    = type;
+        this.line    = line;
+        this.message = message;
+        this.printMessage = printMessage;
     }
 
 
     public YsharpErrorType getType()    { return type; }
     public int             getLine()    { return line; }
     public String          getMessage() { return message; }
+    public boolean          getPrintMessage() { return printMessage; }
 
 
     @Override

@@ -1,26 +1,9 @@
-class Human {
+use "board.ys";
 
-    constructor() do
-        println "hit ctor";
-    end
+println "-".repeat(30);
 
-    static test() do
-        println "test1";
-    end
+test(1,1,1);
 
-    test(a : int) do
-        println "test2";
-    end
 
-    var arr = Array.of(1,2,4);
-}
-
-const h = new Human();
-
-Human.test();
-
-function testt() do
-
-end
-
-println h.arr.toString();
+println "arr is in main";
+println arr.toString();
