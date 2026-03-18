@@ -52,6 +52,11 @@ public class yBaseTerminal {
             public String getType() {
                 return "__Terminal__";
             }
+
+            @Override
+            public String toString() {
+                return "<prototype:Terminal>";
+            }
         };
         yBaseTerminal_Instance_Prototype.prototype = yClass.ClassPrototype;
 

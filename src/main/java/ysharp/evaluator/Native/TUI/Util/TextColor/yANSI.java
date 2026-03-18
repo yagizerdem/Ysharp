@@ -4,6 +4,7 @@ import com.googlecode.lanterna.TextColor;
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.Native.Collections.yArray;
+import ysharp.evaluator.Native.TUI.Util.ySGR;
 
 import java.util.List;
 
@@ -34,11 +35,70 @@ public class yANSI {
         return (yANSIEnum) obj;
     }
 
+    private static yANSIEnum requireANSIThis (Interpreter interpreter, String fnName) {
+        Variable thisVar = interpreter.curEnv.getValue("this");
+
+        if (thisVar == null) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    0,
+                    "Method " + "'" + fnName+ "'" + "called without a valid 'this' context."
+            );
+        }
+
+        RuntimeObject obj = thisVar.value.asRuntimeObject();
+
+        if (!(obj instanceof yANSIEnum)) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    0,
+                    "Method '" + fnName + "' expected 'ANSI' as 'this' but got '" + obj.getType() + "'."
+            );
+        }
+
+        return  (yANSIEnum) obj;
+    }
+
+
     public static class yANSIEnum extends RuntimeObject {
         public TextColor.ANSI ansi;
         public yANSIEnum(TextColor.ANSI ansi){
             this.ansi = ansi;
             this.prototype = yClass.ClassPrototype;
+
+            // ansi.toString()
+            class ToStringFn extends Function.NativeFunction implements Callable {
+
+                @Override
+                public int arity() {
+                    return 0;
+                }
+
+                @Override
+                public Variable.Variant call(Interpreter interpreter,
+                                             List<Variable.Variant> arguments)
+                        throws YsharpError {
+
+                    requireArity(arguments, arity(), getFnName());
+
+                    yANSIEnum ansi = requireANSIThis(interpreter, getFnName());
+
+                    return new Variable.Variant(ansi.ansi.toString());
+                }
+
+                @Override
+                public String getFnName() {
+                    return "toString";
+                }
+
+            }
+
+            ToStringFn toString = new ToStringFn();
+            Variable toStringVar = new Variable(
+                    new Variable.Variant(toString),
+                    true,
+                    "function");
+            this.set(toString.getFnName(), toStringVar);
         }
 
         @Override
@@ -53,8 +113,7 @@ public class yANSI {
 
         @Override
         public String toString() {
-            if(this.ansi == null) return  "null";
-            return this.ansi.toString();
+            return "<instnace:ANSI>";
         }
     }
 
@@ -216,6 +275,11 @@ public class yANSI {
         @Override
         public String getType() {
             return "ANSI";
+        }
+
+        @Override
+        public String toString() {
+            return "<class:ANSI>";
         }
     }
 
