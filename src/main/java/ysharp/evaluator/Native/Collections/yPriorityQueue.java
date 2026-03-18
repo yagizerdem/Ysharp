@@ -631,7 +631,13 @@ public class yPriorityQueue {
     public static class yPriorityQueueInstance extends yClass.ClassObjectInstance {
 
         // Min-heap: index 0 = highest priority (lowest priority number)
-        final ArrayList<PriorityEntry> heap;
+        public final ArrayList<PriorityEntry> heap;
+
+        public final ArrayList<Variable.Variant> getRawVariants() {
+            ArrayList<Variable.Variant> list = new ArrayList<>();
+            heap.forEach( x -> list.add(x.value));
+            return list;
+        }
 
         public yPriorityQueueInstance() {
             this.heap = new ArrayList<>();

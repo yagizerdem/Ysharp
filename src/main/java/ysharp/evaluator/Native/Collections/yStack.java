@@ -2,6 +2,7 @@ package ysharp.evaluator.Native.Collections;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
+import ysharp.evaluator.Native.LINQ.Queryable;
 import ysharp.evaluator.Native.function.binding.BoundNativeFunction;
 
 import java.util.ArrayList;
@@ -11,29 +12,28 @@ import java.util.Stack;
 public class yStack {
 
     // helper
-    private static yStack.yStackInstance requireStackThis (Interpreter interpreter) {
-
+    private static yStack.yStackInstance requireStackThis (Interpreter interpreter, String fnName) {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     0,
-                    "Method 'add' called without a valid 'this' context."
+                    "Method " + "'" + fnName+ "'" + "called without a valid 'this' context."
             );
         }
 
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-        if (!(obj instanceof yStack.yStackInstance)) {
+        if (!(obj instanceof yStackInstance)) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     0,
-                    "'add' can only be called on stack objects."
+                    "Method '" + fnName + "' expected 'stack' as 'this' but got '" + obj.getType() + "'."
             );
         }
 
-        return  (yStack.yStackInstance) obj;
+        return  (yStackInstance) obj;
     }
 
     public static RuntimeObject yStack_Instance_Prototype;
@@ -68,7 +68,7 @@ public class yStack {
 
             @Override
             public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
-                yStack.yStackInstance array = requireStackThis(interpreter);
+                yStack.yStackInstance array = requireStackThis(interpreter, getFnName());
 
                 StringBuilder builder = new StringBuilder();
                 builder.append("[ ");
@@ -82,18 +82,19 @@ public class yStack {
                             builder.append(bound.call(interpreter, args));
                         }
                         else {
-                            builder.append("<class>");
+                            builder.append(var.asRuntimeObject().toString());
                         }
                     }
                     else {
                         builder.append(var.value.toString());
                     }
 
-                    builder.append(" ");
                     if(i != array.data.size() -1) {
                         builder.append(", ");
+
                     }
                 }
+                builder.append(" ");
                 builder.append("]");
 
                 return new Variable.Variant(builder.toString());
@@ -112,8 +113,8 @@ public class yStack {
                 "function");
         yStack_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
-        // arr.add(value)
-        class PushFn extends Function.NativeFunction implements Callable {
+        // stack.add(value)
+        class AddFn extends Function.NativeFunction implements Callable {
 
             @Override
             public int arity() {
@@ -126,24 +127,25 @@ public class yStack {
                     throws YsharpError {
 
                 Variable.Variant value = arguments.get(0);
-                yStack.yStackInstance stack = requireStackThis(interpreter);
-                stack.data.push(value);
+                yStack.yStackInstance stack = requireStackThis(interpreter, getFnName());
+                stack.data.push(new Variable.Variant(value.value));
 
                 return new Variable.Variant(stack.data.size());
             }
 
             @Override
             public String getFnName() {
-                return "push";
+                return "add";
             }
         }
 
-        PushFn push = new PushFn();
+        AddFn add = new AddFn();
         Variable addVar = new Variable(
-                new Variable.Variant(push),
+                new Variable.Variant(add),
                 true,
                 "function");
-        yStack_Instance_Prototype.set(push.getFnName(), addVar);
+        yStack_Instance_Prototype.set(add.getFnName(), addVar);
+        yStack_Instance_Prototype.set("push", addVar);
 
         // stack.pop()
         class PopFn extends Function.NativeFunction implements Callable {
@@ -158,7 +160,7 @@ public class yStack {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                yStack.yStackInstance stack = requireStackThis(interpreter);
+                yStack.yStackInstance stack = requireStackThis(interpreter, getFnName());
 
                 if (stack.data.isEmpty()) {
                     throw new YsharpError(
@@ -197,7 +199,7 @@ public class yStack {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                yStack.yStackInstance stack = requireStackThis(interpreter);
+                yStack.yStackInstance stack = requireStackThis(interpreter, getFnName());
 
                 if (stack.data.isEmpty()) {
                     throw new YsharpError(
@@ -222,6 +224,7 @@ public class yStack {
                 true,
                 "function");
         yStack_Instance_Prototype.set(peek.getFnName(), peekVar);
+        yStack_Instance_Prototype.set("top", peekVar);
 
         // stack.empty()
         class EmptyFn extends Function.NativeFunction implements Callable {
@@ -236,7 +239,7 @@ public class yStack {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                yStack.yStackInstance stack = requireStackThis(interpreter);
+                yStack.yStackInstance stack = requireStackThis(interpreter, getFnName());
 
                 return new Variable.Variant(stack.data.isEmpty());
             }
@@ -253,6 +256,7 @@ public class yStack {
                 true,
                 "function");
         yStack_Instance_Prototype.set(empty.getFnName(), emptyVar);
+        yStack_Instance_Prototype.set("isEmpty", emptyVar);
 
         // stack.search(element)
         class SearchFn extends Function.NativeFunction implements Callable {
@@ -267,7 +271,7 @@ public class yStack {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                yStack.yStackInstance stack = requireStackThis(interpreter);
+                yStack.yStackInstance stack = requireStackThis(interpreter, getFnName());
 
                 Variable.Variant target = arguments.get(0);
 
@@ -277,15 +281,11 @@ public class yStack {
                     Variable.Variant element = stack.data.get(i);
 
                     if (element == null && target == null) {
-                        return new Variable.Variant(
-                                stack.data.size() - i
-                        );
+                        return new Variable.Variant(stack.data.size() - i);
                     }
 
                     if (element != null && element.equals(target)) {
-                        return new Variable.Variant(
-                                stack.data.size() - i
-                        );
+                        return new Variable.Variant(stack.data.size() - i);
                     }
                 }
 
@@ -305,60 +305,6 @@ public class yStack {
                 "function");
         yStack_Instance_Prototype.set(search.getFnName(), searchVar);
 
-        // stack.add(index, value)
-        class AddAtIndexFn extends Function.NativeFunction implements Callable {
-
-            @Override
-            public int arity() {
-                return 2;
-            }
-
-            @Override
-            public Variable.Variant call(Interpreter interpreter,
-                                         List<Variable.Variant> arguments)
-                    throws YsharpError {
-
-                yStack.yStackInstance stack = requireStackThis(interpreter);
-
-                Variable.Variant indexVar = arguments.get(0);
-                Variable.Variant value = arguments.get(1);
-
-                if (!indexVar.canImplicitlyConvertNumber()) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "'add' first argument must be an integer index."
-                    );
-                }
-
-                int index = (int) indexVar.implicitlyConvertNumber();
-
-                if (index < 0 || index > stack.data.size()) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
-                            0,
-                            "Index out of bounds in 'add'."
-                    );
-                }
-
-                stack.data.add(index, value);
-
-                return new Variable.Variant(stack.data.size());
-            }
-
-            @Override
-            public String getFnName() {
-                return "add";
-            }
-        }
-
-        AddAtIndexFn addAtIndex = new AddAtIndexFn();
-        Variable addAtIndexVar = new Variable(
-                new Variable.Variant(addAtIndex),
-                true,
-                "function");
-        yStack_Instance_Prototype.set(addAtIndex.getFnName(), addAtIndexVar);
-
         // stack.clear()
         class ClearFn extends Function.NativeFunction implements Callable {
 
@@ -372,7 +318,7 @@ public class yStack {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                yStack.yStackInstance stack = requireStackThis(interpreter);
+                yStack.yStackInstance stack = requireStackThis(interpreter, getFnName());
 
                 stack.data.clear();
 
@@ -405,7 +351,7 @@ public class yStack {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                yStack.yStackInstance stack = requireStackThis(interpreter);
+                yStack.yStackInstance stack = requireStackThis(interpreter, getFnName());
 
                 Stack<Variable.Variant> clonedData =
                         (Stack<Variable.Variant>) stack.data.clone();
@@ -442,7 +388,7 @@ public class yStack {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                yStack.yStackInstance stack = requireStackThis(interpreter);
+                yStack.yStackInstance stack = requireStackThis(interpreter, getFnName());
 
                 Variable.Variant target = arguments.get(0);
 
@@ -467,6 +413,182 @@ public class yStack {
                 true,
                 "function");
         yStack_Instance_Prototype.set(contains.getFnName(), containsVar);
+
+        // stack.reverse()
+        class ReverseFn extends Function.NativeFunction {
+
+            @Override
+            public int arity() { return 0; }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args) {
+                yStackInstance stack = requireStackThis(interpreter, getFnName());
+
+                Stack<Variable.Variant> reversed = new Stack<>();
+                for (Variable.Variant v : stack.data) {
+                    reversed.add(0, v); // ters ekle
+                }
+
+                return new Variable.Variant(new yStackInstance(reversed));
+            }
+
+            @Override
+            public String getFnName() { return "reverse"; }
+        }
+
+        ReverseFn reverse = new ReverseFn();
+        Variable reverseVar = new Variable(new Variable.Variant(reverse),
+                true,
+                "function");
+        yStack_Instance_Prototype.set(reverse.getFnName(), reverseVar);
+
+        // stack.size()
+        class SizeFn extends Function.NativeFunction implements Callable {
+            @Override
+            public int arity() { return 0; }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                yStack.yStackInstance stack = requireStackThis(interpreter, getFnName());
+                return new Variable.Variant(stack.data.size());
+            }
+
+            @Override
+            public String getFnName() { return "size"; }
+        }
+
+        SizeFn size = new SizeFn();
+        Variable sizeVar = new Variable(new Variable.Variant(size),
+                true,
+                "function");
+        yStack_Instance_Prototype.set(size.getFnName(), sizeVar);
+
+        // stack.toArray()
+        class ToArrayFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 0;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                yStack.yStackInstance stack = requireStackThis(interpreter, getFnName());
+
+                ArrayList<Variable.Variant> newList = new ArrayList<>(stack.data);
+
+                return new Variable.Variant(new yArray.yArrayInstance(newList));
+            }
+
+            @Override
+            public String getFnName() {
+                return "toArray";
+            }
+        }
+
+        ToArrayFn toArray = new ToArrayFn();
+        Variable toArrayVar = new Variable(
+                new Variable.Variant(toArray),
+                true,
+                "function");
+        yStack_Instance_Prototype.set(toArray.getFnName(), toArrayVar);
+        yStack_Instance_Prototype.set("toList", toArrayVar);
+
+        // arr.asQueryable()
+        class AsQueryableFn extends Function.NativeFunction implements Callable {
+            @Override
+            public int arity() {
+                return 0;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                requireArity(arguments, arity(), getFnName());
+                yStackInstance stack = requireStackThis(interpreter, getFnName());
+
+                Queryable.QueryableInstance queryable =
+                        new Queryable.QueryableInstance(stack.data);
+
+                return new Variable.Variant(queryable);
+            }
+
+            @Override
+            public String getFnName() {
+                return "asQueryable";
+            }
+        }
+
+        AsQueryableFn asQueryable = new AsQueryableFn();
+        Variable asQueryableVar = new Variable(new Variable.Variant(asQueryable),
+                true,
+                "function");
+        yStack_Instance_Prototype.set(asQueryable.getFnName(), asQueryableVar);
+
+        class PeekOrNullFn extends Function.NativeFunction implements Callable {
+            @Override
+            public int arity() { return 0; }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                yStack.yStackInstance stack = requireStackThis(interpreter, getFnName());
+                if (stack.data.isEmpty()) return new Variable.Variant(null);
+                return stack.data.peek();
+            }
+
+            @Override
+            public String getFnName() { return "peekOrNull"; }
+        }
+
+        PeekOrNullFn peekOrNull = new PeekOrNullFn();
+        Variable peekOrNullVar = new Variable(new Variable.Variant(peekOrNull),
+                true,
+                "function");
+        yStack_Instance_Prototype.set(peekOrNull.getFnName(), peekOrNullVar);
+
+
+        class AddAllFn extends Function.NativeFunction implements Callable {
+            @Override
+            public int arity() { return 1; }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                yStack.yStackInstance stack = requireStackThis(interpreter, getFnName());
+                Variable.Variant other = arguments.get(0);
+
+                if (other.value instanceof yStack.yStackInstance) {
+                    stack.data.addAll(((yStack.yStackInstance) other.value).data.stream().map(x -> new Variable.Variant(x.value)).toList());
+                }
+                else if (other.value instanceof yArray.yArrayInstance) {
+                    stack.data.addAll(((yArray.yArrayInstance) other.value).data.stream().map(x -> new Variable.Variant(x.value)).toList());
+                }
+                else if (other.value instanceof yQueue.yQueueInstance) {
+                    stack.data.addAll(((yQueue.yQueueInstance) other.value).data.stream().map(x -> new Variable.Variant(x.value)).toList());
+                }
+                else if (other.value instanceof ySet.ySetInstance) {
+                    stack.data.addAll(((ySet.ySetInstance) other.value).data.stream().map(x -> new Variable.Variant(x.value)).toList());
+                }
+                else if (other.value instanceof yPriorityQueue.yPriorityQueueInstance) {
+                    stack.data.addAll(((yPriorityQueue.yPriorityQueueInstance) other.value).getRawVariants().stream().map(x -> new Variable.Variant(x.value)).toList());
+                }
+                else {
+                    throw new YsharpError(YsharpError.YsharpErrorType.PROCESS, 0, "Argument must be a vector based collection");
+                }
+
+                return new Variable.Variant(stack.data.size());
+            }
+
+            @Override
+            public String getFnName() { return "addAll"; }
+        }
+
+        AddAllFn addAll = new AddAllFn();
+        Variable addAllVar = new Variable(new Variable.Variant(addAll),
+                true,
+                "function");
+        yStack_Instance_Prototype.set(addAll.getFnName(), addAllVar);
     }
 
     public static class yStackInstance extends yClass.ClassObjectInstance {
