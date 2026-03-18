@@ -9,29 +9,28 @@ import java.util.*;
 public class yQueue {
 
     // helper
-    private static yQueue.yQueueInstance requireQueueThis (Interpreter interpreter) {
-
+    private static yQueue.yQueueInstance requireQueueThis (Interpreter interpreter, String fnName) {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     0,
-                    "Method 'add' called without a valid 'this' context."
+                    "Method " + "'" + fnName+ "'" + "called without a valid 'this' context."
             );
         }
 
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-        if (!(obj instanceof yQueue.yQueueInstance)) {
+        if (!(obj instanceof yQueueInstance)) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     0,
-                    "'add' can only be called on queue objects."
+                    "Method '" + fnName + "' expected 'queue' as 'this' but got '" + obj.getType() + "'."
             );
         }
 
-        return  (yQueue.yQueueInstance) obj;
+        return  (yQueueInstance) obj;
     }
 
     public static RuntimeObject yQueue_Instance_Prototype;
@@ -66,7 +65,7 @@ public class yQueue {
 
             @Override
             public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
-                yQueue.yQueueInstance queue = requireQueueThis(interpreter);
+                yQueue.yQueueInstance queue = requireQueueThis(interpreter, getFnName());
 
                 StringBuilder builder = new StringBuilder();
                 builder.append("[ ");
@@ -135,7 +134,7 @@ public class yQueue {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                yQueueInstance queue = requireQueueThis(interpreter);
+                yQueueInstance queue = requireQueueThis(interpreter, getFnName());
 
                 Variable.Variant value = arguments.get(0);
 
@@ -171,7 +170,7 @@ public class yQueue {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                yQueueInstance queue = requireQueueThis(interpreter);
+                yQueueInstance queue = requireQueueThis(interpreter, getFnName());
 
                 if (queue.data.isEmpty()) {
                     throw new YsharpError(
@@ -210,7 +209,7 @@ public class yQueue {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                yQueueInstance queue = requireQueueThis(interpreter);
+                yQueueInstance queue = requireQueueThis(interpreter, getFnName());
 
                 if (queue.data.isEmpty()) {
                     return new Variable.Variant(null);
@@ -248,7 +247,7 @@ public class yQueue {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                yQueueInstance queue = requireQueueThis(interpreter);
+                yQueueInstance queue = requireQueueThis(interpreter, getFnName());
 
                 if (queue.data.isEmpty()) {
                     return new Variable.Variant(null);
@@ -283,7 +282,7 @@ public class yQueue {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                yQueueInstance queue = requireQueueThis(interpreter);
+                yQueueInstance queue = requireQueueThis(interpreter, getFnName());
 
                 return new Variable.Variant(queue.data.size());
             }
@@ -314,7 +313,7 @@ public class yQueue {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                yQueueInstance queue = requireQueueThis(interpreter);
+                yQueueInstance queue = requireQueueThis(interpreter, getFnName());
 
                 return new Variable.Variant(queue.data.isEmpty());
             }
@@ -336,7 +335,7 @@ public class yQueue {
 
     public static class yQueueInstance extends yClass.ClassObjectInstance {
 
-        private final Queue<Variable.Variant> data;
+        public final Queue<Variable.Variant> data;
 
         public yQueueInstance(Queue<Variable.Variant> data) {
             this.data = data;

@@ -622,7 +622,7 @@ public class ySet {
 
     public static class ySetInstance extends yClass.ClassObjectInstance {
 
-        private final HashSet<Variable.Variant> data;
+        public final HashSet<Variable.Variant> data;
 
         public ySetInstance() {
             this.data = new HashSet<>();
