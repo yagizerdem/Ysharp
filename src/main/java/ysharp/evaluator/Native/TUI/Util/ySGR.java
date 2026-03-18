@@ -4,6 +4,7 @@ import com.googlecode.lanterna.SGR;
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.Native.Collections.yArray;
+import ysharp.evaluator.Native.TUI.Input.yKeyStroke;
 
 import java.util.List;
 
@@ -34,13 +35,71 @@ public class ySGR {
         return (ySGREnum) obj;
     }
 
-    public static class ySGREnum extends RuntimeObject {
-        public SGR sgr;
-        public ySGREnum(SGR sgr){
-            this.sgr = sgr;
-            this.prototype = yClass.ClassPrototype;
+    private static ySGREnum requireSGRThis (Interpreter interpreter, String fnName) {
+        Variable thisVar = interpreter.curEnv.getValue("this");
+
+        if (thisVar == null) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    0,
+                    "Method " + "'" + fnName+ "'" + "called without a valid 'this' context."
+            );
         }
 
+        RuntimeObject obj = thisVar.value.asRuntimeObject();
+
+        if (!(obj instanceof ySGREnum)) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    0,
+                    "Method '" + fnName + "' expected 'array' as 'this' but got '" + obj.getType() + "'."
+            );
+        }
+
+        return  (ySGREnum) obj;
+    }
+
+    public static class ySGREnum extends RuntimeObject {
+        public SGR sgr;
+        public ySGREnum(SGR sgr) {
+            this.sgr = sgr;
+            this.prototype = yClass.ClassPrototype;
+
+            // sgr.toString()
+            class ToStringFn extends Function.NativeFunction implements Callable {
+
+                @Override
+                public int arity() {
+                    return 0;
+                }
+
+                @Override
+                public Variable.Variant call(Interpreter interpreter,
+                                             List<Variable.Variant> arguments)
+                        throws YsharpError {
+
+                    requireArity(arguments, arity(), getFnName());
+
+                    ySGREnum SGRenum = requireSGRThis(interpreter, getFnName());
+
+                    return new Variable.Variant(SGRenum.sgr.toString());
+                }
+
+                @Override
+                public String getFnName() {
+                    return "toString";
+                }
+
+            }
+
+            ToStringFn toString = new ToStringFn();
+            Variable toStringVar = new Variable(
+                    new Variable.Variant(toString),
+                    true,
+                    "function");
+            this.set(toString.getFnName(), toStringVar);
+
+        }
         @Override
         public boolean isTruthy() {
             return true;
@@ -53,8 +112,7 @@ public class ySGR {
 
         @Override
         public String toString() {
-            if(this.sgr == null) return  "null";
-            return this.sgr.toString();
+            return "<instance:SGR>";
         }
     }
 
@@ -175,12 +233,12 @@ public class ySGR {
         public String getType() {
             return "SGR";
         }
+
+        @Override
+        public String toString() {
+            return "<class:SGR>";
+        }
     }
 
-    public static void Register(Interpreter interpreter) throws Exception {
-        ySGRClass ctor = new ySGRClass();
-        Variable.Variant variant = new Variable.Variant(ctor);
-        Variable var = new Variable(variant, true, "function");
-        interpreter.defineGlobal(ctor.getClassName(), var);
-    }
+
 }

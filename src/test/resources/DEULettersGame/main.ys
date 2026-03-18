@@ -1,3 +1,5 @@
-var this = 10;
 
-println this;
+var b = TUI.SGR.BOLD;
+
+println b;
+println b.toString();

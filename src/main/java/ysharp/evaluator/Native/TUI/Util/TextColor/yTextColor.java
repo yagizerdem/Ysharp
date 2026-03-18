@@ -33,6 +33,30 @@ public class yTextColor {
         return (yTextColorEnum) obj;
     }
 
+    private static yTextColorEnum requireTextColorThis (Interpreter interpreter, String fnName) {
+        Variable thisVar = interpreter.curEnv.getValue("this");
+
+        if (thisVar == null) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    0,
+                    "Method " + "'" + fnName+ "'" + "called without a valid 'this' context."
+            );
+        }
+
+        RuntimeObject obj = thisVar.value.asRuntimeObject();
+
+        if (!(obj instanceof yTextColorEnum)) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    0,
+                    "Method '" + fnName + "' expected 'TextColor' as 'this' but got '" + obj.getType() + "'."
+            );
+        }
+
+        return  (yTextColorEnum) obj;
+    }
+
     public static class yTextColorEnum extends RuntimeObject {
 
         public TextColor color;
@@ -40,6 +64,40 @@ public class yTextColor {
         public yTextColorEnum(TextColor color){
             this.color = color;
             this.prototype = yClass.ClassPrototype;
+
+            // TextColor.toString()
+            class ToStringFn extends Function.NativeFunction implements Callable {
+
+                @Override
+                public int arity() {
+                    return 0;
+                }
+
+                @Override
+                public Variable.Variant call(Interpreter interpreter,
+                                             List<Variable.Variant> arguments)
+                        throws YsharpError {
+
+                    requireArity(arguments, arity(), getFnName());
+
+                    yTextColorEnum textColor = requireTextColorThis(interpreter, getFnName());
+
+                    return new Variable.Variant(textColor.color.toString());
+                }
+
+                @Override
+                public String getFnName() {
+                    return "toString";
+                }
+
+            }
+
+            ToStringFn toString = new ToStringFn();
+            Variable toStringVar = new Variable(
+                    new Variable.Variant(toString),
+                    true,
+                    "function");
+            this.set(toString.getFnName(), toStringVar);
         }
 
         @Override
@@ -54,8 +112,7 @@ public class yTextColor {
 
         @Override
         public String toString() {
-            if(color == null) return "null";
-            return color.toString();
+            return "<instnace:TextColor>";
         }
     }
 
@@ -95,6 +152,11 @@ public class yTextColor {
         @Override
         public String getType() {
             return "TextColor";
+        }
+
+        @Override
+        public String toString() {
+            return "<class:TextColor>";
         }
     }
 
