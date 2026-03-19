@@ -1,3 +1,145 @@
+use "algorithm.ys";
 
 
+const basePath = "C:\Users\yagiz\Desktop\ysharp\Ysharp\src\test\resources\sorting\data";
+
+const dataPath_1k : string = Path.join(basePath, "1K_random_input.txt");
+const dataPath_10k : string = Path.join(basePath, "10K_random_input.txt");
+
+
+const dataPath_1k_input : string = File.read(dataPath_1k);
+const dataPath_10k_input : string = File.read(dataPath_10k);
+
+const arr_1k_data : Array = dataPath_1k_input.split("\n").map((str) => Type.Converter.toInt(str.trim()));
+const arr_10k_data : Array = dataPath_10k_input.split("\n").map((str) => Type.Converter.toInt(str.trim()));
+
+var curTime;
+var finishTime;
+
+/*
+const bubble_sort_1k =  arr_1k_data.clone();
+
+curTime = Time.nano();
+bubbleSort(bubble_sort_1k);
+finishTime = Time.nano();
+
+println "-".repeat(50);
+println "Bubble Sort on 1k input benchmark results : ";
+println "-".repeat(10);
+println "startAt : " + curTime + " ns.";
+println "finishAt : " + finishTime + " ns.";
+println "diff : " + (finishTime - curTime) + " ns.";
+println "first 20 items : " + bubble_sort_1k.take(20).toString();
+println "-".repeat(50);
+
+const bubble_sort_10k =  arr_10k_data.clone();
+
+println  bubble_sort_10k.size();
+
+curTime = Time.nano();
+bubbleSort(bubble_sort_10k);
+finishTime = Time.nano();
+
+println "-".repeat(50);
+println "Bubble Sort on 10k input benchmark results : ";
+println "-".repeat(10);
+println "startAt : " + curTime + " ns.";
+println "finishAt : " + finishTime + " ns.";
+println "diff : " + (finishTime - curTime) + " ns.";
+println "first 20 items : " + bubble_sort_10k.take(20).toString();
+println "-".repeat(50);
+
+*/
+
+
+/*
+
+const insertion_sort_1k =  arr_1k_data.clone();
+
+curTime = Time.nano();
+insertionSort(insertion_sort_1k);
+finishTime = Time.nano();
+
+println "-".repeat(50);
+println "Insertion Sort on 1k input benchmark results : ";
+println "-".repeat(10);
+println "startAt : " + curTime + " ns.";
+println "finishAt : " + finishTime + " ns.";
+println "diff : " + (finishTime - curTime) + " ns.";
+println "first 20 items : " + insertion_sort_1k.take(20).toString();
+println "-".repeat(50);
+
+
+const insertion_sort_10k =  arr_10k_data.clone();
+
+curTime = Time.nano();
+insertionSort(insertion_sort_10k);
+finishTime = Time.nano();
+
+println "-".repeat(50);
+println "Insertion Sort on 10k input benchmark results : ";
+println "-".repeat(10);
+println "startAt : " + curTime + " ns.";
+println "finishAt : " + finishTime + " ns.";
+println "diff : " + (finishTime - curTime) + " ns.";
+println "first 20 items : " + insertion_sort_10k.take(20).toString();
+println "-".repeat(50);
+
+*/
+
+/*
+
+var quick_sort_1k =  arr_1k_data.clone();
+
+curTime = Time.nano();
+quick_sort_1k = quickSort(quick_sort_1k);
+finishTime = Time.nano();
+
+println "-".repeat(50);
+println "Quick Sort on 1k input benchmark results : ";
+println "-".repeat(10);
+println "startAt : " + curTime + " ns.";
+println "finishAt : " + finishTime + " ns.";
+println "diff : " + (finishTime - curTime) + " ns.";
+println "first 20 items : " + quick_sort_1k.take(20).toString();
+println "-".repeat(50);
+
+
+var quick_sort_10k =  arr_10k_data.clone();
+
+curTime = Time.nano();
+quick_sort_10k = quickSort(quick_sort_10k);
+finishTime = Time.nano();
+
+println "-".repeat(50);
+println "Quick Sort on 10k input benchmark results : ";
+println "-".repeat(10);
+println "startAt : " + curTime + " ns.";
+println "finishAt : " + finishTime + " ns.";
+println "diff : " + (finishTime - curTime) + " ns.";
+println "first 20 items : " + quick_sort_10k.take(20).toString();
+println "-".repeat(50);
+
+*/
+
+
+/*
+
+var merge_sort_1k =  arr_1k_data.clone();
+
+curTime = Time.nano();
+mergeSort(merge_sort_1k);
+finishTime = Time.nano();
+
+println "-".repeat(50);
+println "Merge Sort on 1k input benchmark results : ";
+println "-".repeat(10);
+println "startAt : " + curTime + " ns.";
+println "finishAt : " + finishTime + " ns.";
+println "diff : " + (finishTime - curTime) + " ns.";
+println "first 20 items : " + merge_sort_1k.take(20).toString();
+println "-".repeat(50);
+
+
+*/
 

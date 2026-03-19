@@ -98,7 +98,7 @@ public class yArray {
                 }
                 builder.append("]");
 
-                return new Variable.Variant(builder.toString());
+                return new Variable.Variant(new yString.yStringInstance(builder.toString()));
             }
 
             @Override
@@ -506,7 +506,7 @@ public class yArray {
                     );
                 }
 
-                Variable.Variant oldValue = array.data.set(index, newValue);
+                Variable.Variant oldValue = array.data.set(index, new Variable.Variant(newValue.value));
 
                 return oldValue;
             }
@@ -559,7 +559,7 @@ public class yArray {
                     );
                 }
 
-                return array.data.get(index);
+                return new Variable.Variant(array.data.get(index).value);
             }
 
             @Override
@@ -815,7 +815,9 @@ public class yArray {
                 end = Math.max(start, Math.min(end, array.data.size()));
 
                 yArrayInstance newArray = new yArrayInstance();
-                newArray.data.addAll(array.data.subList(start, end));
+                for (Variable.Variant v : array.data.subList(start, end)) {
+                    newArray.data.add(new Variable.Variant(v.value));
+                }
 
                 return new Variable.Variant(newArray);
             }

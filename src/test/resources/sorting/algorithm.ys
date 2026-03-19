@@ -1,0 +1,113 @@
+
+export function bubbleSort(arr : Array) do
+    for var i  = 0 ; i < arr.size(); i++ do
+        for var j = 0 ; j < arr.size() -1 - i ; j++ do
+            if arr.get(j) > arr.get(j  + 1) then do
+                var cur = arr.get(j);
+                var next = arr.get(j + 1);
+                arr.set(j, next);
+                arr.set(j + 1, cur);
+            end
+        end
+    end
+end
+
+export function insertionSort(arr : Array) do
+    for var i = 1; i < arr.size(); i++ do
+        var j = i;
+        var key = arr.get(j);
+
+        while j > 0 && arr.get(j-1) > key do
+            arr.set(j, arr.get(j-1));
+            j--;
+        end
+
+        arr.set(j, key);
+    end
+end
+
+
+export function quickSort(arr : Array) do
+    if arr.size() > 1  then do
+        var pivot = arr.get(0);
+
+
+        var L = arr.filter((x) => x < pivot);
+        var R = arr.filter((x) => x > pivot);
+        var eq = arr.filter((x) => x == pivot);
+
+        L = quickSort(L);
+        R = quickSort(R);
+
+        var newArr = [];
+        newArr = newArr.concat(L);
+        newArr = newArr.concat(eq);
+        newArr = newArr.concat(R);
+
+        return newArr;
+    end
+    return arr;
+end
+
+
+export function mergeSort(arr : Array) do
+
+    function merge(arr : Array, left : int, mid : int, right : int) do
+
+        var L = new Array();
+        var R = new Array();
+
+        var i : int = left;
+        while i < mid + 1 do
+            L.add(arr.get(i));
+            i++;
+        end
+
+        var j : int = mid + 1;
+        while j < right + 1 do
+            R.add(arr.get(j));
+            j++;
+        end
+
+        var li : int = 0;
+        var ri : int = 0;
+        var k  : int = left;
+
+        while li < L.size() && ri < R.size() do
+            if L.get(li) <= R.get(ri) then do
+                arr.set(k, L.get(li));
+                li++;
+            end
+            else do
+                arr.set(k, R.get(ri));
+                ri++;
+            end
+            k++;
+        end
+
+        while li < L.size() do
+            arr.set(k, L.get(li));
+            li++; k++;
+        end
+
+        while ri < R.size() do
+            arr.set(k, R.get(ri));
+            ri++; k++;
+        end
+
+    end
+
+    function divide(arr : Array, left : int, right : int) do
+        if left >= right then do return null; end
+
+        var mid : int = left + (right - left) / 2;
+
+        divide(arr, left, mid);
+        divide(arr, mid + 1, right);
+
+        merge(arr, left, mid, right);
+    end
+
+    divide(arr, 0, arr.size() - 1);
+
+end

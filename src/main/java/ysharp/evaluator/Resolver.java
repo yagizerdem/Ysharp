@@ -207,12 +207,14 @@ public class Resolver implements Expr.Visitor<Void> ,
 
     @Override
     public Void visitLambdaExpr(Expr.LambdaExpr expr) {
+        beginScope();
         for(var param : expr.params)  {
             declare(param.name);
             define(param.name);
         }
         resolve(expr.expr);
         resolve(expr.body);
+        endScope();
         return null;
     }
 
