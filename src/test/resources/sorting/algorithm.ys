@@ -97,6 +97,7 @@ export function mergeSort(arr : Array) do
 
     end
 
+
     function divide(arr : Array, left : int, right : int) do
         if left >= right then do return null; end
 

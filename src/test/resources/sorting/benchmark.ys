@@ -124,7 +124,6 @@ println "-".repeat(50);
 
 
 /*
-
 var merge_sort_1k =  arr_1k_data.clone();
 
 curTime = Time.nano();
@@ -141,5 +140,18 @@ println "first 20 items : " + merge_sort_1k.take(20).toString();
 println "-".repeat(50);
 
 
-*/
+var merge_sort_10k =  arr_10k_data.clone();
 
+curTime = Time.nano();
+mergeSort(merge_sort_10k);
+finishTime = Time.nano();
+
+println "-".repeat(50);
+println "Merge Sort on 10k input benchmark results : ";
+println "-".repeat(10);
+println "startAt : " + curTime + " ns.";
+println "finishAt : " + finishTime + " ns.";
+println "diff : " + (finishTime - curTime) + " ns.";
+println "first 20 items : " + merge_sort_10k.take(20).toString();
+println "-".repeat(50);
+*/

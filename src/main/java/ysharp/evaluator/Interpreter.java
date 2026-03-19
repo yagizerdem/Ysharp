@@ -1129,7 +1129,7 @@ public class Interpreter implements
         }
 
         Variable var = new Variable(
-                value,
+                value == null ? new Variable.Variant(null) :new Variable.Variant(value.value),
                 false,
                 typeTag);
 
@@ -1215,7 +1215,7 @@ public class Interpreter implements
         }
 
         Variable var = new Variable(
-                value,
+                value == null ? new Variable.Variant(null) :new Variable.Variant(value.value),
                 true,
                 typeTag);
 

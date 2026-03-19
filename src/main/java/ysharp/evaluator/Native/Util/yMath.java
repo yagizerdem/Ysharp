@@ -127,7 +127,7 @@ public class yMath {
                     requireArity(arguments, 1, getClassName());
 
                     double value = requireNumber(arguments.getFirst(), getClassName(), 1);
-                    double response = Math.floor(value);
+                    int response = (int) Math.floor(value);
 
                     return new Variable.Variant(response);
                 }
