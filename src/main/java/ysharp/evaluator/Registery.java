@@ -71,5 +71,8 @@ public class Registery {
 
         // LINQ
         Queryable.Register(interpreter);
+
+        //Path
+        yPath.Register(interpreter);
     }
 }

@@ -47,7 +47,7 @@ public class yRandom {
             this.set(next.getFnName(), nextVar);
 
 
-            // Random.nextInt(min: int, max: int) -> int in [min, max]
+            // Random.nextInt(min: int, max: int) -> int in [min, max)
             class NextIntFn extends Function.NativeFunction {
 
                 @Override
@@ -63,7 +63,7 @@ public class yRandom {
                     double min = requireInt(arguments.get(0), getClassName(), 1);
                     double max = requireInt(arguments.get(1), getClassName(), 2);
 
-                    int response = ((int) min + rng.nextInt((int) max - (int) min + 1));
+                    int response = ((int) min + rng.nextInt((int) max - (int) min));
 
                     return new Variable.Variant(response);
                 }
