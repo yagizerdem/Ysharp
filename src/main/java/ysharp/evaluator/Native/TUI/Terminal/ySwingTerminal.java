@@ -1,5 +1,6 @@
 package ysharp.evaluator.Native.TUI.Terminal;
 
+import com.googlecode.lanterna.terminal.swing.SwingTerminalFrame;
 import ysharp.YsharpError;
 import ysharp.evaluator.Interpreter;
 import ysharp.evaluator.Native.TUI.Terminal.Abstract.yAbstractTerminal;
@@ -30,10 +31,12 @@ public class ySwingTerminal {
         ySwingTerminal_Instance_Prototype.prototype = yBaseTerminal.yBaseTerminal_Instance_Prototype;
     }
 
-    public static class ySwingTerminalInstance extends  yAbstractTerminal.AbstractSwingTerminal {
+    public static class ySwingTerminalInstance extends  yAbstractTerminal.AbstractTerminal {
 
         public ySwingTerminalInstance() {
             this.prototype = ySwingTerminal_Instance_Prototype;
+
+            this.instance = new SwingTerminalFrame();
 
             Variable autoFlushVar = new Variable(new Variable.Variant(false), false, "bool");
             this.set("autoFlush", autoFlushVar);

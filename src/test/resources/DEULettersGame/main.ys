@@ -1,5 +1,6 @@
+var tt = new TUI.YSPFTerminal();
+tt.enableSgr(TUI.SGR.BOLD);
+tt.setBackgroundColor(TUI.TextColor.ANSI.BLUE);
+tt.setCursorPosition(10, 10);
+tt.writeLine("yagiz erdem");
 
-var b = TUI.SGR.BOLD;
-
-println b;
-println b.toString();

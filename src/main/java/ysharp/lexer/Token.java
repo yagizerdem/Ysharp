@@ -129,13 +129,31 @@ public class Token {
     }
 
     private String literalToString() {
-        return switch (literal) {
-            case Literal.Null   ignored -> "null";
-            case Literal.Int    l       -> Integer.toString(l.value());
-            case Literal.Double l       -> Double.toString(l.value());
-            case Literal.Bool   l       -> l.value() ? "true" : "false";
-            case Literal.Str    l       -> l.value();
-            case Literal.Chr    l       -> Character.toString(l.value());
-        };
+        if (literal instanceof Literal.Null) {
+            return "null";
+        }
+        else if (literal instanceof Literal.Int) {
+            Literal.Int l = (Literal.Int) literal;
+            return Integer.toString(l.value());
+        }
+        else if (literal instanceof Literal.Double) {
+            Literal.Double l = (Literal.Double) literal;
+            return Double.toString(l.value());
+        }
+        else if (literal instanceof Literal.Bool) {
+            Literal.Bool l = (Literal.Bool) literal;
+            return l.value() ? "true" : "false";
+        }
+        else if (literal instanceof Literal.Str) {
+            Literal.Str l = (Literal.Str) literal;
+            return l.value();
+        }
+        else if (literal instanceof Literal.Chr) {
+            Literal.Chr l = (Literal.Chr) literal;
+            return Character.toString(l.value());
+        }
+
+        throw new RuntimeException("Unknown literal type: " + literal);
     }
+
 }

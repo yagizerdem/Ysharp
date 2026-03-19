@@ -1691,7 +1691,7 @@ public class yString  {
 
         @Override
         public String toString() {
-            return data;
+            return "\"" + data + "\"";
         }
 
         @Override

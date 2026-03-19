@@ -9,8 +9,6 @@ import ysharp.evaluator.Native.TUI.Terminal.Abstract.yBaseTerminal;
 import ysharp.evaluator.RuntimeObject;
 import ysharp.evaluator.Variable;
 import ysharp.evaluator.yClass;
-
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
@@ -31,6 +29,11 @@ public class yDefaultTerminal {
             public String getType() {
                 return "__DefaultTerminal__";
             }
+
+            @Override
+            public String toString() {
+                return "<prototype:DefaultTerminal>";
+            }
         };
         yDefaultTerminal_Instance_Prototype.prototype = yBaseTerminal.yBaseTerminal_Instance_Prototype;
     }
@@ -44,7 +47,7 @@ public class yDefaultTerminal {
 
                 if (instance instanceof SwingTerminalFrame frame) {
                     frame.setTitle("Ysharp TUI");
-                    Image icon = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB_PRE);
+                    BufferedImage icon = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB_PRE);
                     frame.setIconImage(icon);
                 }
             }
@@ -107,6 +110,11 @@ public class yDefaultTerminal {
         @Override
         public String getType() {
             return "DefaultTerminal";
+        }
+
+        @Override
+        public String toString() {
+            return "<class:DefaultTerminal>";
         }
     }
 
