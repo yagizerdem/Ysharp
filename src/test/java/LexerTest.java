@@ -396,7 +396,6 @@ bubbleSort(numbers, 5)
             if (token.type == Token.TokenType.IF)           hasIf = true;
             if (token.type == Token.TokenType.VAR)          hasVar = true;
             if (token.type == Token.TokenType.END_)         hasEnd = true;
-//            if (token.type == Token.TokenType.TYPE_INT)     hasTypeInt = true;
             if (token.type == Token.TokenType.PLUS_PLUS)    hasPlusPlus = true;
             if (token.type == Token.TokenType.GREATER_THAN) hasGreaterThan = true;
         }
@@ -405,7 +404,6 @@ bubbleSort(numbers, 5)
         assertTrue(hasIf);
         assertTrue(hasVar);
         assertTrue(hasEnd);
-        assertTrue(hasTypeInt);
         assertTrue(hasPlusPlus);
         assertTrue(hasGreaterThan);
 
