@@ -76,7 +76,7 @@ public class Converter {
 
                     Variable.Variant variant = arguments.getFirst();
                     if(variant.isInt())
-                        return new Variable.Variant(variant.asInt());
+                        return new Variable.Variant((int) variant.asInt());
                     else if(variant.isDouble())
                         return new Variable.Variant(Math.round(variant.asDouble()));
                     else if(variant.isChar())
