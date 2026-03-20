@@ -8,6 +8,7 @@ import ysharp.evaluator.Native.TUI.Terminal.yScrollSwingTerminal;
 import ysharp.evaluator.Native.TUI.Terminal.ySwingTerminal;
 import ysharp.evaluator.Native.TUI.Util.TextColor.yTextColor;
 import ysharp.evaluator.Native.TUI.Util.ySGR;
+import ysharp.evaluator.Native.TUI.Util.ySimpleTerminalResizeListener;
 import ysharp.evaluator.Native.TUI.Util.yTerminalSize;
 import ysharp.evaluator.Variable;
 import ysharp.evaluator.yClass;
@@ -81,6 +82,16 @@ public class TUI {
                     terminalSize.getType()
             );
             this.set(terminalSize.getClassName(), terminalSizeVar);
+
+
+            ySimpleTerminalResizeListener.ySimpleTerminalResizeListenerClass simpleTerminalResizeListener = new ySimpleTerminalResizeListener.ySimpleTerminalResizeListenerClass();
+            Variable simpleTerminalResizeListenerVar = new Variable(
+                    new Variable.Variant(simpleTerminalResizeListener),
+                    true,
+                    simpleTerminalResizeListener.getType()
+            );
+            this.set(simpleTerminalResizeListener.getClassName(), simpleTerminalResizeListenerVar);
+
 
         }
 

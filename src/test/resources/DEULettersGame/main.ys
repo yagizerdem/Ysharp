@@ -4,7 +4,12 @@ terminal.setCursorPosition(20, 10);
 terminal.writeLine("ltj");
 terminal.flush();
 
-Time.sleep(2000);
+
+var size = terminal.getTerminalSize();
+
+var listener = new TUI.SimpleTerminalResizeListener(size);
+
+println listener;
 
 
-println terminal.getTerminalSize().getRows();
+listener.onResized(terminal, size);
