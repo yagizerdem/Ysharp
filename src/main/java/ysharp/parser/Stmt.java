@@ -19,6 +19,7 @@ public abstract class Stmt {
         void visitWhileStmt(Stmt.WhileStmt stmt);
         void visitExprStmt(Stmt.ExprStmt stmt);
         void visitForStmt(Stmt.ForStmt stmt);
+        void visitForInStmt(Stmt.ForInStmt stmt);
         void visitBreakStmt(Stmt.BreakStmt stmt);
         void visitContinueStmt(Stmt.ContinueStmt stmt);
         void visitReturnStmt(Stmt.ReturnStmt stmt);
@@ -155,6 +156,24 @@ public abstract class Stmt {
         @Override
         public void accept(Visitor visitor) {
             visitor.visitForStmt(this);
+        }
+    }
+
+
+    public static class ForInStmt extends Stmt {
+        public final Stmt.VarDeclaration declaration;
+        public final Expr iterable;
+        public final Stmt body;
+
+        public ForInStmt(Stmt.VarDeclaration declaration, Expr iterable, Stmt body) {
+            this.declaration = declaration;
+            this.iterable = iterable;
+            this.body = body;
+        }
+
+        @Override
+        public void accept(Visitor visitor) {
+            visitor.visitForInStmt(this);
         }
     }
 

@@ -15,7 +15,8 @@ lambda
 - bitwise_and &rarr; equality ( "&" equality )*
 - equality &rarr; comparison ( ( "!=" | "==" ) comparison )*
 - comparison &rarr; bitwise_shift ( ( ">" | ">=" | "<" | "<=" ) bitwise_shift )*
-- bitwise_shift &rarr; term ( ( ">>" | "<<" ) term )*
+- bitwise_shift &rarr; range ( ( ">>" | "<<" ) range )*
+- range &rarr; term ( ".." term )?
 - term &rarr; factor ( ( "-" | "+" ) factor )*
 - factor &rarr; unary ( ( "/" | "\*" | "%" ) unary )*
 - unary &rarr;  ( "!" | "-" | "+" | "~" | "++" | "--" ) unary | postfix 
@@ -78,11 +79,8 @@ block
 - block &rarr; "do" declaration* "end"
 - exprStmt &rarr; expression ";"
 - forStmt &rarr;
-"for" 
-( varDecl | exprStmt | ";" )
-expression? ";"
-expression?
-statement
+( "for" ( varDecl | exprStmt | ";" ) expression? ";" expression?  statement )
+| ( "for" varDecl "in" expression statement)
 
 - whileStmt &rarr;
 "while"  expression  statement 

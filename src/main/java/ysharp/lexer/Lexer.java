@@ -61,6 +61,7 @@ public class Lexer {
         KEYWORD_MAP.put("println", Token.TokenType.PRINTLN);
         KEYWORD_MAP.put("use", Token.TokenType.USE);
         KEYWORD_MAP.put("export", Token.TokenType.EXPORT);
+        KEYWORD_MAP.put("in", Token.TokenType.IN);
 
         // type keywords
 //        KEYWORD_MAP.put("int", Token.TokenType.TYPE_INT);
@@ -295,7 +296,7 @@ public class Lexer {
             case '{' -> addToken(Token.TokenType.LEFT_CURLY_BRACE);
             case '}' -> addToken(Token.TokenType.RIGHT_CURLY_BRACE);
             case ',' -> addToken(Token.TokenType.COMMA);
-            case '.' -> addToken(Token.TokenType.DOT);
+            //case '.' -> addToken(Token.TokenType.DOT);
             case ':' -> addToken(Token.TokenType.COLON);
             case ';' -> addToken(Token.TokenType.SEMI_COLON);
             case '~' -> addToken(Token.TokenType.BITWISE_NOT);

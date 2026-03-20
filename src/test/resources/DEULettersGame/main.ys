@@ -1,6 +1,7 @@
-var t  = Time.nano();
 
-Time.sleep(1000);
+var a = 1;
+var b = 10;
 
-var t2 = Time.nano();
-
+for var i in range(a, b) do
+    println i;
+end

@@ -3,6 +3,7 @@ package ysharp.evaluator;
 import ysharp.YsharpError;
 import ysharp.evaluator.Native.Collections.yArray;
 import ysharp.evaluator.Native.Collections.yHashTable;
+import ysharp.evaluator.Native.Range;
 import ysharp.evaluator.Native.function.binding.BoundNativeFunction;
 import ysharp.lexer.Token;
 import ysharp.parser.Expr;
@@ -1017,6 +1018,62 @@ public class Interpreter implements
                 if (stmt.increment != null) {
                     evaluate(stmt.increment);
                 }
+            }
+
+        } finally {
+            this.curEnv = previous;
+        }
+    }
+
+    @Override
+    public void visitForInStmt(Stmt.ForInStmt stmt) {
+        Environment previous = this.curEnv;
+        this.curEnv = new Environment(previous);
+
+        try {
+
+            String typeName = stmt.declaration.type == null ? "any" : stmt.declaration.type.lexeme;
+            if (!typeName.equals("int") && !typeName.equals("any") && !typeName.equals("number")) {
+                throw new YsharpError(YsharpError.YsharpErrorType.PROCESS, -1,
+                        "For-in loop variable : " + stmt.declaration.identifier  + " must be 'int' or 'number' for a range, but found: " + typeName);
+            }
+
+            if (stmt.declaration.initializer != null) {
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.PROCESS,
+                        stmt.declaration.identifier.line,
+                        "Variable '" + stmt.declaration.identifier.lexeme +
+                                "' in for-in loop cannot have an initial value. It will be assigned values from the range."
+                );
+            }
+
+            Variable.Variant range = this.evaluate(stmt.iterable);
+            if(!(range.value instanceof Range.RangeValue)) {
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.PROCESS,
+                        stmt.declaration.identifier.line,
+                        "The expression after 'in' must result in a range (e.g., 1..10), but found: " +
+                                (range.value == null ? "null" : range.value.getClass().getSimpleName())
+                );
+            }
+
+            Range.RangeValue rangeValue = (Range.RangeValue) range.value;
+
+            Variable iterVar =  new Variable(
+                    new Variable.Variant(null),
+                    false,
+                    typeName
+            );
+
+            this.curEnv.define(stmt.declaration.identifier.lexeme, iterVar);
+            int start = rangeValue.start; // inclusive
+            int end = rangeValue.end; // inclusive
+
+            iterVar.value = new Variable.Variant(start);
+
+            while (iterVar.value.asInt() <= end) {
+                this.execute(stmt.body);
+                iterVar.value = new Variable.Variant(iterVar.value.asInt() + 1);
             }
 
         } finally {
