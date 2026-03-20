@@ -4,8 +4,6 @@ import ysharp.evaluator.Native.Collections.*;
 import ysharp.evaluator.Native.Collections.Trie.yMapTrie;
 import ysharp.evaluator.Native.Collections.Trie.ySortedMapTrie;
 import ysharp.evaluator.Native.Collections.Trie.yT9Trie;
-import ysharp.evaluator.Native.Form.Y_Button;
-import ysharp.evaluator.Native.Form.Y_Frame;
 import ysharp.evaluator.Native.LINQ.Queryable;
 import ysharp.evaluator.Native.Network.yHttp;
 import ysharp.evaluator.Native.Range;
@@ -40,9 +38,7 @@ public class Registery {
         ySortedMapTrie.Register(interpreter);
         yT9Trie.Register(interpreter);
 
-        //forms
-        Y_Frame.Register(interpreter);
-        Y_Button.Register(interpreter);
+        //YPF
 
 
         //http
