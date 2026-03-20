@@ -931,6 +931,30 @@ public class Interpreter implements
         return new Variable.Variant(null);
     }
 
+    @Override
+    public Variable.Variant visitRangeExpr(Expr.RangeExpr expr) {
+        Variable.Variant startVar = this.evaluate(expr.start);
+        Variable.Variant endVar = this.evaluate(expr.end);
+
+        if(!startVar.isInt()) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    expr.operator.line,
+                    "Range start must be an 'int', but found: " + startVar.getType()
+            );
+        }
+
+        if(!endVar.isInt()) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    expr.operator.line,
+                    "Range end must be an 'int', but found: " + endVar.getType()
+            );
+        }
+
+        return new Variable.Variant(new Range.RangeValue(startVar.asInt(), endVar.asInt()));
+    }
+
     // stmt visitor
 
 

@@ -227,6 +227,12 @@ public class Resolver implements Expr.Visitor<Void> ,
         return null;
     }
 
+    @Override
+    public Void visitRangeExpr(Expr.RangeExpr expr) {
+        resolve(expr.start);
+        resolve(expr.end);
+        return null;
+    }
 
     // stmt visitor
     @Override

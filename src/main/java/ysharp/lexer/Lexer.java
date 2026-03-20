@@ -296,7 +296,6 @@ public class Lexer {
             case '{' -> addToken(Token.TokenType.LEFT_CURLY_BRACE);
             case '}' -> addToken(Token.TokenType.RIGHT_CURLY_BRACE);
             case ',' -> addToken(Token.TokenType.COMMA);
-            //case '.' -> addToken(Token.TokenType.DOT);
             case ':' -> addToken(Token.TokenType.COLON);
             case ';' -> addToken(Token.TokenType.SEMI_COLON);
             case '~' -> addToken(Token.TokenType.BITWISE_NOT);
@@ -350,6 +349,10 @@ public class Lexer {
             case '?' -> {
                 if (Cursor.match(source, cursor, '?')) { addToken(Token.TokenType.DOUBLE_QUESTION_MARK); return; }
                 addToken(Token.TokenType.QUESTION_MARK);
+            }
+            case '.' -> {
+                if (Cursor.match(source, cursor, '.')) { addToken(Token.TokenType.DOUBLE_DOT); return; }
+                addToken(Token.TokenType.DOT);
             }
 
             // three char tokens

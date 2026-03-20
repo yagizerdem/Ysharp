@@ -25,6 +25,7 @@ abstract public class Expr {
         R visitMapInitializerExpr(MapInitializerExpr expr);
         R visitLambdaExpr(LambdaExpr expr);
         R visitNexExpr(NewExpr expr);
+        R visitRangeExpr(RangeExpr expr);
     }
 
     public abstract <R> R accept(Visitor<R> visitor);
@@ -78,6 +79,23 @@ abstract public class Expr {
         @Override
         public <R> R accept(Visitor<R> visitor) {
             return visitor.visitTernaryExpr(this);
+        }
+    }
+
+    public static final class RangeExpr extends Expr {
+        public final Expr start;
+        public final Token operator; // ..
+        public final Expr end;
+
+        public RangeExpr(Expr start, Token operator, Expr end) {
+            this.start = start;
+            this.operator = operator;
+            this.end = end;
+        }
+
+        @Override
+        public <R> R accept(Visitor<R> visitor) {
+            return visitor.visitRangeExpr(this);
         }
     }
 

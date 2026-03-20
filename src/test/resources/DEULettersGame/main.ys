@@ -1,7 +1,7 @@
 
-var a = 1;
-var b = 10;
 
-for var i in range(a, b) do
-    println i;
+
+
+for var i in  1..10 do
+    println i ;
 end

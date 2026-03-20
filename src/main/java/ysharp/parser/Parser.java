@@ -514,7 +514,7 @@ public class Parser {
     }
 
     private Expr parseBitwiseShift() throws YsharpError {
-        Expr expr = parseTerm();
+        Expr expr = parseRange();
 
         if (match(peek(),
                 Token.TokenType.RIGHT_SHIFT,
@@ -522,7 +522,7 @@ public class Parser {
 
             Token op = previous();
 
-            Expr term = parseTerm();
+            Expr term = parseRange();
             Expr.BinaryExpr binaryExpr = new Expr.BinaryExpr(
                     expr,
                     op,
@@ -535,7 +535,7 @@ public class Parser {
 
                 op = previous();
 
-                term = parseTerm();
+                term = parseRange();
                 Expr.BinaryExpr binaryExpr_ = new Expr.BinaryExpr(
                         binaryExpr,
                         op,
@@ -546,6 +546,40 @@ public class Parser {
             }
 
             return binaryExpr;
+        }
+
+        return expr;
+    }
+
+    private Expr parseRange() throws YsharpError {
+        Expr expr = parseTerm();
+
+        if (match(peek(), Token.TokenType.DOUBLE_DOT)) {
+
+            Token op = previous();
+
+            Expr factor = parseFactor();
+            Expr.RangeExpr rangeExpr = new Expr.RangeExpr(
+                    expr,
+                    op,
+                    factor
+            );
+
+            while (match(peek(),
+                    Token.TokenType.DOUBLE_DOT)) {
+
+                op = previous();
+                factor = parseFactor();
+                Expr.RangeExpr rangeExpr_ = new Expr.RangeExpr(
+                        rangeExpr,
+                        op,
+                        factor
+                );
+
+                rangeExpr = rangeExpr_;
+            }
+
+            return rangeExpr;
         }
 
         return expr;
