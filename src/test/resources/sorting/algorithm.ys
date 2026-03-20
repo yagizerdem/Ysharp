@@ -112,3 +112,75 @@ export function mergeSort(arr : Array) do
     divide(arr, 0, arr.size() - 1);
 
 end
+
+export function heapSort(arr : Array) do
+
+      var n  = arr.size();
+
+    function heapifyBottomUp(arr : Array, i) do
+        var cur = i;
+        while cur > 1 do
+            var parent = cur / 2;
+
+            if(arr.get(parent) > arr.get(cur)) then do
+                var val = arr.get(parent);
+                arr.set(parent, arr.get(cur));
+                arr.set(cur, val);
+                cur = parent;
+            end
+            else do
+                break;
+            end
+        end
+    end
+
+    function heapifyTopDown(arr : Array, c : int) do
+           var cur = c;
+           var lefti = cur * 2;
+           var righti = cur *2 + 1;
+           while lefti < arr.size() do
+                var nexti = cur;
+
+                if arr.get(lefti) < arr.get(nexti) then do
+                    nexti = lefti;
+                end
+
+                if righti < arr.size() && arr.get(righti) < arr.get(nexti) then do
+                    nexti = righti;
+                end
+
+                if cur == nexti then do break; end
+
+                // swap
+                var cur_val = arr.get(cur);
+                arr.set(cur, arr.get(nexti));
+                arr.set(nexti, cur_val);
+
+                cur = nexti;
+                lefti = cur *2;
+                righti = cur *2 + 1;
+           end
+    end
+
+    const min_heap = arr;
+    for var i = min_heap.size() / 2 ; i >= 1 ; i-- do
+        heapifyTopDown(min_heap, i);
+    end
+
+    var sorted = [];
+
+    for var i = 1; i < n ; i++ do
+        if(min_heap.size() == 2) then do
+            sorted.push(min_heap.pop());
+            break;
+        end
+
+        var v = min_heap.get(1);
+        sorted.add(v);
+        min_heap.set(1, min_heap.pop());
+        heapifyTopDown(min_heap, 1);
+
+    end
+
+    return sorted;
+end

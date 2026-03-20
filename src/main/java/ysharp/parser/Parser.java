@@ -1,6 +1,7 @@
 package ysharp.parser;
 
 import ysharp.YsharpError;
+import ysharp.evaluator.Native.Util.Type.Type;
 import ysharp.lexer.Token;
 
 import java.util.ArrayList;
@@ -169,6 +170,30 @@ public class Parser {
             return false;
 
         return tokenStream.get(cursor).type == Token.TokenType.RIGHT_ARROW;
+    }
+
+    private boolean isForInAhead() {
+        if (peek().type != Token.TokenType.FOR) return false;
+
+        int cursor = current + 1;
+
+        if (cursor >= tokenStream.size() || tokenStream.get(cursor).type != Token.TokenType.VAR) {
+            return false;
+        }
+        cursor++;
+
+        if (cursor >= tokenStream.size() || tokenStream.get(cursor).type != Token.TokenType.IDENTIFIER) {
+            return false;
+        }
+        cursor++;
+
+        if (cursor < tokenStream.size() && tokenStream.get(cursor).type == Token.TokenType.COLON) {
+            cursor += 2;
+        }
+
+        if (cursor >= tokenStream.size()) return false;
+
+        return tokenStream.get(cursor).type == Token.TokenType.IN;
     }
 
     // expression parser
@@ -489,7 +514,7 @@ public class Parser {
     }
 
     private Expr parseBitwiseShift() throws YsharpError {
-        Expr expr = parseTerm();
+        Expr expr = parseRange();
 
         if (match(peek(),
                 Token.TokenType.RIGHT_SHIFT,
@@ -497,7 +522,7 @@ public class Parser {
 
             Token op = previous();
 
-            Expr term = parseTerm();
+            Expr term = parseRange();
             Expr.BinaryExpr binaryExpr = new Expr.BinaryExpr(
                     expr,
                     op,
@@ -510,7 +535,7 @@ public class Parser {
 
                 op = previous();
 
-                term = parseTerm();
+                term = parseRange();
                 Expr.BinaryExpr binaryExpr_ = new Expr.BinaryExpr(
                         binaryExpr,
                         op,
@@ -521,6 +546,40 @@ public class Parser {
             }
 
             return binaryExpr;
+        }
+
+        return expr;
+    }
+
+    private Expr parseRange() throws YsharpError {
+        Expr expr = parseTerm();
+
+        if (match(peek(), Token.TokenType.DOUBLE_DOT)) {
+
+            Token op = previous();
+
+            Expr factor = parseFactor();
+            Expr.RangeExpr rangeExpr = new Expr.RangeExpr(
+                    expr,
+                    op,
+                    factor
+            );
+
+            while (match(peek(),
+                    Token.TokenType.DOUBLE_DOT)) {
+
+                op = previous();
+                factor = parseFactor();
+                Expr.RangeExpr rangeExpr_ = new Expr.RangeExpr(
+                        rangeExpr,
+                        op,
+                        factor
+                );
+
+                rangeExpr = rangeExpr_;
+            }
+
+            return rangeExpr;
         }
 
         return expr;
@@ -943,7 +1002,16 @@ public class Parser {
         if(peek().type == Token.TokenType.DO) return parseBlockStmt();
         if(match(peek(), Token.TokenType.IF)) return parseIfStmt();
         if(match(peek(), Token.TokenType.WHILE)) return parseWhileStmt();
-        if(match(peek(), Token.TokenType.FOR)) return parseForStmt();
+        if(peek().type == Token.TokenType.FOR) {
+            if(isForInAhead()) {
+                advance(); // consume for
+                return parseForInStmt();
+            }
+            else {
+                advance(); // consume for
+                return parseForStmt();
+            }
+        };
         if(match(peek(), Token.TokenType.BREAK)) return parseBreakStmt();
         if(match(peek(), Token.TokenType.CONTINUE)) return parseContinueStmt();
         if(match(peek(), Token.TokenType.RETURN)) return parseReturnStmt();
@@ -1090,6 +1158,39 @@ public class Parser {
                 increment,
                 body
         );
+    }
+
+    private Stmt parseForInStmt() throws YsharpError {
+        consume(Token.TokenType.VAR, "Expected 'var' keyword after 'for' in for-in loop.");
+
+        Token identifier = peek();
+        if (identifier.type != Token.TokenType.IDENTIFIER) {
+            throw new YsharpError(YsharpError.YsharpErrorType.SYNTAX, identifier.line,
+                    "Expected variable name after 'var' in for-in loop, but found: " + identifier.lexeme);
+        }
+        advance();
+
+        Token typeName = null;
+        if (match(peek(), Token.TokenType.COLON)) {
+            Token typeToken = peek();
+
+            if (typeToken.literal instanceof Token.Literal.Str strLit) {
+                typeName = peek();
+                advance();
+            } else {
+                throw new YsharpError(YsharpError.YsharpErrorType.SYNTAX, typeToken.line,
+                        "Expected a valid type name after ':', but found: " + typeToken.lexeme);
+            }
+        }
+
+        Stmt.VarDeclaration initializer = new Stmt.VarDeclaration(identifier, typeName, null, false);
+
+        consume(Token.TokenType.IN, "Expected 'in' keyword after variable '" + identifier.lexeme + "'.");
+
+        Expr iterable = parseAssignment();
+        Stmt body = parseBlockStmt();
+
+        return new Stmt.ForInStmt(initializer, iterable, body);
     }
 
     private Stmt parseBreakStmt() throws YsharpError {

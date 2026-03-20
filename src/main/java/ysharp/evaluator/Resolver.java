@@ -227,6 +227,12 @@ public class Resolver implements Expr.Visitor<Void> ,
         return null;
     }
 
+    @Override
+    public Void visitRangeExpr(Expr.RangeExpr expr) {
+        resolve(expr.start);
+        resolve(expr.end);
+        return null;
+    }
 
     // stmt visitor
     @Override
@@ -274,6 +280,15 @@ public class Resolver implements Expr.Visitor<Void> ,
         resolve(stmt.initializer);
         resolve(stmt.condition);
         resolve(stmt.increment);
+        resolve(stmt.body);
+        endScope();
+    }
+
+    @Override
+    public void visitForInStmt(Stmt.ForInStmt stmt) {
+        beginScope();
+        resolve(stmt.declaration);
+        resolve(stmt.iterable);
         resolve(stmt.body);
         endScope();
     }

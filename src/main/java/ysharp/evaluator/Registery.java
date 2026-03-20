@@ -8,6 +8,7 @@ import ysharp.evaluator.Native.Form.Y_Button;
 import ysharp.evaluator.Native.Form.Y_Frame;
 import ysharp.evaluator.Native.LINQ.Queryable;
 import ysharp.evaluator.Native.Network.yHttp;
+import ysharp.evaluator.Native.Range;
 import ysharp.evaluator.Native.TUI.TUI;
 import ysharp.evaluator.Native.Threading.ySemaphore;
 import ysharp.evaluator.Native.Threading.yThread;
@@ -74,5 +75,8 @@ public class Registery {
 
         //Path
         yPath.Register(interpreter);
+
+        // range function
+        Range.Register(interpreter);
     }
 }

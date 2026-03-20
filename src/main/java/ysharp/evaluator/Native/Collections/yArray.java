@@ -2156,7 +2156,7 @@ public class yArray {
     public static void Register(Interpreter interpreter) throws Exception {
         yArrayClass arrayCtor = new yArrayClass();
         Variable.Variant variant = new Variable.Variant(arrayCtor);
-        Variable var = new Variable(variant, false, arrayCtor.getType());
+        Variable var = new Variable(variant, true, arrayCtor.getType());
         interpreter.defineGlobal(arrayCtor.getClassName(), var);
     }
 

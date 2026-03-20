@@ -38,6 +38,7 @@ public class Token {
         SEMI_COLON, // ;
         COMMA, // ,
         DOT, // .
+        DOUBLE_DOT, // ..
 
         // equality / comparison
         EQUAL_EQUAL, BANG_EQUAL, // == !=
@@ -94,6 +95,7 @@ public class Token {
         EXPORT, // export
         NEW, // create new object
         THROW, // throw
+        IN, // in
 
         // type declaration keywords
 //        TYPE_INT, // int

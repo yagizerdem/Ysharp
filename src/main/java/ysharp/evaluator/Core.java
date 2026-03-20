@@ -18,7 +18,7 @@ public class Core {
           Interpreter interpreter = new Interpreter();
           Registery.register(interpreter);
 
-          String mainModulePath = "C:\\Users\\yagiz\\Desktop\\ysharp\\Ysharp\\src\\test\\resources\\sorting\\benchmark.ys";
+          String mainModulePath = "C:\\Users\\yagiz\\Desktop\\ysharp\\Ysharp\\src\\test\\resources\\DEULettersGame\\main.ys";
           String mainModuleContent = new String(Files.readAllBytes(Paths.get(mainModulePath)));
 
 

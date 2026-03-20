@@ -16,7 +16,8 @@ const arr_10k_data : Array = dataPath_10k_input.split("\n").map((str) => Type.Co
 var curTime;
 var finishTime;
 
-/*
+// bubble sort
+
 const bubble_sort_1k =  arr_1k_data.clone();
 
 curTime = Time.nano();
@@ -49,10 +50,9 @@ println "diff : " + (finishTime - curTime) + " ns.";
 println "first 20 items : " + bubble_sort_10k.take(20).toString();
 println "-".repeat(50);
 
-*/
 
 
-/*
+// insertion sort
 
 const insertion_sort_1k =  arr_1k_data.clone();
 
@@ -85,9 +85,9 @@ println "diff : " + (finishTime - curTime) + " ns.";
 println "first 20 items : " + insertion_sort_10k.take(20).toString();
 println "-".repeat(50);
 
-*/
 
-/*
+
+// quick sort
 
 var quick_sort_1k =  arr_1k_data.clone();
 
@@ -120,10 +120,9 @@ println "diff : " + (finishTime - curTime) + " ns.";
 println "first 20 items : " + quick_sort_10k.take(20).toString();
 println "-".repeat(50);
 
-*/
 
+// merge sort
 
-/*
 var merge_sort_1k =  arr_1k_data.clone();
 
 curTime = Time.nano();
@@ -154,16 +153,37 @@ println "finishAt : " + finishTime + " ns.";
 println "diff : " + (finishTime - curTime) + " ns.";
 println "first 20 items : " + merge_sort_10k.take(20).toString();
 println "-".repeat(50);
-*/
 
-var a = 10;
 
-class Human {
-    static var b = a;
-}
+// heap sort
 
-const h =new Human();
+var heap_sort_1k =  arr_1k_data.clone();
 
-a++;
-println Human.b;
-println a;
+curTime = Time.nano();
+heapSort(heap_sort_1k);
+finishTime = Time.nano();
+
+println "-".repeat(50);
+println "Heap Sort on 1k input benchmark results : ";
+println "-".repeat(10);
+println "startAt : " + curTime + " ns.";
+println "finishAt : " + finishTime + " ns.";
+println "diff : " + (finishTime - curTime) + " ns.";
+println "first 20 items : " + heap_sort_1k.take(20).toString();
+println "-".repeat(50);
+
+
+var heap_sort_10k =  arr_10k_data.clone();
+
+curTime = Time.nano();
+mergeSort(heap_sort_10k);
+finishTime = Time.nano();
+
+println "-".repeat(50);
+println "Heap Sort on 10k input benchmark results : ";
+println "-".repeat(10);
+println "startAt : " + curTime + " ns.";
+println "finishAt : " + finishTime + " ns.";
+println "diff : " + (finishTime - curTime) + " ns.";
+println "first 20 items : " + heap_sort_10k.take(20).toString();
+println "-".repeat(50);
