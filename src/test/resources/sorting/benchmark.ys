@@ -155,3 +155,15 @@ println "diff : " + (finishTime - curTime) + " ns.";
 println "first 20 items : " + merge_sort_10k.take(20).toString();
 println "-".repeat(50);
 */
+
+var a = 10;
+
+class Human {
+    static var b = a;
+}
+
+const h =new Human();
+
+a++;
+println Human.b;
+println a;

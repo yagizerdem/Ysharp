@@ -1311,7 +1311,7 @@ public class Interpreter implements
                     instance.set(prop.name.lexeme,
                             new Variable(
                                     prop.initializer != null ?
-                                            interpreter.evaluate(prop.initializer):
+                                            new Variable.Variant(interpreter.evaluate(prop.initializer).value):
                                             new Variable.Variant(null),
                                                     prop.isConst,
                                                     prop.type == null ? "any" :  prop.type.lexeme));
@@ -1422,7 +1422,7 @@ public class Interpreter implements
             }
 
             klass.set(prop.name.lexeme, new Variable(
-                    prop.initializer == null ? new Variable.Variant(null) : this.evaluate(prop.initializer),
+                    prop.initializer == null ? new Variable.Variant(null) : new Variable.Variant(this.evaluate(prop.initializer).value),
                     prop.isConst,
                     prop.type == null ? "any" : prop.type.lexeme
             ));
