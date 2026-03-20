@@ -348,7 +348,8 @@ public class Interpreter implements
             }
             case PLUS_PLUS -> {
 
-                if (!(expr.expr instanceof Expr.VariableExpr)) {
+                if (!(expr.expr instanceof Expr.VariableExpr ||
+                        expr.expr instanceof Expr.GetExpr)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.SEMANTIC,
                             expr.op.line,
@@ -374,7 +375,8 @@ public class Interpreter implements
             }
             case MINUS_MINUS -> {
 
-                if (!(expr.expr instanceof Expr.VariableExpr)) {
+                if (!(expr.expr instanceof Expr.VariableExpr ||
+                        expr.expr instanceof Expr.GetExpr)) {
                     throw new YsharpError(
                             YsharpError.YsharpErrorType.SEMANTIC,
                             expr.op.line,
@@ -421,7 +423,8 @@ public class Interpreter implements
     @Override
     public Variable.Variant visitPostfixExpr(Expr.PostfixExpr expr) {
 
-        if (!(expr.operand instanceof Expr.VariableExpr)) {
+        if (!(expr.operand instanceof Expr.VariableExpr ||
+                expr.operand instanceof Expr.GetExpr) ) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.SEMANTIC,
                     expr.op.line,
@@ -1096,13 +1099,109 @@ public class Interpreter implements
             iterVar.value = new Variable.Variant(start);
 
             while (iterVar.value.asInt() <= end) {
-                this.execute(stmt.body);
+
+                try {
+                    this.execute(stmt.body);
+                } catch (Signal.ContinueSignal c) {
+                    // continue loop
+                } catch (Signal.BreakSignal b) {
+                    break;
+                }
+
                 iterVar.value = new Variable.Variant(iterVar.value.asInt() + 1);
+
             }
 
         } finally {
             this.curEnv = previous;
         }
+    }
+
+    @Override
+    public void visitForEachStmt(Stmt.ForEachStmt stmt) {
+        Environment previous = this.curEnv;
+        this.curEnv = new Environment(previous);
+
+        try {
+            stmt.declaration.accept(this);
+
+            Variable.Variant iterableVariant =
+                    stmt.iterable.accept(this);
+
+            if(!iterableVariant.isClassLike()) {
+                throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                        -1, "iterable should be calss");
+            }
+
+            RuntimeObject iterable = iterableVariant.asRuntimeObject();
+            Variable iterFnVar = iterable.get("iter");
+
+            if(iterFnVar == null || !iterFnVar.value.isNativeFunction()) {
+                throw new YsharpError(YsharpError.YsharpErrorType.PROCESS, -1 ,
+                        "iter should be function that returns iterator object to use foreach loop");
+            }
+
+            Function iterFn = new BoundNativeFunction(iterFnVar.value.asNativeFunction(),
+                    iterable
+                    ,"this");
+
+            Variable.Variant iteratorVariant =  iterFn.call(this, new ArrayList<>());
+
+            if(iteratorVariant == null || !iteratorVariant.isClassLike()) {
+                throw new YsharpError(YsharpError.YsharpErrorType.PROCESS, -1 ,
+                        "iterator should be class");
+            }
+
+            RuntimeObject iterator = iteratorVariant.asRuntimeObject();
+
+            Variable getNextFnVar = iterator.get("getNext");
+
+            if(getNextFnVar == null || !getNextFnVar.value.isNativeFunction()) {
+                throw new YsharpError(YsharpError.YsharpErrorType.PROCESS, -1 ,
+                        "getNext should be function that returns iterator object to use foreach loop");
+            }
+
+            Function getNextFn= new BoundNativeFunction(getNextFnVar.value.asNativeFunction(),
+                    iterator,
+                    "this");
+
+            while (true) {
+                Variable.Variant nextVariant = getNextFn.call(this, new ArrayList<>());
+
+                if(nextVariant.isNull()) break;
+
+                String typeName = stmt.declaration.type == null ? "any" :
+                        stmt.declaration.type.lexeme;
+
+                if(!Interpreter.typeChecker(typeName, nextVariant)) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            stmt.declaration.type.line,
+                            "Type mismatch. Cannot assign value of type '" +
+                                    nextVariant.getType() +
+                                    "' to variable '" +
+                                    stmt.declaration.identifier.lexeme +
+                                    "' of type '" +
+                                    stmt.declaration.type.lexeme + "'."
+                    );
+                }
+
+                this.curEnv.assign(stmt.declaration.identifier, nextVariant);
+
+                try {
+                    stmt.body.accept(this);
+                } catch (Signal.ContinueSignal c) {
+                    // continue loop
+                } catch (Signal.BreakSignal b) {
+                    break;
+                }
+            }
+
+        }
+        finally {
+            this.curEnv = previous;
+        }
+
     }
 
     @Override

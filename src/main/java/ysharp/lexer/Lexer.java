@@ -62,6 +62,7 @@ public class Lexer {
         KEYWORD_MAP.put("use", Token.TokenType.USE);
         KEYWORD_MAP.put("export", Token.TokenType.EXPORT);
         KEYWORD_MAP.put("in", Token.TokenType.IN);
+        KEYWORD_MAP.put("foreach", Token.TokenType.FOREACH);
 
         // type keywords
 //        KEYWORD_MAP.put("int", Token.TokenType.TYPE_INT);

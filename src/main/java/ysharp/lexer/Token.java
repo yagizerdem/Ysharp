@@ -96,6 +96,7 @@ public class Token {
         NEW, // create new object
         THROW, // throw
         IN, // in
+        FOREACH,
 
         // type declaration keywords
 //        TYPE_INT, // int

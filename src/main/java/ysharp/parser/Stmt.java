@@ -26,6 +26,7 @@ public abstract class Stmt {
         void visitSwitchStmt(Stmt.SwitchStmt stmt);
         void visitThrowStmt(Stmt.ThrowStmt stmt);
         void visitTryStmt(Stmt.TryStmt stmt);
+        void visitForEachStmt(Stmt.ForEachStmt stmt);
 
         void visitVarDeclaration(Stmt.VarDeclaration stmt);
         void visitFunctionDeclaration(Stmt.FunctionDeclaration stmt);
@@ -174,6 +175,23 @@ public abstract class Stmt {
         @Override
         public void accept(Visitor visitor) {
             visitor.visitForInStmt(this);
+        }
+    }
+
+    public static class ForEachStmt extends Stmt {
+        public final Stmt.VarDeclaration declaration;
+        public final Expr iterable;
+        public final Stmt body;
+
+        public ForEachStmt(Stmt.VarDeclaration declaration, Expr iterable, Stmt body) {
+            this.declaration = declaration;
+            this.iterable = iterable;
+            this.body = body;
+        }
+
+        @Override
+        public void accept(Visitor visitor) {
+            visitor.visitForEachStmt(this);
         }
     }
 

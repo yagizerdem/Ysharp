@@ -64,6 +64,7 @@ statement
 - statement &rarr; 
 exprStmt | 
 forStmt |
+foreachStmt |
 whileStmt |
 tryStmt |
 ifStmt |
@@ -81,7 +82,7 @@ block
 - forStmt &rarr;
 ( "for" ( varDecl | exprStmt | ";" ) expression? ";" expression?  statement )
 | ( "for" varDecl "in" expression statement)
-
+- foreachStmt &rarr "foreach" varDecl "in" expression statement
 - whileStmt &rarr;
 "while"  expression  statement 
 

@@ -6,11 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="06588b0d-6eee-4b4b-be52-23cf34ea7082" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Interpreter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Interpreter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Resolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Resolver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Variable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Variable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/lexer/Lexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/lexer/Lexer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/parser/Expr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/parser/Expr.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/lexer/Token.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/lexer/Token.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/parser/CFG.md" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/parser/CFG.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/parser/Parser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/parser/Stmt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/parser/Stmt.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/resources/DEULettersGame/main.ys" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/DEULettersGame/main.ys" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -173,7 +178,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1773526228923</updated>
-      <workItem from="1773937402877" duration="31312000" />
+      <workItem from="1773937402877" duration="39734000" />
     </task>
     <servers />
   </component>
@@ -218,6 +223,11 @@
           <url>file://$PROJECT_DIR$/src/main/java/ysharp/evaluator/Core.java</url>
           <line>81</line>
           <option name="timeStamp" value="108" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ysharp/evaluator/Interpreter.java</url>
+          <line>1175</line>
+          <option name="timeStamp" value="130" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

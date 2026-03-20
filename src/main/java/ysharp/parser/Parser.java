@@ -1018,6 +1018,7 @@ public class Parser {
         if(match(peek(), Token.TokenType.SWITCH)) return parseSwitchStmt();
         if(match(peek(), Token.TokenType.THROW)) return parseThrowStmt();
         if(match(peek(), Token.TokenType.TRY)) return parseTryStmt();
+        if(match(peek(), Token.TokenType.FOREACH)) return parseForeachStmt();
 
         return  parseExprStmt();
     }
@@ -1172,14 +1173,12 @@ public class Parser {
 
         Token typeName = null;
         if (match(peek(), Token.TokenType.COLON)) {
-            Token typeToken = peek();
-
-            if (typeToken.literal instanceof Token.Literal.Str strLit) {
-                typeName = peek();
+            typeName = peek();
+            if (peek().type == Token.TokenType.IDENTIFIER) {
                 advance();
             } else {
-                throw new YsharpError(YsharpError.YsharpErrorType.SYNTAX, typeToken.line,
-                        "Expected a valid type name after ':', but found: " + typeToken.lexeme);
+                throw new YsharpError(YsharpError.YsharpErrorType.SYNTAX, typeName.line,
+                        "Expected a valid type name after ':', but found: " + typeName.lexeme);
             }
         }
 
@@ -1191,6 +1190,37 @@ public class Parser {
         Stmt body = parseBlockStmt();
 
         return new Stmt.ForInStmt(initializer, iterable, body);
+    }
+
+    private Stmt parseForeachStmt() throws YsharpError {
+        consume(Token.TokenType.VAR, "Expected 'var' keyword after 'for' in foreach loop.");
+
+        Token identifier = peek();
+        if (identifier.type != Token.TokenType.IDENTIFIER) {
+            throw new YsharpError(YsharpError.YsharpErrorType.SYNTAX, identifier.line,
+                    "Expected variable name after 'var' in foreach loop, but found: " + identifier.lexeme);
+        }
+        advance();
+
+        Token typeName = null;
+        if (match(peek(), Token.TokenType.COLON)) {
+            typeName = peek();
+            if (peek().type == Token.TokenType.IDENTIFIER) {
+                advance();
+            } else {
+                throw new YsharpError(YsharpError.YsharpErrorType.SYNTAX, typeName.line,
+                        "Expected a valid type name after ':', but found: " + typeName.lexeme);
+            }
+        }
+
+        Stmt.VarDeclaration initializer = new Stmt.VarDeclaration(identifier, typeName, null, false);
+
+        consume(Token.TokenType.IN, "Expected 'in' keyword after variable '" + identifier.lexeme + "'.");
+
+        Expr iterable = parseAssignment();
+        Stmt body = parseBlockStmt();
+
+        return new Stmt.ForEachStmt(initializer, iterable, body);
     }
 
     private Stmt parseBreakStmt() throws YsharpError {

@@ -294,6 +294,15 @@ public class Resolver implements Expr.Visitor<Void> ,
     }
 
     @Override
+    public void visitForEachStmt(Stmt.ForEachStmt stmt) {
+        beginScope();
+        resolve(stmt.declaration);
+        resolve(stmt.iterable);
+        resolve(stmt.body);
+        endScope();
+    }
+
+    @Override
     public void visitBreakStmt(Stmt.BreakStmt stmt) {
         return;
     }
