@@ -5,14 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="06588b0d-6eee-4b4b-be52-23cf34ea7082" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/assets/ysharplogo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/ysharplogo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/TUI/Util/yTerminalResizeListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/TUI/Util/yTerminalSize.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Form/Y_Button.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Form/Y_ComponentObject.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Form/Y_Frame.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/TUI/Terminal/yDefaultTerminal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/TUI/Terminal/yDefaultTerminal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Registery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Registery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/TUI/TUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/TUI/TUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/TUI/Terminal/Abstract/yBaseTerminal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/TUI/Terminal/Abstract/yBaseTerminal.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/resources/DEULettersGame/main.ys" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/DEULettersGame/main.ys" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -177,7 +174,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1773526228923</updated>
-      <workItem from="1773937402877" duration="44090000" />
+      <workItem from="1773937402877" duration="48607000" />
     </task>
     <servers />
   </component>

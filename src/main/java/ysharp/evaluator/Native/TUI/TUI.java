@@ -8,6 +8,7 @@ import ysharp.evaluator.Native.TUI.Terminal.yScrollSwingTerminal;
 import ysharp.evaluator.Native.TUI.Terminal.ySwingTerminal;
 import ysharp.evaluator.Native.TUI.Util.TextColor.yTextColor;
 import ysharp.evaluator.Native.TUI.Util.ySGR;
+import ysharp.evaluator.Native.TUI.Util.yTerminalSize;
 import ysharp.evaluator.Variable;
 import ysharp.evaluator.yClass;
 
@@ -25,7 +26,7 @@ public class TUI {
             Variable defaultTerminalVar = new Variable(
                     new Variable.Variant(defaultTerminal),
                     true,
-                    "function"
+                    defaultTerminal.getType()
             );
             this.set(defaultTerminal.getClassName(), defaultTerminalVar);
 
@@ -33,7 +34,7 @@ public class TUI {
             Variable swingTerminalVar = new Variable(
                     new Variable.Variant(swingTerminal),
                     true,
-                    "function"
+                    swingTerminal.getType()
             );
             this.set(swingTerminal.getClassName(), swingTerminalVar);
 
@@ -41,7 +42,7 @@ public class TUI {
             Variable scrollSwingTerminalVar = new Variable(
                     new Variable.Variant(swingTerminal),
                     true,
-                    "function"
+                    scrollSwingTerminal.getType()
             );
             this.set(scrollSwingTerminal.getClassName(), scrollSwingTerminalVar);
 
@@ -50,7 +51,7 @@ public class TUI {
             Variable sgrVar = new Variable(
                     new Variable.Variant(sgr),
                     true,
-                    "function"
+                    sgr.getType()
             );
             this.set(sgr.getClassName(), sgrVar);
 
@@ -59,7 +60,7 @@ public class TUI {
             Variable textColorVar = new Variable(
                     new Variable.Variant(textColor),
                     true,
-                    "function"
+                    textColor.getType()
             );
             this.set(textColor.getClassName(), textColorVar);
 
@@ -68,9 +69,18 @@ public class TUI {
             Variable yKeyStrokeVar = new Variable(
                     new Variable.Variant(keyStroke),
                     true,
-                    "function"
+                    keyStroke.getType()
             );
             this.set(keyStroke.getClassName(), yKeyStrokeVar);
+
+
+            yTerminalSize.yTerminalSizeClass terminalSize = new yTerminalSize.yTerminalSizeClass();
+            Variable terminalSizeVar = new Variable(
+                    new Variable.Variant(terminalSize),
+                    true,
+                    terminalSize.getType()
+            );
+            this.set(terminalSize.getClassName(), terminalSizeVar);
 
         }
 

@@ -1,6 +1,10 @@
 var terminal = new TUI.DefaultTerminal();
 
+terminal.setCursorPosition(20, 10);
 terminal.writeLine("ltj");
+terminal.flush();
 
-Time.sleep(1000);
+Time.sleep(2000);
 
+
+println terminal.getTerminalSize().getRows();

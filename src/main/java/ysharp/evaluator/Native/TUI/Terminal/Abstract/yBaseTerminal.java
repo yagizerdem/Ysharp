@@ -1,11 +1,13 @@
 package ysharp.evaluator.Native.TUI.Terminal.Abstract;
 
+import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.input.KeyStroke;
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.Native.TUI.Input.yKeyStroke;
 import ysharp.evaluator.Native.TUI.Util.TextColor.yTextColor;
 import ysharp.evaluator.Native.TUI.Util.ySGR;
+import ysharp.evaluator.Native.TUI.Util.yTerminalSize;
 
 import java.io.IOException;
 import java.util.List;
@@ -879,8 +881,53 @@ public class yBaseTerminal {
                 new Variable.Variant(clearInputBuffer),
                 true,
                 "function");
-
         yBaseTerminal_Instance_Prototype.set(clearInputBuffer.getFnName(), clearInputBufferVar);
+
+
+        // terminal.getTerminalSize();
+        class GetTerminalSizeFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 0;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+
+                yAbstractTerminal.AbstractTerminal terminal =
+                        requireTerminalThis(interpreter);
+
+                try {
+                    TerminalSize terminalSize = terminal.instance.getTerminalSize();
+                    return new Variable.Variant(new yTerminalSize.yTerminalSizeInstance(terminalSize));
+                }catch (IOException ex) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            -1,
+                            "Terminal.getTerminalSize: " + ex.getMessage()
+                    );
+                }
+
+            }
+
+            @Override
+            public String getFnName() {
+                return "getTerminalSize";
+            }
+        }
+
+        GetTerminalSizeFn getTerminalSize = new GetTerminalSizeFn();
+        Variable getTerminalSizeVar = new Variable(
+                new Variable.Variant(getTerminalSize),
+                true,
+                "function");
+
+        yBaseTerminal_Instance_Prototype.set(getTerminalSize.getFnName(), getTerminalSizeVar);
     }
 
 }
