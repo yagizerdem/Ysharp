@@ -1,7 +1,43 @@
+class FibonacciSequence {
+    var limit = 0;
 
+    constructor(limit) do
+        this.limit = limit;
+    end
 
+    iter() do
+        return new FibonacciIterator(this.limit);
+    end
+}
 
+class FibonacciIterator {
+    var curr = 0;
+    var next = 1;
+    var limit = 0;
 
-for var i in  1..10 do
-    println i ;
+    constructor(limit) do
+        this.limit = limit;
+    end
+
+    getNext() do
+        if (this.curr > this.limit) then do
+            return null;
+        end
+
+        var val = this.curr;
+        var tempNext = this.curr + this.next;
+
+        this.curr = this.next;
+        this.next = tempNext;
+
+        return val;
+    end
+}
+
+const fib = new FibonacciSequence(50);
+
+foreach var i in fib do
+    foreach var j in fib do
+        println "Out: " + i + " In: " + j;
+    end
 end

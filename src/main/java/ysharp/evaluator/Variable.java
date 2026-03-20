@@ -74,6 +74,8 @@ public class Variable {
             return this.value instanceof yClass.ClassObjectInstance;
         }
 
+        public boolean isClassLike() { return this.isClass() || this.isClassInstance(); }
+
         public boolean canImplicitlyConvertNumber(){
             return this.isNumber() ||
                     this.isChar() ||
