@@ -10,30 +10,6 @@ import java.util.List;
 
 public class yFile {
 
-    public static RuntimeObject yFile_Instance_Prototype;
-
-    static {}
-
-    public static class yFile_Instance extends yClass.ClassObjectInstance {
-
-        public yFile_Instance(){}
-
-        @Override
-        public boolean isTruthy() {
-            return true;
-        }
-
-        @Override
-        public String getType() {
-            return "File";
-        }
-
-        @Override
-        public String toString() {
-            return "<instance:File>";
-        }
-    }
-
     public static class yFileClass extends yClass.SealedClassObject {
 
         yFileClass(){
@@ -269,8 +245,7 @@ public class yFile {
                                      List<Variable.Variant> arguments)
                 throws YsharpError {
 
-            yFile_Instance instance = new yFile_Instance();
-            return new Variable.Variant(instance);
+            throw new YsharpError(YsharpError.YsharpErrorType.PROCESS, -1 , "cannot take instance of static class");
         }
 
         @Override

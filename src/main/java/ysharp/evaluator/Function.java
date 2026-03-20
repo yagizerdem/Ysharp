@@ -153,7 +153,7 @@ public abstract class Function extends RuntimeObject implements Callable {
 
     public static class LambdaObject extends Function {
         public final Expr.LambdaExpr lambdaExpr;
-        private Environment closure;
+        private final Environment closure;
 
         public LambdaObject(Expr.LambdaExpr  lambdaExpr,
                             Environment closure) {
