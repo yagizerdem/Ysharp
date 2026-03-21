@@ -1,0 +1,33 @@
+var map = [];
+
+for var i in 0..19 do
+    var row = [];
+    for var j in 0..50 do
+        if i == 0 || i == 19 || j == 0 || j == 50 then do
+            row.push('#');
+        end
+        else do
+            row.push(' ');
+        end
+    end
+    map.push(row);
+end
+
+
+var cy : int = 0;
+var cx : int = 0;
+
+
+var terminal = new TUI.DefaultTerminal();
+
+foreach var item : Array in map do
+    cx = 0;
+    foreach var c : char in item do
+        terminal.setCursorPosition(cx, cy);
+        terminal.write(Type.Converter.toString(c));
+        cx++;
+    end
+    cy++;
+end
+
+terminal.flush();

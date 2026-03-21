@@ -13,7 +13,7 @@ import java.util.List;
 public class yArray {
 
     // helper
-    private static yArrayInstance requireArrayThis (Interpreter interpreter, String fnName) {
+    public static yArrayInstance requireArrayThis (Interpreter interpreter, String fnName) {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
@@ -57,7 +57,7 @@ public class yArray {
                 return "<prototype:Array>";
             }
         };
-        yArray_Instance_Prototype.prototype = yClass.ClassPrototype;
+        yArray_Instance_Prototype.prototype = Vector.Vector_Instance_Prototype;
 
         // arr.toString()
         class ToStringFn extends Function.NativeFunction implements Callable {
@@ -1979,18 +1979,20 @@ public class yArray {
         yArray_Instance_Prototype.set(asQueryable.getFnName(), asQueryableVar);
     }
 
-    public static class yArrayInstance extends yClass.ClassObjectInstance {
+    public static class yArrayInstance extends yClass.ClassObjectInstance implements Vector.IVector {
 
         public final ArrayList<Variable.Variant> data;
-
+        public int cursor = 0;
         public yArrayInstance(ArrayList<Variable.Variant> data) {
             this.data = data;
             this.prototype = yArray_Instance_Prototype;
+            this.cursor = 0;
         }
 
         public yArrayInstance() {
             this.data = new ArrayList<>();
             this.prototype = yArray_Instance_Prototype;
+            this.cursor = 0;
         }
 
 
@@ -2007,6 +2009,24 @@ public class yArray {
         @Override
         public String toString() {
             return "<instance:Array>";
+        }
+
+        @Override
+        public ArrayList<Variable.Variant> getData() {
+            return this.data;
+        }
+
+        @Override
+        public yClass.ClassObjectInstance getConcreteImplementation() {
+            return this;
+        }
+
+        @Override
+        public Variable.Variant getNext() {
+            if(this.data.size() <= this.cursor) return null;
+            var result = this.data.get(this.cursor);
+            cursor++;
+            return result;
         }
     }
 
