@@ -24,10 +24,13 @@ foreach var item : Array in map do
     cx = 0;
     foreach var c : char in item do
         terminal.setCursorPosition(cx, cy);
-        terminal.write(Type.Converter.toString(c));
+        terminal.write(c);
         cx++;
     end
     cy++;
 end
 
+// print map
 terminal.flush();
+
+

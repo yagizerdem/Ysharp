@@ -640,7 +640,7 @@ public class yBaseTerminal {
                 "function");
         yBaseTerminal_Instance_Prototype.set(setCursorVisible.getFnName(), setCursorVisibleVar);
 
-        // terminal.write(string)
+        // terminal.write(string | char)
         class WriteFn extends Function.NativeFunction implements Callable {
 
             @Override
@@ -655,7 +655,20 @@ public class yBaseTerminal {
 
                 yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
 
-                String text = requireString(arguments.getFirst(), getFnName(), 1);
+                String text ;
+
+                if(arguments.getFirst().isDouble())
+                    text = String.valueOf(arguments.getFirst().asDouble());
+                if(arguments.getFirst().isInt())
+                    text = String.valueOf(arguments.getFirst().asInt());
+                else if(arguments.getFirst().isBoolean())
+                    text = String.valueOf(arguments.getFirst().asBoolean());
+                else if(arguments.getFirst().isNull())
+                    text = "null";
+                else if(arguments.getFirst().isRuntimeObject())
+                    text = arguments.getFirst().toString();
+                else
+                    text =  requireStringOrChar(arguments.getFirst(), getFnName(), 1);
 
                 try {
                     for(char c : text.toCharArray()) {
@@ -688,7 +701,7 @@ public class yBaseTerminal {
                 "function");
         yBaseTerminal_Instance_Prototype.set(write.getFnName(), writeVar);
 
-        // terminal.writeLine(string)
+        // terminal.writeLine(string | char)
         class WriteLineFn extends Function.NativeFunction implements Callable {
 
             @Override
@@ -703,7 +716,20 @@ public class yBaseTerminal {
 
                 yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
 
-                String text = requireString(arguments.getFirst(), getFnName(), 1);
+                String text ;
+
+                if(arguments.getFirst().isDouble())
+                    text = String.valueOf(arguments.getFirst().asDouble());
+                if(arguments.getFirst().isInt())
+                    text = String.valueOf(arguments.getFirst().asInt());
+                else if(arguments.getFirst().isBoolean())
+                    text = String.valueOf(arguments.getFirst().asBoolean());
+                else if(arguments.getFirst().isNull())
+                    text = "null";
+                else if(arguments.getFirst().isRuntimeObject())
+                    text = arguments.getFirst().toString();
+                else
+                    text =  requireStringOrChar(arguments.getFirst(), getFnName(), 1);
 
                 try {
                     for(char c : text.toCharArray()) {
