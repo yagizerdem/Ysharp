@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="06588b0d-6eee-4b4b-be52-23cf34ea7082" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/test/resources/snakegame/test.ys" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/TUI/Terminal/Abstract/yBaseTerminal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/TUI/Terminal/Abstract/yBaseTerminal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/RuntimeObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/RuntimeObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Vector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Vector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yArray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yArray.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/resources/snakegame/main.ys" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/snakegame/main.ys" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -180,7 +181,7 @@
       <workItem from="1773937402877" duration="51545000" />
       <workItem from="1774056182749" duration="3175000" />
       <workItem from="1774059562701" duration="34000" />
-      <workItem from="1774099893792" duration="4974000" />
+      <workItem from="1774099893792" duration="8913000" />
     </task>
     <servers />
   </component>
@@ -203,7 +204,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yArray.java</url>
-          <line>2081</line>
+          <line>2066</line>
           <option name="timeStamp" value="68" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">

@@ -1982,17 +1982,14 @@ public class yArray {
     public static class yArrayInstance extends yClass.ClassObjectInstance implements Vector.IVector {
 
         public final ArrayList<Variable.Variant> data;
-        public int cursor = 0;
         public yArrayInstance(ArrayList<Variable.Variant> data) {
             this.data = data;
             this.prototype = yArray_Instance_Prototype;
-            this.cursor = 0;
         }
 
         public yArrayInstance() {
             this.data = new ArrayList<>();
             this.prototype = yArray_Instance_Prototype;
-            this.cursor = 0;
         }
 
 
@@ -2016,18 +2013,6 @@ public class yArray {
             return this.data;
         }
 
-        @Override
-        public yClass.ClassObjectInstance getConcreteImplementation() {
-            return this;
-        }
-
-        @Override
-        public Variable.Variant getNext() {
-            if(this.data.size() <= this.cursor) return null;
-            var result = this.data.get(this.cursor);
-            cursor++;
-            return result;
-        }
     }
 
     public static class yArrayClass extends yClass.SealedClassObject {

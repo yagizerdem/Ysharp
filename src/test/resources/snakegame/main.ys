@@ -1,4 +1,7 @@
+
+
 var map = [];
+const snakePos = [[3, 3], [4, 3], [5,3], [6,3], [7,3]]; // 0. row 1. col
 
 for var i in 0..19 do
     var row = [];
@@ -13,24 +16,99 @@ for var i in 0..19 do
     map.push(row);
 end
 
+class Direction {
+    static const UP = "up";
+    static const DOWN = "down";
+    static const LEFT = "left";
+    static const RIGHT = "right";
+}
 
 var cy : int = 0;
 var cx : int = 0;
-
+var curDir = Direction.UP;
 
 var terminal = new TUI.DefaultTerminal();
 
-foreach var item : Array in map do
-    cx = 0;
-    foreach var c : char in item do
-        terminal.setCursorPosition(cx, cy);
-        terminal.write(c);
-        cx++;
+function printMap() do
+
+    // boarders
+    cy = 0;
+     cx = 0;
+    foreach var item : Array in map do
+        cx = 0;
+        foreach var c : char in item do
+            terminal.setCursorPosition(cx, cy);
+            terminal.write(c);
+            cx++;
+        end
+        cy++;
     end
-    cy++;
+
+    // print snake pos
+    terminal.setForegroundColor(TUI.TextColor.ANSI.RED);
+    var flag : bool = true;
+    foreach var point : Array in snakePos do
+           if flag then do terminal.setForegroundColor(TUI.TextColor.ANSI.BLUE); end
+
+           terminal.setCursorPosition(point.get(1), point.get(0));
+           terminal.write('#');
+           if flag then do
+                terminal.setForegroundColor(TUI.TextColor.ANSI.RED);
+                flag = false;
+           end
+
+    end
+    terminal.setForegroundColor(TUI.TextColor.ANSI.WHITE);
+
+    // print map
+    terminal.flush();
 end
 
-// print map
-terminal.flush();
+function clearMap() do
+ for var i in 0..19 do
+     for var j in 0..50 do
+         terminal.setCursorPosition(j, i);
+         terminal.write(' ');
+     end
+ end
+    terminal.flush();
+end
+
+function move() do
+
+    for var i = snakePos.size() - 1; i > 0; i-- do
+        var currentPart = snakePos.get(i);
+        var frontPart = snakePos.get(i - 1);
+        currentPart.set(0, frontPart.get(0));
+        currentPart.set(1, frontPart.get(1));
+    end
+
+    var head = snakePos.get(0);
+
+    if curDir == Direction.UP then do
+        head.set(0, head.get(0) - 1);
+    end
+    elif curDir == Direction.DOWN then do
+        head.set(0, head.get(0) + 1);
+    end
+    elif curDir == Direction.LEFT then do
+        head.set(1, head.get(1) - 1);
+    end
+    elif curDir == Direction.RIGHT then do
+        head.set(1, head.get(1) + 1);
+    end
+
+end
+
+
+while true do
+    move();
+    clearMap();
+    printMap();
+
+
+
+    Time.sleep(1000);
+end
 
 
