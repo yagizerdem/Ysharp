@@ -2,6 +2,7 @@ package ysharp.evaluator;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.Native.Collections.yArray;
+import ysharp.evaluator.Native.Collections.yHashMap;
 import ysharp.evaluator.Native.Collections.yHashTable;
 import ysharp.evaluator.Native.Range;
 import ysharp.evaluator.Native.function.binding.BoundNativeFunction;
@@ -831,22 +832,22 @@ public class Interpreter implements
 
     @Override
     public Variable.Variant visitMapInitializerExpr(Expr.MapInitializerExpr expr) {
-        Hashtable<Variable.Variant, Variable.Variant> hashTable = new Hashtable<>();
+        HashMap<Variable.Variant, Variable.Variant> hashMap = new HashMap<>();
         for(Expr.MapInitializerExpr.Entry entry : expr.entries) {
             if(entry.key.literal  instanceof Token.Literal.Str) {
                 String key = ((Token.Literal.Str) entry.key.literal).value();
                 yString.yStringInstance stringObj = new yString.yStringInstance(key);
-                hashTable.put(new Variable.Variant(stringObj), evaluate(entry.value));
+                hashMap.put(new Variable.Variant(stringObj), evaluate(entry.value));
             }
             else {
                 throw new YsharpError(
                         YsharpError.YsharpErrorType.SYNTAX,
                         expr.leftCurlyBrace.line,
-                        "HashTable initializer shortcut only support string keys.");
+                        "HashMap initializer shortcut only support string keys.");
             }
         }
 
-        return new Variable.Variant(new yHashTable.yMapInstance(hashTable));
+        return new Variable.Variant(new yHashMap.yHashMapInstance(hashMap));
     }
 
     @Override

@@ -11,6 +11,8 @@ import ysharp.evaluator.Variable;
 import ysharp.evaluator.yClass;
 
 import javax.imageio.ImageIO;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -39,6 +41,8 @@ public class yDefaultTerminal {
             }
         };
         yDefaultTerminal_Instance_Prototype.prototype = yBaseTerminal.yBaseTerminal_Instance_Prototype;
+
+
     }
 
     public static class YDefaultTerminalInstance extends yAbstractTerminal.AbstractTerminal {
@@ -64,6 +68,18 @@ public class yDefaultTerminal {
                     }
 
                     frame.setIconImage(icon);
+
+                    frame.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosing(WindowEvent e) {
+                            assign("isClosed", new Variable.Variant(true));
+                        }
+
+                        @Override
+                        public void windowClosed(WindowEvent e) {
+                            assign("isClosed", new Variable.Variant(true));
+                        }
+                    });
                 }
             }
             catch (IOException ex) {
@@ -72,9 +88,6 @@ public class yDefaultTerminal {
                         "Failed to initialize terminal.");
             }
 
-
-            Variable autoFlushVar = new Variable(new Variable.Variant(false), false, "bool");
-            this.set("autoFlush", autoFlushVar);
         }
 
         @Override

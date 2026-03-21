@@ -185,6 +185,25 @@ public abstract class RuntimeObject {
         return v.asString();
     }
 
+    protected String requireStringOrChar(Variable.Variant v,
+                                         String fn,
+                                         int index) throws YsharpError {
+
+        if (v.isString()) {
+            return v.asString();
+        }
+
+        if (v.isChar()) {
+            return String.valueOf(v.asCharacter());
+        }
+
+        throw new YsharpError(
+                YsharpError.YsharpErrorType.PROCESS,
+                -1,
+                fn + " argument " + index + " must be a string or a character."
+        );
+    }
+
     protected yString.yStringInstance requireStringObject(Variable.Variant v,
                                    String fn,
                                    int index) throws YsharpError {

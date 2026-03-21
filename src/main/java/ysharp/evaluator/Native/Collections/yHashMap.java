@@ -116,7 +116,7 @@ public class yHashMap {
                 Variable.Variant value = arguments.get(1);
                 yHashMapInstance hm = requireHashMapThis(interpreter);
 
-                Variable.Variant previous = hm.data.put(key, value);
+                Variable.Variant previous = hm.data.put(key, new Variable.Variant(value.value));
 
                 return previous != null ? previous : new Variable.Variant(null);
             }
@@ -145,12 +145,12 @@ public class yHashMap {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                Variable.Variant key = arguments.get(0);
+                Variable.Variant key = arguments.getFirst();
                 yHashMapInstance hm = requireHashMapThis(interpreter);
 
                 Variable.Variant value = hm.data.get(key);
 
-                return value != null ? value : new Variable.Variant(null);
+                return value != null ? new Variable.Variant(value.value) : new Variable.Variant(null);
             }
 
             @Override
@@ -183,7 +183,7 @@ public class yHashMap {
 
                 Variable.Variant value = hm.data.get(key);
 
-                return value != null ? value : defaultValue;
+                return value != null ? new Variable.Variant(value.value) : new Variable.Variant(defaultValue.value);
             }
 
             @Override
@@ -215,7 +215,7 @@ public class yHashMap {
 
                 Variable.Variant removed = hm.data.remove(key);
 
-                return removed != null ? removed : new Variable.Variant(null);
+                return removed != null ? new Variable.Variant(removed.value) : new Variable.Variant(null);
             }
 
             @Override
@@ -308,7 +308,7 @@ public class yHashMap {
 
                 Variable.Variant existing = hm.data.putIfAbsent(key, value);
 
-                return existing != null ? existing : new Variable.Variant(null);
+                return existing != null ? new Variable.Variant(existing) : new Variable.Variant(null);
             }
 
             @Override
@@ -341,7 +341,7 @@ public class yHashMap {
 
                 Variable.Variant old = hm.data.replace(key, value);
 
-                return old != null ? old : new Variable.Variant(null);
+                return old != null ? new Variable.Variant(old.value) : new Variable.Variant(null);
             }
 
             @Override
@@ -405,7 +405,7 @@ public class yHashMap {
                 }
 
                 hm.data.put(key, result);
-                return result;
+                return new Variable.Variant(result.value);
             }
 
             @Override
@@ -462,7 +462,7 @@ public class yHashMap {
                 }
 
                 hm.data.put(key, result);
-                return result;
+                return new Variable.Variant(result.value);
             }
 
             @Override
@@ -518,7 +518,7 @@ public class yHashMap {
                     hm.data.put(key, result);
                 }
 
-                return result != null ? result : new Variable.Variant(null);
+                return result != null ? new Variable.Variant(result.value) : new Variable.Variant(null);
             }
 
             @Override
@@ -577,7 +577,7 @@ public class yHashMap {
                 }
 
                 hm.data.put(key, result);
-                return result;
+                return new Variable.Variant(result.value);
             }
 
             @Override
@@ -820,6 +820,12 @@ public class yHashMap {
             this.data = new HashMap<>();
             this.prototype = yHashMap_Instance_Prototype;
         }
+
+        public yHashMapInstance(HashMap<Variable.Variant, Variable.Variant> map) {
+            this.data = map;
+            this.prototype = yHashMap_Instance_Prototype;
+        }
+
 
         @Override
         public boolean isTruthy() {

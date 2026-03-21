@@ -5,11 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="06588b0d-6eee-4b4b-be52-23cf34ea7082" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/TUI/Util/yTerminalResizeListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/TUI/Terminal/Abstract/yBaseTerminal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/TUI/Terminal/Abstract/yBaseTerminal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/TUI/Util/ySimpleTerminalResizeListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/TUI/Util/ySimpleTerminalResizeListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/DEULettersGame/main.ys" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/DEULettersGame/main.ys" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/snakegame/main.ys" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/snakegame/main.ys" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -179,7 +176,9 @@
       <option name="presentableId" value="Default" />
       <updated>1773526228923</updated>
       <workItem from="1773937402877" duration="51545000" />
-      <workItem from="1774056182749" duration="2120000" />
+      <workItem from="1774056182749" duration="3175000" />
+      <workItem from="1774059562701" duration="34000" />
+      <workItem from="1774099893792" duration="16520000" />
     </task>
     <servers />
   </component>
@@ -202,7 +201,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yArray.java</url>
-          <line>2061</line>
+          <line>2066</line>
           <option name="timeStamp" value="68" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -222,8 +221,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ysharp/evaluator/Interpreter.java</url>
-          <line>1355</line>
+          <line>1356</line>
           <option name="timeStamp" value="130" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/TUI/Util/ySimpleTerminalResizeListener.java</url>
+          <line>173</line>
+          <option name="timeStamp" value="131" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/TUI/Terminal/yDefaultTerminal.java</url>
+          <line>74</line>
+          <option name="timeStamp" value="145" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

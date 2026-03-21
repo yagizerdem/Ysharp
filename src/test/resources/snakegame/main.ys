@@ -1,0 +1,232 @@
+var map = [];
+const snakePos = [[3, 3], [4, 3], [5,3], [6,3], [7,3]]; // 0. row 1. col
+const fruits = [];
+const MAX_FRUIT : int = 3;
+var gameAreaSize = 0;
+
+// create borders
+for var i in 0..19 do
+    var row = [];
+    for var j in 0..50 do
+        if i == 0 || i == 19 || j == 0 || j == 50 then do
+            row.push('#');
+        end
+        else do
+            gameAreaSize++;
+            row.push(' ');
+        end
+    end
+    map.push(row);
+end
+
+class Direction {
+    static const UP = "up";
+    static const DOWN = "down";
+    static const LEFT = "left";
+    static const RIGHT = "right";
+}
+
+var cy : int = 0;
+var cx : int = 0;
+var curDir = Direction.UP;
+
+var terminal = new TUI.DefaultTerminal();
+terminal.setCursorVisible(false);
+
+function printMap() do
+
+    // boarders
+    cy = 0;
+     cx = 0;
+    foreach var item : Array in map do
+        cx = 0;
+        foreach var c : char in item do
+            terminal.setCursorPosition(cx, cy);
+            terminal.write(c);
+            cx++;
+        end
+        cy++;
+    end
+
+    // print snake pos
+    terminal.setForegroundColor(TUI.TextColor.ANSI.RED);
+    var flag : bool = true;
+    foreach var point : Array in snakePos do
+           if flag then do terminal.setForegroundColor(TUI.TextColor.ANSI.BLUE); end
+
+           terminal.setCursorPosition(point.get(1), point.get(0));
+           terminal.write('#');
+           if flag then do
+                terminal.setForegroundColor(TUI.TextColor.ANSI.RED);
+                flag = false;
+           end
+
+    end
+
+    // draw fruits
+    terminal.setForegroundColor(TUI.TextColor.ANSI.GREEN);
+
+     fruits.forEach((point) => do
+        terminal.setCursorPosition(point.get(1), point.get(0));
+        terminal.write('*');
+     end);
+
+
+    terminal.setForegroundColor(TUI.TextColor.ANSI.WHITE);
+
+end
+
+function clearMap() do
+ for var i in 0..19 do
+     for var j in 0..50 do
+         terminal.setCursorPosition(j, i);
+         terminal.write(' ');
+     end
+ end
+end
+
+function move() do
+
+    var tail = snakePos.get(snakePos.size() -1).clone();
+
+    for var i = snakePos.size() - 1; i > 0; i-- do
+        var currentPart = snakePos.get(i);
+        var frontPart = snakePos.get(i - 1);
+        currentPart.set(0, frontPart.get(0));
+        currentPart.set(1, frontPart.get(1));
+    end
+
+    var head = snakePos.get(0);
+
+
+    if curDir == Direction.UP then do
+        head.set(0, head.get(0) - 1);
+    end
+    elif curDir == Direction.DOWN then do
+        head.set(0, head.get(0) + 1);
+    end
+    elif curDir == Direction.LEFT then do
+        head.set(1, head.get(1) - 1);
+    end
+
+    elif curDir == Direction.RIGHT then do
+        head.set(1, head.get(1) + 1);
+    end
+
+    if head.get(0) == 0 then do
+        head.set(0, 18);
+    end
+
+    if head.get(0) == 19 then do
+        head.set(0, 1);
+    end
+
+    if head.get(1) == 0 then do
+        head.set(1, 49);
+    end
+
+    if head.get(1) == 50 then do
+        head.set(1, 1);
+    end
+
+    var i = fruits.findIndex((item) => item.get(0) == head.get(0) && item.get(1) == head.get(1));
+
+    if i != -1 then do
+        snakePos.push(tail);
+        fruits.remove(i);
+    end
+
+end
+
+function fillFruits() do
+    var availableSlotSize = Math.min(gameAreaSize - (snakePos.size() + fruits.size()) , MAX_FRUIT);
+
+    while availableSlotSize > fruits.size() do
+        var col : int = Random.nextInt(1, 50);
+        var row : int = Random.nextInt(1, 19);
+
+        if snakePos.find((pos, i) => pos.get(0) == row && pos.get(1) == col) then do
+            continue;
+        end
+
+        if fruits.find((pos, i) => pos.get(0) == row && pos.get(1) == col) then do
+            continue;
+        end
+
+        fruits.push([row, col]);
+    end
+
+end
+
+
+function checkDead() do
+    var head = snakePos.get(0);
+    for var i = 1 ; i < snakePos.size(); i++ do
+        var part = snakePos.get(i);
+        if part.get(0) == head.get(0) && part.get(1) == head.get(1) then do
+            return true;
+        end
+    end
+    return false;
+end
+
+
+var flag = true;
+
+// main game loop
+
+while flag do
+
+    if !terminal.isClosed then do
+
+        move();
+        clearMap();
+        printMap();
+        fillFruits();
+        terminal.flush();
+
+        if checkDead() then do
+            flag = false;
+        end
+
+        var key = terminal.pollKey();
+        if key != null then do
+            var dirChar = key.getCharacter();
+            switch dirChar do
+                case 'a' : do
+                    curDir = Direction.LEFT;
+                    break;
+                end
+                case 'w' : do
+                    curDir = Direction.UP;
+                    break;
+                end
+                case 's' : do
+                    curDir = Direction.DOWN;
+                    break;
+                end
+                case 'd' : do
+                    curDir = Direction.RIGHT;
+                    break;
+                end
+            end
+
+            terminal.clearInputBuffer();
+        end
+     end
+
+    if terminal.isClosed then do
+        break;
+    end
+
+    Time.sleep(100);
+end
+
+
+Time.sleep(1500);
+terminal.clearScreen();
+
+terminal.setCursorPosition(0, 0);
+terminal.writeLine("Game Over");
+terminal.flush();
+
