@@ -9,8 +9,11 @@ import ysharp.evaluator.Native.TUI.Terminal.Abstract.yBaseTerminal;
 import ysharp.evaluator.RuntimeObject;
 import ysharp.evaluator.Variable;
 import ysharp.evaluator.yClass;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 public class yDefaultTerminal {
@@ -47,7 +50,19 @@ public class yDefaultTerminal {
 
                 if (instance instanceof SwingTerminalFrame frame) {
                     frame.setTitle("Ysharp TUI");
-                    BufferedImage icon = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB_PRE);
+                    // load ysharp logo
+                    URL logoUrl = getClass().getClassLoader().getResource("ysharplogo.png");
+
+                    BufferedImage icon = null;
+
+                    if (logoUrl != null) {
+                        icon = ImageIO.read(logoUrl);
+                    }
+
+                    if (icon != null) {
+                        frame.setIconImage(icon);
+                    }
+
                     frame.setIconImage(icon);
                 }
             }
