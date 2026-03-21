@@ -9,7 +9,11 @@ var size = terminal.getTerminalSize();
 
 var listener = new TUI.SimpleTerminalResizeListener(size);
 
-println listener;
-
+terminal.addResizeListener(listener);
 
 listener.onResized(terminal, size);
+
+while true do
+    println listener.isTerminalResized();
+    Time.sleep(1000);
+end

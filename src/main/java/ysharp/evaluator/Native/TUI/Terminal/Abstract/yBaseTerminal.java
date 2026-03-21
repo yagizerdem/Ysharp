@@ -2,12 +2,15 @@ package ysharp.evaluator.Native.TUI.Terminal.Abstract;
 
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.input.KeyStroke;
+import com.googlecode.lanterna.terminal.Terminal;
+import com.googlecode.lanterna.terminal.TerminalResizeListener;
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.Native.TUI.Input.yKeyStroke;
 import ysharp.evaluator.Native.TUI.Util.TextColor.yTextColor;
 import ysharp.evaluator.Native.TUI.Util.ySGR;
 import ysharp.evaluator.Native.TUI.Util.yTerminalSize;
+import ysharp.evaluator.Native.TUI.Util.yTerminalResizeListener;
 
 import java.io.IOException;
 import java.util.List;
@@ -928,6 +931,68 @@ public class yBaseTerminal {
                 "function");
 
         yBaseTerminal_Instance_Prototype.set(getTerminalSize.getFnName(), getTerminalSizeVar);
+
+
+        // terminal.addResizeListener();
+        class AddResizeListenerFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 1;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpError {
+
+                requireArity(arguments, arity(), getFnName());
+
+                yAbstractTerminal.AbstractTerminal terminal =
+                        requireTerminalThis(interpreter);
+
+                Variable.Variant listenerVariant = arguments.getFirst();
+
+                if (!listenerVariant.isRuntimeObject()) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            0,
+                            "Function '" + getFnName() + "' expects a 'TerminalResizeListener' object but got '"
+                                    + listenerVariant.getType() + "'."
+                    );
+                }
+
+                Object raw = listenerVariant.value;
+
+
+                if (!(raw instanceof yTerminalResizeListener)) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            0,
+                            "Function '" + getFnName() + "' expected 'TerminalResizeListener' but got '"
+                                    + raw.getClass().getSimpleName() + "'."
+                    );
+                }
+
+                TerminalResizeListener listener = ((yTerminalResizeListener) raw).getListener();
+
+                terminal.instance.addResizeListener(listener);
+
+                return new Variable.Variant(null);
+            }
+
+            @Override
+            public String getFnName() {
+                return "addResizeListener";
+            }
+        }
+        AddResizeListenerFn addResizeListener = new AddResizeListenerFn();
+        Variable addResizeListenerVar = new Variable(
+                new Variable.Variant(addResizeListener),
+                true,
+                "function");
+
+        yBaseTerminal_Instance_Prototype.set(addResizeListener.getFnName(), addResizeListenerVar);
     }
 
 }

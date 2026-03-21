@@ -3,6 +3,7 @@ package ysharp.evaluator.Native.TUI.Util;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.terminal.SimpleTerminalResizeListener;
 import com.googlecode.lanterna.terminal.Terminal;
+import com.googlecode.lanterna.terminal.TerminalResizeListener;
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.yClass;
@@ -170,13 +171,18 @@ public class ySimpleTerminalResizeListener {
     }
 
 
-    public static class ySimpleTerminalResizeListenerInstance extends yClass.ClassObjectInstance {
+    public static class ySimpleTerminalResizeListenerInstance extends yClass.ClassObjectInstance implements yTerminalResizeListener {
 
         public final SimpleTerminalResizeListener listener;
 
         public ySimpleTerminalResizeListenerInstance(SimpleTerminalResizeListener listener) {
             this.listener = listener;
             this.prototype = ySimpleTerminalResizeListener_Instance_Prototype;
+        }
+
+        @Override
+        public TerminalResizeListener getListener() {
+            return listener;
         }
 
         @Override
