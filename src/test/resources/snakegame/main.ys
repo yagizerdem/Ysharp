@@ -177,51 +177,50 @@ var flag = true;
 
 while flag do
 
-    move();
-    clearMap();
-    printMap();
-    fillFruits();
-    terminal.flush();
+    if !terminal.isClosed then do
 
-    if checkDead() then do
-        flag = false;
-    end
+        move();
+        clearMap();
+        printMap();
+        fillFruits();
+        terminal.flush();
 
-    var key = terminal.pollKey();
-    if key != null then do
-        var dirChar = key.getCharacter();
-        switch dirChar do
-            case 'a' : do
-                curDir = Direction.LEFT;
-                break;
-            end
-            case 'w' : do
-                curDir = Direction.UP;
-                break;
-            end
-            case 's' : do
-                curDir = Direction.DOWN;
-                break;
-            end
-            case 'd' : do
-                curDir = Direction.RIGHT;
-                break;
-            end
+        if checkDead() then do
+            flag = false;
         end
 
-        terminal.clearInputBuffer();
-    end
+        var key = terminal.pollKey();
+        if key != null then do
+            var dirChar = key.getCharacter();
+            switch dirChar do
+                case 'a' : do
+                    curDir = Direction.LEFT;
+                    break;
+                end
+                case 'w' : do
+                    curDir = Direction.UP;
+                    break;
+                end
+                case 's' : do
+                    curDir = Direction.DOWN;
+                    break;
+                end
+                case 'd' : do
+                    curDir = Direction.RIGHT;
+                    break;
+                end
+            end
+
+            terminal.clearInputBuffer();
+        end
+     end
 
     if terminal.isClosed then do
         break;
     end
 
-    println terminal.isClosed;
-
     Time.sleep(100);
 end
-
-println "buraya geldi";
 
 
 Time.sleep(1500);
