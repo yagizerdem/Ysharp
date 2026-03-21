@@ -213,7 +213,10 @@ public class Resolver implements Expr.Visitor<Void> ,
             define(param.name);
         }
         resolve(expr.expr);
-        resolve(expr.body);
+        if(expr.body != null) {
+            Stmt.BlockStmt block = (Stmt.BlockStmt ) expr.body;
+            resolve(block.stmtList);
+        }
         endScope();
         return null;
     }
