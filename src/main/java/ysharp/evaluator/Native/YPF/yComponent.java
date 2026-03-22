@@ -2,6 +2,7 @@ package ysharp.evaluator.Native.YPF;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
+import ysharp.evaluator.Native.TUI.Util.TextColor.yANSI;
 
 import java.awt.*;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 // abstract class
 public class yComponent {
 
-    public static IComponent requireComponentThis(Interpreter interpreter, String fnName) {
+    public static yComponent.IComponent requireComponentThis(Interpreter interpreter, String fnName) {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
@@ -31,6 +32,28 @@ public class yComponent {
         }
 
         return comp;
+    }
+
+    public static yComponent.IComponent requireComponent(Variable.Variant variant, String fn, int index) {
+        if (!variant.isRuntimeObject()) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    -1,
+                    fn + " argument " + index + " must be a object."
+            );
+        }
+
+        RuntimeObject obj = variant.asRuntimeObject();
+
+        if(!(obj instanceof yComponent.IComponent)) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    -1,
+                    fn + " argument " + index + " must be a Component object."
+            );
+        }
+
+        return (yComponent.IComponent) obj;
     }
 
     public static interface IComponent {

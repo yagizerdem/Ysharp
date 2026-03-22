@@ -1,10 +1,12 @@
 package ysharp.evaluator.Native.YPF.Window;
 
+
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.Function;
 import ysharp.evaluator.Callable;
 import ysharp.evaluator.Native.function.binding.BoundNativeFunction;
+import ysharp.evaluator.Native.YPF.yComponent;
 
 import javax.swing.JFrame;
 import java.util.List;
@@ -81,7 +83,7 @@ public class yFrame {
         yFrame_Instance_Prototype.set(setTitle.getFnName(), setTitleVar);
 
 
-        // frame.setTitle(w, h);
+        // frame.setSize(w, h);
         class SetSizeFn extends Function.NativeFunction implements Callable {
             @Override public int arity() { return 2; }
 
@@ -182,8 +184,33 @@ public class yFrame {
         yFrame_Instance_Prototype.set(onClose.getFnName(), onCloseVar);
 
 
+        // frame.add(callback);
+        class AddFn extends Function.NativeFunction implements Callable {
+            @Override public int arity() { return 1; }
 
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
+                    throws YsharpError {
 
+                requireArity(args, arity(), getFnName());
+                yFrameInstance frame = requireFrameThis(interpreter, getFnName());
+
+                yComponent.IComponent component = yComponent.requireComponent(args.getFirst(), getFnName(), 1);
+
+                frame.frame.add(component.getComponent());
+
+                return new Variable.Variant(null);
+            }
+
+            @Override public String getFnName() { return "add"; }
+        }
+        AddFn add = new AddFn();
+        Variable addVar = new Variable(
+                new Variable.Variant(add),
+                true,
+                "function"
+        );
+        yFrame_Instance_Prototype.set(add.getFnName(), addVar);
     }
 
     public static class yFrameInstance extends yClass.ClassObjectInstance {

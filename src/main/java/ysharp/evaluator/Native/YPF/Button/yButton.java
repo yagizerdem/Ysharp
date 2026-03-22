@@ -45,7 +45,7 @@ public class yButton {
             @Override public String toString() { return "<prototype:Button>"; }
         };
 
-        yButton_Instance_Prototype.prototype = yClass.ClassPrototype;
+        yButton_Instance_Prototype.prototype = yComponent.yComponent_Instance_Prototype;
 
 
         // getUIClassID()

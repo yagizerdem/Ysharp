@@ -5,6 +5,7 @@ YPF.invokeLater(()=> do
     frame.setVisible(true);
     var button = new YPF.Button();
     frame.add(button);
+    frame.setTitle("fajfl");
 
 end);
 
