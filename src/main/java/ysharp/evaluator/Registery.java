@@ -12,6 +12,7 @@ import ysharp.evaluator.Native.Threading.ySemaphore;
 import ysharp.evaluator.Native.Threading.yThread;
 import ysharp.evaluator.Native.Util.*;
 import ysharp.evaluator.Native.Util.Type.Type;
+import ysharp.evaluator.Native.YPF.YPF;
 import ysharp.evaluator.Native.function.core.Debug;
 
 public class Registery {
@@ -74,5 +75,9 @@ public class Registery {
 
         // range function
         Range.Register(interpreter);
+
+        // YFP
+        YPF.Register(interpreter);
+
     }
 }
