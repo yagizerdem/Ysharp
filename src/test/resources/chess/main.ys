@@ -1,12 +1,16 @@
+use "./board.ys";
+use  "./error.ys";
 
-YPF.invokeLater(()=> do
-    var frame = new YPF.Frame();
-    frame.setSize(500, 500);
-    frame.setVisible(true);
-    var button = new YPF.Button();
-    frame.add(button);
-    frame.setTitle("fajfl");
+var p = new Piece();
 
-end);
+println p.row;
+p.color = Color.RED;
 
-println Type.getType(YPF.Button);
+
+try do
+    throw AppError.create("fja");
+end
+catch(err) do
+    println err.reason;
+end
+

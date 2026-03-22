@@ -16,6 +16,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     implementation("com.googlecode.lanterna:lanterna:3.1.2")
     implementation("com.formdev:flatlaf:3.5.4")
+    implementation("org.processing:core:3.3.7")
 }
 
 tasks.test {

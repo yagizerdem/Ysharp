@@ -1,0 +1,62 @@
+
+export class Board {
+    const board = [];
+    constructor() do
+
+    end
+
+    init() do
+        board.push(
+            Array.of(
+
+            )
+        );
+    end
+}
+
+export class Piece {
+    var row : int ;
+    var col : int ;
+    var color : Color;
+    var type : PieceType;
+
+    static create(row, col, color, type) do
+        var piece = new Piece();
+        piece.row = row;
+        piece.col = col;
+        piece.color = color;
+        piece.type = type;
+        return piece;
+    end
+
+    toString() do
+        var str : string = "";
+        str += "Row : " + this.row;
+        str += " Col : " + this.col;
+        str += " color : " + Color.toString(this.color);
+    end
+}
+
+
+export class Color {
+    static const RED = 1; // blacks
+    static const BLUE = 0; // whites
+
+    static toString(c : int) do
+        if c != 1 ||  c != 0 then  do
+
+        end
+
+        return c == 1 ? "RED" : "BLUE";
+    end
+}
+
+export class PieceType {
+    static const KING   = 0;
+    static const QUEEN  = 1;
+    static const ROOK   = 2;
+    static const BISHOP = 3;
+    static const KNIGHT = 4;
+    static const PAWN   = 5;
+
+}
