@@ -52,7 +52,7 @@ public class yFrame {
 
         yFrame_Instance_Prototype.prototype = yClass.ClassPrototype;
 
-
+        // frame.setTitle("title");
         class SetTitleFn extends Function.NativeFunction implements Callable {
             @Override public int arity() { return 1; }
 
@@ -81,7 +81,7 @@ public class yFrame {
         yFrame_Instance_Prototype.set(setTitle.getFnName(), setTitleVar);
 
 
-
+        // frame.setTitle(w, h);
         class SetSizeFn extends Function.NativeFunction implements Callable {
             @Override public int arity() { return 2; }
 
@@ -112,7 +112,7 @@ public class yFrame {
         yFrame_Instance_Prototype.set(setSize.getFnName(), setSizeVar);
 
 
-
+        // frame.setTitle(boolean);
         class SetVisibleFn extends Function.NativeFunction implements Callable {
             @Override public int arity() { return 1; }
 
@@ -141,7 +141,7 @@ public class yFrame {
         yFrame_Instance_Prototype.set(setVisible.getFnName(), setVisibleVar);
 
 
-
+        // frame.setTitle(callback);
         class OnCloseFn extends Function.NativeFunction implements Callable {
             @Override public int arity() { return 1; }
 
@@ -152,7 +152,7 @@ public class yFrame {
                 requireArity(args, arity(), getFnName());
                 yFrameInstance frame = requireFrameThis(interpreter, getFnName());
 
-                Callable cb = requireCallable(args.get(0), getFnName(), 1);
+                Callable cb = requireCallable(args.getFirst(), getFnName(), 1);
 
                 frame.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 

@@ -2,9 +2,10 @@
 YPF.invokeLater(()=> do
     var frame = new YPF.Frame();
     frame.setSize(500, 500);
-
     frame.setVisible(true);
+    var button = new YPF.Button();
+    frame.add(button);
 
 end);
 
-println Type.getType(YPF.Frame);
+println Type.getType(YPF.Button);
