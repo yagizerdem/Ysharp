@@ -5,13 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="06588b0d-6eee-4b4b-be52-23cf34ea7082" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Window/yFrame.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/YPF.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/chess/main.ys" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Core.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Core.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Registery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Registery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/YPF.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/YPF.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/chess/main.ys" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/chess/main.ys" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -184,7 +180,7 @@
       <workItem from="1774056182749" duration="3175000" />
       <workItem from="1774059562701" duration="34000" />
       <workItem from="1774099893792" duration="17501000" />
-      <workItem from="1774138998850" duration="1673000" />
+      <workItem from="1774138998850" duration="2139000" />
     </task>
     <servers />
   </component>

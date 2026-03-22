@@ -3,6 +3,7 @@ package ysharp.evaluator.Native.YPF;
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.Native.Util.yCrypto;
+import ysharp.evaluator.Native.YPF.Window.yFrame;
 
 import javax.swing.*;
 import java.util.List;
@@ -67,6 +68,9 @@ public class YPF {
             );
 
             this.set("invokeLater", invokeLaterVar);
+
+            yFrame.yFrameClass yFrame = new yFrame.yFrameClass();
+            this.set(yFrame.getClassName(), new Variable(new Variable.Variant(yFrame), true, yFrame.getType()));
         }
 
         @Override

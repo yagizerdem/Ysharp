@@ -1,4 +1,10 @@
 
 YPF.invokeLater(()=> do
-    println "hit";
+    var frame = new YPF.Frame();
+    frame.setSize(500, 500);
+
+    frame.setVisible(true);
+
 end);
+
+println Type.getType(YPF.Frame);
