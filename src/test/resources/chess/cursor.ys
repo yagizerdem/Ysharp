@@ -1,0 +1,32 @@
+class Cursor {
+    var row = 0;
+    var col = 0;
+
+    toScreenCord() : Array do
+       return [this.col * 3 + 1, this.row * 2];
+    end
+
+    goDown() do
+        this.row++;
+        this.row = Type.Converter.toInt(Math.min(this.row, 7));
+    end
+
+    goUp() do
+        this.row--;
+        this.row = Type.Converter.toInt(Math.max(this.row, 0));
+    end
+
+    goLeft() do
+        this.col--;
+        this.col = Type.Converter.toInt(Math.max(this.col, 0));
+    end
+
+    goRight() do
+        this.col++;
+        this.col = Type.Converter.toInt(Math.min(this.col, 7));
+    end
+}
+
+
+export const cursor = new Cursor();
+

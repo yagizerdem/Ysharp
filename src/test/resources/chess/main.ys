@@ -1,19 +1,35 @@
-
-
 use "./board.ys";
 use  "./error.ys";
+use "./ui.ys";
+use "./cursor.ys";
 
+var terminal = new TUI.DefaultTerminal();
 
 var board = new Board();
-
-try do
-
 board.init();
 
-println board.toString();
+while true do
+    if terminal.isClosed then do
+        break;
+    end
 
-end catch(err) do
-    println err.reason;
+    terminal.clearScreen();
+    printBoard(terminal, board);
+
+    var screenCords = cursor.toScreenCord();
+    terminal.setCursorPosition(screenCords.get(0), screenCords.get(1));
+    terminal.flush();
+
+    var key : KeyStroke = terminal.pollKey();
+
+    if key != null then do
+        if  key.getCharacter() == 'a' then do cursor.goLeft(); end
+        elif key.getCharacter() == 's' then do cursor.goDown(); end
+        elif key.getCharacter() == 'd' then do cursor.goRight(); end
+        elif key.getCharacter() == 'w' then do cursor.goUp(); end
+        terminal.clearInputBuffer();
+    end
+
+    Time.sleep(200);
 end
-
 

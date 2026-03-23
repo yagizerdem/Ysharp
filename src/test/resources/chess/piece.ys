@@ -1,4 +1,3 @@
-
 use "error.ys";
 
 export class Color {
@@ -46,5 +45,30 @@ export class PieceType {
                 end
             end
     end
-
 }
+
+export class Piece {
+    var row : int ;
+    var col : int ;
+    var color : Color;
+    var type : PieceType;
+
+    static create(row, col, color, type) do
+        var piece = new Piece();
+        piece.row = row;
+        piece.col = col;
+        piece.color = color;
+        piece.type = type;
+        return piece;
+    end
+
+    toString() do
+        var str : string = "";
+        str += "Row : " + this.row + " | ";
+        str += " Col : " + this.col + " | ";
+        str += " color : " + Color.toString(this.color) + " | ";
+        str += " type : " + PieceType.toString(this.color);
+        return str;
+    end
+}
+

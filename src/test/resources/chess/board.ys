@@ -1,10 +1,10 @@
-use "./enum.ys";
+use "./piece.ys";
 
 export class Board {
-    var board = [];
+    var data = [];
 
     init() do
-        this.board = Array.of(
+        this.data = Array.of(
             Array.of(
                 Piece.create(1, 1, Color.BLUE, PieceType.ROOK),
                 Piece.create(1, 2, Color.BLUE, PieceType.KNIGHT),
@@ -52,45 +52,20 @@ export class Board {
         );
     end
 
-    toString() do
-        var builder : string = "";
+    toString() : string do
+        const builder = new StringBuilder();
         for var i in 0..7 do // row
             for var j in 0..7 do // col
-                if this.board.get(i).get(j)  == null then do
-                    builder += " . ";
+                if this.data.get(i).get(j)  == null then do
+                    builder.append(" . ");
                 end
                 else do
-                    builder += PieceType.toString(this.board.get(i).get(j).type);
+                    builder.append(" " + Type.Converter.toString(PieceType.toString(this.data.get(i).get(j).type).toCharArray().get(0))  + " ");
                 end
             end
-            builder += "\n";
+            builder.appendLine("");
         end
-        return builder;
+        return builder.toString();
     end
 
-}
-
-export class Piece {
-    var row : int ;
-    var col : int ;
-    var color : Color;
-    var type : PieceType;
-
-    static create(row, col, color, type) do
-        var piece = new Piece();
-        piece.row = row;
-        piece.col = col;
-        piece.color = color;
-        piece.type = type;
-        return piece;
-    end
-
-    toString() do
-        var str : string = "";
-        str += "Row : " + this.row + " | ";
-        str += " Col : " + this.col + " | ";
-        str += " color : " + Color.toString(this.color) + " | ";
-        str += " type : " + PieceType.toString(this.color);
-        return str;
-    end
 }
