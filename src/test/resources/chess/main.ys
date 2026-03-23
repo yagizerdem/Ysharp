@@ -1,53 +1,13 @@
 use "./board.ys";
 use  "./error.ys";
 
-/*
-var p = new Piece();
 
-println p.row;
-p.color = Color.RED;
+var p =  Piece.create(1, 1, Color.BLUE, PieceType.ROOK);
 
-
-try do
-    throw AppError.create("fja");
-end
-catch(err) do
-    println err.reason;
-end
-
-*/
+println p.toString();
 
 
-class Mow {
-    constructor() do
-        println "hit";
-    end
-}
-
-class Base {
-    var a = 10;
-    foo() do
-        println "foo";
-    end
-
-    constructor() do
-        this.a = 33;
-    end
-}
-
-class Test extends Base {
-    constructor(a) do
-        super();
-        var t = 10;
-        this.a = 44;
-    end
 
 
-}
 
-var t = new Test(4);
 
-t.foo();
-println t.a;
-t.a = 40;
-println t.a;

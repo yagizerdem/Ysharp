@@ -523,15 +523,25 @@ public class Interpreter implements
                 }
                 case PLUS_ASSIGN -> {
                     Variable.Variant left = identifier.value;
-                    requireNumberOperands(left, right, expr.op);
-                        Variable.Variant result;
-                        if(left.isInt() && right.isInt())
-                            result = new Variable.Variant(left.asInt() + right.asInt());
-                        else
-                            result = new Variable.Variant(left.asNumber() + right.asNumber());
+                    Variable.Variant result;
+                    if(left.isInt() && right.isInt())
+                        result = new Variable.Variant(left.asInt() + right.asInt());
+                    else if(left.isNumber() && right.isNumber())
+                        result = new Variable.Variant(left.asNumber() + right.asNumber());
+                    else if(left.isString() && right.isString())
+                        result = new Variable.Variant(new yString.yStringInstance(left.asString() + right.asString()));
+                    else if(left.isNumber() && right.isString())
+                        result = new Variable.Variant(new yString.yStringInstance((left.isInt() ? left.asInt().toString() : left.asNumber().toString()) + right.asString()));
+                    else if(left.isString() && right.isNumber())
+                        result = new Variable.Variant(new yString.yStringInstance(left.asString() + (right.isInt() ? right.asInt().toString() : right.asNumber().toString())));
 
-                        curEnv.assign(lvalue, result);
-                        return result;
+                    else
+                        throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                                -1,
+                                "Operator '+=' requires numeric or string operands.");
+
+                    curEnv.assign(lvalue, result);
+                    return result;
                 }
                 case MINUS_ASSIGN -> {
                     Variable.Variant left = identifier.value;
@@ -861,10 +871,17 @@ public class Interpreter implements
 
         Variable.Variant callee = evaluate(expr.qualifiedName);
 
+        int errorLine = -1;
+        if (expr.qualifiedName instanceof Expr.CallExpr callExpr) {
+            errorLine = callExpr.leftParen.line;
+        } else if (expr.qualifiedName instanceof Expr.GetExpr getExpr) {
+            errorLine = getExpr.name.line;
+        }
+
         if (!callee.isCallable()) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
-                    ((Expr.CallExpr)expr.qualifiedName).leftParen.line,
+                    errorLine,
                     "Attempted to call a non-callable value of type '" +
                             callee.getType() + "'."
             );
@@ -873,7 +890,7 @@ public class Interpreter implements
         if (!callee.isClass()) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
-                    ((Expr.CallExpr)expr.qualifiedName).leftParen.line,
+                    errorLine,
                     "Attempted to instantiate a non-class value of type '" +
                             callee.getType() + "'."
             );
