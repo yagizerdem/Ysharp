@@ -43,6 +43,30 @@ public class Environment {
                 "Undefined variable name" + name + ".");
     }
 
+    public Variable getValueOrDefault(String name) {
+        if (values.containsKey(name)) {
+            return values.get(name);
+        }
+
+        if (enclosing != null) {
+            return enclosing.getValueOrDefault(name);
+        }
+
+        return null;
+    }
+
+    public Variable getValueOrDefault(Token name) {
+        if (values.containsKey(name.lexeme)) {
+            return values.get(name.lexeme);
+        }
+
+        if (enclosing != null) {
+            return enclosing.getValueOrDefault(name);
+        }
+
+        return null;
+    }
+
     public String getType(Token identifier) throws YsharpError {
 
         if (values.containsKey(identifier.lexeme)) {

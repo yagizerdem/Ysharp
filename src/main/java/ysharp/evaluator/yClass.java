@@ -102,6 +102,8 @@ public class yClass {
 
     static abstract public class ClassObject extends RuntimeObject implements Callable, IBasePrototype {
 
+        public Environment closure;
+
         public abstract boolean isSealed();
 
         public abstract String getClassName();

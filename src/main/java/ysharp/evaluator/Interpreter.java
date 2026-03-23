@@ -523,15 +523,25 @@ public class Interpreter implements
                 }
                 case PLUS_ASSIGN -> {
                     Variable.Variant left = identifier.value;
-                    requireNumberOperands(left, right, expr.op);
-                        Variable.Variant result;
-                        if(left.isInt() && right.isInt())
-                            result = new Variable.Variant(left.asInt() + right.asInt());
-                        else
-                            result = new Variable.Variant(left.asNumber() + right.asNumber());
+                    Variable.Variant result;
+                    if(left.isInt() && right.isInt())
+                        result = new Variable.Variant(left.asInt() + right.asInt());
+                    else if(left.isNumber() && right.isNumber())
+                        result = new Variable.Variant(left.asNumber() + right.asNumber());
+                    else if(left.isString() && right.isString())
+                        result = new Variable.Variant(new yString.yStringInstance(left.asString() + right.asString()));
+                    else if(left.isNumber() && right.isString())
+                        result = new Variable.Variant(new yString.yStringInstance((left.isInt() ? left.asInt().toString() : left.asNumber().toString()) + right.asString()));
+                    else if(left.isString() && right.isNumber())
+                        result = new Variable.Variant(new yString.yStringInstance(left.asString() + (right.isInt() ? right.asInt().toString() : right.asNumber().toString())));
 
-                        curEnv.assign(lvalue, result);
-                        return result;
+                    else
+                        throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                                -1,
+                                "Operator '+=' requires numeric or string operands.");
+
+                    curEnv.assign(lvalue, result);
+                    return result;
                 }
                 case MINUS_ASSIGN -> {
                     Variable.Variant left = identifier.value;
@@ -861,10 +871,17 @@ public class Interpreter implements
 
         Variable.Variant callee = evaluate(expr.qualifiedName);
 
+        int errorLine = -1;
+        if (expr.qualifiedName instanceof Expr.CallExpr callExpr) {
+            errorLine = callExpr.leftParen.line;
+        } else if (expr.qualifiedName instanceof Expr.GetExpr getExpr) {
+            errorLine = getExpr.name.line;
+        }
+
         if (!callee.isCallable()) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
-                    ((Expr.CallExpr)expr.qualifiedName).leftParen.line,
+                    errorLine,
                     "Attempted to call a non-callable value of type '" +
                             callee.getType() + "'."
             );
@@ -873,7 +890,7 @@ public class Interpreter implements
         if (!callee.isClass()) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
-                    ((Expr.CallExpr)expr.qualifiedName).leftParen.line,
+                    errorLine,
                     "Attempted to instantiate a non-class value of type '" +
                             callee.getType() + "'."
             );
@@ -929,7 +946,9 @@ public class Interpreter implements
         yClass.ClassObjectInstance superInstance = superInstanceVariant.asClassInstance();
 
         for(var field : superInstance.fields.entrySet()) {
-            instance.set(field.getKey(), field.getValue());
+            if (instance.get(field.getKey()) == null) {
+                instance.set(field.getKey(), field.getValue());
+            }
         }
 
         return new Variable.Variant(null);
@@ -1439,6 +1458,7 @@ public class Interpreter implements
 
         // class constructor object
         yClass.ClassObject  klass = new yClass.ClassObject() {
+
             @Override
             public boolean isSealed() {
                 return stmt.isSealed;
@@ -1488,17 +1508,57 @@ public class Interpreter implements
 
                 instance.prototype = this.InstancePrototype;
 
+
+                // initialize fields from super class
+                if(stmt.superName != null) {
+                    // if super call explicitly override it must be first statement
+                    Stmt.BlockStmt body = (Stmt.BlockStmt)constructorFn.body;
+                    boolean explicitSuper = false;
+                    for(Stmt stmt_ : body.stmtList) {
+                        if(stmt_ instanceof Stmt.ExprStmt && ((Stmt.ExprStmt) stmt_).expr instanceof Expr.SuperCallExpr) {
+                            explicitSuper = true;
+                            break;
+                        }
+                    }
+
+                    // super must be first
+                    if(explicitSuper) {
+                        Stmt stmt_ = body.stmtList.getFirst();
+                        if(!(stmt_ instanceof Stmt.ExprStmt && ((Stmt.ExprStmt) stmt_).expr instanceof Expr.SuperCallExpr)) {
+                            throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                                    -1,
+                                    "super() must be the first statement in the constructor.");
+                        }
+
+                    }
+                    if (!explicitSuper) {
+                        // implicit super: call parent constructor with no args now
+                        Variable parentClassVar = interpreter.curEnv.getValue(stmt.superName);
+                        yClass.ClassObject parentClass = parentClassVar.value.asClass();
+
+                        Variable.Variant superInstanceVariant =
+                                parentClass.call(interpreter, new ArrayList<>());
+
+                        yClass.ClassObjectInstance superInstance =
+                                superInstanceVariant.asClassInstance();
+
+                        for (var field : superInstance.fields.entrySet()) {
+                            instance.set(field.getKey(), field.getValue());
+                        }
+                    }
+                }
+
+                // add instance properties of super class to child class
+
                 for(var prop :   instanceProperty) {
                     instance.set(prop.name.lexeme,
                             new Variable(
                                     prop.initializer != null ?
                                             new Variable.Variant(interpreter.evaluate(prop.initializer).value):
                                             new Variable.Variant(null),
-                                                    prop.isConst,
-                                                    prop.type == null ? "any" :  prop.type.lexeme));
+                                    prop.isConst,
+                                    prop.type == null ? "any" :  prop.type.lexeme));
                 }
-
-                // add instance properties of super class to child class
 
                 if(constructorFn != null) {
                     Environment newEnv = new Environment(curEnv);
@@ -1552,19 +1612,23 @@ public class Interpreter implements
                 return stmt.name.lexeme;
             }
         };
+
         klass.prototype = yClass.ClassPrototype;
 
         klass.superClassName = stmt.superName; // allowed to be null
+
+        klass.closure = this.curEnv;
+
 
         // static methods reside in class itself
         HashMap<String, List<Function.NativeFunction>> staticMethodsFn = new HashMap<>();
         for(Stmt.ClassDeclaration.Method method : staticMethods) {
             if(staticMethodsFn.containsKey(method.name.lexeme)) {
-                staticMethodsFn.get(method.name.lexeme).add(methodToNativeFn(method));
+                staticMethodsFn.get(method.name.lexeme).add(methodToNativeFn(method, klass.closure));
             }
             else {
                 staticMethodsFn.computeIfAbsent(method.name.lexeme, k -> new ArrayList<>())
-                        .add(methodToNativeFn(method));
+                        .add(methodToNativeFn(method, klass.closure ));
             }
         }
 
@@ -1630,11 +1694,11 @@ public class Interpreter implements
         HashMap<String, List<Function.NativeFunction>> instanceMethodsFn = new HashMap<>();
         for(Stmt.ClassDeclaration.Method method : instanceMethods) {
             if(instanceMethodsFn.containsKey(method.name.lexeme)) {
-                instanceMethodsFn.get(method.name.lexeme).add(methodToNativeFn(method));
+                instanceMethodsFn.get(method.name.lexeme).add(methodToNativeFn(method, klass.closure));
             }
             else {
                 instanceMethodsFn.computeIfAbsent(method.name.lexeme, k -> new ArrayList<>())
-                        .add(methodToNativeFn(method));
+                        .add(methodToNativeFn(method, klass.closure));
             }
         }
 
@@ -1662,9 +1726,9 @@ public class Interpreter implements
         //
 
         if(constructorFn != null) {
-            klass.constructor = methodToNativeFn(constructorFn);
+            klass.constructor = methodToNativeFn(constructorFn, klass.closure);
             klass.InstancePrototype .set(constructorFn.name.lexeme, new Variable(
-                    new Variable.Variant(methodToNativeFn(constructorFn)),
+                    new Variable.Variant(methodToNativeFn(constructorFn, klass.closure)),
                     true,
                     "function"
             ));
@@ -1706,7 +1770,8 @@ public class Interpreter implements
         }
     }
 
-    private Function.NativeFunction methodToNativeFn(Stmt.ClassDeclaration.Method method){
+    private Function.NativeFunction methodToNativeFn(Stmt.ClassDeclaration.Method method,
+                                                     Environment closure){
 
         return new Function.NativeFunction() {
             @Override
@@ -1727,7 +1792,13 @@ public class Interpreter implements
                         );
                     }
 
-                    Environment newEnv = new Environment(interpreter.curEnv);
+
+                    // this binding came from call expression but classes are using closures , so that when i create new env with closure this
+                    // env loose this binding , bind this keyword to new env manually !!!
+                    Environment newEnv = new Environment(closure);
+                    Variable thisVar = interpreter.curEnv.getValueOrDefault("this");
+                    if(thisVar != null) newEnv.define("this", thisVar); // class static methods do not need this binding
+
                     for(int i = 0; i < method.params.size(); i++) {
 
                         Stmt.ClassDeclaration.Method.Param param = method.params.get(i);
@@ -1850,3 +1921,7 @@ public class Interpreter implements
         }
     }
 }
+
+
+
+

@@ -219,7 +219,7 @@ abstract public class Expr {
         public final List<Expr> arguments;
         public final Token leftParen;
 
-        SuperCallExpr(Token superToken,
+        public SuperCallExpr(Token superToken,
                  List<Expr> arguments,
                  Token leftParen) {
             this.superToken = superToken;

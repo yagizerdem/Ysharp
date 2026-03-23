@@ -1,0 +1,96 @@
+use "./enum.ys";
+
+export class Board {
+    var board = [];
+
+    init() do
+        this.board = Array.of(
+            Array.of(
+                Piece.create(1, 1, Color.BLUE, PieceType.ROOK),
+                Piece.create(1, 2, Color.BLUE, PieceType.KNIGHT),
+                Piece.create(1, 3, Color.BLUE, PieceType.BISHOP),
+                Piece.create(1, 4, Color.BLUE, PieceType.QUEEN),
+                Piece.create(1, 5, Color.BLUE, PieceType.KING),
+                Piece.create(1, 6, Color.BLUE, PieceType.BISHOP),
+                Piece.create(1, 7, Color.BLUE, PieceType.KNIGHT),
+                Piece.create(1, 8, Color.BLUE, PieceType.ROOK)
+            ),
+            Array.of(
+                Piece.create(2, 1, Color.BLUE, PieceType.PAWN),
+                Piece.create(2, 2, Color.BLUE, PieceType.PAWN),
+                Piece.create(2, 3, Color.BLUE, PieceType.PAWN),
+                Piece.create(2, 4, Color.BLUE, PieceType.PAWN),
+                Piece.create(2, 5, Color.BLUE, PieceType.PAWN),
+                Piece.create(2, 6, Color.BLUE, PieceType.PAWN),
+                Piece.create(2, 7, Color.BLUE, PieceType.PAWN),
+                Piece.create(2, 8, Color.BLUE, PieceType.PAWN)
+            ),
+            Array.of(null, null, null, null, null, null, null, null),
+            Array.of(null, null, null, null, null, null, null, null),
+            Array.of(null, null, null, null, null, null, null, null),
+            Array.of(null, null, null, null, null, null, null, null),
+            Array.of(
+                Piece.create(7, 1, Color.RED, PieceType.PAWN),
+                Piece.create(7, 2, Color.RED, PieceType.PAWN),
+                Piece.create(7, 3, Color.RED, PieceType.PAWN),
+                Piece.create(7, 4, Color.RED, PieceType.PAWN),
+                Piece.create(7, 5, Color.RED, PieceType.PAWN),
+                Piece.create(7, 6, Color.RED, PieceType.PAWN),
+                Piece.create(7, 7, Color.RED, PieceType.PAWN),
+                Piece.create(7, 8, Color.RED, PieceType.PAWN)
+            ),
+            Array.of(
+                Piece.create(8, 1, Color.RED, PieceType.ROOK),
+                Piece.create(8, 2, Color.RED, PieceType.KNIGHT),
+                Piece.create(8, 3, Color.RED, PieceType.BISHOP),
+                Piece.create(8, 4, Color.RED, PieceType.QUEEN),
+                Piece.create(8, 5, Color.RED, PieceType.KING),
+                Piece.create(8, 6, Color.RED, PieceType.BISHOP),
+                Piece.create(8, 7, Color.RED, PieceType.KNIGHT),
+                Piece.create(8, 8, Color.RED, PieceType.ROOK)
+            )
+        );
+    end
+
+    toString() do
+        var builder : string = "";
+        for var i in 0..7 do // row
+            for var j in 0..7 do // col
+                if this.board.get(i).get(j)  == null then do
+                    builder += " . ";
+                end
+                else do
+                    builder += PieceType.toString(this.board.get(i).get(j).type);
+                end
+            end
+            builder += "\n";
+        end
+        return builder;
+    end
+
+}
+
+export class Piece {
+    var row : int ;
+    var col : int ;
+    var color : Color;
+    var type : PieceType;
+
+    static create(row, col, color, type) do
+        var piece = new Piece();
+        piece.row = row;
+        piece.col = col;
+        piece.color = color;
+        piece.type = type;
+        return piece;
+    end
+
+    toString() do
+        var str : string = "";
+        str += "Row : " + this.row + " | ";
+        str += " Col : " + this.col + " | ";
+        str += " color : " + Color.toString(this.color) + " | ";
+        str += " type : " + PieceType.toString(this.color);
+        return str;
+    end
+}
