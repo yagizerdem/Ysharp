@@ -929,7 +929,9 @@ public class Interpreter implements
         yClass.ClassObjectInstance superInstance = superInstanceVariant.asClassInstance();
 
         for(var field : superInstance.fields.entrySet()) {
-            instance.set(field.getKey(), field.getValue());
+            if (instance.get(field.getKey()) == null) {
+                instance.set(field.getKey(), field.getValue());
+            }
         }
 
         return new Variable.Variant(null);
@@ -1488,17 +1490,57 @@ public class Interpreter implements
 
                 instance.prototype = this.InstancePrototype;
 
+
+                // initialize fields from super class
+                if(stmt.superName != null) {
+                    // if super call explicitly override it must be first statement
+                    Stmt.BlockStmt body = (Stmt.BlockStmt)constructorFn.body;
+                    boolean explicitSuper = false;
+                    for(Stmt stmt_ : body.stmtList) {
+                        if(stmt_ instanceof Stmt.ExprStmt && ((Stmt.ExprStmt) stmt_).expr instanceof Expr.SuperCallExpr) {
+                            explicitSuper = true;
+                            break;
+                        }
+                    }
+
+                    // super must be first
+                    if(explicitSuper) {
+                        Stmt stmt_ = body.stmtList.getFirst();
+                        if(!(stmt_ instanceof Stmt.ExprStmt && ((Stmt.ExprStmt) stmt_).expr instanceof Expr.SuperCallExpr)) {
+                            throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                                    -1,
+                                    "super() must be the first statement in the constructor.");
+                        }
+
+                    }
+                    if (!explicitSuper) {
+                        // implicit super: call parent constructor with no args now
+                        Variable parentClassVar = interpreter.curEnv.getValue(stmt.superName);
+                        yClass.ClassObject parentClass = parentClassVar.value.asClass();
+
+                        Variable.Variant superInstanceVariant =
+                                parentClass.call(interpreter, new ArrayList<>());
+
+                        yClass.ClassObjectInstance superInstance =
+                                superInstanceVariant.asClassInstance();
+
+                        for (var field : superInstance.fields.entrySet()) {
+                            instance.set(field.getKey(), field.getValue());
+                        }
+                    }
+                }
+
+                // add instance properties of super class to child class
+
                 for(var prop :   instanceProperty) {
                     instance.set(prop.name.lexeme,
                             new Variable(
                                     prop.initializer != null ?
                                             new Variable.Variant(interpreter.evaluate(prop.initializer).value):
                                             new Variable.Variant(null),
-                                                    prop.isConst,
-                                                    prop.type == null ? "any" :  prop.type.lexeme));
+                                    prop.isConst,
+                                    prop.type == null ? "any" :  prop.type.lexeme));
                 }
-
-                // add instance properties of super class to child class
 
                 if(constructorFn != null) {
                     Environment newEnv = new Environment(curEnv);
@@ -1850,3 +1892,7 @@ public class Interpreter implements
         }
     }
 }
+
+
+
+
