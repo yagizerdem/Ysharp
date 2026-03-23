@@ -1,0 +1,48 @@
+
+export class Color {
+    static const RED = 1; // blacks
+    static const BLUE = 0; // whites
+
+    static toString(c : int) do
+        if c != 1 && c != 0 then  do
+            throw AppError.create("color range should be 0 to 1");
+        end
+        return c == 1 ? "RED" : "BLUE";
+    end
+}
+
+export class PieceType {
+    static const KING   = 0;
+    static const QUEEN  = 1;
+    static const ROOK   = 2;
+    static const BISHOP = 3;
+    static const KNIGHT = 4;
+    static const PAWN   = 5;
+
+    static toString(c : int) do
+            switch c do
+                case 0 : do
+                    return "KING";
+                end
+                case 1 : do
+                    return "QUEEN";
+                end
+                case 2 : do
+                    return "ROOK";
+                end
+                case 3 : do
+                    return "BISHOP";
+                end
+                case 4 : do
+                    return "KNIGHT";
+                end
+                case 4 : do
+                    return "PAWN";
+                end
+                default : do
+                    throw new AppError.create("color range should be 0 to 5");
+                end
+            end
+    end
+
+}

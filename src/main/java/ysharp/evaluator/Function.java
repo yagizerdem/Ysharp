@@ -47,8 +47,7 @@ public abstract class Function extends RuntimeObject implements Callable {
     // function prototype chain is closed
     public static class FunctionObject extends Function {
         public final Stmt.FunctionDeclaration declaration;
-        private Environment closure;
-
+        private final Environment closure;
 
         public FunctionObject(Stmt.FunctionDeclaration declaration,
                               Environment closure) {

@@ -2,9 +2,8 @@ use "./board.ys";
 use  "./error.ys";
 
 
-var p =  Piece.create(1, 1, Color.BLUE, PieceType.ROOK);
+var board = new Board();
 
-println p.toString();
 
 
 

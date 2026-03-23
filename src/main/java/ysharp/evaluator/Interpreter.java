@@ -1458,6 +1458,7 @@ public class Interpreter implements
 
         // class constructor object
         yClass.ClassObject  klass = new yClass.ClassObject() {
+
             @Override
             public boolean isSealed() {
                 return stmt.isSealed;
@@ -1611,9 +1612,13 @@ public class Interpreter implements
                 return stmt.name.lexeme;
             }
         };
+
         klass.prototype = yClass.ClassPrototype;
 
         klass.superClassName = stmt.superName; // allowed to be null
+
+        klass.closure = this.curEnv;
+
 
         // static methods reside in class itself
         HashMap<String, List<Function.NativeFunction>> staticMethodsFn = new HashMap<>();
