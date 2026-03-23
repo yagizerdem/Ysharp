@@ -1,12 +1,5 @@
 use "./enum.ys";
 
-
-export function test() do
-    println Color;
-end
-
-test();
-
 export class Board {
     var board = [];
 
@@ -32,12 +25,10 @@ export class Board {
                 Piece.create(2, 7, Color.BLUE, PieceType.PAWN),
                 Piece.create(2, 8, Color.BLUE, PieceType.PAWN)
             ),
-            Array.of(null, null, null, null),
-            Array.of(null, null, null, null),
-            Array.of(null, null, null, null),
-            Array.of(null, null, null, null),
-            Array.of(null, null, null, null),
-            Array.of(null, null, null, null),
+            Array.of(null, null, null, null, null, null, null, null),
+            Array.of(null, null, null, null, null, null, null, null),
+            Array.of(null, null, null, null, null, null, null, null),
+            Array.of(null, null, null, null, null, null, null, null),
             Array.of(
                 Piece.create(7, 1, Color.RED, PieceType.PAWN),
                 Piece.create(7, 2, Color.RED, PieceType.PAWN),
@@ -59,8 +50,24 @@ export class Board {
                 Piece.create(8, 8, Color.RED, PieceType.ROOK)
             )
         );
-
     end
+
+    toString() do
+        var builder : string = "";
+        for var i in 0..7 do // row
+            for var j in 0..7 do // col
+                if this.board.get(i).get(j)  == null then do
+                    builder += " . ";
+                end
+                else do
+                    builder += PieceType.toString(this.board.get(i).get(j).type);
+                end
+            end
+            builder += "\n";
+        end
+        return builder;
+    end
+
 }
 
 export class Piece {

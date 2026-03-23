@@ -1624,11 +1624,11 @@ public class Interpreter implements
         HashMap<String, List<Function.NativeFunction>> staticMethodsFn = new HashMap<>();
         for(Stmt.ClassDeclaration.Method method : staticMethods) {
             if(staticMethodsFn.containsKey(method.name.lexeme)) {
-                staticMethodsFn.get(method.name.lexeme).add(methodToNativeFn(method));
+                staticMethodsFn.get(method.name.lexeme).add(methodToNativeFn(method, klass.closure));
             }
             else {
                 staticMethodsFn.computeIfAbsent(method.name.lexeme, k -> new ArrayList<>())
-                        .add(methodToNativeFn(method));
+                        .add(methodToNativeFn(method, klass.closure ));
             }
         }
 
@@ -1694,11 +1694,11 @@ public class Interpreter implements
         HashMap<String, List<Function.NativeFunction>> instanceMethodsFn = new HashMap<>();
         for(Stmt.ClassDeclaration.Method method : instanceMethods) {
             if(instanceMethodsFn.containsKey(method.name.lexeme)) {
-                instanceMethodsFn.get(method.name.lexeme).add(methodToNativeFn(method));
+                instanceMethodsFn.get(method.name.lexeme).add(methodToNativeFn(method, klass.closure));
             }
             else {
                 instanceMethodsFn.computeIfAbsent(method.name.lexeme, k -> new ArrayList<>())
-                        .add(methodToNativeFn(method));
+                        .add(methodToNativeFn(method, klass.closure));
             }
         }
 
@@ -1726,9 +1726,9 @@ public class Interpreter implements
         //
 
         if(constructorFn != null) {
-            klass.constructor = methodToNativeFn(constructorFn);
+            klass.constructor = methodToNativeFn(constructorFn, klass.closure);
             klass.InstancePrototype .set(constructorFn.name.lexeme, new Variable(
-                    new Variable.Variant(methodToNativeFn(constructorFn)),
+                    new Variable.Variant(methodToNativeFn(constructorFn, klass.closure)),
                     true,
                     "function"
             ));
@@ -1770,7 +1770,8 @@ public class Interpreter implements
         }
     }
 
-    private Function.NativeFunction methodToNativeFn(Stmt.ClassDeclaration.Method method){
+    private Function.NativeFunction methodToNativeFn(Stmt.ClassDeclaration.Method method,
+                                                     Environment closure){
 
         return new Function.NativeFunction() {
             @Override
@@ -1791,7 +1792,13 @@ public class Interpreter implements
                         );
                     }
 
-                    Environment newEnv = new Environment(interpreter.curEnv);
+
+                    // this binding came from call expression but classes are using closures , so that when i create new env with closure this
+                    // env loose this binding , bind this keyword to new env manually !!!
+                    Environment newEnv = new Environment(closure);
+                    Variable thisVar = interpreter.curEnv.getValueOrDefault("this");
+                    if(thisVar != null) newEnv.define("this", thisVar); // class static methods do not need this binding
+
                     for(int i = 0; i < method.params.size(); i++) {
 
                         Stmt.ClassDeclaration.Method.Param param = method.params.get(i);

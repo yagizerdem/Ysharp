@@ -242,11 +242,20 @@ public abstract class Function extends RuntimeObject implements Callable {
 
     public static abstract class NativeFunction extends Function {
 
+        private final Environment closure;
+
         public abstract String getFnName();
 
         public NativeFunction(){
             this.prototype = null;
+            this.closure = null;
         }
+
+        public NativeFunction(Environment closure) {
+            this.prototype = null;
+            this.closure = closure;
+        }
+
 
         @Override
         public String toString() {
