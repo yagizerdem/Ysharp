@@ -19,7 +19,9 @@ public class Registery {
 
     public static void register(Interpreter interpreter) throws Exception {
 
+        // string
         yString.Register(interpreter);
+        yStringBuilder.Register(interpreter);
 
         // collections
         yArray.Register(interpreter);

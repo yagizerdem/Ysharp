@@ -1,19 +1,9 @@
 
-
 use "./board.ys";
 use  "./error.ys";
 
 
 var board = new Board();
 
-try do
-
 board.init();
-
 println board.toString();
-
-end catch(err) do
-    println err.reason;
-end
-
-
