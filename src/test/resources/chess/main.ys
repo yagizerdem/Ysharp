@@ -8,6 +8,8 @@ var terminal = new TUI.DefaultTerminal();
 var board = new Board();
 board.init();
 
+var selection = [];
+
 while true do
     if terminal.isClosed then do
         break;
@@ -28,8 +30,12 @@ while true do
         elif key.getCharacter() == 'd' then do cursor.goRight(); end
         elif key.getCharacter() == 'w' then do cursor.goUp(); end
         terminal.clearInputBuffer();
+
+        println key.getCharacter();
     end
 
-    Time.sleep(200);
+
+
+    Time.sleep(50);
 end
 

@@ -36,7 +36,7 @@ public class Resolver implements Expr.Visitor<Void> ,
         CLASS,
     }
 
-    void resolve(List<Stmt> statements) {
+    public void resolve(List<Stmt> statements) {
         for (Stmt statement : statements) {
             if(statement == null) continue;
             try {
