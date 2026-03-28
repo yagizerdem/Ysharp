@@ -1,36 +1,15 @@
+
 YPF.draculaMode();
 YPF.invokeLater(()=> do
 
-    const f = new YPF.Frame();
-    f.setSize(600, 400);
+    var f = new YPF.Frame();
+    f.setSize(800, 400);
     f.setLayout(new YPF.BorderLayout());
     f.setVisible(true);
 
-    var top = new YPF.Button();
-    top.setText("TOP");
+    f.setDefaultCloseOperation(YPF.Frame.EXIT_ON_CLOSE);
 
-    var left = new YPF.Button();
-    left.setText("LEFT");
 
-    var right = new YPF.Button();
-    right.setText("RIGHT");
 
-    var bottom = new YPF.Button();
-    bottom.setText("BOTTOM");
-
-    var centerPanel = new YPF.Panel();
-    centerPanel.setLayout(null);
-
-    var text = new YPF.TextArea();
-    text.setBounds(50, 50, 300, 200);
-    text.setText("center area");
-
-    centerPanel.add(text);
-
-    f.add(top, YPF.BorderLayout.NORTH);
-    f.add(left, YPF.BorderLayout.WEST);
-    f.add(right, YPF.BorderLayout.EAST);
-    f.add(bottom, YPF.BorderLayout.SOUTH);
-    f.add(centerPanel, YPF.BorderLayout.CENTER);
 
 end);

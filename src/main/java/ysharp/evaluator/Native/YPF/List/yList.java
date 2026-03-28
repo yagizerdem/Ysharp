@@ -1,34 +1,54 @@
-package ysharp.evaluator.Native.YPF.Layout;
+package ysharp.evaluator.Native.YPF.List;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.Function;
 
-import java.awt.*;
+import javax.swing.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class yBorderLayout {
+public class yList {
 
-    public static RuntimeObject yBorderLayout_Instance_Prototype;
+    public static yListInstance requireListThis(Interpreter interpreter, String fnName) {
+        Variable thisVar = interpreter.curEnv.getValue("this");
+
+        if (thisVar == null) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    0,
+                    "Method '" + fnName + "' called without 'this'."
+            );
+        }
+
+        RuntimeObject obj = thisVar.value.asRuntimeObject();
+
+        if (!(obj instanceof yListInstance)) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    0,
+                    "Expected List but got '" + obj.getType() + "'"
+            );
+        }
+
+        return (yListInstance) obj;
+    }
+
+    public static RuntimeObject yList_Instance_Prototype;
 
     static {
-        yBorderLayout_Instance_Prototype = new RuntimeObject() {
+        yList_Instance_Prototype = new RuntimeObject() {
             @Override public boolean isTruthy() { return true; }
-            @Override public String getType() { return "__BorderLayout__"; }
-            @Override public String toString() { return "<prototype:BorderLayout>"; }
+            @Override public String getType() { return "__List__"; }
+            @Override public String toString() { return "<prototype:List>"; }
         };
 
-        yBorderLayout_Instance_Prototype.prototype = yClass.ClassPrototype;
-
+        yList_Instance_Prototype.prototype = yClass.ClassPrototype;
 
         Map<String, List<Method>> methodMap = new HashMap<>();
 
-        for (Method m : BorderLayout.class.getMethods()) {
+        for (Method m : JList.class.getMethods()) {
             if (m.getDeclaringClass() == Object.class) continue;
 
             methodMap
@@ -38,7 +58,7 @@ public class yBorderLayout {
 
         for (String name : methodMap.keySet()) {
 
-            yBorderLayout_Instance_Prototype.set(name, new Variable(
+            yList_Instance_Prototype.set(name, new Variable(
                     new Variable.Variant(new Function.NativeFunction() {
 
                         @Override public int arity() { return -1; }
@@ -47,10 +67,10 @@ public class yBorderLayout {
                         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
                                 throws YsharpError {
 
-                            yCardLayout.yCardLayoutInstance layoutInst =
-                                    yCardLayout.requireCardLayoutThis(interpreter, name);
+                            yListInstance list =
+                                    yList.requireListThis(interpreter, name);
 
-                            CardLayout layout = layoutInst.layout;
+                            JList<?> jlist = list.list;
 
                             try {
                                 Object[] javaArgs = new Object[args.size()];
@@ -92,7 +112,7 @@ public class yBorderLayout {
                                     );
                                 }
 
-                                Object result = selected.invoke(layout, javaArgs);
+                                Object result = selected.invoke(jlist, javaArgs);
 
                                 return new Variable.Variant(
                                         JavaObjectWrapper.wrap(result)
@@ -114,35 +134,31 @@ public class yBorderLayout {
                     "function"
             ));
         }
-
     }
 
-    public static class yBorderLayoutInstance extends yClass.ClassObjectInstance {
+    public static class yListInstance extends yClass.ClassObjectInstance {
 
-        public final BorderLayout layout;
+        public final JList<Object> list;
 
-        public yBorderLayoutInstance() {
-            this.layout = new BorderLayout();
-            this.prototype = yBorderLayout_Instance_Prototype;
+        public yListInstance() {
+            this.list = new JList<>();
+            this.prototype = yList_Instance_Prototype;
         }
 
         @Override public boolean isTruthy() { return true; }
-        @Override public String getType() { return "BorderLayout"; }
-        @Override public String toString() { return "<instance:BorderLayout>"; }
+        @Override public String getType() { return "List"; }
+        @Override public String toString() { return "<instance:List>"; }
+
         @Override
-        public Object getNativeJavaObject() { return this.layout;}
+        public Object getNativeJavaObject() {
+            return this.list;
+        }
     }
 
-    public static class yBorderLayoutClass extends yClass.SealedClassObject {
+    public static class yListClass extends yClass.SealedClassObject {
 
-        public yBorderLayoutClass() {
+        public yListClass() {
             this.prototype = yClass.ClassPrototype;
-
-            this.set("NORTH", new Variable(new Variable.Variant(BorderLayout.NORTH), true, "string"));
-            this.set("SOUTH", new Variable(new Variable.Variant(BorderLayout.SOUTH), true, "string"));
-            this.set("EAST", new Variable(new Variable.Variant(BorderLayout.EAST), true, "string"));
-            this.set("WEST", new Variable(new Variable.Variant(BorderLayout.WEST), true, "string"));
-            this.set("CENTER", new Variable(new Variable.Variant(BorderLayout.CENTER), true, "string"));
         }
 
         @Override public int arity() { return 0; }
@@ -151,10 +167,10 @@ public class yBorderLayout {
         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
                 throws YsharpError {
 
-            return new Variable.Variant(new yBorderLayoutInstance());
+            return new Variable.Variant(new yListInstance());
         }
 
-        @Override public String getClassName() { return "BorderLayout"; }
-        @Override public String getType() { return "BorderLayout"; }
+        @Override public String getClassName() { return "List"; }
+        @Override public String getType() { return "List"; }
     }
 }

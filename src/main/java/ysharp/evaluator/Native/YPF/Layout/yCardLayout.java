@@ -2,9 +2,8 @@ package ysharp.evaluator.Native.YPF.Layout;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.evaluator.Function;
 
-import java.awt.*;
+import java.awt.CardLayout;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -12,23 +11,47 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class yBorderLayout {
+public class yCardLayout {
 
-    public static RuntimeObject yBorderLayout_Instance_Prototype;
+    public static yCardLayout.yCardLayoutInstance requireCardLayoutThis(Interpreter interpreter, String fnName) {
+        Variable thisVar = interpreter.curEnv.getValue("this");
+
+        if (thisVar == null) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    0,
+                    "Method '" + fnName + "' called without 'this'."
+            );
+        }
+
+        RuntimeObject obj = thisVar.value.asRuntimeObject();
+
+        if (!(obj instanceof yCardLayoutInstance)) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    0,
+                    "Expected CardLayout but got '" + obj.getType() + "'"
+            );
+        }
+
+        return (yCardLayoutInstance) obj;
+    }
+
+    public static RuntimeObject yCardLayout_Instance_Prototype;
 
     static {
-        yBorderLayout_Instance_Prototype = new RuntimeObject() {
+        yCardLayout_Instance_Prototype = new RuntimeObject() {
             @Override public boolean isTruthy() { return true; }
-            @Override public String getType() { return "__BorderLayout__"; }
-            @Override public String toString() { return "<prototype:BorderLayout>"; }
+            @Override public String getType() { return "__CardLayout__"; }
+            @Override public String toString() { return "<prototype:CardLayout>"; }
         };
 
-        yBorderLayout_Instance_Prototype.prototype = yClass.ClassPrototype;
+        yCardLayout_Instance_Prototype.prototype = yClass.ClassPrototype;
 
 
         Map<String, List<Method>> methodMap = new HashMap<>();
 
-        for (Method m : BorderLayout.class.getMethods()) {
+        for (Method m : CardLayout.class.getMethods()) {
             if (m.getDeclaringClass() == Object.class) continue;
 
             methodMap
@@ -38,7 +61,7 @@ public class yBorderLayout {
 
         for (String name : methodMap.keySet()) {
 
-            yBorderLayout_Instance_Prototype.set(name, new Variable(
+            yCardLayout_Instance_Prototype.set(name, new Variable(
                     new Variable.Variant(new Function.NativeFunction() {
 
                         @Override public int arity() { return -1; }
@@ -47,7 +70,7 @@ public class yBorderLayout {
                         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
                                 throws YsharpError {
 
-                            yCardLayout.yCardLayoutInstance layoutInst =
+                            yCardLayoutInstance layoutInst =
                                     yCardLayout.requireCardLayoutThis(interpreter, name);
 
                             CardLayout layout = layoutInst.layout;
@@ -117,32 +140,29 @@ public class yBorderLayout {
 
     }
 
-    public static class yBorderLayoutInstance extends yClass.ClassObjectInstance {
+    public static class yCardLayoutInstance extends yClass.ClassObjectInstance {
 
-        public final BorderLayout layout;
+        public final CardLayout layout;
 
-        public yBorderLayoutInstance() {
-            this.layout = new BorderLayout();
-            this.prototype = yBorderLayout_Instance_Prototype;
+        public yCardLayoutInstance() {
+            this.layout = new CardLayout();
+            this.prototype = yCardLayout_Instance_Prototype;
         }
 
         @Override public boolean isTruthy() { return true; }
-        @Override public String getType() { return "BorderLayout"; }
-        @Override public String toString() { return "<instance:BorderLayout>"; }
+        @Override public String getType() { return "CardLayout"; }
+        @Override public String toString() { return "<instance:CardLayout>"; }
+
         @Override
-        public Object getNativeJavaObject() { return this.layout;}
+        public Object getNativeJavaObject() {
+            return this.layout;
+        }
     }
 
-    public static class yBorderLayoutClass extends yClass.SealedClassObject {
+    public static class yCardLayoutClass extends yClass.SealedClassObject {
 
-        public yBorderLayoutClass() {
+        public yCardLayoutClass() {
             this.prototype = yClass.ClassPrototype;
-
-            this.set("NORTH", new Variable(new Variable.Variant(BorderLayout.NORTH), true, "string"));
-            this.set("SOUTH", new Variable(new Variable.Variant(BorderLayout.SOUTH), true, "string"));
-            this.set("EAST", new Variable(new Variable.Variant(BorderLayout.EAST), true, "string"));
-            this.set("WEST", new Variable(new Variable.Variant(BorderLayout.WEST), true, "string"));
-            this.set("CENTER", new Variable(new Variable.Variant(BorderLayout.CENTER), true, "string"));
         }
 
         @Override public int arity() { return 0; }
@@ -151,10 +171,10 @@ public class yBorderLayout {
         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
                 throws YsharpError {
 
-            return new Variable.Variant(new yBorderLayoutInstance());
+            return new Variable.Variant(new yCardLayoutInstance());
         }
 
-        @Override public String getClassName() { return "BorderLayout"; }
-        @Override public String getType() { return "BorderLayout"; }
+        @Override public String getClassName() { return "CardLayout"; }
+        @Override public String getType() { return "CardLayout"; }
     }
 }

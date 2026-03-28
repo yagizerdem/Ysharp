@@ -5,10 +5,19 @@ import com.formdev.flatlaf.FlatLightLaf;
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.Native.YPF.Button.yButton;
+import ysharp.evaluator.Native.YPF.Button.yButtonGroup;
+import ysharp.evaluator.Native.YPF.Button.yRadioButton;
+import ysharp.evaluator.Native.YPF.CheckBox.yCheckBox;
+import ysharp.evaluator.Native.YPF.ComboBox.yComboBox;
 import ysharp.evaluator.Native.YPF.Frame.yFrame;
 import ysharp.evaluator.Native.YPF.Label.yLabel;
 import ysharp.evaluator.Native.YPF.Layout.yBorderLayout;
+import ysharp.evaluator.Native.YPF.Layout.yCardLayout;
+import ysharp.evaluator.Native.YPF.List.yList;
 import ysharp.evaluator.Native.YPF.Panel.yPanel;
+import ysharp.evaluator.Native.YPF.Panel.yScrollPane;
+import ysharp.evaluator.Native.YPF.Panel.ySplitPane;
+import ysharp.evaluator.Native.YPF.Panel.yTabbedPane;
 import ysharp.evaluator.Native.YPF.TextArea.yTextArea;
 import ysharp.evaluator.Native.YPF.TextBox.yTextBox;
 
@@ -194,9 +203,26 @@ public class YPF {
             this.RegisterClass(new yTextBox.yTextBoxClass());
             // YPF.TextArea
             this.RegisterClass(new yTextArea.yTextAreaClass());
+            // YPF.CheckBox();
+            this.RegisterClass(new yCheckBox.yCheckBoxClass());
+            // YPF.ComboBox();
+            this.RegisterClass(new yComboBox.yComboBoxClass());
+            // YPF.ButtonGroup();
+            this.RegisterClass(new yButtonGroup.yButtonGroupClass());
+            // YPF.RadioButton();
+            this.RegisterClass(new yRadioButton.yRadioButtonClass());
+            // YPF.TabbedPane();
+            this.RegisterClass(new yTabbedPane.yTabbedPaneClass());
+            // YPF.ScrollPane();
+            this.RegisterClass(new yScrollPane.yScrollPaneClass());
+            // YPF.SplitPane();
+            this.RegisterClass(new ySplitPane.ySplitPaneClass());
+            // YPF.List();
+            this.RegisterClass(new yList.yListClass());
 
             // layouts
             this.RegisterClass(new yBorderLayout.yBorderLayoutClass());
+            this.RegisterClass(new yCardLayout.yCardLayoutClass());
         }
 
         @Override

@@ -156,10 +156,20 @@ public class yFrame {
         @Override public Object getNativeJavaObject() { return  this.frame; }
     }
 
-    public static class yFrameClass extends yClass.SealedClassObject {
+    public static class yFrameClass extends yClass.ClassObject {
 
         public yFrameClass() {
             this.prototype = yClass.ClassPrototype;
+
+            this.set("EXIT_ON_CLOSE", new Variable(new Variable.Variant(JFrame.EXIT_ON_CLOSE), true, "int"));
+            this.set("DISPOSE_ON_CLOSE", new Variable(new Variable.Variant(JFrame.DISPOSE_ON_CLOSE), true, "int"));
+            this.set("DO_NOTHING_ON_CLOSE", new Variable(new Variable.Variant(JFrame.DO_NOTHING_ON_CLOSE), true, "int"));
+            this.set("HIDE_ON_CLOSE", new Variable(new Variable.Variant(JFrame.HIDE_ON_CLOSE), true, "int"));
+        }
+
+        @Override
+        public boolean isSealed() {
+            return false;
         }
 
         @Override

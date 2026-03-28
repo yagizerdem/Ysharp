@@ -1,34 +1,54 @@
-package ysharp.evaluator.Native.YPF.Layout;
+package ysharp.evaluator.Native.YPF.Panel;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.Function;
 
-import java.awt.*;
+import javax.swing.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class yBorderLayout {
+public class yTabbedPane {
 
-    public static RuntimeObject yBorderLayout_Instance_Prototype;
+    public static yTabbedPaneInstance requireTabbedPaneThis(Interpreter interpreter, String fnName) {
+        Variable thisVar = interpreter.curEnv.getValue("this");
+
+        if (thisVar == null) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    0,
+                    "Method '" + fnName + "' called without 'this'."
+            );
+        }
+
+        RuntimeObject obj = thisVar.value.asRuntimeObject();
+
+        if (!(obj instanceof yTabbedPaneInstance)) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    0,
+                    "Expected TabbedPane but got '" + obj.getType() + "'"
+            );
+        }
+
+        return (yTabbedPaneInstance) obj;
+    }
+
+    public static RuntimeObject yTabbedPane_Instance_Prototype;
 
     static {
-        yBorderLayout_Instance_Prototype = new RuntimeObject() {
+        yTabbedPane_Instance_Prototype = new RuntimeObject() {
             @Override public boolean isTruthy() { return true; }
-            @Override public String getType() { return "__BorderLayout__"; }
-            @Override public String toString() { return "<prototype:BorderLayout>"; }
+            @Override public String getType() { return "__TabbedPane__"; }
+            @Override public String toString() { return "<prototype:TabbedPane>"; }
         };
 
-        yBorderLayout_Instance_Prototype.prototype = yClass.ClassPrototype;
-
+        yTabbedPane_Instance_Prototype.prototype = yClass.ClassPrototype;
 
         Map<String, List<Method>> methodMap = new HashMap<>();
 
-        for (Method m : BorderLayout.class.getMethods()) {
+        for (Method m : JTabbedPane.class.getMethods()) {
             if (m.getDeclaringClass() == Object.class) continue;
 
             methodMap
@@ -38,7 +58,7 @@ public class yBorderLayout {
 
         for (String name : methodMap.keySet()) {
 
-            yBorderLayout_Instance_Prototype.set(name, new Variable(
+            yTabbedPane_Instance_Prototype.set(name, new Variable(
                     new Variable.Variant(new Function.NativeFunction() {
 
                         @Override public int arity() { return -1; }
@@ -47,10 +67,10 @@ public class yBorderLayout {
                         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
                                 throws YsharpError {
 
-                            yCardLayout.yCardLayoutInstance layoutInst =
-                                    yCardLayout.requireCardLayoutThis(interpreter, name);
+                            yTabbedPaneInstance tp =
+                                    yTabbedPane.requireTabbedPaneThis(interpreter, name);
 
-                            CardLayout layout = layoutInst.layout;
+                            JTabbedPane jtp = tp.tabbedPane;
 
                             try {
                                 Object[] javaArgs = new Object[args.size()];
@@ -92,7 +112,7 @@ public class yBorderLayout {
                                     );
                                 }
 
-                                Object result = selected.invoke(layout, javaArgs);
+                                Object result = selected.invoke(jtp, javaArgs);
 
                                 return new Variable.Variant(
                                         JavaObjectWrapper.wrap(result)
@@ -114,35 +134,31 @@ public class yBorderLayout {
                     "function"
             ));
         }
-
     }
 
-    public static class yBorderLayoutInstance extends yClass.ClassObjectInstance {
+    public static class yTabbedPaneInstance extends yClass.ClassObjectInstance {
 
-        public final BorderLayout layout;
+        public final JTabbedPane tabbedPane;
 
-        public yBorderLayoutInstance() {
-            this.layout = new BorderLayout();
-            this.prototype = yBorderLayout_Instance_Prototype;
+        public yTabbedPaneInstance() {
+            this.tabbedPane = new JTabbedPane();
+            this.prototype = yTabbedPane_Instance_Prototype;
         }
 
         @Override public boolean isTruthy() { return true; }
-        @Override public String getType() { return "BorderLayout"; }
-        @Override public String toString() { return "<instance:BorderLayout>"; }
+        @Override public String getType() { return "TabbedPane"; }
+        @Override public String toString() { return "<instance:TabbedPane>"; }
+
         @Override
-        public Object getNativeJavaObject() { return this.layout;}
+        public Object getNativeJavaObject() {
+            return this.tabbedPane;
+        }
     }
 
-    public static class yBorderLayoutClass extends yClass.SealedClassObject {
+    public static class yTabbedPaneClass extends yClass.SealedClassObject {
 
-        public yBorderLayoutClass() {
+        public yTabbedPaneClass() {
             this.prototype = yClass.ClassPrototype;
-
-            this.set("NORTH", new Variable(new Variable.Variant(BorderLayout.NORTH), true, "string"));
-            this.set("SOUTH", new Variable(new Variable.Variant(BorderLayout.SOUTH), true, "string"));
-            this.set("EAST", new Variable(new Variable.Variant(BorderLayout.EAST), true, "string"));
-            this.set("WEST", new Variable(new Variable.Variant(BorderLayout.WEST), true, "string"));
-            this.set("CENTER", new Variable(new Variable.Variant(BorderLayout.CENTER), true, "string"));
         }
 
         @Override public int arity() { return 0; }
@@ -151,10 +167,10 @@ public class yBorderLayout {
         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
                 throws YsharpError {
 
-            return new Variable.Variant(new yBorderLayoutInstance());
+            return new Variable.Variant(new yTabbedPaneInstance());
         }
 
-        @Override public String getClassName() { return "BorderLayout"; }
-        @Override public String getType() { return "BorderLayout"; }
+        @Override public String getClassName() { return "TabbedPane"; }
+        @Override public String getType() { return "TabbedPane"; }
     }
 }
