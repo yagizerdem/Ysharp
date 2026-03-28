@@ -9,26 +9,12 @@ YPF.invokeLater(()=> do
 
     f.setDefaultCloseOperation(YPF.Frame.EXIT_ON_CLOSE);
 
-    var pb = new YPF.ProgressBar();
-    pb.setBounds(50, 50, 100, 10);
+    var list = new YPF.List();
 
-    pb.setMinimum(0);
-    pb.setMaximum(100);
-    var value = 40;
-    pb.setValue(value);
+    list.setBounds(20, 20, 200, 150);
+    // list.setListData(["Java", "Python", "C++"]);
+    f.add(list);
+    println list.getSelectedValue();
 
-    f.add(pb, YPF.BorderLayout.SOUTH);
-
-    var t = new Thread(()=> do
-        while true  do
-                if(value == 100) then do break; end
-                value++;
-                pb.setValue(value);
-                Time.sleep(10);
-        end
-        f.dispose();
-    end);
-
-    t.start();
 
 end);

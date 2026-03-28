@@ -1,5 +1,6 @@
 package ysharp.evaluator.Native.Collections;
 
+import com.sun.source.doctree.ThrowsTree;
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.Native.LINQ.Queryable;
@@ -9,6 +10,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class yArray {
 
@@ -2011,6 +2013,15 @@ public class yArray {
         @Override
         public ArrayList<Variable.Variant> getData() {
             return this.data;
+        }
+
+        @Override
+        public Object getNativeJavaObject() {
+            ArrayList<Object> nativeArrayList = new ArrayList<>();
+            for(int i = 0; i < this.data.size(); i++) {
+                nativeArrayList.add(this.data.get(i).asJavaNative());
+            }
+            return nativeArrayList;
         }
 
     }
