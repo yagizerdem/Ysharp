@@ -7,7 +7,6 @@ YPF.invokeLater(()=> do
     f.setSize(500, 400);
 
     var b = new YPF.Button();
-    f.add(b);
 
     f.setTitle("test");
 
@@ -21,6 +20,22 @@ YPF.invokeLater(()=> do
     f.setLayout(null);
     b.setBounds(50, 50, 120, 40);
     b.setText("yagiz erdem");
+
+    var l = new YPF.Label();
+    l.setBounds(100, 250, 120, 40);
+    l.setText("merhaba");
+
+
+    var panel = new YPF.Panel();
+    panel.setSize(500, 400);
+    f.add(panel);
+    panel.add(b);
+    panel.add(l);
+    panel.setLayout(null);
+
+    const textBox = new YPF.TextArea();
+    textBox.setBounds(200, 40 , 200 ,300);
+    panel.add(textBox);
 
 end);
 

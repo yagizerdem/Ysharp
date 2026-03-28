@@ -5,20 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="06588b0d-6eee-4b4b-be52-23cf34ea7082" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Label/yLabel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Panel/yPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/TextArea/yTextArea.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/TextBox/yTextBox.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/JavaObjectWrapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/JavaObjectWrapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Button/function/GetUIClassIDFn.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Button/function/IsDefaultButtonFn.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Button/function/IsDefaultCapableFn.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Button/function/ParamStringFn.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Button/function/RemoveNotifyFn.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Button/function/SetDefaultCapableFn.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Button/function/UpdateUIFn.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Button/yButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Button/yButton.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Component/function/GetAlignmentXFn.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Component/function/GetAlignmentYFn.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Component/yComponent.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Frame/yFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Frame/yFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/YPF.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/YPF.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/resources/test/main.ys" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/test/main.ys" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

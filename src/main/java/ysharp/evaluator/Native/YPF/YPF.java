@@ -6,6 +6,10 @@ import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.Native.YPF.Button.yButton;
 import ysharp.evaluator.Native.YPF.Frame.yFrame;
+import ysharp.evaluator.Native.YPF.Label.yLabel;
+import ysharp.evaluator.Native.YPF.Panel.yPanel;
+import ysharp.evaluator.Native.YPF.TextArea.yTextArea;
+import ysharp.evaluator.Native.YPF.TextBox.yTextBox;
 
 import javax.swing.*;
 import java.util.List;
@@ -178,13 +182,17 @@ public class YPF {
 
 
             // YPF.Frame
-            yFrame.yFrameClass yFrame = new yFrame.yFrameClass();
-            this.set(yFrame.getClassName(), new Variable(new Variable.Variant(yFrame), true, yFrame.getType()));
-
+            this.RegisterClass(new yFrame.yFrameClass());
             // YPF.Button
-            yButton.yButtonClass yButton = new yButton.yButtonClass();
-            this.set(yButton.getClassName(), new Variable(new Variable.Variant(yButton), true, yButton.getType()));
-
+            this.RegisterClass(new yButton.yButtonClass());
+            // YPF.Label
+            this.RegisterClass(new yLabel.yLabelClass());
+            // YPF.Panel
+            this.RegisterClass(new yPanel.yPanelClass());
+            // YPF.TextBox
+            this.RegisterClass(new yTextBox.yTextBoxClass());
+            // YPF.TextArea
+            this.RegisterClass(new yTextArea.yTextAreaClass());
         }
 
         @Override

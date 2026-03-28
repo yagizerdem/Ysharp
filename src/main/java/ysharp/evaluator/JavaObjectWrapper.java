@@ -31,6 +31,7 @@ public class JavaObjectWrapper {
             return obj;
         }
 
+        // native java object
         return obj;
 
     }
