@@ -1,0 +1,7 @@
+
+
+export class AppFrame extends Frame {
+    test() do
+        println "test";
+    end
+}

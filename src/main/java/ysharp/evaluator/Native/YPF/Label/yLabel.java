@@ -1,4 +1,4 @@
-package ysharp.evaluator.Native.YPF.Button;
+package ysharp.evaluator.Native.YPF.Label;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
@@ -7,14 +7,11 @@ import ysharp.evaluator.Function;
 import javax.swing.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class yButton {
+public class yLabel {
 
-    public static yButtonInstance requireButtonThis(Interpreter interpreter, String fnName) {
+    public static yLabelInstance requireLabelThis(Interpreter interpreter, String fnName) {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
@@ -27,32 +24,31 @@ public class yButton {
 
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-        if (!(obj instanceof yButtonInstance)) {
+        if (!(obj instanceof yLabelInstance)) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     0,
-                    "Expected Button but got '" + obj.getType() + "'"
+                    "Expected Label but got '" + obj.getType() + "'"
             );
         }
 
-        return (yButtonInstance) obj;
+        return (yLabelInstance) obj;
     }
 
-    public static RuntimeObject yButton_Instance_Prototype;
+    public static RuntimeObject yLabel_Instance_Prototype;
 
     static {
-        yButton_Instance_Prototype = new RuntimeObject() {
+        yLabel_Instance_Prototype = new RuntimeObject() {
             @Override public boolean isTruthy() { return true; }
-            @Override public String getType() { return "__Button__"; }
-            @Override public String toString() { return "<prototype:Button>"; }
+            @Override public String getType() { return "__Label__"; }
+            @Override public String toString() { return "<prototype:Label>"; }
         };
 
-        yButton_Instance_Prototype.prototype = yButton_Instance_Prototype;
-
+        yLabel_Instance_Prototype.prototype = yClass.ClassPrototype;
 
         Map<String, List<Method>> methodMap = new HashMap<>();
-        for (Method m : JButton.class.getMethods()) {
 
+        for (Method m : JLabel.class.getMethods()) {
             if (m.getDeclaringClass() == Object.class) continue;
 
             methodMap
@@ -61,22 +57,20 @@ public class yButton {
         }
 
         for (String name : methodMap.keySet()) {
-            yButton_Instance_Prototype.set(name, new Variable(
+
+            yLabel_Instance_Prototype.set(name, new Variable(
                     new Variable.Variant(new Function.NativeFunction() {
 
-                        @Override
-                        public int arity() {
-                            return -1;
-                        }
+                        @Override public int arity() { return -1; }
 
                         @Override
                         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
                                 throws YsharpError {
 
-                            yButton.yButtonInstance button =
-                                    yButton.requireButtonThis(interpreter, name);
+                            yLabelInstance label =
+                                    yLabel.requireLabelThis(interpreter, name);
 
-                            JButton jbutton = button.button;
+                            JLabel jlabel = label.label;
 
                             try {
                                 Object[] javaArgs = new Object[args.size()];
@@ -88,30 +82,38 @@ public class yButton {
 
                                 List<Method> availableMethods = methodMap.get(name);
 
-                                Method m = null;
-                                for(Method method : availableMethods) {
-                                    if(method.getParameterCount() != args.size()) continue;
-                                    Parameter[] javaParameters = method.getParameters();
-                                    boolean skip = false;
-                                    for (int j = 0; j < javaParameters.length; j++) {
+                                Method selected = null;
 
-                                        if (!isCompatible(javaParameters[j].getType(), javaArgs[j])) {
+                                for (Method method : availableMethods) {
+
+                                    if (method.getParameterCount() != args.size()) continue;
+
+                                    Parameter[] params = method.getParameters();
+
+                                    boolean skip = false;
+
+                                    for (int j = 0; j < params.length; j++) {
+                                        if (!isCompatible(params[j].getType(), javaArgs[j])) {
                                             skip = true;
                                             break;
                                         }
                                     }
+
                                     if (skip) continue;
-                                    m = method;
+
+                                    selected = method;
                                     break;
                                 }
 
-                                if(m == null) {
-                                    throw  new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                                if (selected == null) {
+                                    throw new YsharpError(
+                                            YsharpError.YsharpErrorType.PROCESS,
                                             -1,
-                                            "method overload not found");
+                                            "method overload not found"
+                                    );
                                 }
 
-                                Object result = m.invoke(jbutton, javaArgs);
+                                Object result = selected.invoke(jlabel, javaArgs);
 
                                 return new Variable.Variant(
                                         JavaObjectWrapper.wrap(result)
@@ -126,35 +128,33 @@ public class yButton {
                             }
                         }
 
-                        @Override
-                        public String getFnName() {
-                            return name;
-                        }
+                        @Override public String getFnName() { return name; }
+
                     }),
-                    true, "function"
+                    true,
+                    "function"
             ));
         }
-
     }
 
-    public static class yButtonInstance extends yClass.ClassObjectInstance  {
+    public static class yLabelInstance extends yClass.ClassObjectInstance {
 
-        public final JButton button;
+        public final JLabel label;
 
-        public yButtonInstance() {
-            this.button = new JButton();
-            this.prototype = yButton_Instance_Prototype;
+        public yLabelInstance() {
+            this.label = new JLabel();
+            this.prototype = yLabel_Instance_Prototype;
         }
 
         @Override public boolean isTruthy() { return true; }
-        @Override public String getType() { return "Button"; }
-        @Override public String toString() { return "<instance:Button>"; }
-        @Override public Object getNativeJavaObject() {return this.button; }
+        @Override public String getType() { return "Label"; }
+        @Override public String toString() { return "<instance:Label>"; }
+        @Override public Object getNativeJavaObject() { return this.label; }
     }
 
-    public static class yButtonClass extends yClass.SealedClassObject {
+    public static class yLabelClass extends yClass.SealedClassObject {
 
-        public yButtonClass() {
+        public yLabelClass() {
             this.prototype = yClass.ClassPrototype;
         }
 
@@ -164,10 +164,10 @@ public class yButton {
         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
                 throws YsharpError {
 
-            return new Variable.Variant(new yButtonInstance());
+            return new Variable.Variant(new yLabelInstance());
         }
 
-        @Override public String getClassName() { return "Button"; }
-        @Override public String getType() { return "Button"; }
+        @Override public String getClassName() { return "Label"; }
+        @Override public String getType() { return "Label"; }
     }
 }

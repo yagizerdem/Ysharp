@@ -7,7 +7,7 @@ import java.util.List;
 
 public class yClass {
 
-    static private interface IBasePrototype {
+    static private interface IClass {
          RuntimeObject getPrototype();
     }
 
@@ -100,7 +100,7 @@ public class yClass {
 
     }
 
-    static abstract public class ClassObject extends RuntimeObject implements Callable, IBasePrototype {
+    static abstract public class ClassObject extends RuntimeObject implements Callable, IClass {
 
         public Environment closure;
 
@@ -125,7 +125,7 @@ public class yClass {
         }
     }
 
-    static abstract public class SealedClassObject extends ClassObject implements IBasePrototype {
+    static abstract public class SealedClassObject extends ClassObject implements IClass {
         @Override
         public boolean isSealed() {
             return true;
@@ -137,7 +137,7 @@ public class yClass {
         }
     }
 
-    static abstract public class ClassObjectInstance extends RuntimeObject implements IBasePrototype{
+    static abstract public class ClassObjectInstance extends RuntimeObject implements IClass{
         @Override
         public RuntimeObject getPrototype() {
             return this.prototype;

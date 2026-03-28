@@ -1,10 +1,10 @@
-package ysharp.evaluator.Native.YPF.Button;
+package ysharp.evaluator.Native.YPF.Frame;
+
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.evaluator.Function;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -12,9 +12,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class yButton {
+public class yFrame {
 
-    public static yButtonInstance requireButtonThis(Interpreter interpreter, String fnName) {
+    public static yFrameInstance requireFrameThis(Interpreter interpreter, String fnName) {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
@@ -27,31 +27,36 @@ public class yButton {
 
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-        if (!(obj instanceof yButtonInstance)) {
+        if (!(obj instanceof yFrameInstance)) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     0,
-                    "Expected Button but got '" + obj.getType() + "'"
+                    "Expected Frame but got '" + obj.getType() + "'"
             );
         }
 
-        return (yButtonInstance) obj;
+        return (yFrameInstance) obj;
     }
 
-    public static RuntimeObject yButton_Instance_Prototype;
+
+    public static RuntimeObject yFrame_Instance_Prototype;
 
     static {
-        yButton_Instance_Prototype = new RuntimeObject() {
-            @Override public boolean isTruthy() { return true; }
-            @Override public String getType() { return "__Button__"; }
-            @Override public String toString() { return "<prototype:Button>"; }
+        yFrame_Instance_Prototype = new RuntimeObject() {
+            @Override
+            public boolean isTruthy() { return true; }
+
+            @Override
+            public String getType() { return "__Frame__"; }
+
+            @Override
+            public String toString() { return "<prototype:Frame>"; }
         };
+        yFrame_Instance_Prototype.prototype = yClass.ClassPrototype;
 
-        yButton_Instance_Prototype.prototype = yButton_Instance_Prototype;
-
-
+        // store methods on Frame class , overloads store in same array with same key name
         Map<String, List<Method>> methodMap = new HashMap<>();
-        for (Method m : JButton.class.getMethods()) {
+        for (Method m : JFrame.class.getMethods()) {
 
             if (m.getDeclaringClass() == Object.class) continue;
 
@@ -61,7 +66,7 @@ public class yButton {
         }
 
         for (String name : methodMap.keySet()) {
-            yButton_Instance_Prototype.set(name, new Variable(
+            yFrame_Instance_Prototype.set(name, new Variable(
                     new Variable.Variant(new Function.NativeFunction() {
 
                         @Override
@@ -73,10 +78,10 @@ public class yButton {
                         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
                                 throws YsharpError {
 
-                            yButton.yButtonInstance button =
-                                    yButton.requireButtonThis(interpreter, name);
+                            yFrame.yFrameInstance frame =
+                                    yFrame.requireFrameThis(interpreter, name);
 
-                            JButton jbutton = button.button;
+                            JFrame jframe = frame.frame;
 
                             try {
                                 Object[] javaArgs = new Object[args.size()];
@@ -111,7 +116,7 @@ public class yButton {
                                             "method overload not found");
                                 }
 
-                                Object result = m.invoke(jbutton, javaArgs);
+                                Object result = m.invoke(jframe, javaArgs);
 
                                 return new Variable.Variant(
                                         JavaObjectWrapper.wrap(result)
@@ -131,43 +136,54 @@ public class yButton {
                             return name;
                         }
                     }),
-                    true, "function"
+                        true, "function"
             ));
         }
-
     }
 
-    public static class yButtonInstance extends yClass.ClassObjectInstance  {
+    public static class yFrameInstance extends yClass.ClassObjectInstance {
 
-        public final JButton button;
+        public final JFrame frame;
 
-        public yButtonInstance() {
-            this.button = new JButton();
-            this.prototype = yButton_Instance_Prototype;
+        public yFrameInstance() {
+            this.frame = new JFrame();
+            this.prototype = yFrame_Instance_Prototype;
         }
 
         @Override public boolean isTruthy() { return true; }
-        @Override public String getType() { return "Button"; }
-        @Override public String toString() { return "<instance:Button>"; }
-        @Override public Object getNativeJavaObject() {return this.button; }
+        @Override public String getType() { return "Frame"; }
+        @Override public String toString() { return "<instance:Frame>"; }
+        @Override public Object getNativeJavaObject() { return  this.frame; }
     }
 
-    public static class yButtonClass extends yClass.SealedClassObject {
+    public static class yFrameClass extends yClass.ClassObject {
 
-        public yButtonClass() {
+        public yFrameClass() {
             this.prototype = yClass.ClassPrototype;
+
+            this.set("EXIT_ON_CLOSE", new Variable(new Variable.Variant(JFrame.EXIT_ON_CLOSE), true, "int"));
+            this.set("DISPOSE_ON_CLOSE", new Variable(new Variable.Variant(JFrame.DISPOSE_ON_CLOSE), true, "int"));
+            this.set("DO_NOTHING_ON_CLOSE", new Variable(new Variable.Variant(JFrame.DO_NOTHING_ON_CLOSE), true, "int"));
+            this.set("HIDE_ON_CLOSE", new Variable(new Variable.Variant(JFrame.HIDE_ON_CLOSE), true, "int"));
         }
 
-        @Override public int arity() { return 0; }
+        @Override
+        public boolean isSealed() {
+            return false;
+        }
+
+        @Override
+        public int arity() { return 0; }
 
         @Override
         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
                 throws YsharpError {
 
-            return new Variable.Variant(new yButtonInstance());
+            return new Variable.Variant(new yFrameInstance());
         }
 
-        @Override public String getClassName() { return "Button"; }
-        @Override public String getType() { return "Button"; }
+        @Override public String getClassName() { return "Frame"; }
+        @Override public String getType() { return "Frame"; }
+        @Override public String toString() { return "<class:Frame>"; }
     }
 }
