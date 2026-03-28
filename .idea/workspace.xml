@@ -5,10 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="06588b0d-6eee-4b4b-be52-23cf34ea7082" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Button/function/GetUIClassIDFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Button/function/IsDefaultButtonFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Button/function/IsDefaultCapableFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Button/function/ParamStringFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Button/function/RemoveNotifyFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Button/function/SetDefaultCapableFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Button/function/UpdateUIFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Component/function/GetAlignmentXFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Component/function/GetAlignmentYFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Window/Frame/function/AddFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Window/Frame/function/OnCloseFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Window/Frame/function/SetSizeFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Window/Frame/function/SetTitleFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Window/Frame/function/SetVisibleFn.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Window/yFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Window/yFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Button/yButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Button/yButton.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Window/yFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Window/Frame/yFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/YPF.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/YPF.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/yComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/YPF/Component/yComponent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/RuntimeObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/RuntimeObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/yClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/yClass.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/resources/test/main.ys" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/test/main.ys" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

@@ -1,8 +1,9 @@
-package ysharp.evaluator.Native.YPF;
+package ysharp.evaluator.Native.YPF.Component;
+
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.evaluator.Native.TUI.Util.TextColor.yANSI;
+import ysharp.evaluator.Native.YPF.Component.function.*;
 
 import java.awt.*;
 import java.util.List;
@@ -82,74 +83,9 @@ public class yComponent {
         yComponent_Instance_Prototype.prototype = yClass.ClassPrototype;
 
 
-        class GetAlignmentXFn extends Function.NativeFunction implements Callable {
+        yComponent_Instance_Prototype.RegisterNativeFn(new GetAlignmentXFn());
 
-            @Override
-            public int arity() {
-                return 0;
-            }
+        yComponent_Instance_Prototype.RegisterNativeFn(new GetAlignmentYFn());
 
-            @Override
-            public Variable.Variant call(Interpreter interpreter,
-                                         List<Variable.Variant> arguments)
-                    throws YsharpError {
-
-                requireArity(arguments, arity(), getFnName());
-
-                IComponent comp = requireComponentThis(interpreter, getFnName());
-
-                float val = comp.getComponent().getAlignmentX();
-
-                return new Variable.Variant((double) val);
-            }
-
-            @Override
-            public String getFnName() {
-                return "getAlignmentX";
-            }
-        }
-
-        GetAlignmentXFn getAlignmentX = new GetAlignmentXFn();
-        Variable getAlignmentXVar = new Variable(
-                new Variable.Variant(getAlignmentX),
-                true,
-                "function"
-        );
-        yComponent_Instance_Prototype.set(getAlignmentX.getFnName(), getAlignmentXVar);
-
-        class GetAlignmentYFn extends Function.NativeFunction implements Callable {
-
-            @Override
-            public int arity() {
-                return 0;
-            }
-
-            @Override
-            public Variable.Variant call(Interpreter interpreter,
-                                         List<Variable.Variant> arguments)
-                    throws YsharpError {
-
-                requireArity(arguments, arity(), getFnName());
-
-                IComponent comp = requireComponentThis(interpreter, getFnName());
-
-                float val = comp.getComponent().getAlignmentY();
-
-                return new Variable.Variant((double) val);
-            }
-
-            @Override
-            public String getFnName() {
-                return "getAlignmentY";
-            }
-        }
-
-        GetAlignmentYFn getAlignmentY = new GetAlignmentYFn();
-        Variable getAlignmentYVar = new Variable(
-                new Variable.Variant(getAlignmentY),
-                true,
-                "function"
-        );
-        yComponent_Instance_Prototype.set(getAlignmentY.getFnName(), getAlignmentYVar);
     }
 }

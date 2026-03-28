@@ -6,6 +6,12 @@ YPF.invokeLater(()=> do
     f.setVisible(true);
     f.setSize(400, 400);
 
+    var b = new YPF.Button();
+    f.add(b);
+
+    f.onClose(() => do
+           println "onclose hit";
+    end);
 end);
 
 println Random.nextInt(0, 88);

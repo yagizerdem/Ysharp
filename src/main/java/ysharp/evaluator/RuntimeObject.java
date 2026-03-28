@@ -233,4 +233,17 @@ public abstract class RuntimeObject {
 
         return v.asCallable();
     }
+
+    public void RegisterClass(yClass.ClassObject klass) {
+        this.set(klass.getClassName(), new Variable(new Variable.Variant(klass), true, klass.getType()));
+    }
+
+    public void RegisterNativeFn(Function.NativeFunction fn) {
+        this.set(fn.getFnName(), new Variable(new Variable.Variant(fn), true, fn.getType()));
+    }
+
+    public void RegisterInstance(yClass.ClassObjectInstance instance, String identifier) {
+        this.set(identifier, new Variable(new Variable.Variant(instance), true, instance.getType()));
+    }
+
 }
