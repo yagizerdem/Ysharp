@@ -18,6 +18,7 @@ import ysharp.evaluator.Native.YPF.Panel.yPanel;
 import ysharp.evaluator.Native.YPF.Panel.yScrollPane;
 import ysharp.evaluator.Native.YPF.Panel.ySplitPane;
 import ysharp.evaluator.Native.YPF.Panel.yTabbedPane;
+import ysharp.evaluator.Native.YPF.ProgressBar.yProgressBar;
 import ysharp.evaluator.Native.YPF.TextArea.yTextArea;
 import ysharp.evaluator.Native.YPF.TextBox.yTextBox;
 
@@ -219,6 +220,8 @@ public class YPF {
             this.RegisterClass(new ySplitPane.ySplitPaneClass());
             // YPF.List();
             this.RegisterClass(new yList.yListClass());
+            // YPF.ProgressBar();
+            this.RegisterClass(new yProgressBar.yProgressBarClass());
 
             // layouts
             this.RegisterClass(new yBorderLayout.yBorderLayoutClass());

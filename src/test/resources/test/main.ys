@@ -9,7 +9,26 @@ YPF.invokeLater(()=> do
 
     f.setDefaultCloseOperation(YPF.Frame.EXIT_ON_CLOSE);
 
+    var pb = new YPF.ProgressBar();
+    pb.setBounds(50, 50, 100, 10);
 
+    pb.setMinimum(0);
+    pb.setMaximum(100);
+    var value = 40;
+    pb.setValue(value);
 
+    f.add(pb, YPF.BorderLayout.SOUTH);
+
+    var t = new Thread(()=> do
+        while true  do
+                if(value == 100) then do break; end
+                value++;
+                pb.setValue(value);
+                Time.sleep(10);
+        end
+        f.dispose();
+    end);
+
+    t.start();
 
 end);
