@@ -18,7 +18,9 @@ YPF.invokeLater(()=> do
     println "state : " + f.getExtendedState();
 
     f.setResizable(false);
-    f.setResizable(true);
+    f.setLayout(null);
+    b.setBounds(50, 50, 120, 40);
+    b.setText("yagiz erdem");
 
 end);
 

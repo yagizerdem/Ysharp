@@ -1,5 +1,7 @@
 package ysharp.evaluator;
 
+import ysharp.evaluator.Native.function.core.MathFn;
+
 public class JavaObjectWrapper {
 
     static public Object wrap(Object obj) {
@@ -13,8 +15,12 @@ public class JavaObjectWrapper {
             return obj;
         }
 
-        if (obj instanceof Number) {
-            return ((Double) obj).doubleValue();
+        if (obj instanceof Float) {
+            return Double.parseDouble(Float.toString((float)obj));
+        }
+
+        if (obj instanceof Short) {
+            return Integer.parseInt(Short.toString((short)obj));
         }
 
         if(obj instanceof String) {

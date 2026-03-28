@@ -3,13 +3,14 @@ package ysharp.evaluator.Native.YPF.Button;
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.Function;
-import ysharp.evaluator.Callable;
-import ysharp.evaluator.Native.YPF.Button.function.*;
-import ysharp.evaluator.Native.YPF.Component.yComponent;
 
-import javax.swing.JButton;
-import java.awt.*;
+import javax.swing.*;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class yButton {
 
@@ -46,27 +47,97 @@ public class yButton {
             @Override public String toString() { return "<prototype:Button>"; }
         };
 
-        yButton_Instance_Prototype.prototype = yComponent.yComponent_Instance_Prototype;
+        yButton_Instance_Prototype.prototype = yButton_Instance_Prototype;
 
 
-        // getUIClassID()
-        yButton_Instance_Prototype.RegisterNativeFn(new GetUIClassIDFn());
-        // isDefaultButton()
-        yButton_Instance_Prototype.RegisterNativeFn(new IsDefaultButtonFn());
-        // isDefaultCapable()
-        yButton_Instance_Prototype.RegisterNativeFn(new IsDefaultCapableFn());
-        // paramString()
-        yButton_Instance_Prototype.RegisterNativeFn(new ParamStringFn());
-        // removeNotify()
-        yButton_Instance_Prototype.RegisterNativeFn(new RemoveNotifyFn());
-        // setDefaultCapable(boolean)
-        yButton_Instance_Prototype.RegisterNativeFn(new SetDefaultCapableFn());
-        // updateUI()
-        yButton_Instance_Prototype.RegisterNativeFn(new UpdateUIFn());
+        Map<String, List<Method>> methodMap = new HashMap<>();
+        for (Method m : JButton.class.getMethods()) {
+
+            if (m.getDeclaringClass() == Object.class) continue;
+
+            methodMap
+                    .computeIfAbsent(m.getName(), k -> new ArrayList<>())
+                    .add(m);
+        }
+
+        for (String name : methodMap.keySet()) {
+            yButton_Instance_Prototype.set(name, new Variable(
+                    new Variable.Variant(new Function.NativeFunction() {
+
+                        @Override
+                        public int arity() {
+                            return -1;
+                        }
+
+                        @Override
+                        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
+                                throws YsharpError {
+
+                            yButton.yButtonInstance button =
+                                    yButton.requireButtonThis(interpreter, name);
+
+                            JButton jbutton = button.button;
+
+                            try {
+                                Object[] javaArgs = new Object[args.size()];
+
+                                for (int i = 0; i < args.size(); i++) {
+                                    Variable.Variant v = args.get(i);
+                                    javaArgs[i] = v.asJavaNative();
+                                }
+
+                                List<Method> availableMethods = methodMap.get(name);
+
+                                Method m = null;
+                                for(Method method : availableMethods) {
+                                    if(method.getParameterCount() != args.size()) continue;
+                                    Parameter[] javaParameters = method.getParameters();
+                                    boolean skip = false;
+                                    for (int j = 0; j < javaParameters.length; j++) {
+
+                                        if (!isCompatible(javaParameters[j].getType(), javaArgs[j])) {
+                                            skip = true;
+                                            break;
+                                        }
+                                    }
+                                    if (skip) continue;
+                                    m = method;
+                                    break;
+                                }
+
+                                if(m == null) {
+                                    throw  new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                                            -1,
+                                            "method overload not found");
+                                }
+
+                                Object result = m.invoke(jbutton, javaArgs);
+
+                                return new Variable.Variant(
+                                        JavaObjectWrapper.wrap(result)
+                                );
+
+                            } catch (Exception e) {
+                                throw new YsharpError(
+                                        YsharpError.YsharpErrorType.PROCESS,
+                                        0,
+                                        "Native call failed: " + name
+                                );
+                            }
+                        }
+
+                        @Override
+                        public String getFnName() {
+                            return name;
+                        }
+                    }),
+                    true, "function"
+            ));
+        }
 
     }
 
-    public static class yButtonInstance extends yClass.ClassObjectInstance implements yComponent.IComponent {
+    public static class yButtonInstance extends yClass.ClassObjectInstance  {
 
         public final JButton button;
 
@@ -78,22 +149,7 @@ public class yButton {
         @Override public boolean isTruthy() { return true; }
         @Override public String getType() { return "Button"; }
         @Override public String toString() { return "<instance:Button>"; }
-
-        @Override
-        public Component getComponent() {
-            return this.button;
-        }
-
-        @Override
-        public yComponent.IComponent getComponentWrapper() {
-            return this;
-        }
-
-        @Override
-        public Object getNativeJavaObject() {
-            return this.button;
-        }
-
+        @Override public Object getNativeJavaObject() {return this.button; }
     }
 
     public static class yButtonClass extends yClass.SealedClassObject {

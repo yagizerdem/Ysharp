@@ -150,14 +150,10 @@ public class yFrame {
             this.prototype = yFrame_Instance_Prototype;
         }
 
-        @Override
-        public boolean isTruthy() { return true; }
-
-        @Override
-        public String getType() { return "Frame"; }
-
-        @Override
-        public String toString() { return "<instance:Frame>"; }
+        @Override public boolean isTruthy() { return true; }
+        @Override public String getType() { return "Frame"; }
+        @Override public String toString() { return "<instance:Frame>"; }
+        @Override public Object getNativeJavaObject() { return  this.frame; }
     }
 
     public static class yFrameClass extends yClass.SealedClassObject {
