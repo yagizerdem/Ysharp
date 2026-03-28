@@ -149,11 +149,7 @@ public class yLabel {
         @Override public boolean isTruthy() { return true; }
         @Override public String getType() { return "Label"; }
         @Override public String toString() { return "<instance:Label>"; }
-
-        @Override
-        public Object getNativeJavaObject() {
-            return this.label;
-        }
+        @Override public Object getNativeJavaObject() { return this.label; }
     }
 
     public static class yLabelClass extends yClass.SealedClassObject {

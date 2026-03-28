@@ -1,42 +1,36 @@
-
-
 YPF.draculaMode();
 YPF.invokeLater(()=> do
+
     const f = new YPF.Frame();
+    f.setSize(600, 400);
+    f.setLayout(new YPF.BorderLayout());
     f.setVisible(true);
-    f.setSize(500, 400);
 
-    var b = new YPF.Button();
+    var top = new YPF.Button();
+    top.setText("TOP");
 
-    f.setTitle("test");
+    var left = new YPF.Button();
+    left.setText("LEFT");
 
-    var a = f.getTitle();
+    var right = new YPF.Button();
+    right.setText("RIGHT");
 
-    println " a : " + a;
+    var bottom = new YPF.Button();
+    bottom.setText("BOTTOM");
 
-    println "state : " + f.getExtendedState();
+    var centerPanel = new YPF.Panel();
+    centerPanel.setLayout(null);
 
-    f.setResizable(false);
-    f.setLayout(null);
-    b.setBounds(50, 50, 120, 40);
-    b.setText("yagiz erdem");
+    var text = new YPF.TextArea();
+    text.setBounds(50, 50, 300, 200);
+    text.setText("center area");
 
-    var l = new YPF.Label();
-    l.setBounds(100, 250, 120, 40);
-    l.setText("merhaba");
+    centerPanel.add(text);
 
-
-    var panel = new YPF.Panel();
-    panel.setSize(500, 400);
-    f.add(panel);
-    panel.add(b);
-    panel.add(l);
-    panel.setLayout(null);
-
-    const textBox = new YPF.TextArea();
-    textBox.setBounds(200, 40 , 200 ,300);
-    panel.add(textBox);
+    f.add(top, YPF.BorderLayout.NORTH);
+    f.add(left, YPF.BorderLayout.WEST);
+    f.add(right, YPF.BorderLayout.EAST);
+    f.add(bottom, YPF.BorderLayout.SOUTH);
+    f.add(centerPanel, YPF.BorderLayout.CENTER);
 
 end);
-
-println Random.nextInt(0, 88);

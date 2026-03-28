@@ -7,6 +7,7 @@ import ysharp.evaluator.*;
 import ysharp.evaluator.Native.YPF.Button.yButton;
 import ysharp.evaluator.Native.YPF.Frame.yFrame;
 import ysharp.evaluator.Native.YPF.Label.yLabel;
+import ysharp.evaluator.Native.YPF.Layout.yBorderLayout;
 import ysharp.evaluator.Native.YPF.Panel.yPanel;
 import ysharp.evaluator.Native.YPF.TextArea.yTextArea;
 import ysharp.evaluator.Native.YPF.TextBox.yTextBox;
@@ -193,6 +194,9 @@ public class YPF {
             this.RegisterClass(new yTextBox.yTextBoxClass());
             // YPF.TextArea
             this.RegisterClass(new yTextArea.yTextAreaClass());
+
+            // layouts
+            this.RegisterClass(new yBorderLayout.yBorderLayoutClass());
         }
 
         @Override
