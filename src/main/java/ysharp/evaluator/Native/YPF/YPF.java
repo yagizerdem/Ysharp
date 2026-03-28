@@ -5,7 +5,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.Native.YPF.Button.yButton;
-import ysharp.evaluator.Native.YPF.Window.Frame.yFrame;
+import ysharp.evaluator.Native.YPF.Frame.yFrame;
 
 import javax.swing.*;
 import java.util.List;

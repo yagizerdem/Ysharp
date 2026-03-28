@@ -2,6 +2,8 @@ package ysharp.evaluator;
 
 import ysharp.YsharpError;
 
+import java.util.EventListener;
+
 public class Variable {
 
     public Variant value;
@@ -155,6 +157,19 @@ public class Variable {
             return (yClass.ClassObjectInstance) this.value;
         }
 
+        public Object asJavaNative() {
+            if (this.isString()) return this.asString();
+            else if (this.isInt()) return this.asInt();
+            else if (this.isDouble()) return this.asDouble();
+            else if(this.isBoolean()) return  this.asBoolean();
+            else if(this.isChar()) return  this.asCharacter();
+            else if(this.isNull()) return  null;
+            else if (this.isRuntimeObject()) return this.asRuntimeObject().getNativeJavaObject();
+
+            // fallback
+            return this.value;
+        }
+
         public boolean isTruthy() {
 
             if (isBoolean()) {
@@ -220,6 +235,8 @@ public class Variable {
             if (isBoolean()) return "bool";
 
             if (isChar()) return "char";
+
+            if (isString()) return "string";
 
             if (isRuntimeObject()) {
                 RuntimeObject obj = asRuntimeObject();

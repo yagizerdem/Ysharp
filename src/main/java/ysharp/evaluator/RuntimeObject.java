@@ -246,4 +246,27 @@ public abstract class RuntimeObject {
         this.set(identifier, new Variable(new Variable.Variant(instance), true, instance.getType()));
     }
 
+    public Object getNativeJavaObject() {
+        return null;
+    }
+
+    public boolean isCompatible(Class<?> paramType, Object arg) {
+
+        if (arg == null) return true;
+
+        Class<?> argType = arg.getClass();
+
+        // direct match
+        if (paramType.isAssignableFrom(argType)) return true;
+
+        // primitive handling
+        if (paramType == int.class && arg instanceof Number) return true;
+        if (paramType == double.class && arg instanceof Number) return true;
+        if (paramType == float.class && arg instanceof Number) return true;
+        if (paramType == long.class && arg instanceof Number) return true;
+
+        if (paramType == boolean.class && arg instanceof Boolean) return true;
+
+        return false;
+    }
 }

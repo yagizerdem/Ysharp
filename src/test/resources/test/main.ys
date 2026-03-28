@@ -4,14 +4,22 @@ YPF.draculaMode();
 YPF.invokeLater(()=> do
     const f = new YPF.Frame();
     f.setVisible(true);
-    f.setSize(400, 400);
+    f.setSize(500, 400);
 
     var b = new YPF.Button();
     f.add(b);
 
-    f.onClose(() => do
-           println "onclose hit";
-    end);
+    f.setTitle("test");
+
+    var a = f.getTitle();
+
+    println " a : " + a;
+
+    println "state : " + f.getExtendedState();
+
+    f.setResizable(false);
+    f.setResizable(true);
+
 end);
 
 println Random.nextInt(0, 88);

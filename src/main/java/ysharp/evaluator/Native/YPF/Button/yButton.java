@@ -88,6 +88,12 @@ public class yButton {
         public yComponent.IComponent getComponentWrapper() {
             return this;
         }
+
+        @Override
+        public Object getNativeJavaObject() {
+            return this.button;
+        }
+
     }
 
     public static class yButtonClass extends yClass.SealedClassObject {
