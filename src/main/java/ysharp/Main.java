@@ -1,5 +1,9 @@
 package ysharp;
 
+import com.formdev.flatlaf.FlatDarculaLaf;
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import ysharp.evaluator.*;
 import ysharp.lexer.Cursor;
 import ysharp.lexer.Lexer;
@@ -16,6 +20,7 @@ public class Main {
 
 
     public static void main(String[] args) throws  Exception {
+
         Interpreter interpreter = new Interpreter();
         try {
             Registery.register(interpreter);

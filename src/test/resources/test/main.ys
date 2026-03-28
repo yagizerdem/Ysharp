@@ -1,5 +1,11 @@
 
 
+YPF.draculaMode();
+YPF.invokeLater(()=> do
+    const f = new YPF.Frame();
+    f.setVisible(true);
+    f.setSize(400, 400);
 
-println "hit";
+end);
 
+println Random.nextInt(0, 88);

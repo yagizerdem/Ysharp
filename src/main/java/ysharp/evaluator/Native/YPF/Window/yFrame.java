@@ -114,7 +114,7 @@ public class yFrame {
         yFrame_Instance_Prototype.set(setSize.getFnName(), setSizeVar);
 
 
-        // frame.setTitle(boolean);
+        // frame.setVisible(boolean);
         class SetVisibleFn extends Function.NativeFunction implements Callable {
             @Override public int arity() { return 1; }
 
@@ -143,7 +143,7 @@ public class yFrame {
         yFrame_Instance_Prototype.set(setVisible.getFnName(), setVisibleVar);
 
 
-        // frame.setTitle(callback);
+        // frame.onClose(callback);
         class OnCloseFn extends Function.NativeFunction implements Callable {
             @Override public int arity() { return 1; }
 
