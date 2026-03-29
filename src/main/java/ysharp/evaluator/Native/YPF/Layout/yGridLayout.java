@@ -7,14 +7,12 @@ import ysharp.evaluator.Function;
 import java.awt.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
-public class yBorderLayout {
+public class yGridLayout {
 
-    public static yBorderLayout.yBorderLayoutInstance requireBorderLayoutThis(Interpreter interpreter, String fnName) {
+    public static yGridLayoutInstance requireGridLayoutThis(Interpreter interpreter, String fnName) {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
@@ -27,32 +25,31 @@ public class yBorderLayout {
 
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-        if (!(obj instanceof yBorderLayout.yBorderLayoutInstance)) {
+        if (!(obj instanceof yGridLayoutInstance)) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     0,
-                    "Expected BorderLayout but got '" + obj.getType() + "'"
+                    "Expected GridLayout but got '" + obj.getType() + "'"
             );
         }
 
-        return (yBorderLayout.yBorderLayoutInstance) obj;
+        return (yGridLayoutInstance) obj;
     }
 
-    public static RuntimeObject yBorderLayout_Instance_Prototype;
+    public static RuntimeObject yGridLayout_Instance_Prototype;
 
     static {
-        yBorderLayout_Instance_Prototype = new RuntimeObject() {
+        yGridLayout_Instance_Prototype = new RuntimeObject() {
             @Override public boolean isTruthy() { return true; }
-            @Override public String getType() { return "__BorderLayout__"; }
-            @Override public String toString() { return "<prototype:BorderLayout>"; }
+            @Override public String getType() { return "__GridLayout__"; }
+            @Override public String toString() { return "<prototype:GridLayout>"; }
         };
 
-        yBorderLayout_Instance_Prototype.prototype = yClass.ClassPrototype;
-
+        yGridLayout_Instance_Prototype.prototype = yClass.ClassPrototype;
 
         Map<String, List<Method>> methodMap = new HashMap<>();
 
-        for (Method m : BorderLayout.class.getMethods()) {
+        for (Method m : GridLayout.class.getMethods()) {
             if (m.getDeclaringClass() == Object.class) continue;
 
             methodMap
@@ -62,7 +59,7 @@ public class yBorderLayout {
 
         for (String name : methodMap.keySet()) {
 
-            yBorderLayout_Instance_Prototype.set(name, new Variable(
+            yGridLayout_Instance_Prototype.set(name, new Variable(
                     new Variable.Variant(new Function.NativeFunction() {
 
                         @Override public int arity() { return -1; }
@@ -71,10 +68,10 @@ public class yBorderLayout {
                         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
                                 throws YsharpError {
 
-                            yBorderLayout.yBorderLayoutInstance layoutInst =
-                                    requireBorderLayoutThis(interpreter, name);
+                            yGridLayoutInstance layoutInst =
+                                    requireGridLayoutThis(interpreter, name);
 
-                            BorderLayout layout = layoutInst.layout;
+                            GridLayout layout = layoutInst.layout;
 
                             try {
                                 Object[] javaArgs = new Object[args.size()];
@@ -138,47 +135,76 @@ public class yBorderLayout {
                     "function"
             ));
         }
-
     }
 
-    public static class yBorderLayoutInstance extends yClass.ClassObjectInstance {
+    public static class yGridLayoutInstance extends yClass.ClassObjectInstance {
 
-        public final BorderLayout layout;
+        public final GridLayout layout;
 
-        public yBorderLayoutInstance() {
-            this.layout = new BorderLayout();
-            this.prototype = yBorderLayout_Instance_Prototype;
+        public yGridLayoutInstance(int rows, int cols, int hgap, int vgap) {
+            this.layout = new GridLayout(rows, cols, hgap, vgap);
+            this.prototype = yGridLayout_Instance_Prototype;
         }
 
         @Override public boolean isTruthy() { return true; }
-        @Override public String getType() { return "BorderLayout"; }
-        @Override public String toString() { return "<instance:BorderLayout>"; }
+        @Override public String getType() { return "GridLayout"; }
+        @Override public String toString() { return "<instance:GridLayout>"; }
+
         @Override
-        public Object getNativeJavaObject() { return this.layout;}
+        public Object getNativeJavaObject() {
+            return this.layout;
+        }
     }
 
-    public static class yBorderLayoutClass extends yClass.SealedClassObject {
+    public static class yGridLayoutClass extends yClass.SealedClassObject {
 
-        public yBorderLayoutClass() {
+        public yGridLayoutClass() {
             this.prototype = yClass.ClassPrototype;
-
-            this.set("NORTH", new Variable(new Variable.Variant(BorderLayout.NORTH), true, "string"));
-            this.set("SOUTH", new Variable(new Variable.Variant(BorderLayout.SOUTH), true, "string"));
-            this.set("EAST", new Variable(new Variable.Variant(BorderLayout.EAST), true, "string"));
-            this.set("WEST", new Variable(new Variable.Variant(BorderLayout.WEST), true, "string"));
-            this.set("CENTER", new Variable(new Variable.Variant(BorderLayout.CENTER), true, "string"));
         }
 
-        @Override public int arity() { return 0; }
+        @Override public int arity() { return -1; }
 
         @Override
         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
                 throws YsharpError {
 
-            return new Variable.Variant(new yBorderLayoutInstance());
+            if (args.isEmpty()) {
+                return new Variable.Variant(
+                        new yGridLayoutInstance(1, 0, 0, 0)
+                );
+            }
+
+            if (args.size() == 2) {
+                return new Variable.Variant(
+                        new yGridLayoutInstance(
+                                (int) args.get(0).asJavaNative(),
+                                (int) args.get(1).asJavaNative(),
+                                0,
+                                0
+                        )
+                );
+            }
+
+            if (args.size() == 4) {
+                return new Variable.Variant(
+                        new yGridLayoutInstance(
+                                (int) args.get(0).asJavaNative(),
+                                (int) args.get(1).asJavaNative(),
+                                (int) args.get(2).asJavaNative(),
+                                (int) args.get(3).asJavaNative()
+                        )
+                );
+            }
+
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    -1,
+                    "Invalid GridLayout constructor arguments. Expected 0, 2 or 4 arguments."
+            );
+
         }
 
-        @Override public String getClassName() { return "BorderLayout"; }
-        @Override public String getType() { return "BorderLayout"; }
+        @Override public String getClassName() { return "GridLayout"; }
+        @Override public String getType() { return "GridLayout"; }
     }
 }

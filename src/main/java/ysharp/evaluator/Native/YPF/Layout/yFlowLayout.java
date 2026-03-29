@@ -7,14 +7,12 @@ import ysharp.evaluator.Function;
 import java.awt.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
-public class yBorderLayout {
+public class yFlowLayout {
 
-    public static yBorderLayout.yBorderLayoutInstance requireBorderLayoutThis(Interpreter interpreter, String fnName) {
+    public static yFlowLayoutInstance requireFlowLayoutThis(Interpreter interpreter, String fnName) {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
@@ -27,32 +25,31 @@ public class yBorderLayout {
 
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-        if (!(obj instanceof yBorderLayout.yBorderLayoutInstance)) {
+        if (!(obj instanceof yFlowLayoutInstance)) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     0,
-                    "Expected BorderLayout but got '" + obj.getType() + "'"
+                    "Expected FlowLayout but got '" + obj.getType() + "'"
             );
         }
 
-        return (yBorderLayout.yBorderLayoutInstance) obj;
+        return (yFlowLayoutInstance) obj;
     }
 
-    public static RuntimeObject yBorderLayout_Instance_Prototype;
+    public static RuntimeObject yFlowLayout_Instance_Prototype;
 
     static {
-        yBorderLayout_Instance_Prototype = new RuntimeObject() {
+        yFlowLayout_Instance_Prototype = new RuntimeObject() {
             @Override public boolean isTruthy() { return true; }
-            @Override public String getType() { return "__BorderLayout__"; }
-            @Override public String toString() { return "<prototype:BorderLayout>"; }
+            @Override public String getType() { return "__FlowLayout__"; }
+            @Override public String toString() { return "<prototype:FlowLayout>"; }
         };
 
-        yBorderLayout_Instance_Prototype.prototype = yClass.ClassPrototype;
-
+        yFlowLayout_Instance_Prototype.prototype = yClass.ClassPrototype;
 
         Map<String, List<Method>> methodMap = new HashMap<>();
 
-        for (Method m : BorderLayout.class.getMethods()) {
+        for (Method m : FlowLayout.class.getMethods()) {
             if (m.getDeclaringClass() == Object.class) continue;
 
             methodMap
@@ -62,7 +59,7 @@ public class yBorderLayout {
 
         for (String name : methodMap.keySet()) {
 
-            yBorderLayout_Instance_Prototype.set(name, new Variable(
+            yFlowLayout_Instance_Prototype.set(name, new Variable(
                     new Variable.Variant(new Function.NativeFunction() {
 
                         @Override public int arity() { return -1; }
@@ -71,10 +68,10 @@ public class yBorderLayout {
                         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
                                 throws YsharpError {
 
-                            yBorderLayout.yBorderLayoutInstance layoutInst =
-                                    requireBorderLayoutThis(interpreter, name);
+                            yFlowLayoutInstance layoutInst =
+                                    requireFlowLayoutThis(interpreter, name);
 
-                            BorderLayout layout = layoutInst.layout;
+                            FlowLayout layout = layoutInst.layout;
 
                             try {
                                 Object[] javaArgs = new Object[args.size()];
@@ -138,35 +135,37 @@ public class yBorderLayout {
                     "function"
             ));
         }
-
     }
 
-    public static class yBorderLayoutInstance extends yClass.ClassObjectInstance {
+    public static class yFlowLayoutInstance extends yClass.ClassObjectInstance {
 
-        public final BorderLayout layout;
+        public final FlowLayout layout;
 
-        public yBorderLayoutInstance() {
-            this.layout = new BorderLayout();
-            this.prototype = yBorderLayout_Instance_Prototype;
+        public yFlowLayoutInstance() {
+            this.layout = new FlowLayout();
+            this.prototype = yFlowLayout_Instance_Prototype;
         }
 
         @Override public boolean isTruthy() { return true; }
-        @Override public String getType() { return "BorderLayout"; }
-        @Override public String toString() { return "<instance:BorderLayout>"; }
+        @Override public String getType() { return "FlowLayout"; }
+        @Override public String toString() { return "<instance:FlowLayout>"; }
+
         @Override
-        public Object getNativeJavaObject() { return this.layout;}
+        public Object getNativeJavaObject() {
+            return this.layout;
+        }
     }
 
-    public static class yBorderLayoutClass extends yClass.SealedClassObject {
+    public static class yFlowLayoutClass extends yClass.SealedClassObject {
 
-        public yBorderLayoutClass() {
+        public yFlowLayoutClass() {
             this.prototype = yClass.ClassPrototype;
 
-            this.set("NORTH", new Variable(new Variable.Variant(BorderLayout.NORTH), true, "string"));
-            this.set("SOUTH", new Variable(new Variable.Variant(BorderLayout.SOUTH), true, "string"));
-            this.set("EAST", new Variable(new Variable.Variant(BorderLayout.EAST), true, "string"));
-            this.set("WEST", new Variable(new Variable.Variant(BorderLayout.WEST), true, "string"));
-            this.set("CENTER", new Variable(new Variable.Variant(BorderLayout.CENTER), true, "string"));
+            this.set("LEFT", new Variable(new Variable.Variant(FlowLayout.LEFT), true, "int"));
+            this.set("CENTER", new Variable(new Variable.Variant(FlowLayout.CENTER), true, "int"));
+            this.set("RIGHT", new Variable(new Variable.Variant(FlowLayout.RIGHT), true, "int"));
+            this.set("LEADING", new Variable(new Variable.Variant(FlowLayout.LEADING), true, "int"));
+            this.set("TRAILING", new Variable(new Variable.Variant(FlowLayout.TRAILING), true, "int"));
         }
 
         @Override public int arity() { return 0; }
@@ -175,10 +174,10 @@ public class yBorderLayout {
         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
                 throws YsharpError {
 
-            return new Variable.Variant(new yBorderLayoutInstance());
+            return new Variable.Variant(new yFlowLayoutInstance());
         }
 
-        @Override public String getClassName() { return "BorderLayout"; }
-        @Override public String getType() { return "BorderLayout"; }
+        @Override public String getClassName() { return "FlowLayout"; }
+        @Override public String getType() { return "FlowLayout"; }
     }
 }

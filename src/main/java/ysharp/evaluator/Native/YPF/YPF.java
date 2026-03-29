@@ -12,8 +12,7 @@ import ysharp.evaluator.Native.YPF.ComboBox.yComboBox;
 import ysharp.evaluator.Native.YPF.Container.Frame.yFrame;
 import ysharp.evaluator.Native.YPF.Container.yContainer;
 import ysharp.evaluator.Native.YPF.Label.yLabel;
-import ysharp.evaluator.Native.YPF.Layout.yBorderLayout;
-import ysharp.evaluator.Native.YPF.Layout.yCardLayout;
+import ysharp.evaluator.Native.YPF.Layout.*;
 import ysharp.evaluator.Native.YPF.List.yList;
 import ysharp.evaluator.Native.YPF.Container.Panel.yPanel;
 import ysharp.evaluator.Native.YPF.Container.Panel.yScrollPane;
@@ -230,6 +229,9 @@ public class YPF {
             // layouts
             this.RegisterClass(new yBorderLayout.yBorderLayoutClass());
             this.RegisterClass(new yCardLayout.yCardLayoutClass());
+            this.RegisterClass(new yBoxLayout.yBoxLayoutClass());
+            this.RegisterClass(new yFlowLayout.yFlowLayoutClass());
+            this.RegisterClass(new yGridLayout.yGridLayoutClass());
 
             // color
             this.RegisterClass(new yColor.yColorClass());

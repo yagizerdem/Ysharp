@@ -4,17 +4,16 @@ import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.Function;
 
+import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
-public class yBorderLayout {
+public class yBoxLayout {
 
-    public static yBorderLayout.yBorderLayoutInstance requireBorderLayoutThis(Interpreter interpreter, String fnName) {
+    public static yBoxLayoutInstance requireBoxLayoutThis(Interpreter interpreter, String fnName) {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
@@ -27,32 +26,31 @@ public class yBorderLayout {
 
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-        if (!(obj instanceof yBorderLayout.yBorderLayoutInstance)) {
+        if (!(obj instanceof yBoxLayoutInstance)) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     0,
-                    "Expected BorderLayout but got '" + obj.getType() + "'"
+                    "Expected BoxLayout but got '" + obj.getType() + "'"
             );
         }
 
-        return (yBorderLayout.yBorderLayoutInstance) obj;
+        return (yBoxLayoutInstance) obj;
     }
 
-    public static RuntimeObject yBorderLayout_Instance_Prototype;
+    public static RuntimeObject yBoxLayout_Instance_Prototype;
 
     static {
-        yBorderLayout_Instance_Prototype = new RuntimeObject() {
+        yBoxLayout_Instance_Prototype = new RuntimeObject() {
             @Override public boolean isTruthy() { return true; }
-            @Override public String getType() { return "__BorderLayout__"; }
-            @Override public String toString() { return "<prototype:BorderLayout>"; }
+            @Override public String getType() { return "__BoxLayout__"; }
+            @Override public String toString() { return "<prototype:BoxLayout>"; }
         };
 
-        yBorderLayout_Instance_Prototype.prototype = yClass.ClassPrototype;
-
+        yBoxLayout_Instance_Prototype.prototype = yClass.ClassPrototype;
 
         Map<String, List<Method>> methodMap = new HashMap<>();
 
-        for (Method m : BorderLayout.class.getMethods()) {
+        for (Method m : BoxLayout.class.getMethods()) {
             if (m.getDeclaringClass() == Object.class) continue;
 
             methodMap
@@ -62,7 +60,7 @@ public class yBorderLayout {
 
         for (String name : methodMap.keySet()) {
 
-            yBorderLayout_Instance_Prototype.set(name, new Variable(
+            yBoxLayout_Instance_Prototype.set(name, new Variable(
                     new Variable.Variant(new Function.NativeFunction() {
 
                         @Override public int arity() { return -1; }
@@ -71,10 +69,10 @@ public class yBorderLayout {
                         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
                                 throws YsharpError {
 
-                            yBorderLayout.yBorderLayoutInstance layoutInst =
-                                    requireBorderLayoutThis(interpreter, name);
+                            yBoxLayoutInstance layoutInst =
+                                    requireBoxLayoutThis(interpreter, name);
 
-                            BorderLayout layout = layoutInst.layout;
+                            BoxLayout layout = layoutInst.layout;
 
                             try {
                                 Object[] javaArgs = new Object[args.size()];
@@ -138,47 +136,62 @@ public class yBorderLayout {
                     "function"
             ));
         }
-
     }
 
-    public static class yBorderLayoutInstance extends yClass.ClassObjectInstance {
+    public static class yBoxLayoutInstance extends yClass.ClassObjectInstance {
 
-        public final BorderLayout layout;
+        public final BoxLayout layout;
 
-        public yBorderLayoutInstance() {
-            this.layout = new BorderLayout();
-            this.prototype = yBorderLayout_Instance_Prototype;
+        public yBoxLayoutInstance(Container container, int axis) {
+            this.layout = new BoxLayout(container, axis);
+            this.prototype = yBoxLayout_Instance_Prototype;
         }
 
         @Override public boolean isTruthy() { return true; }
-        @Override public String getType() { return "BorderLayout"; }
-        @Override public String toString() { return "<instance:BorderLayout>"; }
+        @Override public String getType() { return "BoxLayout"; }
+        @Override public String toString() { return "<instance:BoxLayout>"; }
+
         @Override
-        public Object getNativeJavaObject() { return this.layout;}
+        public Object getNativeJavaObject() {
+            return this.layout;
+        }
     }
 
-    public static class yBorderLayoutClass extends yClass.SealedClassObject {
+    public static class yBoxLayoutClass extends yClass.SealedClassObject {
 
-        public yBorderLayoutClass() {
+        public yBoxLayoutClass() {
             this.prototype = yClass.ClassPrototype;
 
-            this.set("NORTH", new Variable(new Variable.Variant(BorderLayout.NORTH), true, "string"));
-            this.set("SOUTH", new Variable(new Variable.Variant(BorderLayout.SOUTH), true, "string"));
-            this.set("EAST", new Variable(new Variable.Variant(BorderLayout.EAST), true, "string"));
-            this.set("WEST", new Variable(new Variable.Variant(BorderLayout.WEST), true, "string"));
-            this.set("CENTER", new Variable(new Variable.Variant(BorderLayout.CENTER), true, "string"));
+            this.set("X_AXIS", new Variable(new Variable.Variant(BoxLayout.X_AXIS), true, "int"));
+            this.set("Y_AXIS", new Variable(new Variable.Variant(BoxLayout.Y_AXIS), true, "int"));
+            this.set("LINE_AXIS", new Variable(new Variable.Variant(BoxLayout.LINE_AXIS), true, "int"));
+            this.set("PAGE_AXIS", new Variable(new Variable.Variant(BoxLayout.PAGE_AXIS), true, "int"));
         }
 
-        @Override public int arity() { return 0; }
+        @Override public int arity() { return 2; }
 
         @Override
         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
                 throws YsharpError {
+            requireArity(args, arity(), getClassName());
+            Object containerObj = args.getFirst().asJavaNative();
 
-            return new Variable.Variant(new yBorderLayoutInstance());
+            if (!(containerObj instanceof Container)) {
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.PROCESS,
+                        0,
+                        "First argument must be Container"
+                );
+            }
+
+            int axis = (int) args.get(1).asJavaNative();
+
+            return new Variable.Variant(
+                    new yBoxLayoutInstance((Container) containerObj, axis)
+            );
         }
 
-        @Override public String getClassName() { return "BorderLayout"; }
-        @Override public String getType() { return "BorderLayout"; }
+        @Override public String getClassName() { return "BoxLayout"; }
+        @Override public String getType() { return "BoxLayout"; }
     }
 }
