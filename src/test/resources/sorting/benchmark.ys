@@ -1,7 +1,7 @@
 use "algorithm.ys";
 
 
-const basePath = "C:\Users\yagiz\Desktop\ysharp\Ysharp\src\test\resources\sorting\data";
+const basePath = "C:\Users\yagiz\Desktop\Ysharp\src\test\resources\sorting\data";
 
 const dataPath_1k : string = Path.join(basePath, "1K_random_input.txt");
 const dataPath_10k : string = Path.join(basePath, "10K_random_input.txt");

@@ -2,6 +2,7 @@ package ysharp.evaluator;
 
 import ysharp.YsharpError;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -241,6 +242,15 @@ public abstract class RuntimeObject {
     public void RegisterNativeFn(Function.NativeFunction fn) {
         this.set(fn.getFnName(), new Variable(new Variable.Variant(fn), true, fn.getType()));
     }
+
+    public void RegisterNativeFn(Function.NativeFunction fn, List<String> aliases) {
+        var function = new Variable(new Variable.Variant(fn), true, fn.getType());
+        this.set(fn.getFnName(), function);
+        for(String alias : aliases) {
+            this.set(alias, function);
+        }
+    }
+
 
     public void RegisterInstance(yClass.ClassObjectInstance instance, String identifier) {
         this.set(identifier, new Variable(new Variable.Variant(instance), true, instance.getType()));

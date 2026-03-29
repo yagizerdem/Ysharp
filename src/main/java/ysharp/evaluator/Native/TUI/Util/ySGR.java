@@ -3,8 +3,7 @@ package ysharp.evaluator.Native.TUI.Util;
 import com.googlecode.lanterna.SGR;
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.evaluator.Native.Collections.yArray;
-import ysharp.evaluator.Native.TUI.Input.yKeyStroke;
+import ysharp.evaluator.Native.Collections.Array.yArray;
 
 import java.util.List;
 

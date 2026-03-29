@@ -2,6 +2,7 @@ package ysharp.evaluator.Native.Collections;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
+import ysharp.evaluator.Native.Collections.Array.yArray;
 import ysharp.evaluator.Native.LINQ.Queryable;
 import ysharp.evaluator.Native.function.binding.BoundNativeFunction;
 
