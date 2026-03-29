@@ -1,6 +1,9 @@
 package ysharp.evaluator;
 
+import ysharp.evaluator.Native.YPF.Container.yContainer;
 import ysharp.evaluator.Native.function.core.MathFn;
+
+import java.awt.*;
 
 public class JavaObjectWrapper {
 
@@ -29,6 +32,10 @@ public class JavaObjectWrapper {
 
         if (obj instanceof RuntimeObject) {
             return obj;
+        }
+
+        if(obj instanceof Container) {
+            return new yContainer.yContainerInstance((Container) obj);
         }
 
         // native java object

@@ -2,6 +2,7 @@ package ysharp.evaluator.Native.Collections;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
+import ysharp.evaluator.Native.Collections.Array.yArray;
 
 import java.util.ArrayList;
 import java.util.HashMap;

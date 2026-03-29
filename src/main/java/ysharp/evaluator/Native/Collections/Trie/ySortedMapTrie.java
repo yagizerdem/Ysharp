@@ -2,7 +2,7 @@ package ysharp.evaluator.Native.Collections.Trie;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.evaluator.Native.Collections.yArray;
+import ysharp.evaluator.Native.Collections.Array.yArray;
 import ysharp.evaluator.Native.Collections.Trie.Concrete.MapTrie;
 
 import java.util.ArrayList;

@@ -1,17 +1,17 @@
-package ysharp.evaluator.Native.YPF.Panel;
+package ysharp.evaluator.Native.YPF.Container;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.Function;
 
-import javax.swing.*;
+import java.awt.Container;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
 
-public class yPanel {
+public class yContainer {
 
-    public static yPanelInstance requirePanelThis(Interpreter interpreter, String fnName) {
+    public static yContainerInstance requireContainerThis(Interpreter interpreter, String fnName) {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
@@ -24,31 +24,32 @@ public class yPanel {
 
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-        if (!(obj instanceof yPanelInstance)) {
+        if (!(obj instanceof yContainerInstance)) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     0,
-                    "Expected Panel but got '" + obj.getType() + "'"
+                    "Expected Container but got '" + obj.getType() + "'"
             );
         }
 
-        return (yPanelInstance) obj;
+        return (yContainerInstance) obj;
     }
 
-    public static RuntimeObject yPanel_Instance_Prototype;
+    public static RuntimeObject yContainer_Instance_Prototype;
 
     static {
-        yPanel_Instance_Prototype = new RuntimeObject() {
+        yContainer_Instance_Prototype = new RuntimeObject() {
             @Override public boolean isTruthy() { return true; }
-            @Override public String getType() { return "__Panel__"; }
-            @Override public String toString() { return "<prototype:Panel>"; }
+            @Override public String getType() { return "__Container__"; }
+            @Override public String toString() { return "<prototype:Container>"; }
         };
 
-        yPanel_Instance_Prototype.prototype = yClass.ClassPrototype;
+        yContainer_Instance_Prototype.prototype = yContainer_Instance_Prototype;
 
         Map<String, List<Method>> methodMap = new HashMap<>();
 
-        for (Method m : JPanel.class.getMethods()) {
+        for (Method m : Container.class.getMethods()) {
+
             if (m.getDeclaringClass() == Object.class) continue;
 
             methodMap
@@ -58,19 +59,22 @@ public class yPanel {
 
         for (String name : methodMap.keySet()) {
 
-            yPanel_Instance_Prototype.set(name, new Variable(
+            yContainer_Instance_Prototype.set(name, new Variable(
                     new Variable.Variant(new Function.NativeFunction() {
 
-                        @Override public int arity() { return -1; }
+                        @Override
+                        public int arity() {
+                            return -1;
+                        }
 
                         @Override
                         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
                                 throws YsharpError {
 
-                            yPanelInstance panel =
-                                    yPanel.requirePanelThis(interpreter, name);
+                            yContainerInstance container =
+                                    yContainer.requireContainerThis(interpreter, name);
 
-                            JPanel jpanel = panel.panel;
+                            Container jcontainer = container.container;
 
                             try {
                                 Object[] javaArgs = new Object[args.size()];
@@ -82,14 +86,12 @@ public class yPanel {
 
                                 List<Method> availableMethods = methodMap.get(name);
 
-                                Method selected = null;
+                                Method m = null;
 
                                 for (Method method : availableMethods) {
-
                                     if (method.getParameterCount() != args.size()) continue;
 
                                     Parameter[] params = method.getParameters();
-
                                     boolean skip = false;
 
                                     for (int j = 0; j < params.length; j++) {
@@ -101,11 +103,11 @@ public class yPanel {
 
                                     if (skip) continue;
 
-                                    selected = method;
+                                    m = method;
                                     break;
                                 }
 
-                                if (selected == null) {
+                                if (m == null) {
                                     throw new YsharpError(
                                             YsharpError.YsharpErrorType.PROCESS,
                                             -1,
@@ -113,7 +115,7 @@ public class yPanel {
                                     );
                                 }
 
-                                Object result = selected.invoke(jpanel, javaArgs);
+                                Object result = m.invoke(jcontainer, javaArgs);
 
                                 return new Variable.Variant(
                                         JavaObjectWrapper.wrap(result)
@@ -128,7 +130,10 @@ public class yPanel {
                             }
                         }
 
-                        @Override public String getFnName() { return name; }
+                        @Override
+                        public String getFnName() {
+                            return name;
+                        }
 
                     }),
                     true,
@@ -137,28 +142,29 @@ public class yPanel {
         }
     }
 
-    public static class yPanelInstance extends yClass.ClassObjectInstance {
+    public static class yContainerInstance extends yClass.ClassObjectInstance {
 
-        public final JPanel panel;
+        public final Container container;
 
-        public yPanelInstance() {
-            this.panel = new JPanel();
-            this.prototype = yPanel_Instance_Prototype;
+        public yContainerInstance() {
+            this.container = new Container();
+            this.prototype = yContainer_Instance_Prototype;
+        }
+
+        public yContainerInstance(Container container) {
+            this.container = container;
+            this.prototype = yContainer_Instance_Prototype;
         }
 
         @Override public boolean isTruthy() { return true; }
-        @Override public String getType() { return "Panel"; }
-        @Override public String toString() { return "<instance:Panel>"; }
-
-        @Override
-        public Object getNativeJavaObject() {
-            return this.panel;
-        }
+        @Override public String getType() { return "Container"; }
+        @Override public String toString() { return "<instance:Container>"; }
+        @Override public Object getNativeJavaObject() { return this.container; }
     }
 
-    public static class yPanelClass extends yClass.SealedClassObject {
+    public static class yContainerClass extends yClass.SealedClassObject {
 
-        public yPanelClass() {
+        public yContainerClass() {
             this.prototype = yClass.ClassPrototype;
         }
 
@@ -168,10 +174,10 @@ public class yPanel {
         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
                 throws YsharpError {
 
-            return new Variable.Variant(new yPanelInstance());
+            return new Variable.Variant(new yContainerInstance());
         }
 
-        @Override public String getClassName() { return "Panel"; }
-        @Override public String getType() { return "Panel"; }
+        @Override public String getClassName() { return "Container"; }
+        @Override public String getType() { return "Container"; }
     }
 }

@@ -2,6 +2,7 @@ package ysharp.evaluator.Native.LINQ;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
+import ysharp.evaluator.Native.Collections.Array.yArray;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -915,7 +916,7 @@ public class Queryable {
 
                             if (res.value instanceof QueryableInstance q) {
                                 flat.addAll(q.data);
-                            } else if (res.value instanceof ysharp.evaluator.Native.Collections.yArray.yArrayInstance arr) {
+                            } else if (res.value instanceof yArray.yArrayInstance arr) {
                                 flat.addAll(arr.data);
                             } else {
                                 flat.add(res);
@@ -950,8 +951,8 @@ public class Queryable {
                     }
 
                     case TO_ARRAY -> {
-                        ysharp.evaluator.Native.Collections.yArray.yArrayInstance arr =
-                                new ysharp.evaluator.Native.Collections.yArray.yArrayInstance(
+                        yArray.yArrayInstance arr =
+                                new yArray.yArrayInstance(
                                         new ArrayList<>(result)
                                 );
 
@@ -1028,8 +1029,8 @@ public class Queryable {
                 }
             }
 
-            ysharp.evaluator.Native.Collections.yArray.yArrayInstance arr =
-                    new ysharp.evaluator.Native.Collections.yArray.yArrayInstance(
+            yArray.yArrayInstance arr =
+                    new yArray.yArrayInstance(
                             new ArrayList<>(result)
                     );
 

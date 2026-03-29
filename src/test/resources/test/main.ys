@@ -1,34 +1,29 @@
 
+
 YPF.draculaMode();
 YPF.invokeLater(()=> do
 
     var f = new YPF.Frame();
     f.setSize(800, 400);
-    f.setLayout(new YPF.BorderLayout());
+    f.setLayout(null);
     f.setVisible(true);
 
     f.setDefaultCloseOperation(YPF.Frame.EXIT_ON_CLOSE);
 
-    var pb = new YPF.ProgressBar();
-    pb.setBounds(50, 50, 100, 10);
+    var list = new YPF.List();
+    list.setBounds(20, 20, 200, 150);
+    list.setListData(["Java", "Python", "C++"].toNativeArray());
+    f.add(list);
+    println list.getSelectedValue();
 
-    pb.setMinimum(0);
-    pb.setMaximum(100);
-    var value = 40;
-    pb.setValue(value);
+    const button = new YPF.Button();
+    button.setBounds(300, 100, 100, 20);
+    button.setText("test button");
 
-    f.add(pb, YPF.BorderLayout.SOUTH);
+    button.setBackground(YPF.Color.RED);
+    f.getContentPane().setBackground(YPF.Color.BLUE);
 
-    var t = new Thread(()=> do
-        while true  do
-                if(value == 100) then do break; end
-                value++;
-                pb.setValue(value);
-                Time.sleep(10);
-        end
-        f.dispose();
-    end);
 
-    t.start();
+    f.add(button);
 
 end);

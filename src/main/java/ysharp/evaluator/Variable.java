@@ -166,6 +166,8 @@ public class Variable {
             else if(this.isNull()) return  null;
             else if (this.isRuntimeObject()) return this.asRuntimeObject().getNativeJavaObject();
 
+            // at this point value is already a java native since ysharp data types must be runtime object or primitives that ysharp supports
+            // if not java native there should be a bug in code !?
             // fallback
             return this.value;
         }
