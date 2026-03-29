@@ -144,6 +144,10 @@ public class yArray {
         yArray_Instance_Prototype.RegisterNativeFn(new ShuffleFn());
         // arr.asQueryable()
         yArray_Instance_Prototype.RegisterNativeFn(new AsQueryableFn());
+        // arr.toNativeArray()
+        yArray_Instance_Prototype.RegisterNativeFn(new ToNativeArray());
+        // arr.toNativeArrayList()
+        yArray_Instance_Prototype.RegisterNativeFn(new ToNativeArrayList());
     }
 
     public static class yArrayInstance extends yClass.ClassObjectInstance implements Vector.IVector {

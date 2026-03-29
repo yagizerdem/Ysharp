@@ -1,5 +1,5 @@
 
-/*
+
 YPF.draculaMode();
 YPF.invokeLater(()=> do
 
@@ -12,12 +12,9 @@ YPF.invokeLater(()=> do
 
     var list = new YPF.List();
     list.setBounds(20, 20, 200, 150);
-    // list.setListData(["Java", "Python", "C++"]);
+    list.setListData(["Java", "Python", "C++"].toNativeArray());
     f.add(list);
     println list.getSelectedValue();
 
 
 end);
-
-*/
-

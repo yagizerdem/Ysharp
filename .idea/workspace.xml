@@ -5,76 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="06588b0d-6eee-4b4b-be52-23cf34ea7082" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/AddFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/AsQueryableFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/AverageFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/ClearFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/CloneFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/ConcatFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/ContainsFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/CountFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/EnsureCapacityFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/EveryFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/FillFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/FilterFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/FindFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/FindIndexFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/FlatFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/ForEachFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/GetFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/IndexOfFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/InsertFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/IsEmptyFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/JoinFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/LastIndexOfFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/MapFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/MaxFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/MinFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/PopFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/ReduceFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/RemoveFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/ReverseFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/SetFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/ShiftFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/ShuffleFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/SizeFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/SkipFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/SliceFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/SomeFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/SortFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/SumFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/TakeFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/ToStringFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/UniqueFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/UnshiftFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/statix/IsArrayFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/statix/OfFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/statix/RangeFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/ToNativeArray.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/function/instance/ToNativeArrayList.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Interpreter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Interpreter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Trie/yMapTrie.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Trie/yMapTrie.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Trie/ySortedMapTrie.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Trie/ySortedMapTrie.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Trie/yT9Trie.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Trie/yT9Trie.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yArray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/yArray.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yArrayDeque.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yArrayDeque.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yHashMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yHashMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yHashTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yHashTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yIdentityHashMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yIdentityHashMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yLinkedHashMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yLinkedHashMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yLinkedList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yLinkedList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yPriorityQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yPriorityQueue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yStack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yStack.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yTreeMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yTreeMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yTreeSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yTreeSet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yWeakHashMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yWeakHashMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/LINQ/Queryable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/LINQ/Queryable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/TUI/Input/yKeyStroke.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/TUI/Input/yKeyStroke.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/TUI/Util/TextColor/yANSI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/TUI/Util/TextColor/yANSI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/TUI/Util/ySGR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/TUI/Util/ySGR.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Registery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Registery.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/RuntimeObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/RuntimeObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/yString.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/yString.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/sorting/benchmark.ys" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/sorting/benchmark.ys" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/yArray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Array/yArray.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Variable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Variable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/resources/test/main.ys" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/test/main.ys" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -271,12 +206,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ysharp/evaluator/Variable.java</url>
-          <line>226</line>
+          <line>228</line>
           <option name="timeStamp" value="23" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ysharp/evaluator/Variable.java</url>
-          <line>240</line>
+          <line>242</line>
           <option name="timeStamp" value="25" />
         </line-breakpoint>
       </breakpoints>
