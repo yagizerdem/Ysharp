@@ -1,4 +1,4 @@
-package ysharp.evaluator.Native.YPF.Panel;
+package ysharp.evaluator.Native.YPF.Container.Panel;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;

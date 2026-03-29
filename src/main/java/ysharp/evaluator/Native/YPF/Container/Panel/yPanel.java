@@ -1,4 +1,4 @@
-package ysharp.evaluator.Native.YPF.Panel;
+package ysharp.evaluator.Native.YPF.Container.Panel;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
@@ -9,9 +9,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
 
-public class yTabbedPane {
+public class yPanel {
 
-    public static yTabbedPaneInstance requireTabbedPaneThis(Interpreter interpreter, String fnName) {
+    public static yPanelInstance requirePanelThis(Interpreter interpreter, String fnName) {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
@@ -24,31 +24,31 @@ public class yTabbedPane {
 
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-        if (!(obj instanceof yTabbedPaneInstance)) {
+        if (!(obj instanceof yPanelInstance)) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     0,
-                    "Expected TabbedPane but got '" + obj.getType() + "'"
+                    "Expected Panel but got '" + obj.getType() + "'"
             );
         }
 
-        return (yTabbedPaneInstance) obj;
+        return (yPanelInstance) obj;
     }
 
-    public static RuntimeObject yTabbedPane_Instance_Prototype;
+    public static RuntimeObject yPanel_Instance_Prototype;
 
     static {
-        yTabbedPane_Instance_Prototype = new RuntimeObject() {
+        yPanel_Instance_Prototype = new RuntimeObject() {
             @Override public boolean isTruthy() { return true; }
-            @Override public String getType() { return "__TabbedPane__"; }
-            @Override public String toString() { return "<prototype:TabbedPane>"; }
+            @Override public String getType() { return "__Panel__"; }
+            @Override public String toString() { return "<prototype:Panel>"; }
         };
 
-        yTabbedPane_Instance_Prototype.prototype = yClass.ClassPrototype;
+        yPanel_Instance_Prototype.prototype = yClass.ClassPrototype;
 
         Map<String, List<Method>> methodMap = new HashMap<>();
 
-        for (Method m : JTabbedPane.class.getMethods()) {
+        for (Method m : JPanel.class.getMethods()) {
             if (m.getDeclaringClass() == Object.class) continue;
 
             methodMap
@@ -58,7 +58,7 @@ public class yTabbedPane {
 
         for (String name : methodMap.keySet()) {
 
-            yTabbedPane_Instance_Prototype.set(name, new Variable(
+            yPanel_Instance_Prototype.set(name, new Variable(
                     new Variable.Variant(new Function.NativeFunction() {
 
                         @Override public int arity() { return -1; }
@@ -67,16 +67,17 @@ public class yTabbedPane {
                         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
                                 throws YsharpError {
 
-                            yTabbedPaneInstance tp =
-                                    yTabbedPane.requireTabbedPaneThis(interpreter, name);
+                            yPanelInstance panel =
+                                    yPanel.requirePanelThis(interpreter, name);
 
-                            JTabbedPane jtp = tp.tabbedPane;
+                            JPanel jpanel = panel.panel;
 
                             try {
                                 Object[] javaArgs = new Object[args.size()];
 
                                 for (int i = 0; i < args.size(); i++) {
-                                    javaArgs[i] = args.get(i).asJavaNative();
+                                    Variable.Variant v = args.get(i);
+                                    javaArgs[i] = v.asJavaNative();
                                 }
 
                                 List<Method> availableMethods = methodMap.get(name);
@@ -112,7 +113,7 @@ public class yTabbedPane {
                                     );
                                 }
 
-                                Object result = selected.invoke(jtp, javaArgs);
+                                Object result = selected.invoke(jpanel, javaArgs);
 
                                 return new Variable.Variant(
                                         JavaObjectWrapper.wrap(result)
@@ -136,28 +137,28 @@ public class yTabbedPane {
         }
     }
 
-    public static class yTabbedPaneInstance extends yClass.ClassObjectInstance {
+    public static class yPanelInstance extends yClass.ClassObjectInstance {
 
-        public final JTabbedPane tabbedPane;
+        public final JPanel panel;
 
-        public yTabbedPaneInstance() {
-            this.tabbedPane = new JTabbedPane();
-            this.prototype = yTabbedPane_Instance_Prototype;
+        public yPanelInstance() {
+            this.panel = new JPanel();
+            this.prototype = yPanel_Instance_Prototype;
         }
 
         @Override public boolean isTruthy() { return true; }
-        @Override public String getType() { return "TabbedPane"; }
-        @Override public String toString() { return "<instance:TabbedPane>"; }
+        @Override public String getType() { return "Panel"; }
+        @Override public String toString() { return "<instance:Panel>"; }
 
         @Override
         public Object getNativeJavaObject() {
-            return this.tabbedPane;
+            return this.panel;
         }
     }
 
-    public static class yTabbedPaneClass extends yClass.SealedClassObject {
+    public static class yPanelClass extends yClass.SealedClassObject {
 
-        public yTabbedPaneClass() {
+        public yPanelClass() {
             this.prototype = yClass.ClassPrototype;
         }
 
@@ -167,10 +168,10 @@ public class yTabbedPane {
         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
                 throws YsharpError {
 
-            return new Variable.Variant(new yTabbedPaneInstance());
+            return new Variable.Variant(new yPanelInstance());
         }
 
-        @Override public String getClassName() { return "TabbedPane"; }
-        @Override public String getType() { return "TabbedPane"; }
+        @Override public String getClassName() { return "Panel"; }
+        @Override public String getType() { return "Panel"; }
     }
 }

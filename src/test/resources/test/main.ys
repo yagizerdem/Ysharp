@@ -5,7 +5,7 @@ YPF.invokeLater(()=> do
 
     var f = new YPF.Frame();
     f.setSize(800, 400);
-    f.setLayout(new YPF.BorderLayout());
+    f.setLayout(null);
     f.setVisible(true);
 
     f.setDefaultCloseOperation(YPF.Frame.EXIT_ON_CLOSE);
@@ -16,5 +16,14 @@ YPF.invokeLater(()=> do
     f.add(list);
     println list.getSelectedValue();
 
+    const button = new YPF.Button();
+    button.setBounds(300, 100, 100, 20);
+    button.setText("test button");
+
+    button.setBackground(YPF.Color.RED);
+    f.getContentPane().setBackground(YPF.Color.BLUE);
+
+
+    f.add(button);
 
 end);

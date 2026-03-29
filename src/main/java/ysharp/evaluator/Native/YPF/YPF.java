@@ -9,18 +9,20 @@ import ysharp.evaluator.Native.YPF.Button.yButtonGroup;
 import ysharp.evaluator.Native.YPF.Button.yRadioButton;
 import ysharp.evaluator.Native.YPF.CheckBox.yCheckBox;
 import ysharp.evaluator.Native.YPF.ComboBox.yComboBox;
-import ysharp.evaluator.Native.YPF.Frame.yFrame;
+import ysharp.evaluator.Native.YPF.Container.Frame.yFrame;
+import ysharp.evaluator.Native.YPF.Container.yContainer;
 import ysharp.evaluator.Native.YPF.Label.yLabel;
 import ysharp.evaluator.Native.YPF.Layout.yBorderLayout;
 import ysharp.evaluator.Native.YPF.Layout.yCardLayout;
 import ysharp.evaluator.Native.YPF.List.yList;
-import ysharp.evaluator.Native.YPF.Panel.yPanel;
-import ysharp.evaluator.Native.YPF.Panel.yScrollPane;
-import ysharp.evaluator.Native.YPF.Panel.ySplitPane;
-import ysharp.evaluator.Native.YPF.Panel.yTabbedPane;
+import ysharp.evaluator.Native.YPF.Container.Panel.yPanel;
+import ysharp.evaluator.Native.YPF.Container.Panel.yScrollPane;
+import ysharp.evaluator.Native.YPF.Container.Panel.ySplitPane;
+import ysharp.evaluator.Native.YPF.Container.Panel.yTabbedPane;
 import ysharp.evaluator.Native.YPF.ProgressBar.yProgressBar;
 import ysharp.evaluator.Native.YPF.TextArea.yTextArea;
 import ysharp.evaluator.Native.YPF.TextBox.yTextBox;
+import ysharp.evaluator.Native.YPF.Util.yColor;
 
 import javax.swing.*;
 import java.util.List;
@@ -222,10 +224,15 @@ public class YPF {
             this.RegisterClass(new yList.yListClass());
             // YPF.ProgressBar();
             this.RegisterClass(new yProgressBar.yProgressBarClass());
+            // YPF.Container();
+            this.RegisterClass(new yContainer.yContainerClass());
 
             // layouts
             this.RegisterClass(new yBorderLayout.yBorderLayoutClass());
             this.RegisterClass(new yCardLayout.yCardLayoutClass());
+
+            // color
+            this.RegisterClass(new yColor.yColorClass());
         }
 
         @Override
