@@ -2,6 +2,9 @@ package ysharp.evaluator;
 
 import ysharp.evaluator.Native.Collections.*;
 import ysharp.evaluator.Native.Collections.Array.yArray;
+import ysharp.evaluator.Native.Collections.HashMap.yHashMap;
+import ysharp.evaluator.Native.Collections.Queue.yQueue;
+import ysharp.evaluator.Native.Collections.Stack.yStack;
 import ysharp.evaluator.Native.Collections.Trie.yMapTrie;
 import ysharp.evaluator.Native.Collections.Trie.ySortedMapTrie;
 import ysharp.evaluator.Native.Collections.Trie.yT9Trie;

@@ -1,15 +1,15 @@
-package ysharp.evaluator.Native.Collections.Array.function.instance;
+package ysharp.evaluator.Native.Collections.Stack.function.instance;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.Callable;
 import ysharp.evaluator.Function;
 import ysharp.evaluator.Interpreter;
-import ysharp.evaluator.Native.Collections.Array.yArray;
+import ysharp.evaluator.Native.Collections.Stack.yStack;
 import ysharp.evaluator.Variable;
 
 import java.util.List;
 
-public class IndexOfFn extends Function.NativeFunction implements Callable {
+public class SearchFn extends Function.NativeFunction implements Callable {
 
     @Override
     public int arity() {
@@ -21,20 +21,21 @@ public class IndexOfFn extends Function.NativeFunction implements Callable {
                                  List<Variable.Variant> arguments)
             throws YsharpError {
 
-        requireArity(arguments, arity(), getFnName());
-        yArray.yArrayInstance array = yArray.requireArrayThis(interpreter, getFnName());
+        yStack.yStackInstance stack = yStack.requireStackThis(interpreter, getFnName());
 
         Variable.Variant target = arguments.getFirst();
 
-        for (int i = 0; i < array.data.size(); i++) {
-            Variable.Variant element = array.data.get(i);
+        // Stack top -> end of list
+        for (int i = stack.data.size() - 1; i >= 0; i--) {
+
+            Variable.Variant element = stack.data.get(i);
 
             if (element == null && target == null) {
-                return new Variable.Variant(i);
+                return new Variable.Variant(stack.data.size() - i);
             }
 
             if (element != null && element.equals(target)) {
-                return new Variable.Variant(i);
+                return new Variable.Variant(stack.data.size() - i);
             }
         }
 
@@ -43,6 +44,6 @@ public class IndexOfFn extends Function.NativeFunction implements Callable {
 
     @Override
     public String getFnName() {
-        return "indexOf";
+        return "search";
     }
 }

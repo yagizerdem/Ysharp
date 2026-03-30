@@ -1,29 +1,11 @@
+var q = new Queue();
+
+for var i = 0 ; i < 10 ;i++ do
+    q.add(i);
+end
 
 
-YPF.draculaMode();
-YPF.invokeLater(()=> do
+while !q.empty() do
+    println q.dequeue();
+end
 
-    var f = new YPF.Frame();
-    f.setSize(800, 400);
-    f.setLayout(null);
-    f.setVisible(true);
-
-    f.setDefaultCloseOperation(YPF.Frame.EXIT_ON_CLOSE);
-
-    var list = new YPF.List();
-    list.setBounds(20, 20, 200, 150);
-    list.setListData(["Java", "Python", "C++"].toNativeArray());
-    f.add(list);
-    println list.getSelectedValue();
-
-    const button = new YPF.Button();
-    button.setBounds(300, 100, 100, 20);
-    button.setText("test button");
-
-    button.setBackground(YPF.Color.RED);
-    f.getContentPane().setBackground(YPF.Color.BLUE);
-
-
-    f.add(button);
-
-end);

@@ -2,7 +2,7 @@ package ysharp.evaluator;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.Native.Collections.Array.yArray;
-import ysharp.evaluator.Native.Collections.yHashMap;
+import ysharp.evaluator.Native.Collections.HashMap.yHashMap;
 import ysharp.evaluator.Native.Range;
 import ysharp.evaluator.Native.function.binding.BoundNativeFunction;
 import ysharp.lexer.Token;
