@@ -4,7 +4,7 @@ import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.Native.Collections.Array.function.instance.*;
 import ysharp.evaluator.Native.Collections.Array.function.statix.*;
-import ysharp.evaluator.Native.Collections.Vector;
+import ysharp.evaluator.Native.Collections.yVector;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,7 +57,7 @@ public class yArray {
                 return "<prototype:Array>";
             }
         };
-        yArray_Instance_Prototype.prototype = Vector.Vector_Instance_Prototype;
+        yArray_Instance_Prototype.prototype = yVector.Vector_Instance_Prototype;
 
         // arr.toString()
         yArray_Instance_Prototype.RegisterNativeFn(new ToStringFn());
@@ -150,7 +150,7 @@ public class yArray {
         yArray_Instance_Prototype.RegisterNativeFn(new ToNativeArrayList());
     }
 
-    public static class yArrayInstance extends yClass.ClassObjectInstance implements Vector.IVector {
+    public static class yArrayInstance extends yClass.ClassObjectInstance implements yVector.IVector {
 
         public final ArrayList<Variable.Variant> data;
         public yArrayInstance(ArrayList<Variable.Variant> data) {

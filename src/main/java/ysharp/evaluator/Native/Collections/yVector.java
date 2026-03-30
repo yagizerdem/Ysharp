@@ -5,14 +5,14 @@ import ysharp.evaluator.*;
 import java.util.List;
 
 // prototype for all indexed based data structures
-public class Vector {
+public class yVector {
 
     public interface IVector  {
         public List<Variable.Variant> getData();
     }
 
     // helper
-    public static Vector.IVector requireVectorThis (Interpreter interpreter, String fnName) {
+    public static yVector.IVector requireVectorThis (Interpreter interpreter, String fnName) {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
@@ -25,7 +25,7 @@ public class Vector {
 
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-        if (!(obj instanceof Vector.IVector)) {
+        if (!(obj instanceof yVector.IVector)) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,
                     0,
@@ -33,7 +33,7 @@ public class Vector {
             );
         }
 
-        return  (Vector.IVector) obj;
+        return  (yVector.IVector) obj;
     }
 
 
@@ -195,7 +195,7 @@ public class Vector {
             @Override
             public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
                 requireArity(arguments, arity(), getFnName());
-                Vector.IVector vector = requireVectorThis(interpreter, getFnName());
+                yVector.IVector vector = requireVectorThis(interpreter, getFnName());
 
                 VectorIteratorInstance iteratorInstance = new VectorIteratorInstance(vector.getData());
 
