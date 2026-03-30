@@ -1,4 +1,4 @@
-package ysharp.evaluator.Native.Collections;
+package ysharp.evaluator.Native.Collections.ArrayDeque;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
