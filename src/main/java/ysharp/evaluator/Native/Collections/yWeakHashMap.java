@@ -3,6 +3,7 @@ package ysharp.evaluator.Native.Collections;
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
 import ysharp.evaluator.Native.Collections.Array.yArray;
+import ysharp.evaluator.Native.Collections.HashTable.yHashTable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -474,10 +475,10 @@ public class yWeakHashMap {
                 java.util.Hashtable<Variable.Variant, Variable.Variant> snap =
                         new java.util.Hashtable<>(whm.data);
 
-                yHashTable.yMapInstance mapObject =
-                        new yHashTable.yMapInstance(snap);
+                yHashTable.yHashTableInstance hashTableObject =
+                        new yHashTable.yHashTableInstance(snap);
 
-                return new Variable.Variant(mapObject);
+                return new Variable.Variant(hashTableObject);
             }
 
             @Override

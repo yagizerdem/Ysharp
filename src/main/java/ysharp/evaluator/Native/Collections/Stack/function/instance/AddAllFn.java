@@ -8,7 +8,7 @@ import ysharp.evaluator.Native.Collections.Array.yArray;
 import ysharp.evaluator.Native.Collections.Stack.yStack;
 import ysharp.evaluator.Native.Collections.yPriorityQueue;
 import ysharp.evaluator.Native.Collections.Queue.yQueue;
-import ysharp.evaluator.Native.Collections.ySet;
+import ysharp.evaluator.Native.Collections.Set.ySet;
 import ysharp.evaluator.Variable;
 
 import java.util.List;
