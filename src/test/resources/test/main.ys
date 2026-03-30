@@ -1,11 +1,18 @@
-var q = new Queue();
+/*
 
-for var i = 0 ; i < 10 ;i++ do
-    q.add(i);
-end
+YPF.darkMode();
+YPF.invokeLater(() => do
+    const frame = new YPF.Frame();
 
+    frame.setSize(800, 300);
+    frame.show();
+    frame.setDefaultCloseOperation(YPF.Frame.EXIT_ON_CLOSE);
+    frame.setLayout(null);
 
-while !q.empty() do
-    println q.dequeue();
-end
+    const button = new YPF.Button();
+    button.setBounds(200, 200, 100, 20);
+    button.setText("hit");
+    frame.add(button);
 
+end);
+*/
