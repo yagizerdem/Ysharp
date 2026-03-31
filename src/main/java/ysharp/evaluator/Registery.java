@@ -1,17 +1,21 @@
 package ysharp.evaluator;
 
-import ysharp.evaluator.Native.Collections.*;
 import ysharp.evaluator.Native.Collections.Array.yArray;
 import ysharp.evaluator.Native.Collections.ArrayDeque.yArrayDeque;
 import ysharp.evaluator.Native.Collections.HashMap.yHashMap;
 import ysharp.evaluator.Native.Collections.HashTable.yHashTable;
 import ysharp.evaluator.Native.Collections.IdentityHashMap.yIdentityHashMap;
+import ysharp.evaluator.Native.Collections.LinkedList.yLinkedList;
+import ysharp.evaluator.Native.Collections.PriorityQueue.yPriorityQueue;
 import ysharp.evaluator.Native.Collections.Queue.yQueue;
 import ysharp.evaluator.Native.Collections.Set.ySet;
 import ysharp.evaluator.Native.Collections.Stack.yStack;
-import ysharp.evaluator.Native.Collections.Trie.yMapTrie;
-import ysharp.evaluator.Native.Collections.Trie.ySortedMapTrie;
-import ysharp.evaluator.Native.Collections.Trie.yT9Trie;
+import ysharp.evaluator.Native.Collections.TreeMap.yTreeMap;
+import ysharp.evaluator.Native.Collections.TreeSet.yTreeSet;
+import ysharp.evaluator.Native.Collections.Trie.Wrapper.MapTrie.yMapTrie;
+import ysharp.evaluator.Native.Collections.Trie.Wrapper.SortedMapTrie.ySortedMapTrie;
+import ysharp.evaluator.Native.Collections.Trie.Wrapper.T9Trie.yT9Trie;
+import ysharp.evaluator.Native.Collections.WeakHashMap.yWeakHashMap;
 import ysharp.evaluator.Native.LINQ.Queryable;
 import ysharp.evaluator.Native.Network.yHttp;
 import ysharp.evaluator.Native.Range;

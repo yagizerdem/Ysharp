@@ -1,0 +1,36 @@
+package ysharp.evaluator.Native.Collections.PriorityQueue.function.instance;
+
+import ysharp.YsharpError;
+import ysharp.evaluator.Function;
+import ysharp.evaluator.Interpreter;
+import ysharp.evaluator.Native.Collections.PriorityQueue.yPriorityQueue;
+import ysharp.evaluator.Variable;
+
+import java.util.List;
+
+public class PeekPriorityFn extends Function.NativeFunction {
+
+    @Override
+    public int arity() {
+        return 0;
+    }
+
+    @Override
+    public Variable.Variant call(Interpreter interpreter,
+                                 List<Variable.Variant> arguments)
+            throws YsharpError {
+
+        yPriorityQueue.yPriorityQueueInstance pq = yPriorityQueue.requirePriorityQueueThis(interpreter);
+
+        if (pq.heap.isEmpty()) {
+            return new Variable.Variant(null);
+        }
+
+        return new Variable.Variant(pq.heap.getFirst().priority);
+    }
+
+    @Override
+    public String getFnName() {
+        return "peekPriority";
+    }
+}
