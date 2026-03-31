@@ -2,11 +2,7 @@ package ysharp.evaluator.Native.Collections.IdentityHashMap;
 
 import ysharp.YsharpError;
 import ysharp.evaluator.*;
-import ysharp.evaluator.Native.Collections.Array.yArray;
 import ysharp.evaluator.Native.Collections.IdentityHashMap.function.instance.*;
-import ysharp.evaluator.Native.Collections.Set.instance.ContainsFn;
-
-import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
 

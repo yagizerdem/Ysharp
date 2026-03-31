@@ -5,55 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="06588b0d-6eee-4b4b-be52-23cf34ea7082" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/HashTable/function/instance/ClearFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/HashTable/function/instance/CloneFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/HashTable/function/instance/ContainsKeyFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/HashTable/function/instance/EntriesFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/HashTable/function/instance/GetFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/HashTable/function/instance/IsEmptyFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/HashTable/function/instance/KeysFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/HashTable/function/instance/PutFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/HashTable/function/instance/RemoveFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/HashTable/function/instance/SizeFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/HashTable/function/instance/ToStringFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/HashTable/function/instance/ValuesFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/IdentityHashMap/function/instance/ClearFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/IdentityHashMap/function/instance/CloneFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/IdentityHashMap/function/instance/ContainsKeyFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/IdentityHashMap/function/instance/ContainsValueFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/IdentityHashMap/function/instance/EntrySetFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/IdentityHashMap/function/instance/EqualsFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/IdentityHashMap/function/instance/GetFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/IdentityHashMap/function/instance/IsEmptyFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/IdentityHashMap/function/instance/KeySetFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/IdentityHashMap/function/instance/PutAllFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/IdentityHashMap/function/instance/PutFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/IdentityHashMap/function/instance/RemoveFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/IdentityHashMap/function/instance/SizeFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/IdentityHashMap/function/instance/ToStringFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/IdentityHashMap/function/instance/ValuesFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Set/instance/AddFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Set/instance/ClearFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Set/instance/CloneFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Set/instance/ContainsFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Set/instance/DifferenceFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Set/instance/EmptyFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Set/instance/EqualsFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Set/instance/IntersectionFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Set/instance/IsSubsetFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Set/instance/IsSupersetFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Set/instance/RemoveFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Set/instance/SizeFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Set/instance/ToStringFn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Set/instance/UnionFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/LinkedHashMap/function/instance/ClearFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/LinkedHashMap/function/instance/CloneFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/LinkedHashMap/function/instance/ContainsKeyFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/LinkedHashMap/function/instance/ContainsValueFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/LinkedHashMap/function/instance/EntriesFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/LinkedHashMap/function/instance/FirstKeyFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/LinkedHashMap/function/instance/GetFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/LinkedHashMap/function/instance/GetOrDefaultFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/LinkedHashMap/function/instance/IsEmptyFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/LinkedHashMap/function/instance/KeysFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/LinkedHashMap/function/instance/LastKeyFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/LinkedHashMap/function/instance/PutFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/LinkedHashMap/function/instance/PutIfAbsentFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/LinkedHashMap/function/instance/RemoveFirstFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/LinkedHashMap/function/instance/RemoveFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/LinkedHashMap/function/instance/RemoveLastFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/LinkedHashMap/function/instance/SizeFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/LinkedHashMap/function/instance/ToStringFn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/LinkedHashMap/function/instance/ValuesFn.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Stack/function/instance/AddAllFn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Stack/function/instance/AddAllFn.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yHashTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/HashTable/yHashTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yIdentityHashMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/IdentityHashMap/yIdentityHashMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/ySet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/Set/ySet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yWeakHashMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yWeakHashMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Registery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Registery.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/test/main.ys" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/test/main.ys" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/IdentityHashMap/yIdentityHashMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/IdentityHashMap/yIdentityHashMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/yLinkedHashMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/LinkedHashMap/yLinkedHashMap.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
