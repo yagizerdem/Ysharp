@@ -3,11 +3,11 @@
 YPF.darkMode();
 YPF.invokeLater(() => do
     const frame = new YPF.Frame();
-
     frame.setSize(800, 300);
     frame.show();
     frame.setDefaultCloseOperation(YPF.Frame.EXIT_ON_CLOSE);
     frame.setLayout(null);
+
 
     const button = new YPF.Button();
     button.setBounds(200, 200, 100, 20);
