@@ -56,6 +56,7 @@ public class Lexer {
         KEYWORD_MAP.put("break", Token.TokenType.BREAK);
         KEYWORD_MAP.put("continue", Token.TokenType.CONTINUE);
         KEYWORD_MAP.put("var", Token.TokenType.VAR);
+        KEYWORD_MAP.put("let", Token.TokenType.LET);
         KEYWORD_MAP.put("const", Token.TokenType.CONST_);
         KEYWORD_MAP.put("print", Token.TokenType.PRINT);
         KEYWORD_MAP.put("println", Token.TokenType.PRINTLN);

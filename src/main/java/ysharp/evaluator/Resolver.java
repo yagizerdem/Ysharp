@@ -350,6 +350,13 @@ public class Resolver implements Expr.Visitor<Void> ,
     }
 
     @Override
+    public void visitLetDeclaration(Stmt.LetDeclaration stmt) {
+        declare(stmt.identifier);
+        resolve(stmt.initializer);
+        define(stmt.identifier);
+    }
+
+    @Override
     public void visitFunctionDeclaration(Stmt.FunctionDeclaration stmt) {
         declare(stmt.name);
         define(stmt.name);

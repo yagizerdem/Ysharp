@@ -9,6 +9,7 @@ public class Variable {
     public Variant value;
     public final boolean isConst;
     public final String typeTag;
+    public final boolean enableRedeclare;
 
     public Variable(Variant value,
                     boolean isConst,
@@ -16,6 +17,17 @@ public class Variable {
         this.value = value;
         this.isConst = isConst;
         this.typeTag = typeTag;
+        this.enableRedeclare = false;
+    }
+
+    public Variable(Variant value,
+                    boolean isConst,
+                    String typeTag,
+                    boolean enableRedeclare) {
+        this.value = value;
+        this.isConst = isConst;
+        this.typeTag = typeTag;
+        this.enableRedeclare = enableRedeclare;
     }
 
     public static class Variant {

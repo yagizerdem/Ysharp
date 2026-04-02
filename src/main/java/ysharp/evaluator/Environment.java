@@ -165,6 +165,12 @@ public class Environment {
         return env.values.get(name);
     }
 
+    public Variable getAtOrDefault(int distance, String name) throws YsharpError {
+        Environment env = ancestor(distance);
+        if (!env.values.containsKey(name)) return null;
+        return env.values.get(name);
+    }
+
     public void assignAt(int distance, Token name, Variable.Variant value) throws YsharpError {
         Environment env = ancestor(distance);
 
@@ -197,9 +203,18 @@ public class Environment {
             variant = this.values.get(name).value;
             this.values.remove(name);
         }
-        if(variant != null && this.variantTypes.containsKey(variant)) {
-            this.variantTypes.remove(variant);
-        }
+        this.variantTypes.remove(variant);
     }
+
+    public void removeAt(int distance, String name) {
+        Environment env = this;
+        for(int i = 0; i < distance; i++) {
+            if(env == null) throw new RuntimeException("[Programmatic error] : distance is out of env chain");
+            env = env.enclosing;
+        }
+        this.values.remove(name);
+
+    }
+
 
 }

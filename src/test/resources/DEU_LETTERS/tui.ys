@@ -1,0 +1,19 @@
+export var terminal = new TUI.DefaultTerminal();
+terminal.setCursorVisible(false);
+
+
+export function startGameScreen() do
+    terminal.writeLine("Enter difficulty level to start");
+    terminal.writeLine("There are 3 difficulty levels easy, medium, hard");
+    terminal.writeLine("> ");
+    terminal.flush();
+    var userInput : string = "";
+    while true do
+        var key = terminal.readKey();
+        println(key.getCharacter());
+        userInput += Type.Converter.toString(key.getCharacter());
+        terminal.setCursorPosition(0, 2);
+        terminal.writeLine("> " + userInput);
+        terminal.flush();
+    end
+end

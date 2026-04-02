@@ -24,13 +24,7 @@ public class AddFn extends Function.NativeFunction implements Callable {
         requireArity(arguments, arity(), getFnName());
         Variable.Variant value = arguments.getFirst();
         yArray.yArrayInstance array = yArray.requireArrayThis(interpreter, getFnName());
-        if(value.isRuntimeObject()) {
-            array.data.add(value);
-        }
-        else {
-            array.data.add(new Variable.Variant(value.value));
-        }
-
+        array.data.add(new Variable.Variant(value.value));
         return new Variable.Variant(array.data.size());
     }
 

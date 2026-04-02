@@ -32,6 +32,7 @@ public abstract class Stmt {
         void visitFunctionDeclaration(Stmt.FunctionDeclaration stmt);
         void visitConstDeclaration(Stmt.ConstDeclaration stmt);
         void visitClassDeclaration(Stmt.ClassDeclaration stmt);
+        void visitLetDeclaration(Stmt.LetDeclaration stmt);
     }
 
 
@@ -322,6 +323,30 @@ public abstract class Stmt {
         @Override
         public void accept(Visitor visitor) {
             visitor.visitVarDeclaration(this);
+        }
+    }
+
+    public static class LetDeclaration extends Stmt {
+        public final Token identifier;
+        public final Token type;
+        public final Expr initializer;
+        public final boolean isExported;
+
+        public LetDeclaration(
+                Token identifier,
+                Token type,
+                Expr initializer,
+                boolean isExported
+        ) {
+            this.identifier = identifier;
+            this.type = type;
+            this.initializer = initializer;
+            this.isExported = isExported;
+        }
+
+        @Override
+        public void accept(Visitor visitor) {
+            visitor.visitLetDeclaration(this);
         }
     }
 

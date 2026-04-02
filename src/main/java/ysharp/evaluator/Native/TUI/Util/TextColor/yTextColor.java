@@ -82,7 +82,7 @@ public class yTextColor {
 
                     yTextColorEnum textColor = requireTextColorThis(interpreter, getFnName());
 
-                    return new Variable.Variant(textColor.color.toString());
+                    return new Variable.Variant(new yString.yStringInstance(textColor.color.toString()));
                 }
 
                 @Override

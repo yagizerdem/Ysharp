@@ -19,6 +19,7 @@ import ysharp.evaluator.Native.YPF.Container.Panel.yScrollPane;
 import ysharp.evaluator.Native.YPF.Container.Panel.ySplitPane;
 import ysharp.evaluator.Native.YPF.Container.Panel.yTabbedPane;
 import ysharp.evaluator.Native.YPF.ProgressBar.yProgressBar;
+import ysharp.evaluator.Native.YPF.Table.yTable;
 import ysharp.evaluator.Native.YPF.TextArea.yTextArea;
 import ysharp.evaluator.Native.YPF.TextBox.yTextBox;
 import ysharp.evaluator.Native.YPF.Util.yColor;
@@ -72,7 +73,7 @@ public class YPF {
 
                     SwingUtilities.invokeLater(() -> {
                         try {
-                            callable.call(interpreter, List.of());
+                            callable.call(interpreter.copy(), List.of());
                         } catch (YsharpError e) {
                             e.printStackTrace();
                         }
@@ -225,6 +226,8 @@ public class YPF {
             this.RegisterClass(new yProgressBar.yProgressBarClass());
             // YPF.Container();
             this.RegisterClass(new yContainer.yContainerClass());
+            // YPF.Table()
+            this.RegisterClass(new yTable.yTableClass());
 
             // layouts
             this.RegisterClass(new yBorderLayout.yBorderLayoutClass());

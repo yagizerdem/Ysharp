@@ -26,7 +26,7 @@ public class ClearFn extends Function.NativeFunction implements Callable {
 
         array.data.clear();
 
-        return new Variable.Variant(array.data.size());
+        return new Variable.Variant(0);
     }
 
     @Override
