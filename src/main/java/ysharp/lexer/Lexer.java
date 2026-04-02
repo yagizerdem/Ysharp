@@ -350,6 +350,7 @@ public class Lexer {
             }
             case '?' -> {
                 if (Cursor.match(source, cursor, '?')) { addToken(Token.TokenType.DOUBLE_QUESTION_MARK); return; }
+                if (Cursor.match(source, cursor, '.')) { addToken(Token.TokenType.OPTIONAL_CALL); return; }
                 addToken(Token.TokenType.QUESTION_MARK);
             }
             case '.' -> {

@@ -39,6 +39,7 @@ public class Token {
         COMMA, // ,
         DOT, // .
         DOUBLE_DOT, // ..
+        OPTIONAL_CALL, // ?.
 
         // equality / comparison
         EQUAL_EQUAL, BANG_EQUAL, // == !=

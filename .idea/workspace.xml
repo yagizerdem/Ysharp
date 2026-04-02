@@ -7,13 +7,11 @@
     <list default="true" id="06588b0d-6eee-4b4b-be52-23cf34ea7082" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Interpreter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Interpreter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Resolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Resolver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Variable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Variable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/lexer/Lexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/lexer/Lexer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/lexer/Token.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/lexer/Token.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/parser/CFG.md" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/parser/CFG.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/parser/Expr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/parser/Expr.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/parser/Parser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/parser/Stmt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/parser/Stmt.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/resources/test/main.ys" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/test/main.ys" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -235,8 +233,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ysharp/evaluator/Interpreter.java</url>
-          <line>1360</line>
+          <line>1364</line>
           <option name="timeStamp" value="38" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ysharp/evaluator/Interpreter.java</url>
+          <line>766</line>
+          <option name="timeStamp" value="47" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ysharp/evaluator/Interpreter.java</url>
+          <line>764</line>
+          <option name="timeStamp" value="48" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

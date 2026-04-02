@@ -1,5 +1,24 @@
 
+class Person {
+    var test = null;
+    foo(a) do
+        return "hit";
+    end
+}
+
+
+class Human {
+    var p = new Person();
+}
 
 
 
-println a;
+var h = new Human();
+
+h.p.test = (a : int)=> do
+    return a;
+end;
+
+h.p = null;
+
+println h.p?.test(12);

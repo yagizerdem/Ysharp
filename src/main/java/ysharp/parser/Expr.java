@@ -168,10 +168,18 @@ abstract public class Expr {
     public static class GetExpr extends Expr {
         public final Expr object;
         public final Token name;
+        public boolean isOptional;
 
         GetExpr(Expr object, Token name) {
             this.object = object;
             this.name = name;
+            this.isOptional = false;
+        }
+
+        GetExpr(Expr object, Token name, boolean isOptional) {
+            this.object = object;
+            this.name = name;
+            this.isOptional = isOptional;
         }
 
         public <R> R accept(Visitor<R> visitor) {

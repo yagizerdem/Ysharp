@@ -763,6 +763,11 @@ public class Interpreter implements
     public Variable.Variant visitCallExpr(Expr.CallExpr expr) {
         Variable.Variant calee = this.evaluate(expr.callee);
 
+        if(calee.isNull() && expr.callee instanceof Expr.GetExpr &&
+                ((Expr.GetExpr) expr.callee).isOptional) {
+            return new Variable.Variant(null);
+        }
+
         if(!calee.isCallable()) {
             throw new YsharpError(
                     YsharpError.YsharpErrorType.PROCESS,

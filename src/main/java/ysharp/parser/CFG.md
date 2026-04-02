@@ -21,7 +21,7 @@ lambda
 - factor &rarr; unary ( ( "/" | "\*" | "%" ) unary )*
 - unary &rarr;  ( "!" | "-" | "+" | "~" | "++" | "--" ) unary | postfix 
 - postfix &rarr; call ( "++" | "--" )*
-- call &rarr; primary ( "(" arguments? ")"  | "." IDENTIFIER )*
+- call &rarr; primary ( "(" arguments? ")"  | "." IDENTIFIER | "?." IDENTIFIER )*
 - primary &rarr; array | map | atom | new_expr
 - atom &rarr;
 IDENTIFIER |
