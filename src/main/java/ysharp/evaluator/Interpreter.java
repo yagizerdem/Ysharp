@@ -1340,12 +1340,47 @@ public class Interpreter implements
         Variable var = new Variable(
                 value == null ? new Variable.Variant(null) :new Variable.Variant(value.value),
                 false,
-                typeTag);
+                typeTag,
+                true);
 
-        if(this.curEnv.getAtOrDefault(0, stmt.identifier.lexeme) != null) {
-            // var stmt allows variable redeclaration , delete already existing variable
+
+        Variable existing = this.curEnv.getAtOrDefault(0, stmt.identifier.lexeme);
+        if(existing != null && existing.enableRedeclare) {
             this.curEnv.removeAt(0, stmt.identifier.lexeme);
         }
+
+        this.curEnv.define(stmt.identifier.lexeme, var);
+
+        if(stmt.isExported) {
+            this.exports.add(stmt.identifier.lexeme);
+        }
+    }
+
+    @Override
+    public void visitLetDeclaration(Stmt.LetDeclaration stmt) {
+        Variable.Variant value = stmt.initializer != null ?
+                this.evaluate(stmt.initializer) : null;
+
+        String typeTag = stmt.type != null ? stmt.type.lexeme : "any";
+
+        if (value != null && !Interpreter.typeChecker(typeTag, value)) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    stmt.identifier.line,
+                    "Type mismatch. Cannot assign value of type '" +
+                            value.getType() +
+                            "' to variable '" +
+                            stmt.identifier.lexeme +
+                            "' of type '" +
+                            typeTag + "'."
+            );
+        }
+
+        Variable var = new Variable(
+                value == null ? new Variable.Variant(null) :new Variable.Variant(value.value),
+                false,
+                typeTag,
+                false);
 
         this.curEnv.define(stmt.identifier.lexeme, var);
 
@@ -1431,7 +1466,8 @@ public class Interpreter implements
         Variable var = new Variable(
                 value == null ? new Variable.Variant(null) :new Variable.Variant(value.value),
                 true,
-                typeTag);
+                typeTag,
+                false);
 
         this.curEnv.define(stmt.identifier.lexeme, var);
 

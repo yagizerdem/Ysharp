@@ -1365,6 +1365,7 @@ public class Parser {
         }
 
         if(match(peek(), Token.TokenType.VAR)) return parseVarDeclaration(flag);
+        if(match(peek(), Token.TokenType.LET)) return parseLetDeclaration(flag);
         if(match(peek(), Token.TokenType.FUNCTION)) return parseFunctionDeclaration(flag);
         if(match(peek(), Token.TokenType.CONST_)) return parseConstDeclaration(flag);
         if(match(peek(), Token.TokenType.SEALED)) {
@@ -1413,9 +1414,49 @@ public class Parser {
             initializer = parseAssignment();
         }
 
-        consume(Token.TokenType.SEMI_COLON, "Expected ';' after variable declaration.");
+        consume(Token.TokenType.SEMI_COLON, "Expected ';' after var declaration.");
 
         return new Stmt.VarDeclaration(identifier, typeTag, initializer, isExported);
+    }
+
+    private Stmt parseLetDeclaration(boolean isExported) throws YsharpError {
+        Token identifier = advance();
+        Token typeTag = null;
+        Expr initializer = null;
+
+        if (identifier.type != Token.TokenType.IDENTIFIER) {
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.SYNTAX,
+                    identifier.line,
+                    "Expected variable name after 'let'."
+            );
+        }
+
+        if (match(peek(), Token.TokenType.COLON)) {
+            if (peek().type == Token.TokenType.END_OF_FILE) {
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.SYNTAX,
+                        peek().line,
+                        "Expected type after ':'."
+                );
+            }
+            typeTag = advance();
+        }
+
+        if (match(peek(), Token.TokenType.ASSIGN)) {
+            if (peek().type == Token.TokenType.END_OF_FILE) {
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.SYNTAX,
+                        peek().line,
+                        "Expected initializer expression after '='."
+                );
+            }
+            initializer = parseAssignment();
+        }
+
+        consume(Token.TokenType.SEMI_COLON, "Expected ';' after let declaration.");
+
+        return new Stmt.LetDeclaration(identifier, typeTag, initializer, isExported);
     }
 
     private Stmt parseFunctionDeclaration(boolean isExported) throws YsharpError {

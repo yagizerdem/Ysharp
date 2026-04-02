@@ -85,6 +85,7 @@ public class Token {
         BREAK, // break
         CONTINUE, // continue
         VAR, // var
+        LET, // let
         CONST_, // const
         TRY, // try
         CATCH, // catch

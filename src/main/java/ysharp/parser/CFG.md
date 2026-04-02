@@ -47,6 +47,7 @@ null |
 - declaration &rarr; classDecl | 
 funDecl | 
 varDecl | 
+letDecl |
 constDecl |
 useDecl |
 exportDecl |
@@ -56,6 +57,7 @@ statement
   "{" classMember* "}"
 - funDecl &rarr; "function" function
 - varDecl &rarr; "var" IDENTIFIER (":" type )? ("=" expression)? ";"
+- letDecl &rarr; "let" IDENTIFIER (":" type )? ("=" expression)? ";"
 - constDecl &rarr; "const" IDENTIFIER (":" type )? "=" expression ";"
 - useDecl &rarr; "use" STRING ";"
 - exportDecl &rarr; "export" ( classDecl | funDecl | varDecl | constDecl )
