@@ -21,13 +21,7 @@ public class AverageFn extends Function.NativeFunction implements Callable {
         requireArity(arguments, arity(), getFnName());
         yArray.yArrayInstance array = yArray.requireArrayThis(interpreter, getFnName());
 
-        if (array.data.isEmpty()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
-                    0,
-                    "'average' cannot be called on an empty array."
-            );
-        }
+        if (array.data.isEmpty()) return new Variable.Variant(0);
 
         double sum = 0;
         int count = 0;

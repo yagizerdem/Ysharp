@@ -73,7 +73,7 @@ public class YPF {
 
                     SwingUtilities.invokeLater(() -> {
                         try {
-                            callable.call(interpreter, List.of());
+                            callable.call(interpreter.copy(), List.of());
                         } catch (YsharpError e) {
                             e.printStackTrace();
                         }

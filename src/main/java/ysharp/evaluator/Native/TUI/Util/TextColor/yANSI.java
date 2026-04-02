@@ -82,7 +82,7 @@ public class yANSI {
 
                     yANSIEnum ansi = requireANSIThis(interpreter, getFnName());
 
-                    return new Variable.Variant(ansi.ansi.toString());
+                    return new Variable.Variant(new yString.yStringInstance(ansi.ansi.toString()));
                 }
 
                 @Override

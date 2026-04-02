@@ -70,6 +70,16 @@ public class Interpreter implements
         }
     }
 
+    public Interpreter copy() {
+        Interpreter newInterpreter = new Interpreter();
+        newInterpreter.curEnv = this.curEnv;
+        newInterpreter.global = this.global;
+        newInterpreter.locals = this.locals;
+        newInterpreter.exports = this.exports;
+
+        return newInterpreter;
+    }
+
     public void execute(Stmt stmt){
         if (Thread.currentThread().isInterrupted()) {
             throw new YsharpError(
@@ -1331,6 +1341,11 @@ public class Interpreter implements
                 value == null ? new Variable.Variant(null) :new Variable.Variant(value.value),
                 false,
                 typeTag);
+
+        if(this.curEnv.getAtOrDefault(0, stmt.identifier.lexeme) != null) {
+            // var stmt allows variable redeclaration , delete already existing variable
+            this.curEnv.removeAt(0, stmt.identifier.lexeme);
+        }
 
         this.curEnv.define(stmt.identifier.lexeme, var);
 

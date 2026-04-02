@@ -1,0 +1,12 @@
+
+
+
+export function getRandomChar() do
+    return ['D', 'E', 'U'].get(Random.nextInt(0,3));
+end
+
+export function getRandomColor() do
+        return [TUI.TextColor.ANSI.BLUE,
+        TUI.TextColor.ANSI.RED,
+        TUI.TextColor.ANSI.GREEN].get(Random.nextInt(0,3));
+end

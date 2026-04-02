@@ -1,0 +1,39 @@
+use "./util.ys" ;
+
+export class Piece {
+    var char;
+    var color;
+}
+
+class Board {
+
+const data = [
+    [null, null, null],
+    [null, null, null],
+    [null, null, null]
+];
+
+    constructor() do
+        // fill board randomly
+        for var i = 0; i < 3 ;i++ do
+            for var j = 0; j < 3 ; j++ do
+                var p = new Piece();
+                p.char = getRandomChar();
+                p.color = getRandomColor();
+                this.data.get(i).set(j, p);
+            end
+        end
+    end
+
+    debug() do
+        this.data.forEach((row) => do
+            var str = "";
+            row.forEach((p) => do
+                str +=  (Type.Converter.toString(p.char) + "(" + (p.color.toString().toLower()) + ")"  + " ".repeat(4));
+            end);
+            println str;
+        end);
+    end
+}
+
+export const board = new Board();
