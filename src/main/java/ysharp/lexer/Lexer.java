@@ -331,6 +331,7 @@ public class Lexer {
                 addToken(Token.TokenType.BITWISE_AND);
             }
             case '|' -> {
+                if (Cursor.match(source, cursor, '>')) { addToken(Token.TokenType.PIPE); return; }
                 if (Cursor.match(source, cursor, '=')) { addToken(Token.TokenType.BITWISE_OR_ASSIGN); return; }
                 if (Cursor.match(source, cursor, '|')) { addToken(Token.TokenType.LOGICAL_OR);        return; }
                 addToken(Token.TokenType.BITWISE_OR);
@@ -350,6 +351,7 @@ public class Lexer {
             }
             case '?' -> {
                 if (Cursor.match(source, cursor, '?')) { addToken(Token.TokenType.DOUBLE_QUESTION_MARK); return; }
+                if (Cursor.match(source, cursor, '.')) { addToken(Token.TokenType.OPTIONAL_CALL); return; }
                 addToken(Token.TokenType.QUESTION_MARK);
             }
             case '.' -> {

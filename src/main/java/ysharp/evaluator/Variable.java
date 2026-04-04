@@ -90,6 +90,14 @@ public class Variable {
 
         public boolean isClassLike() { return this.isClass() || this.isClassInstance(); }
 
+        public boolean isPrimitive() {
+            return  isBoolean() ||
+                    isNull() ||
+                    isString() ||
+                    isNumber() ||
+                    isChar();
+        }
+
         public boolean canImplicitlyConvertNumber(){
             return this.isNumber() ||
                     this.isChar() ||

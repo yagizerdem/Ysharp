@@ -198,7 +198,7 @@ public class Parser {
 
     // expression parser
 
-    private Expr parseAssignment() throws YsharpError{
+    private Expr parseAssignment() throws YsharpError {
 
         if(peek().type == Token.TokenType.LEFT_PAREN && isLambdaAhead()) {
             return parseLambda();
@@ -265,20 +265,19 @@ public class Parser {
     }
 
     private Expr parseNullCoalescing() throws YsharpError {
-        Expr logicalOr = parseLogicalOr();
-
+        Expr pipeLine = parsePipeLine();
 
         if(match(peek(), Token.TokenType.DOUBLE_QUESTION_MARK)) {
             Token op = previous();
-            Expr then = parseLogicalOr();
+            Expr then = parsePipeLine();
             Expr.BinaryExpr binaryExpr = new Expr.BinaryExpr(
-                    logicalOr,
+                    pipeLine,
                     op,
                     then
             );
             while (match(peek(), Token.TokenType.DOUBLE_QUESTION_MARK)) {
                 op = previous();
-                then = parseLogicalOr();
+                then = parsePipeLine();
                 Expr.BinaryExpr binaryExpr_ = new Expr.BinaryExpr(
                         binaryExpr,
                         op,
@@ -290,7 +289,31 @@ public class Parser {
             return binaryExpr;
         }
 
-        return logicalOr;
+        return pipeLine;
+    }
+
+    private Expr parsePipeLine() throws YsharpError {
+        Expr expr = parseLogicalOr();
+
+        if(match(peek(), Token.TokenType.PIPE)) {
+            Expr logicalOr = parseLogicalOr();
+            Expr.PipeExpr pipeExpr = new Expr.PipeExpr(
+                    expr,
+                    logicalOr
+            );
+            while (match(peek(), Token.TokenType.PIPE)) {
+                Expr logicalOr_ = parseLogicalOr();
+                Expr.PipeExpr pipeExpr_ = new Expr.PipeExpr(
+                        pipeExpr,
+                        logicalOr_
+                );
+                pipeExpr = pipeExpr_;
+            }
+
+            return pipeExpr;
+        }
+
+        return  expr;
     }
 
     private Expr parseLogicalOr() throws YsharpError {
@@ -697,7 +720,8 @@ public class Parser {
         Expr calee = parsePrimary();
 
         while (peek().type == Token.TokenType.LEFT_PAREN ||
-                peek().type == Token.TokenType.DOT) {
+                peek().type == Token.TokenType.DOT ||
+                peek().type == Token.TokenType.OPTIONAL_CALL) {
 
 
             if(match(peek(), Token.TokenType.LEFT_PAREN)) {
@@ -718,14 +742,11 @@ public class Parser {
 
                 }
 
-                Expr.CallExpr callExpr = new Expr.CallExpr(
+                calee = new Expr.CallExpr(
                         calee,
                         args,
                         leftParen
                 );
-
-                calee = callExpr;
-
             }
             else if(match(peek(), Token.TokenType.DOT)) {
                 Token identifier = advance();
@@ -736,13 +757,26 @@ public class Parser {
                             "");
                 }
 
-                Expr.GetExpr getExpr = new Expr.GetExpr(
+                calee = new Expr.GetExpr(
                         calee,
-                        identifier
+                        identifier,
+                        false
                 );
+            }
+            else if(match(peek(), Token.TokenType.OPTIONAL_CALL)) {
+                Token identifier = advance();
+                if(identifier.type != Token.TokenType.IDENTIFIER) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.SYNTAX,
+                            identifier.line,
+                            "");
+                }
 
-                calee = getExpr;
-
+                calee = new Expr.GetExpr(
+                        calee,
+                        identifier,
+                        true
+                );
             }
         }
 
@@ -991,7 +1025,6 @@ public class Parser {
 
         return new Expr.NewExpr(call.callee, call.arguments);
     }
-
 
     // stmt parser
 

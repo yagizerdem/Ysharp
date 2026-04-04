@@ -237,6 +237,13 @@ public class Resolver implements Expr.Visitor<Void> ,
         return null;
     }
 
+    @Override
+    public Void visitPipeExpr(Expr.PipeExpr expr) {
+        resolve(expr.left);
+        resolve(expr.right);
+        return null;
+    }
+
     // stmt visitor
     @Override
     public void visitBlockStmt(Stmt.BlockStmt stmt) {

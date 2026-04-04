@@ -26,6 +26,7 @@ abstract public class Expr {
         R visitLambdaExpr(LambdaExpr expr);
         R visitNexExpr(NewExpr expr);
         R visitRangeExpr(RangeExpr expr);
+        R visitPipeExpr(PipeExpr expr);
     }
 
     public abstract <R> R accept(Visitor<R> visitor);
@@ -168,10 +169,18 @@ abstract public class Expr {
     public static class GetExpr extends Expr {
         public final Expr object;
         public final Token name;
+        public boolean isOptional;
 
         GetExpr(Expr object, Token name) {
             this.object = object;
             this.name = name;
+            this.isOptional = false;
+        }
+
+        GetExpr(Expr object, Token name, boolean isOptional) {
+            this.object = object;
+            this.name = name;
+            this.isOptional = isOptional;
         }
 
         public <R> R accept(Visitor<R> visitor) {
@@ -361,6 +370,21 @@ abstract public class Expr {
         @Override
         public <R> R accept(Visitor<R> visitor) {
             return visitor.visitNexExpr(this);
+        }
+    }
+
+    public static final class PipeExpr extends Expr {
+        public final Expr left;
+        public final Expr right;
+
+        public PipeExpr(Expr left, Expr right) {
+            this.left = left;
+            this.right = right;
+        }
+
+        @Override
+        public <R> R accept(Visitor<R> visitor) {
+            return visitor.visitPipeExpr(this);
         }
     }
 
