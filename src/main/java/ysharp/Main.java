@@ -19,7 +19,7 @@ public class Main {
 
         Interpreter interpreter = new Interpreter();
         try {
-            // Registery.register(interpreter);
+            Registery.register(interpreter);
         }catch (Exception ex) {
             System.err.println(ex.getMessage());
             return;

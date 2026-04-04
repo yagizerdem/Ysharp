@@ -40,6 +40,7 @@ public class Token {
         DOT, // .
         DOUBLE_DOT, // ..
         OPTIONAL_CALL, // ?.
+        PIPE,  // |>
 
         // equality / comparison
         EQUAL_EQUAL, BANG_EQUAL, // == !=

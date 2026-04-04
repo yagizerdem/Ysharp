@@ -6,7 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="06588b0d-6eee-4b4b-be52-23cf34ea7082" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Interpreter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Interpreter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Resolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Resolver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Variable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Variable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/lexer/Lexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/lexer/Lexer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/lexer/Token.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/lexer/Token.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/parser/CFG.md" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/parser/CFG.md" afterDir="false" />
@@ -207,16 +210,6 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ysharp/evaluator/Variable.java</url>
-          <line>240</line>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ysharp/evaluator/Variable.java</url>
-          <line>254</line>
-          <option name="timeStamp" value="25" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ysharp/evaluator/Native/Collections/LinkedList/yLinkedList.java</url>
           <line>14</line>
           <option name="timeStamp" value="27" />
@@ -233,18 +226,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ysharp/evaluator/Interpreter.java</url>
-          <line>1364</line>
-          <option name="timeStamp" value="38" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ysharp/evaluator/Interpreter.java</url>
-          <line>766</line>
-          <option name="timeStamp" value="47" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ysharp/evaluator/Interpreter.java</url>
-          <line>764</line>
-          <option name="timeStamp" value="48" />
+          <line>435</line>
+          <option name="timeStamp" value="34" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

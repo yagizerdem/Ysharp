@@ -420,6 +420,23 @@ public class Interpreter implements
     }
 
     @Override
+    public Variable.Variant visitPipeExpr(Expr.PipeExpr expr) {
+
+        // evaluate left
+        Variable.Variant left_var = evaluate(expr.left);
+        // evaluate right
+        Variable.Variant right_var = evaluate(expr.right);
+
+        if(left_var.isCallable()) {
+            left_var = left_var.asCallable().call(this, new ArrayList<>());
+        }
+        if(right_var.isCallable()) {
+            right_var = right_var.asCallable().call(this, Arrays.asList(left_var));
+        }
+        return right_var;
+    }
+
+    @Override
     public Variable.Variant visitTernaryExpr(Expr.TernaryExpr expr) {
         Variable.Variant condition = evaluate(expr.condition);
 

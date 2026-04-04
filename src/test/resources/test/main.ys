@@ -1,24 +1,24 @@
 
-class Person {
-    var test = null;
-    foo(a) do
-        return "hit";
+
+function toString(a : int) : string do
+    return Type.Converter.toString(a);
+end
+
+function add(a : int) do
+    return a + 10;
+end
+
+class Fuck {
+    multiply(a : number) do
+        return a * 2;
+    end
+
+    static minus(a : number) do
+      return  a - 5;
     end
 }
 
+const f = new Fuck();
+var a : int = 12 |> toString |> 4  + 5 |> add(1) |> add |> f.multiply |> Fuck.minus;
 
-class Human {
-    var p = new Person();
-}
-
-
-
-var h = new Human();
-
-h.p.test = (a : int)=> do
-    return a;
-end;
-
-h.p = null;
-
-println h.p?.test(12);
+println a;
