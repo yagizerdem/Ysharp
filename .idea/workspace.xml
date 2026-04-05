@@ -5,17 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="06588b0d-6eee-4b4b-be52-23cf34ea7082" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/ysharp/TreeWalk.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Interpreter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Interpreter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Resolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Resolver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Variable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/evaluator/Variable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/lexer/Lexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/lexer/Lexer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/lexer/Token.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/lexer/Token.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/parser/CFG.md" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/parser/CFG.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/parser/Expr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/parser/Expr.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/parser/Parser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/test/main.ys" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/test/main.ys" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/SD.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,17 +34,7 @@
         </task>
         <projects_view>
           <tree_state>
-            <expand>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="Ysharp" type="f1a62948:ProjectNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="Ysharp" type="f1a62948:ProjectNode" />
-                <item name="Run Configurations" type="7b0102dc:RunConfigurationsNode" />
-              </path>
-            </expand>
+            <expand />
             <select />
           </tree_state>
         </projects_view>
@@ -97,6 +80,7 @@
     "Application.Main.executor": "Run",
     "Gradle.Build Ysharp.executor": "Run",
     "Gradle.Ysharp [:ysharp.Main.main()].executor": "Run",
+    "Gradle.Ysharp [clean].executor": "Run",
     "RunOnceActivity.MCP Project settings loaded": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.RadMigrateCodeStyle": "true",
@@ -150,6 +134,28 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Ysharp [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="clean" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
     <configuration name="Ysharp" type="GradleRunConfiguration" factoryName="Gradle" nameIsGenerated="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -173,7 +179,13 @@
     <list>
       <item itemvalue="Application.Main" />
       <item itemvalue="Gradle.Ysharp" />
+      <item itemvalue="Gradle.Ysharp [clean]" />
     </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.Ysharp [clean]" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
