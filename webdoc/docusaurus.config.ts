@@ -6,7 +6,7 @@ import type * as Preset from "@docusaurus/preset-classic";
 
 const config: Config = {
   title: "Ysharp",
-  tagline: "lorem ipsum dolor sit amet",
+  tagline: "A modern & comfy interpreted scripting language",
   favicon: "img/favicon.ico",
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -43,8 +43,6 @@ const config: Config = {
           sidebarPath: "./sidebars.ts",
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
         },
         blog: {
           showReadingTime: true,
@@ -89,7 +87,7 @@ const config: Config = {
         },
         { to: "/blog", label: "Blog", position: "left" },
         {
-          href: "https://github.com/facebook/docusaurus",
+          href: "https://github.com/yagizerdem/Ysharp",
           label: "GitHub",
           position: "right",
         },
@@ -108,19 +106,19 @@ const config: Config = {
           ],
         },
         {
-          title: "Community",
+          title: "Contact",
           items: [
             {
-              label: "Stack Overflow",
-              href: "https://stackoverflow.com/questions/tagged/docusaurus",
+              label: "LinkedIn",
+              href: "https://www.linkedin.com/in/erdemyagiz/",
             },
             {
-              label: "Discord",
-              href: "https://discordapp.com/invite/docusaurus",
+              label: "Email",
+              href: "mailto:yagizerdem819@gmail.com",
             },
             {
-              label: "X",
-              href: "https://x.com/docusaurus",
+              label: "Instagram",
+              href: "https://www.instagram.com/_yagizerdem_/",
             },
           ],
         },
@@ -133,12 +131,12 @@ const config: Config = {
             },
             {
               label: "GitHub",
-              href: "https://github.com/facebook/docusaurus",
+              href: "https://github.com/yagizerdem/Ysharp",
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Ysharp. All rights reserved.`,
     },
     prism: {
       theme: prismThemes.github,
