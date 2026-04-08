@@ -1,7 +1,18 @@
-println !true;   // false
-println !false;  // true
-
-var isLoggedIn = false;
-if !isLoggedIn then do
-    println "Please log in.";
+function append1(data : string) do
+    return data + "1";
 end
+
+function append2(data : string) do
+    return data + "2";
+end
+
+var result : int = ( 10 |>
+            Type.Converter.toString |> // convert to int
+            append1 |> // 101
+            50 |> // pipe breaks // new output is 50
+            Type.Converter.toString |>
+            append2 |> // 52
+            Type.Converter.toInt // convert to int 52 
+            );
+
+println result; // 502 (int)

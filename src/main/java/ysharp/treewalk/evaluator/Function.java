@@ -210,6 +210,17 @@ public abstract class Function extends RuntimeObject implements Callable {
                     typeTag = param.type.lexeme;
                 }
 
+                if(!Interpreter.typeChecker(typeTag, arg)) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            lambdaExpr.leftParen.line,
+                            "Parameter : " + lambdaExpr.params.get(i).name.lexeme + " type mismatch. Expected '" +
+                                    typeTag + "' but got '" +
+                                    arg.getType() + "'."
+                    );
+                }
+
+
                 Variable newVar = new Variable(arg, true, typeTag);
 
                 newEnv.define(param.name.lexeme, newVar);
