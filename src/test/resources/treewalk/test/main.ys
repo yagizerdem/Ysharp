@@ -1,1 +1,7 @@
-  println Random.nextInt(0, 10);
+println !true;   // false
+println !false;  // true
+
+var isLoggedIn = false;
+if !isLoggedIn then do
+    println "Please log in.";
+end

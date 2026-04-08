@@ -6,9 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="06588b0d-6eee-4b4b-be52-23cf34ea7082" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Interpreter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Interpreter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/resources/treewalk/test/main.ys" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/treewalk/test/main.ys" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/webdoc/docs/expressions.md" beforeDir="false" afterPath="$PROJECT_DIR$/webdoc/docs/expressions.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webdoc/docs/setup.md" beforeDir="false" afterPath="$PROJECT_DIR$/webdoc/docs/setup.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -153,7 +153,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="ysharp.Main" />
       <module name="Ysharp.main" />
-      <option name="PROGRAM_PARAMETERS" value="C:\Users\yagiz\Desktop\ysharp\Ysharp\src\test\resources\treewalk\test\main.ys" />
+      <option name="PROGRAM_PARAMETERS" value="C:\Users\yagiz\Desktop\Ysharp\src\test\resources\treewalk\test\main.ys" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -176,11 +176,8 @@
       </ExternalSystemSettings>
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
       <DebugAllEnabled>false</DebugAllEnabled>
       <RunAsTest>false</RunAsTest>
-      <GradleProfilingDisabled>false</GradleProfilingDisabled>
-      <GradleCoverageDisabled>false</GradleCoverageDisabled>
       <method v="2" />
     </configuration>
     <configuration name="Ysharp" type="GradleRunConfiguration" factoryName="Gradle" nameIsGenerated="true">
@@ -199,11 +196,8 @@
       </ExternalSystemSettings>
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
       <DebugAllEnabled>false</DebugAllEnabled>
       <RunAsTest>false</RunAsTest>
-      <GradleProfilingDisabled>false</GradleProfilingDisabled>
-      <GradleCoverageDisabled>false</GradleCoverageDisabled>
       <method v="2" />
     </configuration>
     <list>
@@ -277,8 +271,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Interpreter.java</url>
-          <line>447</line>
-          <option name="timeStamp" value="34" />
+          <line>467</line>
+          <option name="timeStamp" value="35" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -386,14 +386,16 @@ public class Interpreter implements
                             "Operand must be a number.");
                 }
 
-                var oldValue = var.value;
+
 
                 if (var.isInt()) {
                     var.value = var.asInt() + 1;
+                    return new Variable.Variant(var.asInt());
                 } else {
                     var.value = var.asDouble() + 1;
+                    return new Variable.Variant(var.asDouble());
                 }
-                return new Variable.Variant(oldValue);
+
             }
             case MINUS_MINUS -> {
 
@@ -417,10 +419,11 @@ public class Interpreter implements
 
                 if (var.isInt()) {
                     var.value = var.asInt() - 1;
+                    return new Variable.Variant(var.asInt());
                 } else {
                     var.value = var.asDouble() - 1;
+                    return new Variable.Variant(var.asDouble());
                 }
-                return new Variable.Variant(oldValue);
             }
         }
 
