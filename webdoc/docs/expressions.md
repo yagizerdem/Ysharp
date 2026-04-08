@@ -148,3 +148,48 @@ println c; // prints 40
 const d = 60;
 const d = 70; // SyntaxError, cannot redeclare constants
 ```
+
+## Scopes
+**<b>Scope = Visibility</b>** <br/>
+Scope determines the accessibility (visibility) of variables.
+Ysharp variables have 4 types of scope:
+- Global scope
+- Function scope
+- Block scope
+- Object scope
+
+### Block Scope
+
+> 
+> **do end**
+> 
+> A code block or block statement is a group of statements enclosed within do end keywords.
+> 
+> Code blocks are important for controlling the flow of execution and defining variable scope within a Ysharp program.
+
+- block statements create a new environment and linked to parent environment so that variables 
+declared in block does not overwrite globals.
+
+```
+// global environment
+do
+    // block scope
+    var x = 10;
+    println x;   // 10
+    
+    /*
+    * you can still access 
+    * global environment in block
+    */
+    
+    /*
+    * Random object comes from 
+    * globals so that you can access
+    */
+    println Random.nextInt(0, 10);
+end
+
+println x;       // SyntaxError (x is not defined)
+```
+
+### Nested Block Scopes

@@ -5,19 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="06588b0d-6eee-4b4b-be52-23cf34ea7082" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/MANIFEST.MF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/webdoc/docs/setup.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Interpreter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Interpreter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/resources/treewalk/test/main.ys" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/treewalk/test/main.ys" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webdoc/docs/tutorial-basics/_category_.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webdoc/docs/tutorial-basics/congratulations.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webdoc/docs/tutorial-basics/create-a-blog-post.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webdoc/docs/tutorial-basics/create-a-document.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webdoc/docs/tutorial-basics/create-a-page.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webdoc/docs/tutorial-basics/deploy-your-site.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webdoc/docs/tutorial-basics/markdown-features.mdx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/webdoc/docs/expressions.md" beforeDir="false" afterPath="$PROJECT_DIR$/webdoc/docs/expressions.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webdoc/docs/setup.md" beforeDir="false" afterPath="$PROJECT_DIR$/webdoc/docs/setup.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -248,7 +239,7 @@
       <workItem from="1774099893792" duration="17501000" />
       <workItem from="1774138998850" duration="4568000" />
       <workItem from="1774451515749" duration="4000" />
-      <workItem from="1775642848058" duration="3471000" />
+      <workItem from="1775642848058" duration="5916000" />
     </task>
     <servers />
   </component>

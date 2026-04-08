@@ -18,7 +18,7 @@ Ysharp supports two execution modes:
 - REPL Mode (interactive shell)
 - File Mode (execute a script file)
 
-### REPL ode
+### REPL mode
 Starts an interactive session where you can execute Ysharp code line by line:
 ``java -jar <absolute-path-to-ysharp.jar>``
 
