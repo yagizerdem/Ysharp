@@ -1,24 +1,6 @@
-
-
-function toString(a : int) : string do
-    return Type.Converter.toString(a);
+const c = 40;
+do
+    const c = 50;
+    println c; // prints 50
 end
-
-function add(a : int) do
-    return a + 10;
-end
-
-class Fuck {
-    multiply(a : number) do
-        return a * 2;
-    end
-
-    static minus(a : number) do
-      return  a - 5;
-    end
-}
-
-const f = new Fuck();
-var a : int = 12 |> toString |> 4  + 5 |> add(1) |> add |> f.multiply |> Fuck.minus;
-
-println a;
+println c; // prints 40

@@ -5,7 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="06588b0d-6eee-4b4b-be52-23cf34ea7082" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/MANIFEST.MF" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webdoc/docs/setup.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Interpreter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Interpreter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/treewalk/test/main.ys" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/treewalk/test/main.ys" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webdoc/docs/tutorial-basics/_category_.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/webdoc/docs/tutorial-basics/congratulations.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/webdoc/docs/tutorial-basics/create-a-blog-post.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/webdoc/docs/tutorial-basics/create-a-document.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/webdoc/docs/tutorial-basics/create-a-page.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/webdoc/docs/tutorial-basics/deploy-your-site.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/webdoc/docs/tutorial-basics/markdown-features.mdx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,7 +43,22 @@
         </task>
         <projects_view>
           <tree_state>
-            <expand />
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Ysharp" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Ysharp" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Ysharp" type="f1a62948:ProjectNode" />
+                <item name="Run Configurations" type="7b0102dc:RunConfigurationsNode" />
+              </path>
+            </expand>
             <select />
           </tree_state>
         </projects_view>
@@ -49,6 +76,10 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GradleScriptDefinitionsStorage" workingDir="$PROJECT_DIR$" gradleHome="C:\Users\yagiz\.gradle\wrapper\dists\gradle-8.8-bin\dl7vupf4psengwqhwktix4v1\gradle-8.8" javaHome="C:\Users\yagiz\.jdks\ms-21.0.10" gradleVersion="8.8" />
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -131,7 +162,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="ysharp.Main" />
       <module name="Ysharp.main" />
-      <option name="PROGRAM_PARAMETERS" value="C:\Users\yagiz\Desktop\Ysharp\src\test\resources\treewalk\test\main.ys" />
+      <option name="PROGRAM_PARAMETERS" value="C:\Users\yagiz\Desktop\ysharp\Ysharp\src\test\resources\treewalk\test\main.ys" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -154,8 +185,11 @@
       </ExternalSystemSettings>
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
       <DebugAllEnabled>false</DebugAllEnabled>
       <RunAsTest>false</RunAsTest>
+      <GradleProfilingDisabled>false</GradleProfilingDisabled>
+      <GradleCoverageDisabled>false</GradleCoverageDisabled>
       <method v="2" />
     </configuration>
     <configuration name="Ysharp" type="GradleRunConfiguration" factoryName="Gradle" nameIsGenerated="true">
@@ -174,8 +208,11 @@
       </ExternalSystemSettings>
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
       <DebugAllEnabled>false</DebugAllEnabled>
       <RunAsTest>false</RunAsTest>
+      <GradleProfilingDisabled>false</GradleProfilingDisabled>
+      <GradleCoverageDisabled>false</GradleCoverageDisabled>
       <method v="2" />
     </configuration>
     <list>
@@ -188,6 +225,14 @@
         <item itemvalue="Gradle.Ysharp [clean]" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.32098.37" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.32098.37" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -203,6 +248,7 @@
       <workItem from="1774099893792" duration="17501000" />
       <workItem from="1774138998850" duration="4568000" />
       <workItem from="1774451515749" duration="4000" />
+      <workItem from="1775642848058" duration="3471000" />
     </task>
     <servers />
   </component>
@@ -240,7 +286,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Interpreter.java</url>
-          <line>435</line>
+          <line>447</line>
           <option name="timeStamp" value="34" />
         </line-breakpoint>
       </breakpoints>

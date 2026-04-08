@@ -23,8 +23,11 @@ tasks.test {
     useJUnitPlatform()
 }
 
+
+
 tasks.jar {
     manifest {
+        from("MANIFEST.MF")
         attributes["Main-Class"] = "ysharp.Main"
     }
 

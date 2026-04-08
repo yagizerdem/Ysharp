@@ -185,6 +185,18 @@ public class Interpreter implements
                     );
                 }
 
+                if(left.isChar() && right.isString()) {
+                    return new Variable.Variant(
+                            new yString.yStringInstance(left.asCharacter() + right.asString())
+                    );
+                }
+
+                if(left.isString() && right.isChar()) {
+                    return new Variable.Variant(
+                            new yString.yStringInstance(left.asString() + right.asCharacter())
+                    );
+                }
+
                 throw new YsharpError(
                         YsharpError.YsharpErrorType.PROCESS,
                         expr.op.line,
