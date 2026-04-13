@@ -1,18 +1,3 @@
-function append1(data : string) do
-    return data + "1";
-end
-
-function append2(data : string) do
-    return data + "2";
-end
-
-var result : int = ( 10 |>
-            Type.Converter.toString |> // convert to int
-            append1 |> // 101
-            50 |> // pipe breaks // new output is 50
-            Type.Converter.toString |>
-            append2 |> // 52
-            Type.Converter.toInt // convert to int 52 
-            );
-
-println result; // 502 (int)
+var a1 = 40; // OK
+var _a = 40; // OK variables can start with underscore
+var 1a = 40;

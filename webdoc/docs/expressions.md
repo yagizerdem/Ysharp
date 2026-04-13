@@ -72,8 +72,8 @@ println(d); // prints null
 // variable declarations in nested scopes
 var a = 10;
 do
-var a = 20;
-println(a); // prints 20
+    var a = 20;
+    println(a); // prints 20
 end
 println(a); // prints 10
 ````
@@ -876,7 +876,6 @@ binary operator appear together, the unary binds first.
 ```ysharp
 println -2 + 3;    // 1  (-2) + 3
 println !true || false;  // false (!true) || false
-println ~0 & 0xFF;       // 0     (~0) & 0xFF
 ```
 
 Postfix operators (`x++`, `x--`) bind more tightly than prefix operators.
