@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Intro
+# intro
 
 This is the official API reference documentation for Ysharp and you are welcome!
 

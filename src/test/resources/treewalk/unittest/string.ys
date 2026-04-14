@@ -1,0 +1,5 @@
+
+var a = "yagiz";
+var b = "erdem";
+
+Assert.equals(a + " " + b, "yagiz erdem");

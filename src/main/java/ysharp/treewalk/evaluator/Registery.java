@@ -1,5 +1,6 @@
 package ysharp.treewalk.evaluator;
 
+import ysharp.treewalk.evaluator.Native.Assert.yAssert;
 import ysharp.treewalk.evaluator.Native.Collections.Array.yArray;
 import ysharp.treewalk.evaluator.Native.Collections.ArrayDeque.yArrayDeque;
 import ysharp.treewalk.evaluator.Native.Collections.HashMap.yHashMap;
@@ -93,5 +94,7 @@ public class Registery {
         // YFP
         YPF.Register(interpreter);
 
+        // Assert
+        yAssert.Register(interpreter);
     }
 }
