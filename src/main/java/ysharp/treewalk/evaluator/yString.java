@@ -79,6 +79,7 @@ public class yString  {
                 "function");
 
         yString_Instance_Prototype.set(length.getFnName(), lengthVar);
+        yString_Instance_Prototype.set("size", lengthVar);
 
 
         // str.toUpper()
@@ -169,7 +170,7 @@ public class yString  {
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
 
-                Variable.Variant indexVar = arguments.get(0);
+                Variable.Variant indexVar = arguments.getFirst();
 
                 if (!indexVar.canImplicitlyConvertNumber()) {
                     throw new YsharpError(

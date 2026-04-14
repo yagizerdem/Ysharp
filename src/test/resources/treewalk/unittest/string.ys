@@ -3,3 +3,16 @@ var a = "yagiz";
 var b = "erdem";
 
 Assert.equals(a + " " + b, "yagiz erdem");
+
+var full_name = a + " " + b ;
+
+full_name =  "  " + full_name ;
+
+full_name = full_name.trim();
+println full_name.startsWith("ya");
+println full_name.endsWith("agiz erdem");
+
+
+
+println "->".join(full_name.toCharArray().filter((x) => x != ' '));
+

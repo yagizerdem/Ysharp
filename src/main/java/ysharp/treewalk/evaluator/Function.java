@@ -205,7 +205,7 @@ public abstract class Function extends RuntimeObject implements Callable {
 
                 Variable.Variant arg = arguments.get(i);
 
-                String typeTag = null;
+                String typeTag = "any";
                 if (param.type != null) {
                     typeTag = param.type.lexeme;
                 }
