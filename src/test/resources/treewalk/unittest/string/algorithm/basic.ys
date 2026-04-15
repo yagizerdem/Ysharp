@@ -1,0 +1,8 @@
+var test = "hello";
+
+var output = "";
+for var i = test.size() - 1 ; i >= 0; i-- do
+    output += test.charAt(i);
+end
+
+println output;

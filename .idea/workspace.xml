@@ -5,31 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="06588b0d-6eee-4b4b-be52-23cf34ea7082" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/capitalize.ys" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/charCodeAt.ys" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/compareTo.ys" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/count.ys" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/endsWith" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/format.ys" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/isEmpty.ys" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/join.ys" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/lastIndexOf.ys" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/matches.ys" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/padLeft.ys" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/padRight.ys" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/repeat.ys" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/replace.ys" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/replaceAll.ys" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/replaceFirst.ys" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/reverse.ys" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/slice.ys" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/split.ys" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/startsWith" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/toCharArray.ys" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/trimLeft.ys" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/trimRight.ys" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/string/algorithm/basic.ys" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/yString.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/yString.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Interpreter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Interpreter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -160,6 +138,7 @@
       <recent name="C:\Users\yagiz\Desktop\ysharp\Ysharp\src\test\resources\sorting\data" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\yagiz\Desktop\ysharp\Ysharp\src\test\resources\treewalk\function" />
       <recent name="C:\Users\yagiz\Desktop\ysharp\Ysharp\src\test\resources\treewalk\unittest\length" />
       <recent name="C:\Users\yagiz\Desktop\Ysharp\assets" />
       <recent name="C:\Users\yagiz\Desktop\Ysharp\src\test\resources\treewalk" />
@@ -175,7 +154,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="ysharp.Main" />
       <module name="Ysharp.main" />
-      <option name="PROGRAM_PARAMETERS" value="C:\Users\yagiz\Desktop\ysharp\Ysharp\src\test\resources\treewalk\unittest\function\slice.ys" />
+      <option name="PROGRAM_PARAMETERS" value="C:\Users\yagiz\Desktop\ysharp\Ysharp\src\test\resources\treewalk\unittest\string\algorithm\basic.ys" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -254,7 +233,7 @@
       <workItem from="1774138998850" duration="4568000" />
       <workItem from="1774451515749" duration="4000" />
       <workItem from="1775642848058" duration="5916000" />
-      <workItem from="1776237096764" duration="5573000" />
+      <workItem from="1776237096764" duration="6185000" />
     </task>
     <servers />
   </component>

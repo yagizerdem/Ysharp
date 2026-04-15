@@ -575,6 +575,12 @@ public class Interpreter implements
                         result = new Variable.Variant(new yString.yStringInstance((left.isInt() ? left.asInt().toString() : left.asNumber().toString()) + right.asString()));
                     else if(left.isString() && right.isNumber())
                         result = new Variable.Variant(new yString.yStringInstance(left.asString() + (right.isInt() ? right.asInt().toString() : right.asNumber().toString())));
+                    else if(left.isString() && right.isChar())
+                        result = new Variable.Variant(new yString.yStringInstance(left.asString() + right.asCharacter()));
+                    else if(left.isChar() && right.isString())
+                        result = new Variable.Variant(new yString.yStringInstance(left.asCharacter() + right.asString()));
+
+
 
                     else
                         throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
