@@ -9,7 +9,7 @@ import ysharp.treewalk.evaluator.Variable;
 
 import java.util.List;
 
-public class TrueFn extends Function.NativeFunction implements Callable {
+public class IsTrueFn extends Function.NativeFunction implements Callable {
 
     @Override
     public int arity() {
@@ -38,6 +38,6 @@ public class TrueFn extends Function.NativeFunction implements Callable {
 
     @Override
     public String getFnName() {
-        return "true";
+        return "isTrue";
     }
 }

@@ -1,0 +1,55 @@
+println "str.indexOf test cases started";
+
+// basic
+var s1 = "hello";
+Assert.equals(s1.indexOf("h"), 0);
+Assert.equals(s1.indexOf("e"), 1);
+Assert.equals(s1.indexOf("o"), 4);
+
+// substring
+Assert.equals(s1.indexOf("ll"), 2);
+Assert.equals(s1.indexOf("lo"), 3);
+
+// not found
+Assert.equals(s1.indexOf("x"), -1);
+
+// empty search
+Assert.equals(s1.indexOf(""), 0);
+
+// repeated pattern (should return first occurrence)
+var s2 = "ababab";
+Assert.equals(s2.indexOf("ab"), 0);
+Assert.equals(s2.indexOf("ba"), 1);
+
+// full match
+var s3 = "test";
+Assert.equals(s3.indexOf("test"), 0);
+
+// partial match
+Assert.equals(s3.indexOf("es"), 1);
+
+// unicode
+var s4 = "çğüç";
+Assert.equals(s4.indexOf("ğ"), 1);
+Assert.equals(s4.indexOf("ü"), 2);
+
+// special chars
+var s5 = "!@#$%";
+Assert.equals(s5.indexOf("#"), 2);
+
+// whitespace
+var s6 = "   ";
+Assert.equals(s6.indexOf(" "), 0);
+
+// chaining
+var s7 = ("ab" + "cd" + "ef");
+Assert.equals(s7.indexOf("cd"), 2);
+
+// boolean checks
+Assert.isTrue("hello".indexOf("he") == 0);
+Assert.isFalse("hello".indexOf("he") == 1);
+
+// not equals
+Assert.notEquals("hello".indexOf("he"), 3);
+
+println "all test cases successful";

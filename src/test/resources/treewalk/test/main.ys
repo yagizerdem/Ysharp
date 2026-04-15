@@ -1,3 +1,5 @@
-var a1 = 40; // OK
-var _a = 40; // OK variables can start with underscore
-var 1a = 40;
+
+
+var a = "yagiz \n erdem \" \' \\ alfj ";
+
+println a;

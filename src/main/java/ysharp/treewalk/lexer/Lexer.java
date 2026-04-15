@@ -229,9 +229,49 @@ public class Lexer {
         }
 
         StringBuilder sb = new StringBuilder();
-        for (int i = start; i < cursor.current; i++) {
+        int i = start;
+        while (i < cursor.current) {
+            char c = source.get(i).c;
+
+
+            if(c == '\\' && i +1 < cursor.current) {
+                // special chars like \n \t
+                if(source.get(i + 1).c == 'n') {
+                    sb.append('\n');
+                    i+= 2;
+                    continue;
+                }
+                if(source.get(i + 1).c == 't') {
+                    sb.append('\t');
+                    i+= 2;
+                    continue;
+                }
+                if(source.get(i + 1).c == 'r') {
+                    sb.append('\r');
+                    i += 2;
+                    continue;
+                }
+                if(source.get(i + 1).c == '\\') {
+                    sb.append('\\');
+                    i += 2;
+                    continue;
+                }
+                if(source.get(i + 1).c == '"') {
+                    sb.append('\"');
+                    i += 2;
+                    continue;
+                }
+                if(source.get(i + 1).c == '\'') {
+                    sb.append('\'');
+                    i += 2;
+                    continue;
+                }
+            }
+
             sb.append(source.get(i).c);
+            i++;
         }
+
         String sub = sb.toString();
 
         Token token = new Token(

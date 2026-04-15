@@ -5,11 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="06588b0d-6eee-4b4b-be52-23cf34ea7082" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/charAt.ys" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/contains.ys" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/equals.ys" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/indexOf.ys" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/length.ys" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/substring.ys" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/toLower.ys" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/toUpper.ys" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/function/trim.ys" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Function.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Function.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/yString.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/yString.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/string.ys" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/string.ys" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webdoc/docs/string.md" beforeDir="false" afterPath="$PROJECT_DIR$/webdoc/docs/string.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Native/Assert/function/statix/FalseFn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Native/Assert/function/statix/IsFalseFn.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Native/Assert/function/statix/TrueFn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Native/Assert/function/statix/IsTrueFn.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Native/Assert/yAssert.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Native/Assert/yAssert.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/lexer/Lexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/lexer/Lexer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/treewalk/test/main.ys" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/treewalk/test/main.ys" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/string.ys" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -140,6 +151,7 @@
       <recent name="C:\Users\yagiz\Desktop\ysharp\Ysharp\src\test\resources\sorting\data" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\yagiz\Desktop\ysharp\Ysharp\src\test\resources\treewalk\unittest\length" />
       <recent name="C:\Users\yagiz\Desktop\Ysharp\assets" />
       <recent name="C:\Users\yagiz\Desktop\Ysharp\src\test\resources\treewalk" />
       <recent name="C:\Users\yagiz\Desktop\ysharp\Ysharp\src\main\java\ysharp\parser" />
@@ -154,7 +166,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="ysharp.Main" />
       <module name="Ysharp.main" />
-      <option name="PROGRAM_PARAMETERS" value="C:\Users\yagiz\Desktop\Ysharp\src\test\resources\treewalk\unittest\string.ys" />
+      <option name="PROGRAM_PARAMETERS" value="C:\Users\yagiz\Desktop\ysharp\Ysharp\src\test\resources\treewalk\test\main.ys" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -177,8 +189,11 @@
       </ExternalSystemSettings>
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
       <DebugAllEnabled>false</DebugAllEnabled>
       <RunAsTest>false</RunAsTest>
+      <GradleProfilingDisabled>false</GradleProfilingDisabled>
+      <GradleCoverageDisabled>false</GradleCoverageDisabled>
       <method v="2" />
     </configuration>
     <configuration name="Ysharp" type="GradleRunConfiguration" factoryName="Gradle" nameIsGenerated="true">
@@ -197,8 +212,11 @@
       </ExternalSystemSettings>
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
       <DebugAllEnabled>false</DebugAllEnabled>
       <RunAsTest>false</RunAsTest>
+      <GradleProfilingDisabled>false</GradleProfilingDisabled>
+      <GradleCoverageDisabled>false</GradleCoverageDisabled>
       <method v="2" />
     </configuration>
     <list>
@@ -227,6 +245,7 @@
       <workItem from="1774138998850" duration="4568000" />
       <workItem from="1774451515749" duration="4000" />
       <workItem from="1775642848058" duration="5916000" />
+      <workItem from="1776237096764" duration="2713000" />
     </task>
     <servers />
   </component>

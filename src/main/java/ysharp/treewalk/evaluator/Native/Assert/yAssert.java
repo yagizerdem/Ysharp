@@ -53,12 +53,20 @@ public class yAssert {
             this.prototype = yClass.ClassPrototype;
 
             // static assert functions
+
+            // Assert.equals(a, b);
             this.RegisterNativeFn(new EqualsFn());
-            this.RegisterNativeFn(new TrueFn());
-            this.RegisterNativeFn(new FalseFn());
+            // Assert.isTure(a : bool)
+            this.RegisterNativeFn(new IsTrueFn());
+            // Assert.isFalse(a : bool)
+            this.RegisterNativeFn(new IsFalseFn());
+            // Assert.notEqueals(a, b)
             this.RegisterNativeFn(new NotEqualsFn());
+            // Assert.null(a)
             this.RegisterNativeFn(new NullFn());
+            // Assert.notNull(a)
             this.RegisterNativeFn(new NotNullFn());
+            // Assert.fail("optional message"?)
             this.RegisterNativeFn(new FailFn());
         }
 

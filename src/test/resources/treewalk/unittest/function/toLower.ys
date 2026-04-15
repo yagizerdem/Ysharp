@@ -1,0 +1,53 @@
+println "str.toLower test cases started";
+
+// basic
+var s1 = "HELLO";
+Assert.equals(s1.toLower(), "hello");
+
+// empty
+var s2 = "";
+Assert.equals(s2.toLower(), "");
+
+// single char
+var s3 = "A";
+Assert.equals(s3.toLower(), "a");
+
+// alphanumeric
+var s4 = "ABC123";
+Assert.equals(s4.toLower(), "abc123");
+
+// sentence
+var s5 = "Hello World";
+Assert.equals(s5.toLower(), "hello world");
+
+// special chars
+var s6 = "!@#";
+Assert.equals(s6.toLower(), "!@#");
+
+// unicode
+var s7 = "ÇĞÜ";
+Assert.equals(s7.toLower(), "çğü");
+
+// mixed case
+var s8 = "AbC";
+Assert.equals(s8.toLower(), "abc");
+
+// not equals
+Assert.notEquals("ABC".toLower(), "ABC");
+
+// boolean checks
+Assert.isTrue("ABC".toLower() == "abc");
+Assert.isFalse("ABC".toLower() == "ABC");
+
+// immutability check
+var original = "TEST";
+var lower = original.toLower();
+Assert.equals(original, "TEST");
+Assert.equals(lower, "test");
+Assert.notEquals(original, lower);
+
+// chaining
+var chained = ("AB" + "CD").toLower();
+Assert.equals(chained, "abcd");
+
+println "all test cases successful";

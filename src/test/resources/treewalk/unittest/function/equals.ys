@@ -1,0 +1,59 @@
+println "str.equals test cases started";
+
+// basic equality
+var s1 = "hello";
+var s2 = "hello";
+Assert.isTrue(s1.equals(s2));
+
+// different strings
+var s3 = "world";
+Assert.isFalse(s1.equals(s3));
+
+// case sensitivity
+var s4 = "HELLO";
+Assert.isFalse(s1.equals(s4));
+
+// empty strings
+var s5 = "";
+var s6 = "";
+Assert.isTrue(s5.equals(s6));
+
+// single char
+var s7 = "a";
+var s8 = "a";
+Assert.isTrue(s7.equals(s8));
+
+// unicode
+var s9 = "çğü";
+var s10 = "çğü";
+Assert.isTrue(s9.equals(s10));
+
+// special chars
+var s11 = "!@#";
+var s12 = "!@#";
+Assert.isTrue(s11.equals(s12));
+
+// not equals
+Assert.notEquals("abc".equals("def"), true);
+
+// boolean checks
+Assert.isTrue("abc".equals("abc"));
+Assert.isFalse("abc".equals("abcd"));
+
+// chaining
+var s13 = ("ab" + "cd");
+Assert.isTrue(s13.equals("abcd"));
+
+// immutability check
+var original = "test";
+var same = "test";
+Assert.isTrue(original.equals(same));
+
+// different types
+Assert.isFalse("abc".equals(123));
+Assert.isFalse("abc".equals(null));
+
+// different length
+Assert.isFalse("abc".equals("ab"));
+
+println "all test cases successful";

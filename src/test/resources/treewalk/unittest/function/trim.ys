@@ -1,0 +1,57 @@
+println "str.trim test cases started";
+
+// basic
+var s1 = "  hello  ";
+Assert.equals(s1.trim(), "hello");
+
+// no spaces
+var s2 = "hello";
+Assert.equals(s2.trim(), "hello");
+
+// only spaces
+var s3 = "     ";
+Assert.equals(s3.trim(), "");
+
+// left trim
+var s4 = "   hello";
+Assert.equals(s4.trim(), "hello");
+
+// right trim
+var s5 = "hello   ";
+Assert.equals(s5.trim(), "hello");
+
+// mixed whitespace
+var s6 = "  hello world  ";
+Assert.equals(s6.trim(), "hello world");
+
+// tabs and newlines (Java trim handles <= U+0020)
+var s7 = "\n\t hello \t\n";
+Assert.equals(s7.trim(), "hello");
+
+// unicode inside (should not be removed)
+var s8 = "  çğü  ";
+Assert.equals(s8.trim(), "çğü");
+
+// special chars
+var s9 = "  !@#  ";
+Assert.equals(s9.trim(), "!@#");
+
+// immutability
+var original = "  test  ";
+var trimmed = original.trim();
+Assert.equals(original, "  test  ");
+Assert.equals(trimmed, "test");
+Assert.notEquals(original, trimmed);
+
+// chaining
+var s10 = ("  ab" + "cd  ");
+Assert.equals(s10.trim(), "abcd");
+
+// boolean checks
+Assert.isTrue("  hello  ".trim() == "hello");
+Assert.isFalse("  hello  ".trim() == "  hello  ");
+
+// not equals
+Assert.notEquals("  hello  ".trim(), "  hello  ");
+
+println "all test cases successful";

@@ -1,0 +1,51 @@
+println "str.contains test cases started";
+
+// basic
+var s1 = "hello";
+Assert.isTrue(s1.contains("h"));
+Assert.isTrue(s1.contains("ell"));
+Assert.isFalse(s1.contains("x"));
+
+// full match
+Assert.isTrue(s1.contains("hello"));
+Assert.isFalse(s1.contains("helloo"));
+
+// empty search
+Assert.isTrue(s1.contains(""));
+
+// case sensitivity
+Assert.isFalse(s1.contains("H"));
+
+// repeated pattern
+var s2 = "ababab";
+Assert.isTrue(s2.contains("ab"));
+Assert.isTrue(s2.contains("ba"));
+
+// unicode
+var s3 = "çğü";
+Assert.isTrue(s3.contains("ğ"));
+Assert.isFalse(s3.contains("a"));
+
+// special chars
+var s4 = "!@#$%";
+Assert.isTrue(s4.contains("#"));
+Assert.isFalse(s4.contains("^"));
+
+// whitespace
+var s5 = "   ";
+Assert.isTrue(s5.contains(" "));
+Assert.isFalse(s5.contains("  " + " " + " ")); // sanity
+
+// chaining
+var s6 = ("ab" + "cd" + "ef");
+Assert.isTrue(s6.contains("cd"));
+Assert.isFalse(s6.contains("gh"));
+
+// boolean checks
+Assert.isTrue("hello".contains("he"));
+Assert.isFalse("hello".contains("hi"));
+
+// not equals
+Assert.notEquals("hello".contains("he"), false);
+
+println "all test cases successful";

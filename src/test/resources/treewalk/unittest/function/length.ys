@@ -1,0 +1,37 @@
+println "str.length test cases started";
+
+var s1 = "hello";
+Assert.equals(s1.length(), 5);
+Assert.equals(s1.size(), 5);
+
+var s2 = "";
+Assert.equals(s2.length(), 0);
+
+var s3 = "a";
+Assert.equals(s3.length(), 1);
+
+var s4 = "abcdef";
+Assert.equals(s4.length(), 6);
+
+var s5 = "12345";
+Assert.equals(s5.length(), 5);
+
+var s6 = "   ";
+Assert.equals(s6.length(), 3);
+
+var s7 = "ab" + "cd";
+Assert.equals(s7.length(), 4);
+
+Assert.isTrue("abc".length() == 3);
+Assert.isFalse("abc".length() == 4);
+
+Assert.notEquals("hello".length(), 10);
+
+var s8 = "!@#$%";
+Assert.equals(s8.length(), 5);
+
+var s9 = "çğü";
+Assert.equals(s9.length(), 3);
+
+
+println "all test cases successful";

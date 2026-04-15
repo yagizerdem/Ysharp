@@ -1,0 +1,45 @@
+println "str.charAt test cases started";
+
+// basic
+var s1 = "hello";
+Assert.equals(s1.charAt(0), 'h');
+Assert.equals(s1.charAt(1), 'e');
+Assert.equals(s1.charAt(4), 'o');
+
+// single char
+var s2 = "a";
+Assert.equals(s2.charAt(0), 'a');
+
+// numeric string
+var s3 = "12345";
+Assert.equals(s3.charAt(2), '3');
+
+// whitespace
+var s4 = "   ";
+Assert.equals(s4.charAt(1), ' ');
+
+// special chars
+var s5 = "!@#";
+Assert.equals(s5.charAt(2), '#');
+
+// unicode
+var s6 = "çğü";
+Assert.equals(s6.charAt(0), 'ç');
+Assert.equals(s6.charAt(2), 'ü');
+
+// not equals
+Assert.notEquals("hello".charAt(0), 'x');
+
+// boolean checks
+Assert.isTrue("abc".charAt(0) == 'a');
+Assert.isFalse("abc".charAt(1) == 'a');
+
+// chaining
+var s7 = ("ab" + "cd");
+Assert.equals(s7.charAt(3), 'd');
+
+// edge: last index
+var s8 = "test";
+Assert.equals(s8.charAt(3), 't');
+
+println "all test cases successful";
