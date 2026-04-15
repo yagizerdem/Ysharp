@@ -1,0 +1,55 @@
+println "str.replaceFirst test cases started";
+
+// basic
+var s1 = "aabbcc";
+Assert.equals(s1.replaceFirst("a", "x"), "xabbcc");
+
+// only first occurrence
+var s2 = "ababab";
+Assert.equals(s2.replaceFirst("ab", "x"), "xabab");
+
+// no match
+Assert.equals("hello".replaceFirst("z", "x"), "hello");
+
+// replace with empty (delete first match)
+Assert.equals("abcabc".replaceFirst("a", ""), "bcabc");
+
+// regex: digits (first only)
+var s3 = "a1b2c3";
+Assert.equals(s3.replaceFirst("\\d", "x"), "axb2c3");
+
+// regex: whitespace
+var s4 = "a b   c";
+Assert.equals(s4.replaceFirst("\\s+", "-"), "a-b   c");
+
+// regex: dot (escaped)
+var s5 = "a.b.c";
+Assert.equals(s5.replaceFirst("\\.", "-"), "a-b.c");
+
+// unicode
+var s6 = "çğüç";
+Assert.equals(s6.replaceFirst("ç", "x"), "xğüç");
+
+// special chars
+var s7 = "!@#!@#";
+Assert.equals(s7.replaceFirst("@", "*"), "!*#!@#");
+
+// chaining
+var s8 = ("ab" + "cd" + "ab");
+Assert.equals(s8.replaceFirst("ab", "x"), "xcdab");
+
+// immutability
+var original = "hello";
+var replaced = original.replaceFirst("l", "x");
+Assert.equals(original, "hello");
+Assert.equals(replaced, "hexlo");
+Assert.notEquals(original, replaced);
+
+// boolean checks
+Assert.isTrue("a1b2".replaceFirst("\\d", "x") == "axb2");
+Assert.isFalse("a1b2".replaceFirst("\\d", "x") == "axbx");
+
+// not equals
+Assert.notEquals("a1b2".replaceFirst("\\d", "x"), "a1b2");
+
+println "all test cases successful";

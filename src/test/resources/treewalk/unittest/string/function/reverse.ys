@@ -1,0 +1,53 @@
+println "str.reverse test cases started";
+
+// basic
+var s1 = "hello";
+Assert.equals(s1.reverse(), "olleh");
+
+// empty
+var s2 = "";
+Assert.equals(s2.reverse(), "");
+
+// single char
+var s3 = "a";
+Assert.equals(s3.reverse(), "a");
+
+// palindrome
+var s4 = "madam";
+Assert.equals(s4.reverse(), "madam");
+
+// even length
+var s5 = "abcd";
+Assert.equals(s5.reverse(), "dcba");
+
+// whitespace
+var s6 = " a b ";
+Assert.equals(s6.reverse(), " b a ");
+
+// special chars
+var s7 = "!@#";
+Assert.equals(s7.reverse(), "#@!");
+
+// unicode (basic)
+var s8 = "çğü";
+Assert.equals(s8.reverse(), "üğç");
+
+// chaining
+var s9 = ("ab" + "cd");
+Assert.equals(s9.reverse(), "dcba");
+
+// immutability
+var original = "test";
+var reversed = original.reverse();
+Assert.equals(original, "test");
+Assert.equals(reversed, "tset");
+Assert.notEquals(original, reversed);
+
+// boolean checks
+Assert.isTrue("abc".reverse() == "cba");
+Assert.isFalse("abc".reverse() == "abc");
+
+// not equals
+Assert.notEquals("abc".reverse(), "abc");
+
+println "all test cases successful";

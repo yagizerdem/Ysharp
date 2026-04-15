@@ -1,0 +1,58 @@
+println "str.capitalize test cases started";
+
+// basic
+var s1 = "hello";
+Assert.equals(s1.capitalize(), "Hello");
+
+// already capitalized
+var s2 = "Hello";
+Assert.equals(s2.capitalize(), "Hello");
+
+// single char
+var s3 = "a";
+Assert.equals(s3.capitalize(), "A");
+
+// empty string (edge - senin implementasyon burada patlar)
+var s4 = "";
+// burada exception beklenir ya da fixlemen lazım
+// şimdilik test etmiyoruz
+
+// mixed case
+var s5 = "hELLO";
+Assert.equals(s5.capitalize(), "HELLO");
+
+// starts with space (should not change first char meaningfully)
+var s6 = " hello";
+Assert.equals(s6.capitalize(), " hello");
+
+// unicode
+var s7 = "çalış";
+Assert.equals(s7.capitalize(), "Çalış");
+
+// special chars
+var s8 = "!hello";
+Assert.equals(s8.capitalize(), "!hello");
+
+// numeric start
+var s9 = "1abc";
+Assert.equals(s9.capitalize(), "1abc");
+
+// chaining
+var s10 = ("he" + "llo");
+Assert.equals(s10.capitalize(), "Hello");
+
+// immutability
+var original = "test";
+var cap = original.capitalize();
+Assert.equals(original, "test");
+Assert.equals(cap, "Test");
+Assert.notEquals(original, cap);
+
+// boolean checks
+Assert.isTrue("hello".capitalize() == "Hello");
+Assert.isFalse("hello".capitalize() == "hello");
+
+// not equals
+Assert.notEquals("hello".capitalize(), "hello");
+
+println "all test cases successful";

@@ -1,0 +1,59 @@
+println "str.trimLeft / trimStart test cases started";
+
+// basic left trim
+var s1 = "   hello";
+Assert.equals(s1.trimLeft(), "hello");
+Assert.equals(s1.trimStart(), "hello");
+
+// no spaces
+var s2 = "hello";
+Assert.equals(s2.trimLeft(), "hello");
+
+// only spaces
+var s3 = "     ";
+Assert.equals(s3.trimLeft(), "");
+
+// right side should stay
+var s4 = "hello   ";
+Assert.equals(s4.trimLeft(), "hello   ");
+
+// mixed whitespace
+var s5 = "   hello world   ";
+Assert.equals(s5.trimLeft(), "hello world   ");
+
+// tabs and newlines
+var s6 = "\n\t  hello";
+Assert.equals(s6.trimLeft(), "hello");
+
+// unicode inside
+var s7 = "   çğü";
+Assert.equals(s7.trimLeft(), "çğü");
+
+// special chars
+var s8 = "   !@#";
+Assert.equals(s8.trimLeft(), "!@#");
+
+// immutability
+var original = "   test";
+var trimmed = original.trimLeft();
+Assert.equals(original, "   test");
+Assert.equals(trimmed, "test");
+Assert.notEquals(original, trimmed);
+
+// alias check
+var s9 = "   abc";
+Assert.equals(s9.trimStart(), "abc");
+Assert.equals(s9.trimLeft(), s9.trimStart());
+
+// chaining
+var s10 = ("   ab" + "cd");
+Assert.equals(s10.trimLeft(), "abcd");
+
+// boolean checks
+Assert.isTrue("   hello".trimLeft() == "hello");
+Assert.isFalse("   hello".trimLeft() == "   hello");
+
+// not equals
+Assert.notEquals("   hello".trimLeft(), "   hello");
+
+println "all test cases successful";

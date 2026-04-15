@@ -1,0 +1,54 @@
+println "str.startsWith test cases started";
+
+// basic
+var s1 = "hello";
+Assert.isTrue(s1.startsWith("h"));
+Assert.isTrue(s1.startsWith("he"));
+Assert.isFalse(s1.startsWith("e"));
+
+// full match
+Assert.isTrue(s1.startsWith("hello"));
+Assert.isFalse(s1.startsWith("helloo"));
+
+// empty search
+Assert.isTrue(s1.startsWith(""));
+
+// case sensitivity
+Assert.isFalse(s1.startsWith("H"));
+
+// longer prefix than string
+Assert.isFalse("hi".startsWith("hello"));
+
+// unicode
+var s2 = "çğü";
+Assert.isTrue(s2.startsWith("ç"));
+Assert.isFalse(s2.startsWith("ğ"));
+
+// special chars
+var s3 = "!@#";
+Assert.isTrue(s3.startsWith("!@"));
+Assert.isFalse(s3.startsWith("@#"));
+
+// whitespace
+var s4 = "   hello";
+Assert.isTrue(s4.startsWith(" "));
+Assert.isFalse(s4.startsWith("hello"));
+
+// chaining
+var s5 = ("ab" + "cd");
+Assert.isTrue(s5.startsWith("ab"));
+Assert.isFalse(s5.startsWith("bc"));
+
+// boolean checks
+Assert.isTrue("hello".startsWith("he"));
+Assert.isFalse("hello".startsWith("lo"));
+
+// not equals
+Assert.notEquals("hello".startsWith("he"), false);
+
+// immutability
+var original = "test";
+Assert.isTrue(original.startsWith("te"));
+Assert.equals(original, "test");
+
+println "all test cases successful";

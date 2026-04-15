@@ -1,0 +1,59 @@
+println "str.replaceAll test cases started";
+
+// basic
+var s1 = "aabbcc";
+Assert.equals(s1.replaceAll("a", "x"), "xxbbcc");
+
+// multiple occurrences
+var s2 = "ababab";
+Assert.equals(s2.replaceAll("ab", "x"), "xxx");
+
+// no match
+Assert.equals("hello".replaceAll("z", "x"), "hello");
+
+// replace with empty (delete)
+Assert.equals("abcabc".replaceAll("a", ""), "bcbc");
+
+// regex: digits
+var s3 = "a1b2c3";
+Assert.equals(s3.replaceAll("\\d", "x"), "axbxcx");
+
+// regex: whitespace
+var s4 = "a b   c";
+Assert.equals(s4.replaceAll("\\s+", "-"), "a-b-c");
+
+// regex: dot (escape)
+var s5 = "a.b.c";
+Assert.equals(s5.replaceAll("\\.", "-"), "a-b-c");
+
+// regex: word characters
+var s6 = "abc123";
+Assert.equals(s6.replaceAll("\\w", "x"), "xxxxxx");
+
+// unicode
+var s7 = "çğüç";
+Assert.equals(s7.replaceAll("ç", "x"), "xğüx");
+
+// special chars
+var s8 = "!@#!@#";
+Assert.equals(s8.replaceAll("@", "*"), "!*#!*#");
+
+// chaining
+var s9 = ("ab" + "cd" + "ab");
+Assert.equals(s9.replaceAll("ab", "x"), "xcdx");
+
+// immutability
+var original = "hello";
+var replaced = original.replaceAll("l", "x");
+Assert.equals(original, "hello");
+Assert.equals(replaced, "hexxo");
+Assert.notEquals(original, replaced);
+
+// boolean checks
+Assert.isTrue("a1b2".replaceAll("\\d", "x") == "axbx");
+Assert.isFalse("a1b2".replaceAll("\\d", "x") == "a1b2");
+
+// not equals
+Assert.notEquals("a1b2".replaceAll("\\d", "x"), "a1b2");
+
+println "all test cases successful";

@@ -1,0 +1,83 @@
+println "str.split test cases started";
+
+// basic split
+var s1 = "a,b,c";
+var r1 = s1.split(",");
+Assert.equals(r1.size(), 3);
+Assert.equals(r1.get(0), "a");
+Assert.equals(r1.get(1), "b");
+Assert.equals(r1.get(2), "c");
+
+// no delimiter found
+var s2 = "hello";
+var r2 = s2.split(",");
+Assert.equals(r2.size(), 1);
+Assert.equals(r2.get(0), "hello");
+
+// split by space
+var s3 = "a b c";
+var r3 = s3.split(" ");
+Assert.equals(r3.size(), 3);
+Assert.equals(r3.get(0), "a");
+Assert.equals(r3.get(1), "b");
+Assert.equals(r3.get(2), "c");
+
+// consecutive delimiters (regex behavior)
+var s4 = "a,,b";
+var r4 = s4.split(",");
+Assert.equals(r4.size(), 3);
+Assert.equals(r4.get(0), "a");
+Assert.equals(r4.get(1), "");
+Assert.equals(r4.get(2), "b");
+
+// leading delimiter
+var s5 = ",a,b";
+var r5 = s5.split(",");
+Assert.equals(r5.get(0), "");
+Assert.equals(r5.get(1), "a");
+
+// trailing delimiter (Java split drops trailing empty)
+var s6 = "a,b,";
+var r6 = s6.split(",");
+Assert.equals(r6.size(), 2);
+Assert.equals(r6.get(0), "a");
+Assert.equals(r6.get(1), "b");
+
+// regex split (dot)
+var s7 = "a.b.c";
+var r7 = s7.split("\\.");
+Assert.equals(r7.size(), 3);
+Assert.equals(r7.get(1), "b");
+
+// unicode
+var s8 = "ç-ğ-ü";
+var r8 = s8.split("-");
+Assert.equals(r8.size(), 3);
+Assert.equals(r8.get(2), "ü");
+
+// special chars
+var s9 = "!@#@!";
+var r9 = s9.split("@");
+Assert.equals(r9.size(), 3);
+Assert.equals(r9.get(1), "#");
+
+// chaining
+var s10 = ("ab" + "cd");
+var r10 = s10.split("c");
+Assert.equals(r10.get(0), "ab");
+Assert.equals(r10.get(1), "d");
+
+// immutability
+var original = "a,b";
+var res = original.split(",");
+Assert.equals(original, "a,b");
+Assert.equals(res.get(0), "a");
+
+// boolean checks
+Assert.isTrue("a,b".split(",").size() == 2);
+Assert.isFalse("a,b".split(",").size() == 3);
+
+// not equals
+Assert.notEquals("a,b".split(",").size(), 3);
+
+println "all test cases successful";

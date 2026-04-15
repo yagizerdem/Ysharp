@@ -1,0 +1,51 @@
+println "str.repeat test cases started";
+
+// basic
+var s1 = "a";
+Assert.equals(s1.repeat(3), "aaa");
+
+// zero repeat
+Assert.equals(s1.repeat(0), "");
+
+// single repeat
+Assert.equals(s1.repeat(1), "a");
+
+// multi-char string
+var s2 = "ab";
+Assert.equals(s2.repeat(3), "ababab");
+
+// empty string
+var s3 = "";
+Assert.equals(s3.repeat(5), "");
+
+// whitespace
+var s4 = " ";
+Assert.equals(s4.repeat(3), "   ");
+
+// special chars
+var s5 = "!@";
+Assert.equals(s5.repeat(2), "!@!@");
+
+// unicode
+var s6 = "ç";
+Assert.equals(s6.repeat(3), "ççç");
+
+// chaining
+var s7 = ("ab" + "c");
+Assert.equals(s7.repeat(2), "abcabc");
+
+// immutability
+var original = "x";
+var repeated = original.repeat(4);
+Assert.equals(original, "x");
+Assert.equals(repeated, "xxxx");
+Assert.notEquals(original, repeated);
+
+// boolean checks
+Assert.isTrue("a".repeat(2) == "aa");
+Assert.isFalse("a".repeat(2) == "aaa");
+
+// not equals
+Assert.notEquals("a".repeat(3), "aa");
+
+println "all test cases successful";

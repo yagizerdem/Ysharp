@@ -1,0 +1,52 @@
+println "str.charCodeAt test cases started";
+
+// basic ASCII
+var s1 = "abc";
+Assert.equals(s1.charCodeAt(0), 97); // 'a'
+Assert.equals(s1.charCodeAt(1), 98); // 'b'
+Assert.equals(s1.charCodeAt(2), 99); // 'c'
+
+// single char
+var s2 = "A";
+Assert.equals(s2.charCodeAt(0), 65);
+
+// digits
+var s3 = "123";
+Assert.equals(s3.charCodeAt(0), 49); // '1'
+
+// whitespace
+var s4 = " ";
+Assert.equals(s4.charCodeAt(0), 32);
+
+// special chars
+var s5 = "!@#";
+Assert.equals(s5.charCodeAt(1), 64); // '@'
+
+// unicode (BMP)
+var s6 = "ç";
+Assert.equals(s6.charCodeAt(0), 231);
+
+var s7 = "çğü";
+Assert.equals(s7.charCodeAt(1), 287); // 'ğ'
+
+// chaining
+var s8 = ("ab" + "cd");
+Assert.equals(s8.charCodeAt(3), 100); // 'd'
+
+// last index
+var s9 = "test";
+Assert.equals(s9.charCodeAt(3), 116); // 't'
+
+// immutability
+var original = "hello";
+Assert.equals(original.charCodeAt(0), 104);
+Assert.equals(original, "hello");
+
+// boolean checks
+Assert.isTrue("a".charCodeAt(0) == 97);
+Assert.isFalse("a".charCodeAt(0) == 98);
+
+// not equals
+Assert.notEquals("a".charCodeAt(0), 98);
+
+println "all test cases successful";

@@ -1,0 +1,60 @@
+println "str.toCharArray test cases started";
+
+// basic
+var s1 = "abc";
+var r1 = s1.toCharArray();
+Assert.equals(r1.size(), 3);
+Assert.equals(r1.get(0), 'a');
+Assert.equals(r1.get(1), 'b');
+Assert.equals(r1.get(2), 'c');
+
+// empty string
+var s2 = "";
+var r2 = s2.toCharArray();
+Assert.equals(r2.size(), 0);
+
+// single char
+var s3 = "x";
+var r3 = s3.toCharArray();
+Assert.equals(r3.size(), 1);
+Assert.equals(r3.get(0), 'x');
+
+// whitespace
+var s4 = " a ";
+var r4 = s4.toCharArray();
+Assert.equals(r4.size(), 3);
+Assert.equals(r4.get(0), ' ');
+Assert.equals(r4.get(1), 'a');
+Assert.equals(r4.get(2), ' ');
+
+// special chars
+var s5 = "!@#";
+var r5 = s5.toCharArray();
+Assert.equals(r5.get(1), '@');
+
+// unicode (basic BMP)
+var s6 = "çğü";
+var r6 = s6.toCharArray();
+Assert.equals(r6.size(), 3);
+Assert.equals(r6.get(0), 'ç');
+Assert.equals(r6.get(2), 'ü');
+
+// chaining
+var s7 = ("ab" + "cd");
+var r7 = s7.toCharArray();
+Assert.equals(r7.get(3), 'd');
+
+// immutability
+var original = "test";
+var arr = original.toCharArray();
+Assert.equals(original, "test");
+Assert.equals(arr.get(0), 't');
+
+// boolean checks
+Assert.isTrue("abc".toCharArray().size() == 3);
+Assert.isFalse("abc".toCharArray().size() == 2);
+
+// not equals
+Assert.notEquals("abc".toCharArray().size(), 2);
+
+println "all test cases successful";

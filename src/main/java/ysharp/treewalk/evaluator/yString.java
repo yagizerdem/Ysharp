@@ -5,6 +5,7 @@ import ysharp.treewalk.evaluator.Native.Collections.Array.yArray;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class yString  {
 
@@ -1247,7 +1248,7 @@ public class yString  {
                 String result;
 
                 try {
-                    result = String.format(instance.data, args);
+                    result = String.format(Locale.US, instance.data, args);
                 }
                 catch (Exception e) {
                     throw new YsharpError(
