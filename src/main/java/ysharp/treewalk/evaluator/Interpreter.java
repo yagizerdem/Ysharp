@@ -140,6 +140,24 @@ public class Interpreter implements
         }
     }
 
+    private void requireNumberOperandsImplicit(Variable.Variant left,
+                                               Variable.Variant right,
+                                               Token op) throws YsharpError {
+
+        if (!(left.isNumber() || left.isChar()) ||
+                !(right.isNumber() || right.isChar())) {
+
+            throw new YsharpError(
+                    YsharpError.YsharpErrorType.PROCESS,
+                    op.line,
+                    "Operator '" + op.lexeme +
+                            "' requires numeric or char operands. Found '" +
+                            left.getType() + "' and '" +
+                            right.getType() + "'."
+            );
+        }
+    }
+
     // expr visitor
     @Override
     public Variable.Variant visitBinaryExpr(Expr.BinaryExpr expr) {
@@ -284,26 +302,26 @@ public class Interpreter implements
             case GREATER_THAN -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
-                requireNumberOperands(left, right, expr.op);
+                requireNumberOperandsImplicit(left, right, expr.op);
                 return new Variable.Variant(left.implicitlyConvertNumber() > right.implicitlyConvertNumber());
             }
             case GREATER_OR_EQUAL -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
-                requireNumberOperands(left, right, expr.op);
+                requireNumberOperandsImplicit(left, right, expr.op);
                 return new Variable.Variant(left.implicitlyConvertNumber() >= right.implicitlyConvertNumber());
 
             }
             case LESS_THAN -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
-                requireNumberOperands(left, right, expr.op);
+                requireNumberOperandsImplicit(left, right, expr.op);
                 return new Variable.Variant(left.implicitlyConvertNumber() < right.implicitlyConvertNumber());
             }
             case LESS_OR_EQUAL -> {
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
-                requireNumberOperands(left, right, expr.op);
+                requireNumberOperandsImplicit(left, right, expr.op);
                     return new Variable.Variant(left.implicitlyConvertNumber() <= right.implicitlyConvertNumber());
             }
             case EQUAL_EQUAL -> {

@@ -123,6 +123,10 @@ public class Variable {
                 return this.asInt().doubleValue();
             }
 
+            if(this.isChar()) {
+                return  this.asInt().doubleValue();
+            }
+
             return this.asDouble();
         }
 
