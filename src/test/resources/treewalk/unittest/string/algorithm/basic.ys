@@ -1,8 +1,169 @@
-var test = "hello";
+// i implement some algorithms that i found on internet on my own programming language idk :/
 
+// reverse string
+var test = "hello";
 var output = "";
 for var i = test.size() - 1 ; i >= 0; i-- do
     output += test.charAt(i);
 end
-
 println output;
+
+// palindrome test
+
+var test = "Madam";
+var isPalindrome = true;
+for var i = 0 ; i < test.size(); i++ do
+    if test.charAt(i) != test.reverse().charAt(i)  then do
+        isPalindrome = false;
+        break;
+    end
+end
+
+if isPalindrome then do
+    println "string is palindrome";
+end
+else do
+    println "string is not palindrome";
+end
+
+// remove duplicates from string
+
+var test = "programming";
+var cleared = "";
+for var i = 0 ; i < test.size(); i++ do
+    var counter = 0 ;
+    for var j = i ; j >= 0; j-- do
+        if(test.charAt(i) == test.charAt(j)) then do counter++; end
+    end
+    if counter == 1 then do
+        cleared += test.charAt(i);
+    end
+end
+
+println "duplicated removed, result is : " + cleared;
+
+// first non repeating character
+
+var test = "swiss";
+var output = null;
+var set = new Set();
+for var i = 0; i < test.size(); i++ do
+    if set.contains(test.charAt(i)) then do continue; end
+    var flag = true;
+    set.add(test.charAt(i));
+    for var j = i + 1; j < test.size(); j++ do
+        if test.charAt(i) == test.charAt(j) then do flag = false; end
+    end
+    if flag then do
+        output = test.charAt(i);
+        break;
+    end
+end
+
+if output then do
+    println "first non repeating char is : " + output;
+end
+else do
+    println "there is no first non repeating char";
+end
+
+// Remove All White Spaces from a String
+
+var test = "Hello World";
+var out = test.replace(" ", "");
+println out;
+
+// Find the Longest Substring Without Repeating Characters
+
+var test = "abcabcbb";
+var out = "";
+
+for var i = 0; i < test.size(); i++ do
+    var sub = "";
+    for var j = i; j < test.size(); j++ do
+        var currentChar = Type.Converter.toString(test.charAt(j));
+
+        if sub.contains(currentChar) then do
+            break;
+        end
+
+        sub = sub + currentChar;
+    end
+
+    if sub.size() > out.size() then do
+        out = sub;
+    end
+end
+
+println "longest non repeating substring: " + out;
+
+//  Compress a String (Run-Length Encoding)
+
+var test = "aaabbcccc";
+var i = 0;
+var out = "";
+while  i <  test.size() do
+    var cur = test.charAt(i);
+    var size = 0;
+    for var j = i ; j < test.size(); j++ do
+        if cur == test.charAt(j) then do
+            size += 1;
+        end
+    end
+    i += size;
+    out += (cur + Type.Converter.toString(size));
+end
+
+println "encoded string : " + out;
+
+// Find the Most Frequent Character
+
+var test = "success";
+var map = {};
+for var i = 0 ; i < test.size(); i++ do
+    var key = test.charAt(i);
+    if map.containsKey(key) then do
+        map.put(key, map.get(key) + 1);
+    end
+    else do
+        map.put(key, 1);
+    end
+end
+
+println "frequency counter : " + map.toString();
+
+// Find the Longest Common Prefix
+
+var arr = ["flower", "flow", "flight"];
+var prefix = "";
+var i = 0;
+var flag = true;
+while flag do
+    foreach var item in arr do
+        if i >= item.size() then do
+           flag = false;
+           break;
+        end
+    end
+    if !flag then do break; end
+
+    var c =  null;
+    for var j = 0; j < arr.size(); j++ do
+        if c == null then do
+            c = arr.get(j).charAt(i);
+        end
+        else do
+            if c !=  arr.get(j).charAt(i) then do
+                flag = false;
+                break;
+            end
+        end
+    end
+
+    if flag then do
+        prefix += c;
+        i++;
+    end
+end
+
+println "longest prefix  : " + prefix;

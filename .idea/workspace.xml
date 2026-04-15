@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="06588b0d-6eee-4b4b-be52-23cf34ea7082" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/string/algorithm/basic.ys" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/string/algorithm/specialChars.ys" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Interpreter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Interpreter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Native/Collections/HashMap/function/instance/ToStringFn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Native/Collections/HashMap/function/instance/ToStringFn.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/treewalk/sorting/benchmark.ys" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/treewalk/sorting/benchmark.ys" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/string/algorithm/basic.ys" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/string/algorithm/basic.ys" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -154,7 +156,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="ysharp.Main" />
       <module name="Ysharp.main" />
-      <option name="PROGRAM_PARAMETERS" value="C:\Users\yagiz\Desktop\ysharp\Ysharp\src\test\resources\treewalk\unittest\string\algorithm\basic.ys" />
+      <option name="PROGRAM_PARAMETERS" value="C:\Users\yagiz\Desktop\ysharp\Ysharp\src\test\resources\treewalk\sorting\benchmark.ys" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -233,7 +235,7 @@
       <workItem from="1774138998850" duration="4568000" />
       <workItem from="1774451515749" duration="4000" />
       <workItem from="1775642848058" duration="5916000" />
-      <workItem from="1776237096764" duration="6185000" />
+      <workItem from="1776237096764" duration="12442000" />
     </task>
     <servers />
   </component>
@@ -278,6 +280,11 @@
           <url>file://$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Function.java</url>
           <line>223</line>
           <option name="timeStamp" value="45" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ysharp/treewalk/lexer/Lexer.java</url>
+          <line>238</line>
+          <option name="timeStamp" value="53" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
