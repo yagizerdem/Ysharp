@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Threading;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 
 import java.util.ArrayList;
@@ -12,8 +12,8 @@ public class yThread {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method called without valid 'this' context."
             );
@@ -22,8 +22,8 @@ public class yThread {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof yThreadInstance)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method can only be called on Thread objects."
             );
@@ -58,23 +58,23 @@ public class yThread {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                 yThreadInstance thread = requireThreadThis(interpreter);
 
                 Thread jt = thread.getJavaThread();
 
                 if (jt == null) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             "Thread is not properly initialized."
                     );
                 }
 
                 if (jt.getState() != Thread.State.NEW) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             "Thread has already been started."
                     );
@@ -106,12 +106,12 @@ public class yThread {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 try {
                     yThreadInstance thread = requireThreadThis(interpreter);
                     thread.getJavaThread().join();
                 }catch (InterruptedException interruptedException) {
-                    throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             interruptedException.getMessage());
                 }
@@ -141,7 +141,7 @@ public class yThread {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 yThreadInstance thread = requireThreadThis(interpreter);
                 boolean flag = thread.getJavaThread().isAlive();
 
@@ -172,15 +172,15 @@ public class yThread {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 yThreadInstance thread = requireThreadThis(interpreter);
 
                 Thread jt = thread.getJavaThread();
 
                 if (jt == null) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             "Thread is not initialized."
                     );
@@ -256,11 +256,11 @@ public class yThread {
         @Override
         public Variable.Variant call(Interpreter interpreter,
                                      List<Variable.Variant> arguments)
-                throws YsharpError {
+                throws YsharpException {
 
             if(arguments.isEmpty()) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.PROCESS,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.PROCESS,
                         -1,
                         "Thread constructor requires a function or lambda as its first argument.");
             }

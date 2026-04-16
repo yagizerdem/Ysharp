@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Assert.function.statix;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 
 import java.util.List;
@@ -15,15 +15,15 @@ public class NotNullFn extends Function.NativeFunction implements Callable {
     @Override
     public Variable.Variant call(Interpreter interpreter,
                                  List<Variable.Variant> arguments)
-            throws YsharpError {
+            throws YsharpException {
 
         requireArity(arguments, arity(), getFnName());
 
         Variable.Variant val = arguments.getFirst();
 
         if (val.value == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Assertion failed: expected value to NOT be null"
             );

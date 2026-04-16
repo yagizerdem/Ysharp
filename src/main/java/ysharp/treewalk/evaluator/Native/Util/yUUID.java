@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Util;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 
 import java.util.List;
@@ -50,7 +50,7 @@ public class yUUID {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     String uuid = java.util.UUID.randomUUID().toString();
 
@@ -83,7 +83,7 @@ public class yUUID {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     return new Variable.Variant("00000000-0000-0000-0000-000000000000");
                 }
@@ -115,7 +115,7 @@ public class yUUID {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
@@ -156,7 +156,7 @@ public class yUUID {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
@@ -192,7 +192,7 @@ public class yUUID {
         @Override
         public Variable.Variant call(Interpreter interpreter,
                                      List<Variable.Variant> arguments)
-                throws YsharpError {
+                throws YsharpException {
 
             yUUID_Instance instance = new yUUID_Instance();
             return new Variable.Variant(instance);

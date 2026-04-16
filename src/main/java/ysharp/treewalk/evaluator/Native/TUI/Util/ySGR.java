@@ -1,7 +1,7 @@
 package ysharp.treewalk.evaluator.Native.TUI.Util;
 
 import com.googlecode.lanterna.SGR;
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Native.Collections.Array.yArray;
 
@@ -11,11 +11,11 @@ public class ySGR {
 
     public static ySGREnum requireYSRGEnum (Variable.Variant v,
                                          String fn,
-                                         int index) throws YsharpError {
+                                         int index) throws YsharpException {
 
         if (!v.isRuntimeObject()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     fn + " argument " + index + " must be a object."
             );
@@ -24,8 +24,8 @@ public class ySGR {
         RuntimeObject obj = v.asRuntimeObject();
 
         if(!(obj instanceof ySGREnum)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     fn + " argument " + index + " must be a SRG object."
             );
@@ -38,8 +38,8 @@ public class ySGR {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method " + "'" + fnName+ "'" + "called without a valid 'this' context."
             );
@@ -48,8 +48,8 @@ public class ySGR {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof ySGREnum)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method '" + fnName + "' expected 'array' as 'this' but got '" + obj.getType() + "'."
             );
@@ -75,7 +75,7 @@ public class ySGR {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     requireArity(arguments, arity(), getFnName());
 
@@ -157,7 +157,7 @@ public class ySGR {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                     requireArity(arguments, arity(), getClassName());
                     String value = requireString(arguments.getFirst(), getClassName(), 1);
                     return new Variable.Variant(SGR.valueOf(value));
@@ -185,7 +185,7 @@ public class ySGR {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                     requireArity(arguments, arity(), getClassName());
                     SGR[] arr = SGR.values();
                     yArray.yArrayInstance yArray = new yArray.yArrayInstance();
@@ -216,9 +216,9 @@ public class ySGR {
         @Override
         public Variable.Variant call(Interpreter interpreter,
                                      List<Variable.Variant> arguments)
-                throws YsharpError {
+                throws YsharpException {
 
-            throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     "cannot take instance of SGR class");
         }

@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Collections.Set.instance;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Function;
 import ysharp.treewalk.evaluator.Interpreter;
 import ysharp.treewalk.evaluator.Native.Collections.Set.ySet;
@@ -18,7 +18,7 @@ public class IntersectionFn extends Function.NativeFunction {
     public Variable.Variant call(
             Interpreter interpreter,
             List<Variable.Variant> arguments)
-            throws YsharpError {
+            throws YsharpException {
 
         ySet.ySetInstance set = ySet.requireSetThis(interpreter);
 
@@ -27,8 +27,8 @@ public class IntersectionFn extends Function.NativeFunction {
         if (!otherVar.isRuntimeObject() ||
                 !(otherVar.asRuntimeObject() instanceof ySet.ySetInstance)) {
 
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "'intersection' argument must be a Set."
             );

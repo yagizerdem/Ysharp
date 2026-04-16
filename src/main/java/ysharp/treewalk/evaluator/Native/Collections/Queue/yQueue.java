@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Collections.Queue;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Native.Collections.Queue.function.instance.*;
 import ysharp.treewalk.evaluator.Native.Collections.yVector;
@@ -14,8 +14,8 @@ public class yQueue {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method " + "'" + fnName+ "'" + "called without a valid 'this' context."
             );
@@ -24,8 +24,8 @@ public class yQueue {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof yQueueInstance)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method '" + fnName + "' expected 'queue' as 'this' but got '" + obj.getType() + "'."
             );
@@ -126,7 +126,7 @@ public class yQueue {
         }
 
         @Override
-        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
             Queue<Variable.Variant> value = new LinkedList<>();
             yQueue.yQueueInstance newQueue = new yQueue.yQueueInstance(value);
 

@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Collections.Stack.function.instance;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Callable;
 import ysharp.treewalk.evaluator.Function;
 import ysharp.treewalk.evaluator.Interpreter;
@@ -18,7 +18,7 @@ public class AddAllFn extends Function.NativeFunction implements Callable {
     public int arity() { return 1; }
 
     @Override
-    public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+    public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
         yStack.yStackInstance stack = yStack.requireStackThis(interpreter, getFnName());
         Variable.Variant other = arguments.getFirst();
 
@@ -38,7 +38,7 @@ public class AddAllFn extends Function.NativeFunction implements Callable {
             stack.data.addAll(((yPriorityQueue.yPriorityQueueInstance) other.value).getRawVariants().stream().map(x -> new Variable.Variant(x.value)).toList());
         }
         else {
-            throw new YsharpError(YsharpError.YsharpErrorType.PROCESS, 0, "Argument must be a vector based collection");
+            throw new YsharpException(YsharpException.YsharpErrorType.PROCESS, 0, "Argument must be a vector based collection");
         }
 
         return new Variable.Variant(stack.data.size());

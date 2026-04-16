@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.lexer.Token;
 import ysharp.treewalk.parser.Expr;
 import ysharp.treewalk.parser.Stmt;
@@ -11,7 +11,7 @@ public class Resolver implements Expr.Visitor<Void> ,
         Stmt.Visitor {
     private final Interpreter interpreter;
     private final Stack<Map<String, Boolean>> scopes = new Stack<>();
-    public final List<YsharpError> errors = new ArrayList<>();
+    public final List<YsharpException> errors = new ArrayList<>();
 
     public boolean hadErrors (){
         return !errors.isEmpty();
@@ -41,7 +41,7 @@ public class Resolver implements Expr.Visitor<Void> ,
             if(statement == null) continue;
             try {
                 resolve(statement);
-            }catch (YsharpError err) {
+            }catch (YsharpException err) {
                 errors.add(err);
             }
         }
@@ -79,8 +79,8 @@ public class Resolver implements Expr.Visitor<Void> ,
 
         Map<String, Boolean> scope = scopes.peek();
         if (scope.containsKey(name.lexeme)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     "Already a variable with this name in this scope.");
         }
@@ -180,7 +180,7 @@ public class Resolver implements Expr.Visitor<Void> ,
     public Void visitVariableExpr(Expr.VariableExpr expr) {
         if (!scopes.isEmpty() &&
                 scopes.peek().get(expr.name.lexeme) == Boolean.FALSE) {
-            throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                     -1 ,
                     "Can't read local variable in its own initializer.");
         }

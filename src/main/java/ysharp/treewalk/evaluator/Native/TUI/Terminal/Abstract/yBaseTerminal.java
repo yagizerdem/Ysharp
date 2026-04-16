@@ -3,7 +3,7 @@ package ysharp.treewalk.evaluator.Native.TUI.Terminal.Abstract;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.terminal.TerminalResizeListener;
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Native.TUI.Input.yKeyStroke;
 import ysharp.treewalk.evaluator.Native.TUI.Util.TextColor.yTextColor;
@@ -22,8 +22,8 @@ public class yBaseTerminal {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Terminal method called without a valid 'this' context."
             );
@@ -32,8 +32,8 @@ public class yBaseTerminal {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof yAbstractTerminal.AbstractTerminal)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method can only be called on Terminal instances."
             );
@@ -74,7 +74,7 @@ public class yBaseTerminal {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 requireArity(arguments, arity(), getFnName());
                 yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
                 char c = requireChar(arguments.getFirst(), getFnName(), 1);
@@ -84,8 +84,8 @@ public class yBaseTerminal {
                     if(terminal.get("autoFlush").value.isTruthy()) terminal.instance.flush();
                 }
                 catch (IOException ex) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             "Failed to write character to terminal."
                     );
@@ -117,7 +117,7 @@ public class yBaseTerminal {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 requireArity(arguments, arity(), getFnName());
                 yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
 
@@ -125,8 +125,8 @@ public class yBaseTerminal {
                     terminal.instance.clearScreen();
                 }
                 catch (IOException ex) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             "Failed to clear screen."
                     );
@@ -158,7 +158,7 @@ public class yBaseTerminal {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 requireArity(arguments, arity(), getFnName());
                 yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
 
@@ -166,8 +166,8 @@ public class yBaseTerminal {
                     terminal.instance.flush();
                 }
                 catch (IOException ex) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             "Failed to flush."
                     );
@@ -198,7 +198,7 @@ public class yBaseTerminal {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 requireArity(arguments, arity(), getFnName());
                 yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
 
@@ -206,8 +206,8 @@ public class yBaseTerminal {
                     terminal.instance.close();
                 }
                 catch (IOException ex) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             "Failed to close terminal."
                     );
@@ -238,7 +238,7 @@ public class yBaseTerminal {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 requireArity(arguments, arity(), getFnName());
                 yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
 
@@ -246,8 +246,8 @@ public class yBaseTerminal {
                     terminal.instance.bell();
                 }
                 catch (IOException ex) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             "Failed to ring terminal bell."
                     );
@@ -279,7 +279,7 @@ public class yBaseTerminal {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 requireArity(arguments, arity(), getFnName());
                 yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
 
@@ -287,8 +287,8 @@ public class yBaseTerminal {
                     terminal.instance.enterPrivateMode();
                 }
                 catch (IOException ex) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             "Failed to enter terminal private mode."
                     );
@@ -320,7 +320,7 @@ public class yBaseTerminal {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 requireArity(arguments, arity(), getFnName());
                 yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
 
@@ -328,8 +328,8 @@ public class yBaseTerminal {
                     terminal.instance.exitPrivateMode();
                 }
                 catch (IOException ex) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             "Failed to exit terminal private mode."
                     );
@@ -360,7 +360,7 @@ public class yBaseTerminal {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 requireArity(arguments, arity(), getFnName());
                 yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
 
@@ -371,8 +371,8 @@ public class yBaseTerminal {
                     terminal.instance.setCursorPosition(x, y);
                 }
                 catch (IOException ex) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             "Failed to set cursor position."
                     );
@@ -404,7 +404,7 @@ public class yBaseTerminal {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 requireArity(arguments, arity(), getFnName());
                 yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
                 ySGR.ySGREnum srgEnum = ySGR.requireYSRGEnum(arguments.getFirst(),
@@ -414,8 +414,8 @@ public class yBaseTerminal {
                 try {
                     terminal.instance.disableSGR(srgEnum.sgr);
                 }catch (IOException ex) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             "Terminal.disableSGR: " + ex.getMessage()
                     );
@@ -446,7 +446,7 @@ public class yBaseTerminal {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 requireArity(arguments, arity(), getFnName());
                 yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
                 ySGR.ySGREnum srgEnum = ySGR.requireYSRGEnum(arguments.getFirst(),
@@ -456,8 +456,8 @@ public class yBaseTerminal {
                 try {
                     terminal.instance.enableSGR(srgEnum.sgr);
                 } catch (IOException ex) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             "Terminal.enableSGR: " + ex.getMessage()
                     );
@@ -488,15 +488,15 @@ public class yBaseTerminal {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 requireArity(arguments, arity(), getFnName());
                 yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
 
                 try {
                     terminal.instance.resetColorAndSGR();
                 } catch (IOException ex) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             "Terminal.resetColorAndSGR: " + ex.getMessage()
                     );
@@ -527,7 +527,7 @@ public class yBaseTerminal {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 requireArity(arguments, arity(), getFnName());
                 yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
                 yTextColor.yTextColorEnum textColor = yTextColor.requireYTextColorEnum(arguments.getFirst(), getFnName(), 1);
@@ -535,8 +535,8 @@ public class yBaseTerminal {
                 try {
                     terminal.instance.setBackgroundColor(textColor.color);
                 } catch (IOException ex) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             "Terminal.setBackgroundColor: " + ex.getMessage()
                     );
@@ -568,7 +568,7 @@ public class yBaseTerminal {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 requireArity(arguments, arity(), getFnName());
                 yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
                 yTextColor.yTextColorEnum textColor = yTextColor.requireYTextColorEnum(arguments.getFirst(), getFnName(), 1);
@@ -576,8 +576,8 @@ public class yBaseTerminal {
                 try {
                     terminal.instance.setForegroundColor(textColor.color);
                 } catch (IOException ex) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             "Terminal.setForegroundColor: " + ex.getMessage()
                     );
@@ -608,7 +608,7 @@ public class yBaseTerminal {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 requireArity(arguments, arity(), getFnName());
                 yAbstractTerminal.AbstractTerminal terminal = requireTerminalThis(interpreter);
                 boolean flag = requireBoolean(arguments.getFirst(), getFnName(), 1);
@@ -616,8 +616,8 @@ public class yBaseTerminal {
                 try {
                     terminal.instance.setCursorVisible(flag);
                 } catch (IOException ex) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             "Terminal.setCursorVisible: " + ex.getMessage()
                     );
@@ -648,7 +648,7 @@ public class yBaseTerminal {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
 
@@ -676,8 +676,8 @@ public class yBaseTerminal {
                     if(terminal.get("autoFlush").value.isTruthy())  terminal.instance.flush();
                 }
                 catch(IOException ex) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             "Terminal.write: " + ex.getMessage()
                     );
@@ -709,7 +709,7 @@ public class yBaseTerminal {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
 
@@ -739,8 +739,8 @@ public class yBaseTerminal {
                     if(terminal.get("autoFlush").value.isTruthy())  terminal.instance.flush();
                 }
                 catch(IOException ex) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             "Terminal.writeLine: " + ex.getMessage()
                     );
@@ -772,7 +772,7 @@ public class yBaseTerminal {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
 
@@ -784,8 +784,8 @@ public class yBaseTerminal {
 
                 }
                 catch(IOException ex) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             "Terminal.readKey: " + ex.getMessage()
                     );
@@ -818,7 +818,7 @@ public class yBaseTerminal {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
 
@@ -838,8 +838,8 @@ public class yBaseTerminal {
 
                 }
                 catch(IOException ex) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             "Terminal.pollKey: " + ex.getMessage()
                     );
@@ -871,7 +871,7 @@ public class yBaseTerminal {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
 
@@ -888,8 +888,8 @@ public class yBaseTerminal {
 
                 }
                 catch(IOException ex) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             "Terminal.clearInputBuffer: " + ex.getMessage()
                     );
@@ -923,7 +923,7 @@ public class yBaseTerminal {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
 
@@ -934,8 +934,8 @@ public class yBaseTerminal {
                     TerminalSize terminalSize = terminal.instance.getTerminalSize();
                     return new Variable.Variant(new yTerminalSize.yTerminalSizeInstance(terminalSize));
                 }catch (IOException ex) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             "Terminal.getTerminalSize: " + ex.getMessage()
                     );
@@ -969,7 +969,7 @@ public class yBaseTerminal {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
 
@@ -979,8 +979,8 @@ public class yBaseTerminal {
                 Variable.Variant listenerVariant = arguments.getFirst();
 
                 if (!listenerVariant.isRuntimeObject()) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             0,
                             "Function '" + getFnName() + "' expects a 'TerminalResizeListener' object but got '"
                                     + listenerVariant.getType() + "'."
@@ -991,8 +991,8 @@ public class yBaseTerminal {
 
 
                 if (!(raw instanceof yTerminalResizeListener)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             0,
                             "Function '" + getFnName() + "' expected 'TerminalResizeListener' but got '"
                                     + raw.getClass().getSimpleName() + "'."

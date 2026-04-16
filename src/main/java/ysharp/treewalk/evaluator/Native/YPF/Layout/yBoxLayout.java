@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.YPF.Layout;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Function;
 
@@ -17,8 +17,8 @@ public class yBoxLayout {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method '" + fnName + "' called without 'this'."
             );
@@ -27,8 +27,8 @@ public class yBoxLayout {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof yBoxLayoutInstance)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Expected BoxLayout but got '" + obj.getType() + "'"
             );
@@ -67,7 +67,7 @@ public class yBoxLayout {
 
                         @Override
                         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
-                                throws YsharpError {
+                                throws YsharpException {
 
                             yBoxLayoutInstance layoutInst =
                                     requireBoxLayoutThis(interpreter, name);
@@ -107,8 +107,8 @@ public class yBoxLayout {
                                 }
 
                                 if (selected == null) {
-                                    throw new YsharpError(
-                                            YsharpError.YsharpErrorType.PROCESS,
+                                    throw new YsharpException(
+                                            YsharpException.YsharpErrorType.PROCESS,
                                             -1,
                                             "method overload not found"
                                     );
@@ -121,8 +121,8 @@ public class yBoxLayout {
                                 );
 
                             } catch (Exception e) {
-                                throw new YsharpError(
-                                        YsharpError.YsharpErrorType.PROCESS,
+                                throw new YsharpException(
+                                        YsharpException.YsharpErrorType.PROCESS,
                                         0,
                                         "Native call failed: " + name
                                 );
@@ -172,13 +172,13 @@ public class yBoxLayout {
 
         @Override
         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
-                throws YsharpError {
+                throws YsharpException {
             requireArity(args, arity(), getClassName());
             Object containerObj = args.getFirst().asJavaNative();
 
             if (!(containerObj instanceof Container)) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.PROCESS,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.PROCESS,
                         0,
                         "First argument must be Container"
                 );

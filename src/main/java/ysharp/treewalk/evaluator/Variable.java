@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 
 public class Variable {
 
@@ -267,8 +267,8 @@ public class Variable {
                 return obj.getType();
             }
 
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     "Internal error: Unknown Variant runtime type: " + value.getClass()
             );

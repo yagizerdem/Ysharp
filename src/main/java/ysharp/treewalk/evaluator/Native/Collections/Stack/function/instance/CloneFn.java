@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Collections.Stack.function.instance;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Callable;
 import ysharp.treewalk.evaluator.Function;
 import ysharp.treewalk.evaluator.Interpreter;
@@ -20,7 +20,7 @@ public class CloneFn extends Function.NativeFunction implements Callable {
     @Override
     public Variable.Variant call(Interpreter interpreter,
                                  List<Variable.Variant> arguments)
-            throws YsharpError {
+            throws YsharpException {
 
         yStack.yStackInstance stack = yStack.requireStackThis(interpreter, getFnName());
 

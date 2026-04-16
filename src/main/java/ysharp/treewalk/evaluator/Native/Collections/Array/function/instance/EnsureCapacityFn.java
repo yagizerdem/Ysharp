@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Collections.Array.function.instance;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Callable;
 import ysharp.treewalk.evaluator.Function;
 import ysharp.treewalk.evaluator.Interpreter;
@@ -19,7 +19,7 @@ public class EnsureCapacityFn extends Function.NativeFunction implements Callabl
     @Override
     public Variable.Variant call(Interpreter interpreter,
                                  List<Variable.Variant> arguments)
-            throws YsharpError {
+            throws YsharpException {
 
         requireArity(arguments, arity(), getFnName());
         yArray.yArrayInstance array = yArray.requireArrayThis(interpreter, getFnName());
@@ -27,8 +27,8 @@ public class EnsureCapacityFn extends Function.NativeFunction implements Callabl
         Variable.Variant capVar = arguments.getFirst();
 
         if (!capVar.canImplicitlyConvertNumber()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "'ensureCapacity' argument must be a number."
             );
@@ -37,8 +37,8 @@ public class EnsureCapacityFn extends Function.NativeFunction implements Callabl
         int minCapacity = (int) capVar.implicitlyConvertNumber();
 
         if (minCapacity < 0) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "'ensureCapacity' capacity cannot be negative."
             );

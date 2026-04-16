@@ -2,7 +2,7 @@ package ysharp.treewalk.evaluator.Native.YPF;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Native.YPF.Button.yButton;
 import ysharp.treewalk.evaluator.Native.YPF.Button.yButtonGroup;
@@ -55,15 +55,15 @@ public class YPF {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     requireArity(arguments, arity(), getFnName());
 
                     Variable.Variant fnVar = arguments.getFirst();
 
                     if (!fnVar.isCallable()) {
-                        throw new YsharpError(
-                                YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
                                 0,
                                 "invokeLater expects a function."
                         );
@@ -74,7 +74,7 @@ public class YPF {
                     SwingUtilities.invokeLater(() -> {
                         try {
                             callable.call(interpreter.copy(), List.of());
-                        } catch (YsharpError e) {
+                        } catch (YsharpException e) {
                             e.printStackTrace();
                         }
                     });
@@ -107,7 +107,7 @@ public class YPF {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     requireArity(arguments, arity(), getFnName());
                     FlatLightLaf.setup();
@@ -140,7 +140,7 @@ public class YPF {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     requireArity(arguments, arity(), getFnName());
                     FlatDarkLaf.setup();
@@ -172,7 +172,7 @@ public class YPF {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     requireArity(arguments, arity(), getFnName());
                     FlatDarkLaf.setup();
@@ -256,8 +256,8 @@ public class YPF {
         }
 
         @Override
-        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
-            throw new YsharpError(YsharpError.YsharpErrorType.PROCESS, -1, "cannot take instance of YPF static class");
+        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
+            throw new YsharpException(YsharpException.YsharpErrorType.PROCESS, -1, "cannot take instance of YPF static class");
         }
     }
 

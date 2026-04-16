@@ -1,6 +1,6 @@
 package ysharp.treewalk.lexer;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class Preprocess {
     }
 
 
-    private static String collectString(String input, Cursor.CursorState cursor, int lineNo) throws YsharpError {
+    private static String collectString(String input, Cursor.CursorState cursor, int lineNo) throws YsharpException {
         if (cursor.current < 0 || cursor.current >= input.length())
             throw new IllegalStateException(
                     "[Programmatic error] current should be in range of input string");
@@ -52,7 +52,7 @@ public class Preprocess {
 
         if (!Cursor.stopSet(Cursor.peek(input, cursor), Cursor.CharMask.DoubleQuote)) {
 
-            throw new YsharpError(YsharpError.YsharpErrorType.SYNTAX, lineNo, "Unclosed double quote");
+            throw new YsharpException(YsharpException.YsharpErrorType.SYNTAX, lineNo, "Unclosed double quote");
         }
 
         result.append(Cursor.advance(input, cursor)); // consume "
@@ -88,7 +88,7 @@ public class Preprocess {
     }
 
 
-    private static String mergeStringRecursive(String program, Cursor.CursorState cursor, int origin) throws YsharpError {
+    private static String mergeStringRecursive(String program, Cursor.CursorState cursor, int origin) throws YsharpException {
         String sub = collectString(program, cursor, origin);
 
         List<BlankType> blanks = new ArrayList<>();
@@ -145,7 +145,7 @@ public class Preprocess {
     }
 
 
-    public static List<Cursor.Pchar> mergeContinuation(String program) throws YsharpError {
+    public static List<Cursor.Pchar> mergeContinuation(String program) throws YsharpException {
         program = clearEscapedBlanks(program);
 
         List<Cursor.Pchar> programResult = new ArrayList<>();
@@ -248,7 +248,7 @@ public class Preprocess {
         return programResult;
     }
 
-    public List<YsharpError> errors;
+    public List<YsharpException> errors;
 
     public boolean hadErrors (){
         return  !errors.isEmpty();
@@ -261,7 +261,7 @@ public class Preprocess {
     public List<Cursor.Pchar> process(String program) {
         try {
             return removeComments(mergeContinuation(program));
-        }catch (YsharpError err) {
+        }catch (YsharpException err) {
             this.errors.add(err);
         }
         return null;

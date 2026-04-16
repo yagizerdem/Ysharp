@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.function.core;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Function;
 import ysharp.treewalk.evaluator.Interpreter;
 import ysharp.treewalk.evaluator.Variable;
@@ -13,15 +13,15 @@ public abstract class MathFn extends Function.NativeFunction {
 
         @Override
         public Variable.Variant call(Interpreter i, List<Variable.Variant> args)
-                throws YsharpError {
+                throws YsharpException {
 
             requireArity(args, 1, getFnName());
 
             Variable.Variant value = args.get(0);
 
             if (!value.canImplicitlyConvertNumber()) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.PROCESS,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.PROCESS,
                         -1,
                         getFnName() + " argument 1 must be numeric."
                 );
@@ -43,7 +43,7 @@ public abstract class MathFn extends Function.NativeFunction {
 
         @Override
         public Variable.Variant call(Interpreter i, List<Variable.Variant> args)
-                throws YsharpError {
+                throws YsharpException {
 
             requireArity(args, 2, getFnName());
 
@@ -51,16 +51,16 @@ public abstract class MathFn extends Function.NativeFunction {
             Variable.Variant v2 = args.get(1);
 
             if (!v1.canImplicitlyConvertNumber()) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.PROCESS,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.PROCESS,
                         -1,
                         getFnName() + " argument 1 must be numeric."
                 );
             }
 
             if (!v2.canImplicitlyConvertNumber()) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.PROCESS,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.PROCESS,
                         -1,
                         getFnName() + " argument 2 must be numeric."
                 );
@@ -87,7 +87,7 @@ public abstract class MathFn extends Function.NativeFunction {
 
         @Override
         public Variable.Variant call(Interpreter i, List<Variable.Variant> args)
-                throws YsharpError {
+                throws YsharpException {
 
             requireArity(args, 2, getFnName());
 
@@ -95,16 +95,16 @@ public abstract class MathFn extends Function.NativeFunction {
             Variable.Variant v2 = args.get(1);
 
             if (!v1.canImplicitlyConvertNumber()) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.PROCESS,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.PROCESS,
                         -1,
                         getFnName() + " argument 1 must be numeric."
                 );
             }
 
             if (!v2.canImplicitlyConvertNumber()) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.PROCESS,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.PROCESS,
                         -1,
                         getFnName() + " argument 2 must be numeric."
                 );
@@ -131,7 +131,7 @@ public abstract class MathFn extends Function.NativeFunction {
 
         @Override
         public Variable.Variant call(Interpreter i, List<Variable.Variant> args)
-                throws YsharpError {
+                throws YsharpException {
 
             requireArity(args, 1, getFnName());
 
@@ -149,7 +149,7 @@ public abstract class MathFn extends Function.NativeFunction {
 
         @Override
         public Variable.Variant call(Interpreter i, List<Variable.Variant> args)
-                throws YsharpError {
+                throws YsharpException {
 
             requireArity(args, 1, getFnName());
 
@@ -167,7 +167,7 @@ public abstract class MathFn extends Function.NativeFunction {
 
         @Override
         public Variable.Variant call(Interpreter i, List<Variable.Variant> args)
-                throws YsharpError {
+                throws YsharpException {
 
             requireArity(args, 1, getFnName());
 

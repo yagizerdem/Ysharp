@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.YPF.ProgressBar;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Function;
 
@@ -15,8 +15,8 @@ public class yProgressBar {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method '" + fnName + "' called without 'this'."
             );
@@ -25,8 +25,8 @@ public class yProgressBar {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof yProgressBarInstance)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Expected ProgressBar but got '" + obj.getType() + "'"
             );
@@ -65,7 +65,7 @@ public class yProgressBar {
 
                         @Override
                         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
-                                throws YsharpError {
+                                throws YsharpException {
 
                             yProgressBarInstance pb =
                                     yProgressBar.requireProgressBarThis(interpreter, name);
@@ -105,8 +105,8 @@ public class yProgressBar {
                                 }
 
                                 if (selected == null) {
-                                    throw new YsharpError(
-                                            YsharpError.YsharpErrorType.PROCESS,
+                                    throw new YsharpException(
+                                            YsharpException.YsharpErrorType.PROCESS,
                                             -1,
                                             "method overload not found"
                                     );
@@ -119,8 +119,8 @@ public class yProgressBar {
                                 );
 
                             } catch (Exception e) {
-                                throw new YsharpError(
-                                        YsharpError.YsharpErrorType.PROCESS,
+                                throw new YsharpException(
+                                        YsharpException.YsharpErrorType.PROCESS,
                                         0,
                                         "Native call failed: " + name
                                 );
@@ -165,7 +165,7 @@ public class yProgressBar {
 
         @Override
         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
-                throws YsharpError {
+                throws YsharpException {
 
             return new Variable.Variant(new yProgressBarInstance());
         }

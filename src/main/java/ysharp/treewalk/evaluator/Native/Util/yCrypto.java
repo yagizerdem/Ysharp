@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Util;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 
 import javax.crypto.Cipher;
@@ -60,7 +60,7 @@ public class yCrypto {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
@@ -72,7 +72,7 @@ public class yCrypto {
                         String response = HexFormat.of().formatHex(digest);
                         return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (NoSuchAlgorithmException e) {
-                        throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                                 -1 ,
                                 "Crypto.md5: algorithm not available");
                     }
@@ -101,7 +101,7 @@ public class yCrypto {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
@@ -113,7 +113,7 @@ public class yCrypto {
                         String response = HexFormat.of().formatHex(digest);
                         return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (NoSuchAlgorithmException e) {
-                        throw new YsharpError(YsharpError.YsharpErrorType.PROCESS ,
+                        throw new YsharpException(YsharpException.YsharpErrorType.PROCESS ,
                                 -1,
                                 "Crypto.sha1: algorithm not available");
                     }
@@ -142,7 +142,7 @@ public class yCrypto {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
@@ -154,7 +154,7 @@ public class yCrypto {
                         String response = HexFormat.of().formatHex(digest);
                         return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (NoSuchAlgorithmException e) {
-                        throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                                 -1,
                                 "Crypto.sha256: algorithm not available");
                     }
@@ -183,7 +183,7 @@ public class yCrypto {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
@@ -195,7 +195,7 @@ public class yCrypto {
                         String response = HexFormat.of().formatHex(digest);
                         return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (NoSuchAlgorithmException e) {
-                        throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                                 -1,
                                 "Crypto.sha512: algorithm not available");
                     }
@@ -224,7 +224,7 @@ public class yCrypto {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 2, getClassName());
 
@@ -240,7 +240,7 @@ public class yCrypto {
                         String response = HexFormat.of().formatHex(digest);
                         return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (Exception e) {
-                        throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                                 -1,
                                 "Crypto.hmacSha256: " + e.getMessage());
                     }
@@ -269,7 +269,7 @@ public class yCrypto {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 2, getClassName());
 
@@ -285,7 +285,7 @@ public class yCrypto {
                         String response = HexFormat.of().formatHex(digest);
                         return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (Exception e) {
-                        throw new YsharpError(YsharpError.YsharpErrorType.PROCESS ,
+                        throw new YsharpException(YsharpException.YsharpErrorType.PROCESS ,
                                 -1,
                                 "Crypto.hmacSha512: " + e.getMessage());
                     }
@@ -315,7 +315,7 @@ public class yCrypto {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
@@ -349,7 +349,7 @@ public class yCrypto {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
@@ -360,7 +360,7 @@ public class yCrypto {
                         String response = new String(decoded, StandardCharsets.UTF_8);
                         return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (IllegalArgumentException e) {
-                        throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                                 -1,
                                 "Crypto.base64Decode: invalid base64 string");
                     }
@@ -390,7 +390,7 @@ public class yCrypto {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
@@ -424,7 +424,7 @@ public class yCrypto {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
@@ -435,7 +435,7 @@ public class yCrypto {
                         String response = new String(bytes, StandardCharsets.UTF_8);
                         return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (IllegalArgumentException e) {
-                        throw new YsharpError( YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException( YsharpException.YsharpErrorType.PROCESS,
                                 -1,
                                 "Crypto.fromHex: invalid hex string");
                     }
@@ -465,7 +465,7 @@ public class yCrypto {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
@@ -501,7 +501,7 @@ public class yCrypto {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     String response = java.util.UUID.randomUUID().toString();
 
@@ -531,7 +531,7 @@ public class yCrypto {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     try {
                         KeyGenerator kg = KeyGenerator.getInstance("AES");
@@ -540,7 +540,7 @@ public class yCrypto {
                         String response = Base64.getEncoder().encodeToString(key.getEncoded());
                         return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (NoSuchAlgorithmException e) {
-                        throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                                 -1,
                                 "Crypto.aesGenerateKey: " + e.getMessage());
                     }
@@ -569,7 +569,7 @@ public class yCrypto {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 2, getClassName());
 
@@ -595,7 +595,7 @@ public class yCrypto {
                         String response = Base64.getEncoder().encodeToString(combined);
                         return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (Exception e) {
-                        throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                                 -1,
                                 "Crypto.aesEncrypt: " + e.getMessage());
                     }
@@ -624,7 +624,7 @@ public class yCrypto {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 2, getClassName());
 
@@ -650,7 +650,7 @@ public class yCrypto {
                         String response = new String(decrypted, StandardCharsets.UTF_8);
                         return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (Exception e) {
-                        throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                                 -1,
                                 "Crypto.aesDecrypt: " + e.getMessage());
                     }
@@ -678,7 +678,7 @@ public class yCrypto {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 2, getClassName());
 
@@ -704,7 +704,7 @@ public class yCrypto {
                         String response = Base64.getEncoder().encodeToString(combined);
                         return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (Exception e) {
-                        throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                                 -1,
                                 "Crypto.aesGcmEncrypt: " + e.getMessage());
                     }
@@ -733,7 +733,7 @@ public class yCrypto {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 2, getClassName());
 
@@ -759,7 +759,7 @@ public class yCrypto {
                         String response = new String(decrypted, StandardCharsets.UTF_8);
                         return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (Exception e) {
-                        throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                                 -1,
                                 "Crypto.aesGcmDecrypt: " + e.getMessage());
                     }
@@ -788,7 +788,7 @@ public class yCrypto {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     try {
                         KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
@@ -801,7 +801,7 @@ public class yCrypto {
                         String response = "{\"publicKey\":\"" + pub + "\",\"privateKey\":\"" + priv + "\"}";
                         return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (NoSuchAlgorithmException e) {
-                        throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                                 -1 ,
                                 "Crypto.rsaGenerateKeyPair: " + e.getMessage());
                     }
@@ -830,7 +830,7 @@ public class yCrypto {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 2, getClassName());
 
@@ -849,7 +849,7 @@ public class yCrypto {
                         String response = Base64.getEncoder().encodeToString(encrypted);
                         return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (Exception e) {
-                        throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                                 -1,
                                 "Crypto.rsaEncrypt: " + e.getMessage());
                     }
@@ -878,7 +878,7 @@ public class yCrypto {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 2, getClassName());
 
@@ -897,7 +897,7 @@ public class yCrypto {
                         String response = new String(decrypted, StandardCharsets.UTF_8);
                         return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (Exception e) {
-                        throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                                 -1,
                                 "Crypto.rsaDecrypt: " + e.getMessage());
                     }
@@ -926,7 +926,7 @@ public class yCrypto {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 2, getClassName());
 
@@ -946,7 +946,7 @@ public class yCrypto {
                         String response = Base64.getEncoder().encodeToString(signature);
                         return new Variable.Variant(new yString.yStringInstance(response));
                     } catch (Exception e) {
-                        throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                                 -1,
                                 "Crypto.rsaSign: " + e.getMessage());
                     }
@@ -975,7 +975,7 @@ public class yCrypto {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 3, getClassName());
 
@@ -995,7 +995,7 @@ public class yCrypto {
 
                         return new Variable.Variant(response);
                     } catch (Exception e) {
-                        throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                                 -1,
                                 "Crypto.rsaVerify: " + e.getMessage());
                     }
@@ -1024,7 +1024,7 @@ public class yCrypto {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 2, getClassName());
 
@@ -1070,7 +1070,7 @@ public class yCrypto {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 3, getClassName());
 
@@ -1098,8 +1098,8 @@ public class yCrypto {
 
                     } catch (Exception e) {
 
-                        throw new YsharpError(
-                                YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
                                 -1,
                                 "Crypto.pbkdf2: " + e.getMessage()
                         );
@@ -1129,7 +1129,7 @@ public class yCrypto {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 2, getClassName());
 
@@ -1157,8 +1157,8 @@ public class yCrypto {
 
                     } catch (Exception e) {
 
-                        throw new YsharpError(
-                                YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
                                 -1,
                                 "Crypto.scrypt: " + e.getMessage()
                         );
@@ -1188,7 +1188,7 @@ public class yCrypto {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
@@ -1231,7 +1231,7 @@ public class yCrypto {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 2, getClassName());
 
@@ -1259,8 +1259,8 @@ public class yCrypto {
 
                     } catch (Exception e) {
 
-                        throw new YsharpError(
-                                YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
                                 -1,
                                 "Crypto.deriveKey: " + e.getMessage()
                         );
@@ -1291,7 +1291,7 @@ public class yCrypto {
         @Override
         public Variable.Variant call(Interpreter interpreter,
                                      List<Variable.Variant> arguments)
-                throws YsharpError {
+                throws YsharpException {
 
             requireArity(arguments, 0, getClassName());
 

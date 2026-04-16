@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.lexer.Token;
 
 import java.util.List;
@@ -14,8 +14,8 @@ public class yClass {
     static private RuntimeObject requireThis(Interpreter interpreter) {
         Variable thisVar = interpreter.curEnv.getValue("this");
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method 'add' called without a valid 'this' context."
             );
@@ -54,7 +54,7 @@ public class yClass {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 return new Variable.Variant(requireThis(interpreter).getType());
             }
 
@@ -80,7 +80,7 @@ public class yClass {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 return new Variable.Variant(requireThis(interpreter).getPrototype());
             }
 

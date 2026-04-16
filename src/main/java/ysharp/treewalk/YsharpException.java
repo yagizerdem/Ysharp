@@ -1,6 +1,6 @@
 package ysharp.treewalk;
 
-public class YsharpError extends RuntimeException {
+public class YsharpException extends RuntimeException {
 
 
     public enum YsharpErrorType {
@@ -15,7 +15,7 @@ public class YsharpError extends RuntimeException {
     private final String message;
     private final boolean printMessage;
 
-    public YsharpError(YsharpErrorType type, int line, String message) {
+    public YsharpException(YsharpErrorType type, int line, String message) {
         super(message);
         this.type    = type;
         this.line    = line;
@@ -24,7 +24,7 @@ public class YsharpError extends RuntimeException {
     }
 
 
-    public YsharpError(YsharpErrorType type, int line, String message, boolean printMessage) {
+    public YsharpException(YsharpErrorType type, int line, String message, boolean printMessage) {
         super(message);
         this.type    = type;
         this.line    = line;

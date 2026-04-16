@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Collections.HashMap.function.instance;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Callable;
 import ysharp.treewalk.evaluator.Function;
 import ysharp.treewalk.evaluator.Interpreter;
@@ -20,7 +20,7 @@ public class MergeFn extends Function.NativeFunction {
     @Override
     public Variable.Variant call(Interpreter interpreter,
                                  List<Variable.Variant> arguments)
-            throws YsharpError {
+            throws YsharpException {
 
         Variable.Variant key      = arguments.get(0);
         Variable.Variant value    = arguments.get(1);
@@ -37,8 +37,8 @@ public class MergeFn extends Function.NativeFunction {
 
 
         if (!fnVariant.isCallable()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "merge: third argument must be a function."
             );

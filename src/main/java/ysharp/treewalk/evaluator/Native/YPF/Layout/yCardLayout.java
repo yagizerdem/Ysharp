@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.YPF.Layout;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 
 import java.awt.CardLayout;
@@ -17,8 +17,8 @@ public class yCardLayout {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method '" + fnName + "' called without 'this'."
             );
@@ -27,8 +27,8 @@ public class yCardLayout {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof yCardLayoutInstance)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Expected CardLayout but got '" + obj.getType() + "'"
             );
@@ -68,7 +68,7 @@ public class yCardLayout {
 
                         @Override
                         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
-                                throws YsharpError {
+                                throws YsharpException {
 
                             yCardLayoutInstance layoutInst =
                                     yCardLayout.requireCardLayoutThis(interpreter, name);
@@ -108,8 +108,8 @@ public class yCardLayout {
                                 }
 
                                 if (selected == null) {
-                                    throw new YsharpError(
-                                            YsharpError.YsharpErrorType.PROCESS,
+                                    throw new YsharpException(
+                                            YsharpException.YsharpErrorType.PROCESS,
                                             -1,
                                             "method overload not found"
                                     );
@@ -122,8 +122,8 @@ public class yCardLayout {
                                 );
 
                             } catch (Exception e) {
-                                throw new YsharpError(
-                                        YsharpError.YsharpErrorType.PROCESS,
+                                throw new YsharpException(
+                                        YsharpException.YsharpErrorType.PROCESS,
                                         0,
                                         "Native call failed: " + name
                                 );
@@ -169,7 +169,7 @@ public class yCardLayout {
 
         @Override
         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
-                throws YsharpError {
+                throws YsharpException {
 
             return new Variable.Variant(new yCardLayoutInstance());
         }

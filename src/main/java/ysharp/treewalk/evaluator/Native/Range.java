@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Function;
 import ysharp.treewalk.evaluator.Interpreter;
 import ysharp.treewalk.evaluator.RuntimeObject;
@@ -47,7 +47,7 @@ public class Range{
         }
 
         @Override
-        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
             requireArity(arguments, arity(), getFnName());
             int start = requireInt(arguments.getFirst(), getFnName(), 1);
             int end = requireInt(arguments.get(1), getFnName(), 2);

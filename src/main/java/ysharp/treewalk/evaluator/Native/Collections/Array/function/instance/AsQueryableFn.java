@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Collections.Array.function.instance;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Callable;
 import ysharp.treewalk.evaluator.Function;
 import ysharp.treewalk.evaluator.Interpreter;
@@ -17,7 +17,7 @@ public class AsQueryableFn extends Function.NativeFunction implements Callable {
     }
 
     @Override
-    public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+    public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
         requireArity(arguments, arity(), getFnName());
         yArray.yArrayInstance array = yArray.requireArrayThis(interpreter, getFnName());
 

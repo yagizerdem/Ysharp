@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.YPF.Container.Panel;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 
 import javax.swing.*;
@@ -48,7 +48,7 @@ public class ySplitPane {
 
         @Override
         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
-                throws YsharpError {
+                throws YsharpException {
 
             return new Variable.Variant(new ySplitPaneInstance());
         }

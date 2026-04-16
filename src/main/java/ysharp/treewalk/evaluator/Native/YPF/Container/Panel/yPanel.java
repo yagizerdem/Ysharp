@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.YPF.Container.Panel;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Function;
 
@@ -15,8 +15,8 @@ public class yPanel {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method '" + fnName + "' called without 'this'."
             );
@@ -25,8 +25,8 @@ public class yPanel {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof yPanelInstance)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Expected Panel but got '" + obj.getType() + "'"
             );
@@ -65,7 +65,7 @@ public class yPanel {
 
                         @Override
                         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
-                                throws YsharpError {
+                                throws YsharpException {
 
                             yPanelInstance panel =
                                     yPanel.requirePanelThis(interpreter, name);
@@ -106,8 +106,8 @@ public class yPanel {
                                 }
 
                                 if (selected == null) {
-                                    throw new YsharpError(
-                                            YsharpError.YsharpErrorType.PROCESS,
+                                    throw new YsharpException(
+                                            YsharpException.YsharpErrorType.PROCESS,
                                             -1,
                                             "method overload not found"
                                     );
@@ -120,8 +120,8 @@ public class yPanel {
                                 );
 
                             } catch (Exception e) {
-                                throw new YsharpError(
-                                        YsharpError.YsharpErrorType.PROCESS,
+                                throw new YsharpException(
+                                        YsharpException.YsharpErrorType.PROCESS,
                                         0,
                                         "Native call failed: " + name
                                 );
@@ -166,7 +166,7 @@ public class yPanel {
 
         @Override
         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
-                throws YsharpError {
+                throws YsharpException {
 
             return new Variable.Variant(new yPanelInstance());
         }

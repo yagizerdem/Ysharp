@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Util;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 
 import java.io.IOException;
@@ -27,11 +27,11 @@ public class yPath {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     if (arguments.isEmpty()) {
-                        throw new YsharpError(
-                                YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
                                 0,
                                 getClassName() + ".join requires at least 1 argument"
                         );
@@ -68,7 +68,7 @@ public class yPath {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
                     String path = requireString(arguments.getFirst(), getClassName(), 1);
@@ -100,7 +100,7 @@ public class yPath {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
                     String path = requireString(arguments.getFirst(), getClassName(), 1);
@@ -132,7 +132,7 @@ public class yPath {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
                     String path = requireString(arguments.getFirst(), getClassName(), 1);
@@ -171,7 +171,7 @@ public class yPath {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
                     String path = requireString(arguments.getFirst(), getClassName(), 1);
@@ -180,8 +180,8 @@ public class yPath {
                         String abs = Path.of(path).toAbsolutePath().toString();
                         return new Variable.Variant(new yString.yStringInstance(abs));
                     } catch (Exception e) {
-                        throw new YsharpError(
-                                YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
                                 0,
                                 "Path.absolute failed: " + path
                         );
@@ -208,7 +208,7 @@ public class yPath {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
                     String path = requireString(arguments.getFirst(), getClassName(), 1);
@@ -237,7 +237,7 @@ public class yPath {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
                     String path = requireString(arguments.getFirst(), getClassName(), 1);
@@ -266,7 +266,7 @@ public class yPath {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
                     String path = requireString(arguments.getFirst(), getClassName(), 1);
@@ -295,7 +295,7 @@ public class yPath {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
                     String path = requireString(arguments.getFirst(), getClassName(), 1);
@@ -304,8 +304,8 @@ public class yPath {
                         Files.createDirectories(Path.of(path));
                         return new Variable.Variant(true);
                     } catch (IOException e) {
-                        throw new YsharpError(
-                                YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
                                 0,
                                 "Path.mkdir failed: " + path
                         );
@@ -330,9 +330,9 @@ public class yPath {
         @Override
         public Variable.Variant call(Interpreter interpreter,
                                      List<Variable.Variant> arguments)
-                throws YsharpError {
+                throws YsharpException {
 
-            throw new YsharpError(YsharpError.YsharpErrorType.PROCESS, -1, "cannot take instance of static class");
+            throw new YsharpException(YsharpException.YsharpErrorType.PROCESS, -1, "cannot take instance of static class");
         }
 
         @Override

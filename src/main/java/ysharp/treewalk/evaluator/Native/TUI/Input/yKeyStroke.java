@@ -2,7 +2,7 @@ package ysharp.treewalk.evaluator.Native.TUI.Input;
 
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 
 import java.util.List;
@@ -13,11 +13,11 @@ public class yKeyStroke {
     public static KeyType requireKeyType(
             Variable.Variant variant,
             String fn,
-            int index) throws YsharpError {
+            int index) throws YsharpException {
 
         if (variant == null || !(variant.value instanceof KeyType)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     fn + ": argument " + index + " must be KeyType."
             );
@@ -30,8 +30,8 @@ public class yKeyStroke {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method " + "'" + fnName+ "'" + "called without a valid 'this' context."
             );
@@ -40,8 +40,8 @@ public class yKeyStroke {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof yKeyStrokeInstance)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method '" + fnName + "' expected 'KeyStroke' as 'this' but got '" + obj.getType() + "'."
             );
@@ -79,7 +79,7 @@ public class yKeyStroke {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
 
@@ -114,7 +114,7 @@ public class yKeyStroke {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
 
@@ -148,7 +148,7 @@ public class yKeyStroke {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
 
@@ -184,7 +184,7 @@ public class yKeyStroke {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
 
@@ -220,7 +220,7 @@ public class yKeyStroke {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
 
@@ -257,7 +257,7 @@ public class yKeyStroke {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
 
@@ -294,7 +294,7 @@ public class yKeyStroke {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
 
@@ -361,7 +361,7 @@ public class yKeyStroke {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 1, getFnName());
 
@@ -390,7 +390,7 @@ public class yKeyStroke {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 3, getFnName());
 
@@ -421,7 +421,7 @@ public class yKeyStroke {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 4, getFnName());
 
@@ -452,7 +452,7 @@ public class yKeyStroke {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 3, getFnName());
 
@@ -482,7 +482,7 @@ public class yKeyStroke {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 4, getFnName());
 
@@ -508,8 +508,8 @@ public class yKeyStroke {
         }
 
         @Override
-        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
-            throw new YsharpError(YsharpError.YsharpErrorType.PROCESS, -1, "cannot call key stroke class");
+        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
+            throw new YsharpException(YsharpException.YsharpErrorType.PROCESS, -1, "cannot call key stroke class");
         }
 
         @Override

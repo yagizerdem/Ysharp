@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Collections.PriorityQueue;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Native.Collections.PriorityQueue.function.instance.*;
 
@@ -15,8 +15,8 @@ public class yPriorityQueue {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method called without a valid 'this' context."
             );
@@ -25,8 +25,8 @@ public class yPriorityQueue {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof yPriorityQueue.yPriorityQueueInstance)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "This method can only be called on PriorityQueue objects."
             );
@@ -183,7 +183,7 @@ public class yPriorityQueue {
         @Override
         public Variable.Variant call(Interpreter interpreter,
                                      List<Variable.Variant> arguments)
-                throws YsharpError {
+                throws YsharpException {
 
             yPriorityQueueInstance newPQ = new yPriorityQueueInstance();
 

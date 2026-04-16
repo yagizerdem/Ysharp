@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.LINQ;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Native.Collections.Array.yArray;
 
@@ -15,8 +15,8 @@ public class Queryable {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method " + "'" + fnName+ "'" + "called without a valid 'this' context."
             );
@@ -25,8 +25,8 @@ public class Queryable {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof Queryable.QueryableInstance)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method '" + fnName + "' expected 'queryble' as 'this' but got '" + obj.getType() + "'."
             );
@@ -114,7 +114,7 @@ public class Queryable {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 QueryableInstance queryable = requireQueryableThis(interpreter, getFnName());
@@ -150,7 +150,7 @@ public class Queryable {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 QueryableInstance queryable = requireQueryableThis(interpreter, getFnName());
@@ -186,7 +186,7 @@ public class Queryable {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 QueryableInstance queryable = requireQueryableThis(interpreter, getFnName());
@@ -227,7 +227,7 @@ public class Queryable {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 QueryableInstance queryable = requireQueryableThis(interpreter, getFnName());
@@ -269,7 +269,7 @@ public class Queryable {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 QueryableInstance queryable = requireQueryableThis(interpreter, getFnName());
@@ -311,7 +311,7 @@ public class Queryable {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 QueryableInstance queryable = requireQueryableThis(interpreter, getFnName());
@@ -353,7 +353,7 @@ public class Queryable {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 QueryableInstance queryable = requireQueryableThis(interpreter, getFnName());
@@ -395,7 +395,7 @@ public class Queryable {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 QueryableInstance queryable = requireQueryableThis(interpreter, getFnName());
@@ -437,7 +437,7 @@ public class Queryable {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 QueryableInstance queryable = requireQueryableThis(interpreter, getFnName());
@@ -479,7 +479,7 @@ public class Queryable {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 QueryableInstance queryable = requireQueryableThis(interpreter, getFnName());
@@ -521,7 +521,7 @@ public class Queryable {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 QueryableInstance queryable = requireQueryableThis(interpreter, getFnName());
@@ -563,7 +563,7 @@ public class Queryable {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 QueryableInstance queryable = requireQueryableThis(interpreter, getFnName());
@@ -598,7 +598,7 @@ public class Queryable {
             public int arity() { return 0; }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 requireArity(arguments, arity(), getFnName());
                 QueryableInstance queryable = requireQueryableThis(interpreter, getFnName());
 
@@ -623,7 +623,7 @@ public class Queryable {
             public int arity() { return 0; }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 requireArity(arguments, arity(), getFnName());
                 QueryableInstance queryable = requireQueryableThis(interpreter, getFnName());
 
@@ -648,7 +648,7 @@ public class Queryable {
             public int arity() { return 0; }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 requireArity(arguments, arity(), getFnName());
                 QueryableInstance queryable = requireQueryableThis(interpreter, getFnName());
 
@@ -673,7 +673,7 @@ public class Queryable {
             public int arity() { return 0; }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 requireArity(arguments, arity(), getFnName());
                 QueryableInstance queryable = requireQueryableThis(interpreter, getFnName());
 
@@ -698,7 +698,7 @@ public class Queryable {
             public int arity() { return 0; }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 requireArity(arguments, arity(), getFnName());
                 QueryableInstance queryable = requireQueryableThis(interpreter, getFnName());
 
@@ -728,7 +728,7 @@ public class Queryable {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 QueryableInstance queryable = requireQueryableThis(interpreter, getFnName());
@@ -792,7 +792,7 @@ public class Queryable {
         }
 
 
-        public Variable.Variant execute(Interpreter interpreter) throws YsharpError {
+        public Variable.Variant execute(Interpreter interpreter) throws YsharpException {
 
             List<Variable.Variant> result = new ArrayList<>(this.data);
 
@@ -1050,7 +1050,7 @@ public class Queryable {
         }
 
         @Override
-        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
             ArrayList<Variable.Variant> value = new ArrayList<>();
             QueryableInstance newQueryable = new QueryableInstance(value);
 

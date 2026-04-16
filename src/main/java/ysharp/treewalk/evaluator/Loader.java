@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.lexer.Cursor;
 import ysharp.treewalk.lexer.Lexer;
 import ysharp.treewalk.lexer.Preprocess;
@@ -87,7 +87,7 @@ public class Loader {
 
             if(resolver.hadErrors()) {
                 StdIO.printStdErr(resolver.errors);
-                throw new YsharpError(YsharpError.YsharpErrorType.SYNTAX,
+                throw new YsharpException(YsharpException.YsharpErrorType.SYNTAX,
                         -1 ,
                         "do not print",
                         false);
@@ -121,7 +121,7 @@ public class Loader {
             if(interpreter.hadErrors()) {
                 System.err.println("Error occured at file : " + curNode.modulePath);
                 StdIO.printStdErr(interpreter.errors);
-                throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                         -1 ,
                         "do not print",
                         false);
@@ -166,8 +166,8 @@ public class Loader {
 
         if (visiting.contains(curModulePath)) {
             System.err.println("Error occured at file : " + curModulePath);
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     "Circular dependency detected: " + curModulePath
             );
@@ -185,7 +185,7 @@ public class Loader {
         if(preprocess.hadErrors()){
             StdIO.printStdErr(preprocess.errors);
             System.err.println("Error occured at file : " + curModulePath);
-            throw new YsharpError(YsharpError.YsharpErrorType.SYNTAX,
+            throw new YsharpException(YsharpException.YsharpErrorType.SYNTAX,
                     -1 ,
                     "do not print",
                     false);
@@ -196,7 +196,7 @@ public class Loader {
         if(lexer.hadErrors()) {
             System.err.println("Error occured at file : " + curModulePath);
             StdIO.printStdErr(lexer.errors);
-            throw new YsharpError(YsharpError.YsharpErrorType.SYNTAX,
+            throw new YsharpException(YsharpException.YsharpErrorType.SYNTAX,
                     -1 ,
                     "do not print",
                     false);
@@ -207,7 +207,7 @@ public class Loader {
         if(parser.hadErrors()) {
             System.err.println("Error occured at file : " + curModulePath);
             StdIO.printStdErr(parser.errors);
-            throw new YsharpError(YsharpError.YsharpErrorType.SYNTAX,
+            throw new YsharpException(YsharpException.YsharpErrorType.SYNTAX,
                     -1 ,
                     "do not print",
                     false);
@@ -239,8 +239,8 @@ public class Loader {
         Path p = Paths.get(path);
 
         if (!Files.exists(p)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     "Path does not exist: " + path
             );

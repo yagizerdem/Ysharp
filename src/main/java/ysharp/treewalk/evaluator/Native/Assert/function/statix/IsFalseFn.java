@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Assert.function.statix;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Callable;
 import ysharp.treewalk.evaluator.Function;
 import ysharp.treewalk.evaluator.Interpreter;
@@ -18,15 +18,15 @@ public class IsFalseFn extends Function.NativeFunction implements Callable {
     @Override
     public Variable.Variant call(Interpreter interpreter,
                                  List<Variable.Variant> arguments)
-            throws YsharpError {
+            throws YsharpException {
 
         requireArity(arguments, arity(), getFnName());
 
         Variable.Variant cond = arguments.getFirst();
 
         if (cond.asBoolean()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Assertion failed: expected condition to be false"
             );

@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.YPF.ComboBox;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Function;
 
@@ -15,8 +15,8 @@ public class yComboBox {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method '" + fnName + "' called without 'this'."
             );
@@ -25,8 +25,8 @@ public class yComboBox {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof yComboBoxInstance)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Expected ComboBox but got '" + obj.getType() + "'"
             );
@@ -65,7 +65,7 @@ public class yComboBox {
 
                         @Override
                         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
-                                throws YsharpError {
+                                throws YsharpException {
 
                             yComboBoxInstance cb =
                                     yComboBox.requireComboBoxThis(interpreter, name);
@@ -105,8 +105,8 @@ public class yComboBox {
                                 }
 
                                 if (selected == null) {
-                                    throw new YsharpError(
-                                            YsharpError.YsharpErrorType.PROCESS,
+                                    throw new YsharpException(
+                                            YsharpException.YsharpErrorType.PROCESS,
                                             -1,
                                             "method overload not found"
                                     );
@@ -119,8 +119,8 @@ public class yComboBox {
                                 );
 
                             } catch (Exception e) {
-                                throw new YsharpError(
-                                        YsharpError.YsharpErrorType.PROCESS,
+                                throw new YsharpException(
+                                        YsharpException.YsharpErrorType.PROCESS,
                                         0,
                                         "Native call failed: " + name
                                 );
@@ -165,7 +165,7 @@ public class yComboBox {
 
         @Override
         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
-                throws YsharpError {
+                throws YsharpException {
 
             return new Variable.Variant(new yComboBoxInstance());
         }

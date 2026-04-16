@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,16 +33,16 @@ public abstract class RuntimeObject {
         Variable var = this.get(name);
 
         if (var == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.SEMANTIC,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.SEMANTIC,
                     -1,
                     "Type '" + this.getType() + "' has no field named '" + name + "'."
             );
         }
 
         if (var.isConst) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.SEMANTIC,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.SEMANTIC,
                     -1,
                     "Cannot assign to constant field '" + name + "' in type '" + this.getType() + "'."
             );
@@ -85,11 +85,11 @@ public abstract class RuntimeObject {
     // helper functions
 
     protected void requireArity(List<?> args, int expected, String fn)
-            throws YsharpError {
+            throws YsharpException {
 
         if (args.size() != expected) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     fn + " expects exactly " + expected + " arguments."
             );
@@ -97,11 +97,11 @@ public abstract class RuntimeObject {
     }
 
     protected double requireNumber(Variable.Variant v, String fn, int index)
-            throws YsharpError {
+            throws YsharpException {
 
         if (!v.isNumber()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     fn + " argument " + index + " must be numeric."
             );
@@ -112,11 +112,11 @@ public abstract class RuntimeObject {
 
     protected int requireInt(Variable.Variant v,
                              String fn,
-                             int index) throws YsharpError {
+                             int index) throws YsharpException {
 
         if (!v.isInt()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     fn + " argument " + index + " must be an integer."
             );
@@ -127,11 +127,11 @@ public abstract class RuntimeObject {
 
     protected char requireChar(Variable.Variant v,
                                String fn,
-                               int index) throws YsharpError {
+                               int index) throws YsharpException {
 
         if (!v.isChar()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     fn + " argument " + index + " must be a character."
             );
@@ -142,11 +142,11 @@ public abstract class RuntimeObject {
 
     protected boolean requireBoolean(Variable.Variant v,
                                      String fn,
-                                     int index) throws YsharpError {
+                                     int index) throws YsharpException {
 
         if (!v.isBoolean()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     fn + " argument " + index + " must be a boolean."
             );
@@ -157,11 +157,11 @@ public abstract class RuntimeObject {
 
     protected double requireDouble(Variable.Variant v,
                                    String fn,
-                                   int index) throws YsharpError {
+                                   int index) throws YsharpException {
 
         if (!v.isDouble()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     fn + " argument " + index + " must be a double."
             );
@@ -172,11 +172,11 @@ public abstract class RuntimeObject {
 
     protected String requireString(Variable.Variant v,
                                    String fn,
-                                   int index) throws YsharpError {
+                                   int index) throws YsharpException {
 
         if (!v.isString()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     fn + " argument " + index + " must be a string."
             );
@@ -187,7 +187,7 @@ public abstract class RuntimeObject {
 
     protected String requireStringOrChar(Variable.Variant v,
                                          String fn,
-                                         int index) throws YsharpError {
+                                         int index) throws YsharpException {
 
         if (v.isString()) {
             return v.asString();
@@ -197,8 +197,8 @@ public abstract class RuntimeObject {
             return String.valueOf(v.asCharacter());
         }
 
-        throw new YsharpError(
-                YsharpError.YsharpErrorType.PROCESS,
+        throw new YsharpException(
+                YsharpException.YsharpErrorType.PROCESS,
                 -1,
                 fn + " argument " + index + " must be a string or a character."
         );
@@ -206,11 +206,11 @@ public abstract class RuntimeObject {
 
     protected yString.yStringInstance requireStringObject(Variable.Variant v,
                                    String fn,
-                                   int index) throws YsharpError {
+                                   int index) throws YsharpException {
 
         if (!v.isString()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     fn + " argument " + index + " must be a string."
             );
@@ -221,11 +221,11 @@ public abstract class RuntimeObject {
 
     protected Callable requireCallable(Variable.Variant v,
                                        String fn,
-                                       int index) throws YsharpError {
+                                       int index) throws YsharpException {
 
         if (!v.isCallable()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     fn + " argument " + index + " must be a function."
             );

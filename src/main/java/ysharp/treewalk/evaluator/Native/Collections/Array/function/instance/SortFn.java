@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Collections.Array.function.instance;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Callable;
 import ysharp.treewalk.evaluator.Function;
 import ysharp.treewalk.evaluator.Interpreter;
@@ -20,13 +20,13 @@ public class SortFn extends Function.NativeFunction implements Callable {
     @Override
     public Variable.Variant call(Interpreter interpreter,
                                  List<Variable.Variant> arguments)
-            throws YsharpError {
+            throws YsharpException {
 
         yArray.yArrayInstance array = yArray.requireArrayThis(interpreter, getFnName());
 
         if (arguments.size() > 1) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "'sort' expects 0 or 1 argument."
             );
@@ -49,7 +49,7 @@ public class SortFn extends Function.NativeFunction implements Callable {
             });
         } else {
             Callable callback = requireCallable(arguments.getFirst(), getFnName(), 1);
-            final YsharpError[] sortError = new YsharpError[1];
+            final YsharpException[] sortError = new YsharpException[1];
 
             try {
                 array.data.sort((cur, other) -> {
@@ -69,14 +69,14 @@ public class SortFn extends Function.NativeFunction implements Callable {
 
                         return result.isTruthy() ? 1 : -1;
 
-                    } catch (YsharpError e) {
+                    } catch (YsharpException e) {
                         sortError[0] = e;
                         return 0;
                     }
                 });
             } catch (IllegalArgumentException e) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.PROCESS,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.PROCESS,
                         0,
                         "Comparison method violates its general contract in 'sort'. Ensure consistent return values."
                 );

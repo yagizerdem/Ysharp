@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Collections.Trie.Wrapper.T9Trie;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Native.Collections.Trie.Concrete.T9Trie;
 import ysharp.treewalk.evaluator.Native.Collections.Trie.Wrapper.T9Trie.function.instance.*;
@@ -14,8 +14,8 @@ public class yT9Trie {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method called without a valid 'this' context."
             );
@@ -24,8 +24,8 @@ public class yT9Trie {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof yT9Trie.yT9TrieInstance)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "This method can only be called on T9Trie objects."
             );
@@ -130,7 +130,7 @@ public class yT9Trie {
         @Override
         public Variable.Variant call(Interpreter interpreter,
                                      List<Variable.Variant> arguments)
-                throws YsharpError {
+                throws YsharpException {
 
             this.requireArity(arguments, 0, "T9Trie");
 

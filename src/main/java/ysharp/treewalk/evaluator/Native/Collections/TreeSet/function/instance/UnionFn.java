@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Collections.TreeSet.function.instance;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Function;
 import ysharp.treewalk.evaluator.Interpreter;
 import ysharp.treewalk.evaluator.Native.Collections.TreeSet.yTreeSet;
@@ -19,7 +19,7 @@ public class UnionFn extends Function.NativeFunction {
     @Override
     public Variable.Variant call(Interpreter interpreter,
                                  List<Variable.Variant> arguments)
-            throws YsharpError {
+            throws YsharpException {
 
         this.requireArity(arguments,1, "TreeSet.union");
 
@@ -28,8 +28,8 @@ public class UnionFn extends Function.NativeFunction {
 
         RuntimeObject otherObj = otherVariant.asRuntimeObject();
         if (!(otherObj instanceof yTreeSet.yTreeSetInstance)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "union: argument must be a TreeSet."
             );

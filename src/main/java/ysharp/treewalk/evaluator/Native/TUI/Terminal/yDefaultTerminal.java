@@ -2,7 +2,7 @@ package ysharp.treewalk.evaluator.Native.TUI.Terminal;
 
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.swing.SwingTerminalFrame;
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Interpreter;
 import ysharp.treewalk.evaluator.Native.TUI.Terminal.Abstract.yAbstractTerminal;
 import ysharp.treewalk.evaluator.Native.TUI.Terminal.Abstract.yBaseTerminal;
@@ -83,7 +83,7 @@ public class yDefaultTerminal {
                 }
             }
             catch (IOException ex) {
-                throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                         -1,
                         "Failed to initialize terminal.");
             }
@@ -121,7 +121,7 @@ public class yDefaultTerminal {
         @Override
         public Variable.Variant call(Interpreter interpreter,
                                      List<Variable.Variant> arguments)
-                throws YsharpError {
+                throws YsharpException {
 
             requireArity(arguments,0, getClassName());
 

@@ -1,6 +1,6 @@
 package ysharp.treewalk.lexer;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +14,7 @@ public class Lexer {
     private int start   = 0;
     private final Cursor.CursorState cursor = new Cursor.CursorState();
     private int line    = 1;
-    public List<YsharpError> errors;
+    public List<YsharpException> errors;
 
     public boolean hadErrors(){
         return !errors.isEmpty();
@@ -134,13 +134,13 @@ public class Lexer {
             start = cursor.current;
             addToken(Token.TokenType.END_OF_FILE);
             return tokens;
-        }catch (YsharpError err) {
+        }catch (YsharpException err) {
             errors.add(err);
         }
         return null;
     }
 
-    private void collectNumber() throws YsharpError {
+    private void collectNumber() throws YsharpException {
         while (isDigit(Cursor.peek(source, cursor.current))) Cursor.advance(source, cursor);
 
         boolean isDouble = false;
@@ -165,7 +165,7 @@ public class Lexer {
         }
     }
 
-    private void collectIdentifier() throws YsharpError {
+    private void collectIdentifier() throws YsharpException {
         while (Cursor.peekChar(source, cursor.current) != Cursor.END) {
             if (Cursor.stopSet(Cursor.peekChar(source, cursor.current), Cursor.CharMask.Blank)) break;
             if (Cursor.stopSet(Cursor.peekChar(source, cursor.current), Cursor.CharMask.DoubleQuote)
@@ -211,7 +211,7 @@ public class Lexer {
         this.tokens.add(token);
     }
 
-    private void collectString() throws YsharpError {
+    private void collectString() throws YsharpException {
         boolean terminated = false;
 
         while (Cursor.peekChar(source, cursor.current) != Cursor.END) {
@@ -225,7 +225,7 @@ public class Lexer {
         }
 
         if (!terminated) {
-            throw new YsharpError(YsharpError.YsharpErrorType.SYNTAX, this.line, "Unterminated string literal");
+            throw new YsharpException(YsharpException.YsharpErrorType.SYNTAX, this.line, "Unterminated string literal");
         }
 
         StringBuilder sb = new StringBuilder();
@@ -283,7 +283,7 @@ public class Lexer {
         tokens.add(token);
     }
 
-    private void collectChar() throws YsharpError {
+    private void collectChar() throws YsharpException {
         boolean terminated = false;
 
         while (Cursor.peekChar(source, cursor.current) != Cursor.END) {
@@ -297,7 +297,7 @@ public class Lexer {
         }
 
         if (!terminated) {
-            throw new YsharpError(YsharpError.YsharpErrorType.SYNTAX, this.line, "Unterminated char literal");
+            throw new YsharpException(YsharpException.YsharpErrorType.SYNTAX, this.line, "Unterminated char literal");
         }
 
         StringBuilder sb = new StringBuilder();
@@ -307,8 +307,8 @@ public class Lexer {
         String sub = sb.toString();
 
         if(sb.length() != 3) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.SYNTAX,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.SYNTAX,
                     this.line,
                     "Invalid char literal: a character literal must contain exactly one character."
             );
@@ -447,7 +447,7 @@ public class Lexer {
                     }
                     // consume unnecessary escape characters
                 } else {
-                    throw new YsharpError(YsharpError.YsharpErrorType.SYNTAX, this.line, "Unsupported character");
+                    throw new YsharpException(YsharpException.YsharpErrorType.SYNTAX, this.line, "Unsupported character");
                 }
             }
         }

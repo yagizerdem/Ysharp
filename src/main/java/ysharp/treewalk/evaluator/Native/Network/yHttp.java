@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Network;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Function;
 import ysharp.treewalk.evaluator.Interpreter;
 import ysharp.treewalk.evaluator.RuntimeObject;
@@ -65,7 +65,7 @@ public class yHttp {
         public Variable.Variant call(
                 Interpreter interpreter,
                 List<Variable.Variant> arguments
-        ) throws YsharpError {
+        ) throws YsharpException {
 
             yHttpObject obj = new yHttpObject();
             return new Variable.Variant(obj);

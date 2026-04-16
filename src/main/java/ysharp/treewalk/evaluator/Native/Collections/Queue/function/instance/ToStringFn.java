@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Collections.Queue.function.instance;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Native.Collections.Queue.yQueue;
 import ysharp.treewalk.evaluator.Native.function.binding.BoundNativeFunction;
@@ -16,7 +16,7 @@ public class ToStringFn extends Function.NativeFunction implements Callable {
     }
 
     @Override
-    public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+    public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
         yQueue.yQueueInstance queue = yQueue.requireQueueThis(interpreter, getFnName());
 
         StringBuilder builder = new StringBuilder();

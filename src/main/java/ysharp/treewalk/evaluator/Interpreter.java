@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Native.Collections.Array.yArray;
 import ysharp.treewalk.evaluator.Native.Collections.HashMap.yHashMap;
 import ysharp.treewalk.evaluator.Native.Range;
@@ -18,7 +18,7 @@ public class Interpreter implements
     public Environment global;
     public Environment curEnv;
     public Map<Expr, Integer> locals;
-    public List<YsharpError> errors;
+    public List<YsharpException> errors;
     public List<String> exports;
 
     public boolean hadErrors() {
@@ -40,7 +40,7 @@ public class Interpreter implements
     public void defineGlobal(String key, Variable variable) throws Exception {
         try {
             this.global.define(key, variable);
-        }catch (YsharpError err) {
+        }catch (YsharpException err) {
             throw new Exception("[Programmatic error] defining natives should not throw error");
         }
     }
@@ -50,7 +50,7 @@ public class Interpreter implements
             for (Stmt stmt : statements) {
                 execute(stmt);
             }
-        } catch (YsharpError err) {
+        } catch (YsharpException err) {
             this.errors.add(err);
         }
     }
@@ -82,8 +82,8 @@ public class Interpreter implements
 
     public void execute(Stmt stmt){
         if (Thread.currentThread().isInterrupted()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     "Thread interrupted."
             );
@@ -110,11 +110,11 @@ public class Interpreter implements
 
     private void requireIntegerOperands(Variable.Variant left,
                                         Variable.Variant right,
-                                        Token op) throws YsharpError {
+                                        Token op) throws YsharpException {
 
         if (!left.isInt() || !right.isInt()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     op.line,
                     "Operator '" + op.lexeme +
                             "' requires integer operands. Found '" +
@@ -126,11 +126,11 @@ public class Interpreter implements
 
     private void requireNumberOperands(Variable.Variant left,
                                        Variable.Variant right,
-                                       Token op) throws YsharpError {
+                                       Token op) throws YsharpException {
 
         if (!left.isNumber() || !right.isNumber()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     op.line,
                     "Operator '" + op.lexeme +
                             "' requires numeric operands. Found '" +
@@ -142,13 +142,13 @@ public class Interpreter implements
 
     private void requireNumberOperandsImplicit(Variable.Variant left,
                                                Variable.Variant right,
-                                               Token op) throws YsharpError {
+                                               Token op) throws YsharpException {
 
         if (!(left.isNumber() || left.isChar()) ||
                 !(right.isNumber() || right.isChar())) {
 
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     op.line,
                     "Operator '" + op.lexeme +
                             "' requires numeric or char operands. Found '" +
@@ -215,8 +215,8 @@ public class Interpreter implements
                     );
                 }
 
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.PROCESS,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.PROCESS,
                         expr.op.line,
                         "Operator '+' cannot be applied to types '"
                                 + left.getType() + "' and '" + right.getType() + "'."
@@ -242,8 +242,8 @@ public class Interpreter implements
                 Variable.Variant left = evaluate(expr.left);
                 Variable.Variant right = evaluate(expr.right);
                 if(right.asNumber() == 0)
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             expr.op.line,
                             "Division by zero."
                     );
@@ -340,7 +340,7 @@ public class Interpreter implements
                 return left.value != null ?  left : right;
             }
             default -> {
-                throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                         expr.op.line, "unsupported op");
             }
         }
@@ -352,7 +352,7 @@ public class Interpreter implements
             case PLUS -> {
                 Variable.Variant var = this.evaluate(expr.expr);
                 if(!var.isNumber()) {
-                    throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                             expr.op.line,
                             "Operand must be a number.");
                 }
@@ -367,7 +367,7 @@ public class Interpreter implements
                     return new Variable.Variant(var.asDouble() * -1);
                 }
 
-                throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                         expr.op.line,
                         "Operand must be a number.");
             }
@@ -381,7 +381,7 @@ public class Interpreter implements
                     return new Variable.Variant(~var.asInt());
                 }
 
-                throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                         expr.op.line,
                         "Operand must be a int.");
 
@@ -390,8 +390,8 @@ public class Interpreter implements
 
                 if (!(expr.expr instanceof Expr.VariableExpr ||
                         expr.expr instanceof Expr.GetExpr)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.SEMANTIC,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.SEMANTIC,
                             expr.op.line,
                             "Operand of '" + expr.op.lexeme + "' must be a variable."
                     );
@@ -399,7 +399,7 @@ public class Interpreter implements
 
                 Variable.Variant var = this.evaluate(expr.expr);
                 if(!var.isNumber()) {
-                    throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                             expr.op.line,
                             "Operand must be a number.");
                 }
@@ -419,8 +419,8 @@ public class Interpreter implements
 
                 if (!(expr.expr instanceof Expr.VariableExpr ||
                         expr.expr instanceof Expr.GetExpr)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.SEMANTIC,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.SEMANTIC,
                             expr.op.line,
                             "Operand of '" + expr.op.lexeme + "' must be a variable."
                     );
@@ -428,7 +428,7 @@ public class Interpreter implements
 
                 Variable.Variant var = this.evaluate(expr.expr);
                 if(!var.isNumber()) {
-                    throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                             expr.op.line,
                             "Operand must be a number.");
                 }
@@ -445,8 +445,8 @@ public class Interpreter implements
             }
         }
 
-        throw new YsharpError(
-                YsharpError.YsharpErrorType.PROCESS,
+        throw new YsharpException(
+                YsharpException.YsharpErrorType.PROCESS,
                 expr.op.line,
                 "Unknown unary operator '" + expr.op.lexeme + "'."
         );
@@ -485,8 +485,8 @@ public class Interpreter implements
 
         if (!(expr.operand instanceof Expr.VariableExpr ||
                 expr.operand instanceof Expr.GetExpr) ) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.SEMANTIC,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.SEMANTIC,
                     expr.op.line,
                     "Operand of '" + expr.op.lexeme + "' must be a variable."
             );
@@ -495,8 +495,8 @@ public class Interpreter implements
         Variable.Variant var = this.evaluate(expr.operand);
 
         if (!var.isNumber()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     expr.op.line,
                     "Operand must be a number."
             );
@@ -521,8 +521,8 @@ public class Interpreter implements
                 }
             }
 
-            default -> throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            default -> throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     expr.op.line,
                     "Unknown postfix operator '" + expr.op.lexeme + "'."
             );
@@ -546,16 +546,16 @@ public class Interpreter implements
                 identifier = this.curEnv.getValue(lvalue);
             }
             if(identifier.isConst) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.PROCESS,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.PROCESS,
                         expr.op.line,
                         "Cannot assign to constant variable '" + lvalue.lexeme + "'."
                 );
             }
 
             if(!Interpreter.typeChecker(identifier, right)) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.PROCESS,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.PROCESS,
                         expr.op.line,
                         "Type mismatch: cannot assign value of type '" +
                                 right.getType() +
@@ -601,7 +601,7 @@ public class Interpreter implements
 
 
                     else
-                        throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                                 -1,
                                 "Operator '+=' requires numeric or string operands.");
 
@@ -636,8 +636,8 @@ public class Interpreter implements
                     Variable.Variant left = identifier.value;
                     requireNumberOperands(left, right, expr.op);
                     if(right.asNumber() == 0)
-                        throw new YsharpError(
-                                YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
                                 expr.op.line,
                                 "Division by zero."
                         );
@@ -703,8 +703,8 @@ public class Interpreter implements
                     return result;
                 }
                 default -> {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             expr.op.line,
                             "Unsupported assignment operator '" + expr.op.lexeme + "'."
                     );
@@ -712,8 +712,8 @@ public class Interpreter implements
             }
         }
         else {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     expr.op.line,
                     "Invalid assignment target. Left-hand side of assignment must be a variable."
             );
@@ -756,8 +756,8 @@ public class Interpreter implements
         boolean isStatic = object.isClass();
 
         if (!object.isRuntimeObject()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     expr.name.line,
                     "Only objects have properties."
             );
@@ -768,8 +768,8 @@ public class Interpreter implements
         Variable field = instance.get(expr.name.lexeme);
 
         if (field == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     expr.name.line,
                     "Undefined property '" + expr.name.lexeme + "'."
             );
@@ -804,8 +804,8 @@ public class Interpreter implements
     public Variable.Variant visitSetExpr(Expr.SetExpr expr) {
         Variable.Variant variant = this.evaluate(expr.object);
         if(!(variant.isClass() || variant.isClassInstance())) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     expr.name.line,
                     "Only objects and class instances can have fields assigned."
             );
@@ -825,8 +825,8 @@ public class Interpreter implements
         }
 
         if(!calee.isCallable()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     expr.leftParen.line,
                     "Attempted to call a non-callable value of type '"
                             + calee.getType() + "'."
@@ -843,8 +843,8 @@ public class Interpreter implements
         }
 
         if(!calee.isFunctionLike()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     expr.leftParen.line,
                     "Value of type '" + calee.getType() + "' cannot be invoked like a function."
             );
@@ -920,8 +920,8 @@ public class Interpreter implements
                 hashMap.put(new Variable.Variant(stringObj), evaluate(entry.value));
             }
             else {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.SYNTAX,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.SYNTAX,
                         expr.leftCurlyBrace.line,
                         "HashMap initializer shortcut only support string keys.");
             }
@@ -949,8 +949,8 @@ public class Interpreter implements
         }
 
         if (!callee.isCallable()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     errorLine,
                     "Attempted to call a non-callable value of type '" +
                             callee.getType() + "'."
@@ -958,8 +958,8 @@ public class Interpreter implements
         }
 
         if (!callee.isClass()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     errorLine,
                     "Attempted to instantiate a non-class value of type '" +
                             callee.getType() + "'."
@@ -980,16 +980,16 @@ public class Interpreter implements
         Variable superVar = curEnv.getValue("super");
 
         if (thisVar == null || !thisVar.value.isClassInstance()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     expr.leftParen.line,
                     "super() can only be used inside class constructor."
             );
         }
 
         if (superVar == null || !superVar.value.isClass()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     expr.leftParen.line,
                     "Class has no superclass."
             );
@@ -1006,8 +1006,8 @@ public class Interpreter implements
 
         Variable.Variant superInstanceVariant = superConstructor.call(this, superArgs);
         if(!superInstanceVariant.isClassInstance()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     expr.leftParen.line,
                     "Superclass constructor did not return a valid class instance."
             );
@@ -1030,16 +1030,16 @@ public class Interpreter implements
         Variable.Variant endVar = this.evaluate(expr.end);
 
         if(!startVar.isInt()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     expr.operator.line,
                     "Range start must be an 'int', but found: " + startVar.getType()
             );
         }
 
         if(!endVar.isInt()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     expr.operator.line,
                     "Range end must be an 'int', but found: " + endVar.getType()
             );
@@ -1151,13 +1151,13 @@ public class Interpreter implements
 
             String typeName = stmt.declaration.type == null ? "any" : stmt.declaration.type.lexeme;
             if (!typeName.equals("int") && !typeName.equals("any") && !typeName.equals("number")) {
-                throw new YsharpError(YsharpError.YsharpErrorType.PROCESS, -1,
+                throw new YsharpException(YsharpException.YsharpErrorType.PROCESS, -1,
                         "For-in loop variable : " + stmt.declaration.identifier  + " must be 'int' or 'number' for a range, but found: " + typeName);
             }
 
             if (stmt.declaration.initializer != null) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.PROCESS,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.PROCESS,
                         stmt.declaration.identifier.line,
                         "Variable '" + stmt.declaration.identifier.lexeme +
                                 "' in for-in loop cannot have an initial value. It will be assigned values from the range."
@@ -1166,8 +1166,8 @@ public class Interpreter implements
 
             Variable.Variant range = this.evaluate(stmt.iterable);
             if(!(range.value instanceof Range.RangeValue)) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.PROCESS,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.PROCESS,
                         stmt.declaration.identifier.line,
                         "The expression after 'in' must result in a range (e.g., 1..10), but found: " +
                                 (range.value == null ? "null" : range.value.getClass().getSimpleName())
@@ -1219,7 +1219,7 @@ public class Interpreter implements
                     stmt.iterable.accept(this);
 
             if(!iterableVariant.isClassLike()) {
-                throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                         -1, "iterable should be calss");
             }
 
@@ -1227,7 +1227,7 @@ public class Interpreter implements
             Variable iterFnVar = iterable.get("iter");
 
             if(iterFnVar == null || !iterFnVar.value.isNativeFunction()) {
-                throw new YsharpError(YsharpError.YsharpErrorType.PROCESS, -1 ,
+                throw new YsharpException(YsharpException.YsharpErrorType.PROCESS, -1 ,
                         "iter should be function that returns iterator object to use foreach loop");
             }
 
@@ -1238,7 +1238,7 @@ public class Interpreter implements
             Variable.Variant iteratorVariant =  iterFn.call(this, new ArrayList<>());
 
             if(iteratorVariant == null || !iteratorVariant.isClassLike()) {
-                throw new YsharpError(YsharpError.YsharpErrorType.PROCESS, -1 ,
+                throw new YsharpException(YsharpException.YsharpErrorType.PROCESS, -1 ,
                         "iterator should be class");
             }
 
@@ -1247,7 +1247,7 @@ public class Interpreter implements
             Variable getNextFnVar = iterator.get("getNext");
 
             if(getNextFnVar == null || !getNextFnVar.value.isNativeFunction()) {
-                throw new YsharpError(YsharpError.YsharpErrorType.PROCESS, -1 ,
+                throw new YsharpException(YsharpException.YsharpErrorType.PROCESS, -1 ,
                         "getNext should be function that returns iterator object to use foreach loop");
             }
 
@@ -1264,8 +1264,8 @@ public class Interpreter implements
                         stmt.declaration.type.lexeme;
 
                 if(!Interpreter.typeChecker(typeName, nextVariant)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             stmt.declaration.type.line,
                             "Type mismatch. Cannot assign value of type '" +
                                     nextVariant.getType() +
@@ -1368,6 +1368,44 @@ public class Interpreter implements
             }
 
         }
+        catch (YsharpException ex) {
+            Environment oldEnv = this.curEnv;
+
+            try {
+                Environment newEnv = new Environment(curEnv);
+
+                newEnv.define(
+                        stmt.errIdentifier.lexeme,
+                        new Variable(new Variable.Variant(ex.getMessage()), true, "any")
+                );
+
+                this.curEnv = newEnv;
+
+                this.execute(stmt.catchBlock);
+
+            } finally {
+                this.curEnv = oldEnv;
+            }
+        }
+        catch (Exception ex) {
+            Environment oldEnv = this.curEnv;
+
+            try {
+                Environment newEnv = new Environment(curEnv);
+
+                newEnv.define(
+                        stmt.errIdentifier.lexeme,
+                        new Variable(new Variable.Variant(ex.getMessage()), true, "any")
+                );
+
+                this.curEnv = newEnv;
+
+                this.execute(stmt.catchBlock);
+
+            } finally {
+                this.curEnv = oldEnv;
+            }
+        }
         finally {
 
             if(stmt.finallyBlock != null) {
@@ -1386,8 +1424,8 @@ public class Interpreter implements
         String typeTag = stmt.type != null ? stmt.type.lexeme : "any";
 
         if (value != null && !Interpreter.typeChecker(typeTag, value)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     stmt.identifier.line,
                     "Type mismatch. Cannot assign value of type '" +
                             value.getType() +
@@ -1425,8 +1463,8 @@ public class Interpreter implements
         String typeTag = stmt.type != null ? stmt.type.lexeme : "any";
 
         if (value != null && !Interpreter.typeChecker(typeTag, value)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     stmt.identifier.line,
                     "Type mismatch. Cannot assign value of type '" +
                             value.getType() +
@@ -1481,8 +1519,8 @@ public class Interpreter implements
                 this.curEnv.define(funObj.declaration.name.lexeme,  var);
             }
             else {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.PROCESS,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.PROCESS,
                         -1,
                         "Variable '" +
                                 name +
@@ -1512,8 +1550,8 @@ public class Interpreter implements
         String typeTag = stmt.type != null ? stmt.type.lexeme : "any";
 
         if (value != null && !Interpreter.typeChecker(typeTag, value)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     stmt.identifier.line,
                     "Type mismatch. Cannot assign value of type '" +
                             value.getType() +
@@ -1541,7 +1579,7 @@ public class Interpreter implements
     public void visitClassDeclaration(Stmt.ClassDeclaration stmt) {
 
         if(stmt.methods.stream().filter(m -> m.name.lexeme.equals("constructor")).count() > 1) {
-            throw  new YsharpError(YsharpError.YsharpErrorType.SYNTAX, -1,
+            throw  new YsharpException(YsharpException.YsharpErrorType.SYNTAX, -1,
                     "class : " +
                     stmt.name.lexeme + " cannot have more than one constructor.");
         }
@@ -1592,7 +1630,7 @@ public class Interpreter implements
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                 this.requireArity(
                         arguments,
@@ -1636,7 +1674,7 @@ public class Interpreter implements
                     if(explicitSuper) {
                         Stmt stmt_ = body.stmtList.getFirst();
                         if(!(stmt_ instanceof Stmt.ExprStmt && ((Stmt.ExprStmt) stmt_).expr instanceof Expr.SuperCallExpr)) {
-                            throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                            throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                                     -1,
                                     "super() must be the first statement in the constructor.");
                         }
@@ -1770,8 +1808,8 @@ public class Interpreter implements
         for(Stmt.ClassDeclaration.Property prop : staticProperty) {
 
             if(prop.isConst && prop.initializer == null) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.SEMANTIC,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.SEMANTIC,
                         prop.name.line,
                         "Constant field '" + prop.name.lexeme + "' must be initialized."
                 );
@@ -1848,8 +1886,8 @@ public class Interpreter implements
         if(stmt.superName != null) {
             Variable.Variant variant = this.curEnv.getValue(stmt.superName).value;
             if (!variant.isClass()) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.SYNTAX,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.SYNTAX,
                         stmt.superName.line,
                         "Class '" + stmt.name.lexeme +
                                 "' cannot extend non-class value '" +
@@ -1859,8 +1897,8 @@ public class Interpreter implements
 
             yClass.ClassObject superClass = variant.asClass();
             if(superClass.isSealed()) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.SYNTAX,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.SYNTAX,
                         stmt.superName.line,
                         "Class '" + stmt.name.lexeme +
                                 "' cannot extend sealed class '" +
@@ -1891,12 +1929,12 @@ public class Interpreter implements
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 try {
 
                     if (arguments.size() != method.params.size()) {
-                        throw new YsharpError(
-                                YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
                                 method.name.line,
                                 method.name.lexeme + " Expected " + method.params.size() +
                                         " arguments but got " + arguments.size()
@@ -1918,8 +1956,8 @@ public class Interpreter implements
                         String typeTag = param.type != null ? param.type.lexeme : "any";
 
                         if (!Interpreter.typeChecker(typeTag, arg)) {
-                            throw new YsharpError(
-                                    YsharpError.YsharpErrorType.PROCESS,
+                            throw new YsharpException(
+                                    YsharpException.YsharpErrorType.PROCESS,
                                     method.name.line,
                                     "Parameter '" + param.name.lexeme +
                                             "' type mismatch. Expected '" +
@@ -1945,8 +1983,8 @@ public class Interpreter implements
                     }
 
                     if (!Interpreter.typeChecker(expectedType, sig.value)) {
-                        throw new YsharpError(
-                                YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
                                 method.name.line,
                                 "Return type mismatch. Expected '" +
                                         expectedType + "' but got '" +

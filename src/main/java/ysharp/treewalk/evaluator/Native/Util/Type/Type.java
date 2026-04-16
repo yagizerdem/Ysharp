@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Util.Type;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public class Type {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                     requireArity(arguments, arity(), getClassName());
 
                     Variable.Variant variant = arguments.getFirst();
@@ -48,7 +48,7 @@ public class Type {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                     requireArity(arguments, arity(), getClassName());
 
                     Variable.Variant variant = arguments.getFirst();
@@ -77,7 +77,7 @@ public class Type {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                     requireArity(arguments, arity(), getClassName());
 
                     Variable.Variant variant = arguments.getFirst();
@@ -105,7 +105,7 @@ public class Type {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                     requireArity(arguments, arity(), getClassName());
 
                     Variable.Variant variant = arguments.getFirst();
@@ -134,7 +134,7 @@ public class Type {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                     requireArity(arguments, arity(), getClassName());
 
                     Variable.Variant variant = arguments.getFirst();
@@ -170,10 +170,10 @@ public class Type {
         @Override
         public Variable.Variant call(Interpreter interpreter,
                                      List<Variable.Variant> arguments)
-                throws YsharpError {
+                throws YsharpException {
 
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     "Cannot create instance of static class '" + getClassName() + "'."
             );

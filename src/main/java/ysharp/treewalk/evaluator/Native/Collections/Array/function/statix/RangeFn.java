@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Collections.Array.function.statix;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Callable;
 import ysharp.treewalk.evaluator.Function;
 import ysharp.treewalk.evaluator.Interpreter;
@@ -16,12 +16,12 @@ public class RangeFn extends Function.NativeFunction implements Callable {
     @Override
     public Variable.Variant call(Interpreter interpreter,
                                  List<Variable.Variant> arguments)
-            throws YsharpError {
+            throws YsharpException {
 
         int size = arguments.size();
         if (size < 2 || size > 3) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "'range' expects 2 or 3 arguments (start, end, [step])."
             );
@@ -32,8 +32,8 @@ public class RangeFn extends Function.NativeFunction implements Callable {
         int step = size == 3 ? requireInt(arguments.get(2), getFnName(), 3) : 1;
 
         if (step == 0) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "'step' cannot be zero in 'range'."
             );

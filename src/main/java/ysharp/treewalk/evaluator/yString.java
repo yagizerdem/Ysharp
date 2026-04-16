@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Native.Collections.Array.yArray;
 
 import java.util.ArrayList;
@@ -13,8 +13,8 @@ public class yString  {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     "Method " + "'" + fnName+ "'" + "called without a valid 'this' context."
             );
@@ -23,8 +23,8 @@ public class yString  {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof yString.yStringInstance)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     "Method '" + fnName + "' expected 'string' as 'this' but got '" + obj.getType() + "'."
             );
@@ -60,7 +60,7 @@ public class yString  {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
 
@@ -94,7 +94,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -130,7 +130,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -166,7 +166,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -174,8 +174,8 @@ public class yString  {
                 Variable.Variant indexVar = arguments.getFirst();
 
                 if (!indexVar.canImplicitlyConvertNumber()) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             0,
                             "'charAt' index must be a number."
                     );
@@ -184,8 +184,8 @@ public class yString  {
                 int index = (int) indexVar.implicitlyConvertNumber();
 
                 if (index < 0 || index >= instance.data.length()) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             0,
                             "String index out of bounds."
                     );
@@ -220,7 +220,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -231,8 +231,8 @@ public class yString  {
                 if (!startVar.canImplicitlyConvertNumber() ||
                         !endVar.canImplicitlyConvertNumber()) {
 
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             0,
                             "'substring' arguments must be numbers."
                     );
@@ -244,8 +244,8 @@ public class yString  {
                 int len = instance.data.length();
 
                 if (start < 0 || end < 0 || start > end || end > len) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             0,
                             "Invalid substring range."
                     );
@@ -282,7 +282,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -330,7 +330,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -338,8 +338,8 @@ public class yString  {
                 Variable.Variant otherVar = arguments.get(0);
 
                 if (!otherVar.isRuntimeObject()) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             0,
                             "'indexOf' argument must be a string."
                     );
@@ -348,8 +348,8 @@ public class yString  {
                 RuntimeObject otherObj = otherVar.asRuntimeObject();
 
                 if (!(otherObj instanceof yStringInstance)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             0,
                             "'indexOf' argument must be a string."
                     );
@@ -386,7 +386,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -394,8 +394,8 @@ public class yString  {
                 Variable.Variant otherVar = arguments.get(0);
 
                 if (!otherVar.isRuntimeObject()) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             0,
                             "'contains' argument must be a string."
                     );
@@ -404,8 +404,8 @@ public class yString  {
                 RuntimeObject otherObj = otherVar.asRuntimeObject();
 
                 if (!(otherObj instanceof yStringInstance)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             0,
                             "'contains' argument must be a string."
                     );
@@ -442,7 +442,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -476,7 +476,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -511,7 +511,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -546,7 +546,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -554,8 +554,8 @@ public class yString  {
                 Variable.Variant countVar = arguments.get(0);
 
                 if (!countVar.canImplicitlyConvertNumber()) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             0,
                             "'repeat' argument must be a number."
                     );
@@ -564,8 +564,8 @@ public class yString  {
                 int count = (int) countVar.implicitlyConvertNumber();
 
                 if (count < 0) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             0,
                             "'repeat' count must be >= 0."
                     );
@@ -606,7 +606,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -616,8 +616,8 @@ public class yString  {
                 if (!otherVar.isRuntimeObject() ||
                         !(otherVar.asRuntimeObject() instanceof yStringInstance)) {
 
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             0,
                             "'startsWith' argument must be a string."
                     );
@@ -655,7 +655,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -665,8 +665,8 @@ public class yString  {
                 if (!otherVar.isRuntimeObject() ||
                         !(otherVar.asRuntimeObject() instanceof yStringInstance)) {
 
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             0,
                             "'endsWith' argument must be a string."
                     );
@@ -704,7 +704,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -717,8 +717,8 @@ public class yString  {
                         !newVar.isRuntimeObject() ||
                         !(newVar.asRuntimeObject() instanceof yStringInstance)) {
 
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             0,
                             "'replace' arguments must be strings."
                     );
@@ -762,7 +762,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -794,7 +794,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -833,7 +833,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -842,8 +842,8 @@ public class yString  {
                 Variable.Variant padVar = arguments.get(1);
 
                 if (!lenVar.canImplicitlyConvertNumber()) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             0,
                             "'padLeft' first argument must be a number."
                     );
@@ -852,8 +852,8 @@ public class yString  {
                 if (!padVar.isRuntimeObject() ||
                         !(padVar.asRuntimeObject() instanceof yStringInstance)) {
 
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             0,
                             "'padLeft' second argument must be a string."
                     );
@@ -906,7 +906,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -915,8 +915,8 @@ public class yString  {
                 Variable.Variant padVar = arguments.get(1);
 
                 if (!lenVar.canImplicitlyConvertNumber()) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             0,
                             "'padRight' first argument must be a number."
                     );
@@ -925,8 +925,8 @@ public class yString  {
                 if (!padVar.isRuntimeObject() ||
                         !(padVar.asRuntimeObject() instanceof yStringInstance)) {
 
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             0,
                             "'padRight' second argument must be a string."
                     );
@@ -979,7 +979,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -989,8 +989,8 @@ public class yString  {
                 if (!otherVar.isRuntimeObject() ||
                         !(otherVar.asRuntimeObject() instanceof yStringInstance)) {
 
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             0,
                             "'compareTo' argument must be a string."
                     );
@@ -1028,7 +1028,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -1065,7 +1065,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                     requireArity(arguments, arity(), getFnName());
                     yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -1104,7 +1104,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -1117,8 +1117,8 @@ public class yString  {
                         !replVar.isRuntimeObject() ||
                         !(replVar.asRuntimeObject() instanceof yStringInstance)) {
 
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             0,
                             "'replaceAll' arguments must be strings."
                     );
@@ -1162,7 +1162,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -1172,8 +1172,8 @@ public class yString  {
                 if (!arrVar.isRuntimeObject() ||
                         !(arrVar.asRuntimeObject() instanceof yArray.yArrayInstance)) {
 
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             0,
                             "'join' argument must be an array."
                     );
@@ -1220,7 +1220,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
 
@@ -1251,8 +1251,8 @@ public class yString  {
                     result = String.format(Locale.US, instance.data, args);
                 }
                 catch (Exception e) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             0,
                             "Invalid format string."
                     );
@@ -1289,7 +1289,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -1336,7 +1336,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -1382,7 +1382,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -1435,7 +1435,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -1481,7 +1481,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -1539,7 +1539,7 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
@@ -1547,8 +1547,8 @@ public class yString  {
                 Variable.Variant indexVar = arguments.get(0);
 
                 if (!indexVar.canImplicitlyConvertNumber()) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             0,
                             "'charCodeAt' index must be a number."
                     );
@@ -1557,8 +1557,8 @@ public class yString  {
                 int index = (int) indexVar.implicitlyConvertNumber();
 
                 if (index < 0 || index >= instance.data.length()) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             0,
                             "String index out of bounds."
                     );
@@ -1595,11 +1595,11 @@ public class yString  {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 if (arguments.size() < 1 || arguments.size() > 2) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             0,
                             "'slice' expects 1 or 2 arguments."
                     );
@@ -1610,8 +1610,8 @@ public class yString  {
                 Variable.Variant startVar = arguments.get(0);
 
                 if (!startVar.canImplicitlyConvertNumber()) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             0,
                             "'slice' start must be a number."
                     );
@@ -1625,8 +1625,8 @@ public class yString  {
                     Variable.Variant endVar = arguments.get(1);
 
                     if (!endVar.canImplicitlyConvertNumber()) {
-                        throw new YsharpError(
-                                YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
                                 0,
                                 "'slice' end must be a number."
                         );
@@ -1720,7 +1720,7 @@ public class yString  {
         }
 
         @Override
-        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
             String value;
             if(arguments.getFirst().value instanceof yStringInstance) {
                 value = ((yStringInstance) arguments.getFirst().value).data;
@@ -1729,8 +1729,8 @@ public class yString  {
                 value = arguments.getFirst().asString();
             }
             else {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.PROCESS,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.PROCESS,
                         0,
                         "String constructor expects a string argument."
                 );

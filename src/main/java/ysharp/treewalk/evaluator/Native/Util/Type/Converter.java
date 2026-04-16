@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Util.Type;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public class Converter {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                     requireArity(arguments, arity(), getFnName());
 
                     Variable.Variant variant = arguments.getFirst();
@@ -44,8 +44,8 @@ public class Converter {
                     else if(variant.isClassInstance())
                         return new Variable.Variant(new yString.yStringInstance(variant.asRuntimeObject().toString()));
 
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             "Unsupported type '" + variant.getType() + "' passed to " + getFnName() + "().");
                 }
@@ -71,7 +71,7 @@ public class Converter {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                     requireArity(arguments, arity(), getFnName());
 
                     Variable.Variant variant = arguments.getFirst();
@@ -86,8 +86,8 @@ public class Converter {
                     else if(variant.isBoolean())
                         return new Variable.Variant(variant.asBoolean() ? 1 : 0);
 
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             "Unsupported type '" + variant.getType() + "' passed to " + getFnName() + "().");
                 }
@@ -114,7 +114,7 @@ public class Converter {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                     requireArity(arguments, arity(), getFnName());
 
                     Variable.Variant variant = arguments.getFirst();
@@ -130,8 +130,8 @@ public class Converter {
                     else if(variant.isString())
                         return new Variable.Variant(Double.valueOf(variant.asString()));
 
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             "Unsupported type '" + variant.getType() + "' passed to " + getFnName() + "().");
                 }
@@ -159,7 +159,7 @@ public class Converter {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                     requireArity(arguments, arity(), getFnName());
 
                     Variable.Variant variant = arguments.getFirst();
@@ -173,14 +173,14 @@ public class Converter {
                         if(s.length() == 1)
                             return new Variable.Variant(s.charAt(0));
 
-                        throw new YsharpError(
-                                YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
                                 -1,
                                 "String must contain exactly one character for " + getFnName() + "().");
                     }
 
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             "Unsupported type '" + variant.getType() + "' passed to " + getFnName() + "().");
                 }
@@ -208,7 +208,7 @@ public class Converter {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                     requireArity(arguments, arity(), getFnName());
 
                     Variable.Variant variant = arguments.getFirst();
@@ -224,8 +224,8 @@ public class Converter {
                     else if(variant.isNull())
                         return new Variable.Variant(false);
 
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             -1,
                             "Unsupported type '" + variant.getType() + "' passed to " + getFnName() + "().");
                 }
@@ -252,10 +252,10 @@ public class Converter {
         @Override
         public Variable.Variant call(Interpreter interpreter,
                                      List<Variable.Variant> arguments)
-                throws YsharpError {
+                throws YsharpException {
 
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     "Cannot create instance of static class '" + getClassName() + "'."
             );

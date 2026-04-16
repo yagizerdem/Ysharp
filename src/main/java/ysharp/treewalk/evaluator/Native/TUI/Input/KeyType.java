@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.TUI.Input;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Interpreter;
 import ysharp.treewalk.evaluator.Variable;
 import ysharp.treewalk.evaluator.yClass;
@@ -27,8 +27,8 @@ public class KeyType {
         }
 
         @Override
-        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
-            throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
+            throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                     -1 ,
                     "cannot take instance of static KeyType class");
         }

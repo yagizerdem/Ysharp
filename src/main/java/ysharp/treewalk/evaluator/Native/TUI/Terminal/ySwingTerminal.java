@@ -1,7 +1,7 @@
 package ysharp.treewalk.evaluator.Native.TUI.Terminal;
 
 import com.googlecode.lanterna.terminal.swing.SwingTerminalFrame;
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Interpreter;
 import ysharp.treewalk.evaluator.Native.TUI.Terminal.Abstract.yAbstractTerminal;
 import ysharp.treewalk.evaluator.Native.TUI.Terminal.Abstract.yBaseTerminal;
@@ -72,7 +72,7 @@ public class ySwingTerminal {
         @Override
         public Variable.Variant call(Interpreter interpreter,
                                      List<Variable.Variant> arguments)
-                throws YsharpError {
+                throws YsharpException {
 
             requireArity(arguments,0, getClassName());
 

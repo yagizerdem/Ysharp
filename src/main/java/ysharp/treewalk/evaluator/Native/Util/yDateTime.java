@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Util;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 
 import java.time.*;
@@ -57,7 +57,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     yDateTimeInstance instance = new yDateTimeInstance(ZonedDateTime.now());
 
@@ -87,7 +87,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     yDateTimeInstance instance = new yDateTimeInstance(ZonedDateTime.now(ZoneOffset.UTC));
 
@@ -117,7 +117,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 6, getClassName());
 
@@ -157,7 +157,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
@@ -193,7 +193,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
@@ -204,7 +204,7 @@ public class yDateTime {
                         yDateTimeInstance instance = new yDateTimeInstance(dt);
                         return new Variable.Variant(instance);
                     } catch (DateTimeParseException e) {
-                        throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                                 -1,
                                 "DateTime.parse: invalid ISO date-time string '" + raw + "'");
                     }
@@ -233,7 +233,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
@@ -266,7 +266,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
@@ -299,7 +299,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
@@ -332,7 +332,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
@@ -365,7 +365,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
@@ -398,7 +398,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
@@ -431,7 +431,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
@@ -464,7 +464,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
@@ -497,7 +497,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
@@ -530,7 +530,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 2, getClassName());
 
@@ -541,7 +541,7 @@ public class yDateTime {
                         String response = dt.getInternal().format(DateTimeFormatter.ofPattern(pattern));
                         return new Variable.Variant(response);
                     } catch (Exception e) {
-                        throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                                 -1,
                                 "DateTime.format: invalid pattern '" + pattern + "'");
                     }
@@ -570,7 +570,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 2, getClassName());
 
@@ -605,7 +605,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 2, getClassName());
 
@@ -640,7 +640,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 2, getClassName());
 
@@ -675,7 +675,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 2, getClassName());
 
@@ -710,7 +710,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 2, getClassName());
 
@@ -745,7 +745,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 2, getClassName());
 
@@ -780,7 +780,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 2, getClassName());
 
@@ -815,7 +815,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 2, getClassName());
 
@@ -850,7 +850,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 2, getClassName());
 
@@ -885,7 +885,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 2, getClassName());
 
@@ -920,7 +920,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 2, getClassName());
 
@@ -955,7 +955,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
@@ -989,7 +989,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 2, getClassName());
 
@@ -1002,7 +1002,7 @@ public class yDateTime {
                                 dt.getInternal().withZoneSameInstant(zone));
                         return new Variable.Variant(response);
                     } catch (Exception e) {
-                        throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                                 -1 ,
                                 "DateTime.withZone: unknown zone '" + zoneId + "'");
                     }
@@ -1031,7 +1031,7 @@ public class yDateTime {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
@@ -1065,7 +1065,7 @@ public class yDateTime {
         @Override
         public Variable.Variant call(Interpreter interpreter,
                                      List<Variable.Variant> arguments)
-                throws YsharpError {
+                throws YsharpException {
 
             requireArity(arguments, 3, getClassName());
 
@@ -1092,11 +1092,11 @@ public class yDateTime {
 
         private yDateTimeInstance requireDateTime(Variable.Variant variant,
                                                    String className,
-                                                   int argIndex) throws YsharpError {
+                                                   int argIndex) throws YsharpException {
             if (variant.value instanceof yDateTimeInstance dt) {
                 return dt;
             }
-            throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     className + ": argument " + argIndex + " must be a DateTime instance");
         }

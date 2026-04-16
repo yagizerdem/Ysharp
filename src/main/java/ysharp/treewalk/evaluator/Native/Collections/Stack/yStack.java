@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Collections.Stack;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Native.Collections.Stack.function.instance.*;
 import ysharp.treewalk.evaluator.Native.Collections.yVector;
@@ -17,8 +17,8 @@ public class yStack {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method " + "'" + fnName+ "'" + "called without a valid 'this' context."
             );
@@ -27,8 +27,8 @@ public class yStack {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof yStackInstance)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method '" + fnName + "' expected 'stack' as 'this' but got '" + obj.getType() + "'."
             );
@@ -143,7 +143,7 @@ public class yStack {
         }
 
         @Override
-        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
             Stack<Variable.Variant> value = new Stack<>();
             yStack.yStackInstance newStack = new yStack.yStackInstance(value);
 

@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Collections.HashMap;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Native.Collections.HashMap.function.instance.*;
 
@@ -14,8 +14,8 @@ public class yHashMap {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method called without a valid 'this' context."
             );
@@ -24,8 +24,8 @@ public class yHashMap {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof yHashMap.yHashMapInstance)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "This method can only be called on HashMap objects."
             );
@@ -153,7 +153,7 @@ public class yHashMap {
         @Override
         public Variable.Variant call(Interpreter interpreter,
                                      List<Variable.Variant> arguments)
-                throws YsharpError {
+                throws YsharpException {
 
             yHashMapInstance newMap = new yHashMapInstance();
 

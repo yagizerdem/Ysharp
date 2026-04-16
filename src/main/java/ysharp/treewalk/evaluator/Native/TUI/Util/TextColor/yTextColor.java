@@ -1,7 +1,7 @@
 package ysharp.treewalk.evaluator.Native.TUI.Util.TextColor;
 
 import com.googlecode.lanterna.TextColor;
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 
 import java.util.List;
@@ -10,11 +10,11 @@ public class yTextColor {
 
     public static yTextColorEnum requireYTextColorEnum(Variable.Variant v,
                                                        String fn,
-                                                       int index) throws YsharpError {
+                                                       int index) throws YsharpException {
 
         if (!v.isRuntimeObject()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     fn + " argument " + index + " must be a object."
             );
@@ -23,8 +23,8 @@ public class yTextColor {
         RuntimeObject obj = v.asRuntimeObject();
 
         if(!(obj instanceof yTextColorEnum)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     fn + " argument " + index + " must be a TextColor object."
             );
@@ -37,8 +37,8 @@ public class yTextColor {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method " + "'" + fnName+ "'" + "called without a valid 'this' context."
             );
@@ -47,8 +47,8 @@ public class yTextColor {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof yTextColorEnum)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method '" + fnName + "' expected 'TextColor' as 'this' but got '" + obj.getType() + "'."
             );
@@ -76,7 +76,7 @@ public class yTextColor {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     requireArity(arguments, arity(), getFnName());
 
@@ -136,10 +136,10 @@ public class yTextColor {
         @Override
         public Variable.Variant call(Interpreter interpreter,
                                      List<Variable.Variant> arguments)
-                throws YsharpError {
+                throws YsharpException {
 
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     "cannot take instance of TextColor class");
         }

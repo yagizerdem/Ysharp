@@ -1,13 +1,13 @@
 package ysharp.treewalk.evaluator;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 
 import java.util.List;
 
 public class StdIO {
 
-    public static void printStdErr(List<YsharpError> errors) {
-        for(YsharpError err : errors) {
+    public static void printStdErr(List<YsharpException> errors) {
+        for(YsharpException err : errors) {
             System.err.println(err.toString());
         }
     }

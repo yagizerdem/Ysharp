@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Collections.Array;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Native.Collections.Array.function.instance.*;
 import ysharp.treewalk.evaluator.Native.Collections.Array.function.statix.*;
@@ -17,8 +17,8 @@ public class yArray {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method " + "'" + fnName+ "'" + "called without a valid 'this' context."
             );
@@ -27,8 +27,8 @@ public class yArray {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof yArrayInstance)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method '" + fnName + "' expected 'array' as 'this' but got '" + obj.getType() + "'."
             );
@@ -215,7 +215,7 @@ public class yArray {
         }
 
         @Override
-        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
             ArrayList<Variable.Variant> value = new ArrayList<>();
             yArray.yArrayInstance newArray = new yArray.yArrayInstance(value);
 

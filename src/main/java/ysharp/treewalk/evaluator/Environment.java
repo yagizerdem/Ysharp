@@ -1,5 +1,5 @@
 package ysharp.treewalk.evaluator;
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.lexer.Token;
 
 import java.util.HashMap;
@@ -21,25 +21,25 @@ public class Environment {
         this.enclosing = enclosing;
     }
 
-    public Variable getValue(Token name) throws YsharpError {
+    public Variable getValue(Token name) throws YsharpException {
         if (values.containsKey(name.lexeme)) {
             return values.get(name.lexeme);
         }
 
         if (enclosing != null) return enclosing.getValue(name);
 
-        throw new YsharpError(YsharpError.YsharpErrorType.PROCESS, -1,
+        throw new YsharpException(YsharpException.YsharpErrorType.PROCESS, -1,
                 "Undefined variable name" + name.lexeme + ".");
     }
 
-    public Variable getValue(String name) throws YsharpError {
+    public Variable getValue(String name) throws YsharpException {
         if (values.containsKey(name)) {
             return values.get(name);
         }
 
         if (enclosing != null) return enclosing.getValue(name);
 
-        throw new YsharpError(YsharpError.YsharpErrorType.PROCESS, -1,
+        throw new YsharpException(YsharpException.YsharpErrorType.PROCESS, -1,
                 "Undefined variable name" + name + ".");
     }
 
@@ -67,7 +67,7 @@ public class Environment {
         return null;
     }
 
-    public String getType(Token identifier) throws YsharpError {
+    public String getType(Token identifier) throws YsharpException {
 
         if (values.containsKey(identifier.lexeme)) {
             Variable var = values.get(identifier.lexeme);
@@ -78,14 +78,14 @@ public class Environment {
             return enclosing.getType(identifier);
         }
 
-        throw new YsharpError(
-                YsharpError.YsharpErrorType.PROCESS,
+        throw new YsharpException(
+                YsharpException.YsharpErrorType.PROCESS,
                 identifier.line,
                 "Undefined variable '" + identifier.lexeme + "'."
         );
     }
 
-    public String getType(Variable.Variant variant) throws YsharpError {
+    public String getType(Variable.Variant variant) throws YsharpException {
 
         if (variantTypes.containsKey(variant)) {
             return variantTypes.get(variant);
@@ -95,25 +95,25 @@ public class Environment {
             return enclosing.getType(variant);
         }
 
-        throw new YsharpError(
-                YsharpError.YsharpErrorType.PROCESS,
+        throw new YsharpException(
+                YsharpException.YsharpErrorType.PROCESS,
                 -1,
                 "Undefined variable ."
         );
     }
 
-    private Environment ancestor(int distance) throws YsharpError {
+    private Environment ancestor(int distance) throws YsharpException {
         Environment env = this;
         for (int i = 0; i < distance; i++) {
             if (env.enclosing == null)
-                throw new YsharpError(YsharpError.YsharpErrorType.PROCESS, -1,
+                throw new YsharpException(YsharpException.YsharpErrorType.PROCESS, -1,
                         "Invalid scope distance.");
             env = env.enclosing;
         }
         return env;
     }
 
-    public void assign(Token name, Variable.Variant value) throws YsharpError {
+    public void assign(Token name, Variable.Variant value) throws YsharpException {
         if (values.containsKey(name.lexeme)) {
 
             Variable variable = values.get(name.lexeme);
@@ -132,17 +132,17 @@ public class Environment {
             return;
         }
 
-        throw new YsharpError(
-                YsharpError.YsharpErrorType.PROCESS,
+        throw new YsharpException(
+                YsharpException.YsharpErrorType.PROCESS,
                 -1,
                 "Undefined variable name " + name.lexeme + "."
         );
     }
 
-    public void define(String name, Variable var) throws YsharpError {
+    public void define(String name, Variable var) throws YsharpException {
         if (values.containsKey(name)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     "Variable '" +
                             name +
@@ -154,29 +154,29 @@ public class Environment {
         variantTypes.put(var.value, var.getType());
     }
 
-    public Variable getAt(int distance, String name) throws YsharpError {
+    public Variable getAt(int distance, String name) throws YsharpException {
         Environment env = ancestor(distance);
 
         if (!env.values.containsKey(name)) {
-            throw new YsharpError(YsharpError.YsharpErrorType.PROCESS, -1,
+            throw new YsharpException(YsharpException.YsharpErrorType.PROCESS, -1,
                     "Undefined variable reference.");
         }
 
         return env.values.get(name);
     }
 
-    public Variable getAtOrDefault(int distance, String name) throws YsharpError {
+    public Variable getAtOrDefault(int distance, String name) throws YsharpException {
         Environment env = ancestor(distance);
         if (!env.values.containsKey(name)) return null;
         return env.values.get(name);
     }
 
-    public void assignAt(int distance, Token name, Variable.Variant value) throws YsharpError {
+    public void assignAt(int distance, Token name, Variable.Variant value) throws YsharpException {
         Environment env = ancestor(distance);
 
         if (!env.values.containsKey(name.lexeme)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     "Undefined variable reference"
             );
@@ -188,12 +188,12 @@ public class Environment {
         env.variantTypes.put(value, variable.getType());
     }
 
-    public boolean existsAt(int distance, String name) throws YsharpError {
+    public boolean existsAt(int distance, String name) throws YsharpException {
         Environment env = ancestor(distance);
         return env.values.containsKey(name);
     }
 
-    public boolean exists(String name) throws YsharpError {
+    public boolean exists(String name) throws YsharpException {
         return existsAt(0, name);
     }
 

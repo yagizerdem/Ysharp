@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.function.core;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Function;
 import ysharp.treewalk.evaluator.Interpreter;
 import ysharp.treewalk.evaluator.Variable;
@@ -15,7 +15,7 @@ public abstract class Debug  extends Function.NativeFunction {
 
         @Override
         public Variable.Variant call(Interpreter i, List<Variable.Variant> args)
-                throws YsharpError {
+                throws YsharpException {
 
             requireArity(args, 1, getFnName());
 
@@ -32,7 +32,7 @@ public abstract class Debug  extends Function.NativeFunction {
 
         @Override
         public Variable.Variant call(Interpreter i, List<Variable.Variant> args)
-                throws YsharpError {
+                throws YsharpException {
 
             requireArity(args, 2, getFnName());
 
@@ -40,8 +40,8 @@ public abstract class Debug  extends Function.NativeFunction {
 
             if (!condition.isTruthy()) {
                 String msg = args.get(1).toString();
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.PROCESS,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.PROCESS,
                         -1,
                         "Assertion failed: " + msg
                 );
@@ -58,7 +58,7 @@ public abstract class Debug  extends Function.NativeFunction {
 
         @Override
         public Variable.Variant call(Interpreter i, List<Variable.Variant> args)
-                throws YsharpError {
+                throws YsharpException {
 
             requireArity(args, 1, getFnName());
 
@@ -74,7 +74,7 @@ public abstract class Debug  extends Function.NativeFunction {
 
         @Override
         public Variable.Variant call(Interpreter i, List<Variable.Variant> args)
-                throws YsharpError {
+                throws YsharpException {
 
             requireArity(args, 1, getFnName());
 

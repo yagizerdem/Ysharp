@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.function.binding;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 
 import java.util.List;
@@ -27,7 +27,7 @@ public class BoundNativeFunction extends Function.NativeFunction {
     @Override
     public Variable.Variant call(Interpreter interpreter,
                                  List<Variable.Variant> arguments)
-            throws YsharpError {
+            throws YsharpException {
 
         Environment oldEnv = interpreter.curEnv;
 

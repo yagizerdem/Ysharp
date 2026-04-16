@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.function.core;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Function;
 import ysharp.treewalk.evaluator.Interpreter;
 import ysharp.treewalk.evaluator.Variable;
@@ -18,7 +18,7 @@ public abstract class Clock extends Function.NativeFunction {
 
         @Override
         public Variable.Variant call(Interpreter i, List<Variable.Variant> args)
-                throws YsharpError {
+                throws YsharpException {
 
             requireArity(args, 0, getFnName());
             return new Variable.Variant(System.currentTimeMillis());
@@ -33,7 +33,7 @@ public abstract class Clock extends Function.NativeFunction {
 
         @Override
         public Variable.Variant call(Interpreter i, List<Variable.Variant> args)
-                throws YsharpError {
+                throws YsharpException {
 
             requireArity(args, 0, getFnName());
             return new Variable.Variant(System.currentTimeMillis() / 1000);
@@ -48,7 +48,7 @@ public abstract class Clock extends Function.NativeFunction {
 
         @Override
         public Variable.Variant call(Interpreter i, List<Variable.Variant> args)
-                throws YsharpError {
+                throws YsharpException {
 
             requireArity(args, 0, getFnName());
             return new Variable.Variant(System.nanoTime());
@@ -63,7 +63,7 @@ public abstract class Clock extends Function.NativeFunction {
 
         @Override
         public Variable.Variant call(Interpreter i, List<Variable.Variant> args)
-                throws YsharpError {
+                throws YsharpException {
 
             requireArity(args, 1, getFnName());
             long ms = (long) requireNumber(args.get(0), getFnName(), 1);
@@ -71,8 +71,8 @@ public abstract class Clock extends Function.NativeFunction {
             try {
                 Thread.sleep(ms);
             } catch (InterruptedException e) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.PROCESS,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.PROCESS,
                         -1,
                         "sleep interrupted"
                 );
@@ -90,7 +90,7 @@ public abstract class Clock extends Function.NativeFunction {
 
         @Override
         public Variable.Variant call(Interpreter i, List<Variable.Variant> args)
-                throws YsharpError {
+                throws YsharpException {
 
             requireArity(args, 1, getFnName());
 

@@ -4,7 +4,7 @@ import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.terminal.SimpleTerminalResizeListener;
 import com.googlecode.lanterna.terminal.Terminal;
 import com.googlecode.lanterna.terminal.TerminalResizeListener;
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.yClass;
 
@@ -16,8 +16,8 @@ public class ySimpleTerminalResizeListener {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method '" + fnName + "' called without a valid 'this' context."
             );
@@ -26,8 +26,8 @@ public class ySimpleTerminalResizeListener {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof ySimpleTerminalResizeListenerInstance)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method '" + fnName + "' expected 'SimpleTerminalResizeListener' but got '" + obj.getType() + "'."
             );
@@ -69,7 +69,7 @@ public class ySimpleTerminalResizeListener {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
 
@@ -105,7 +105,7 @@ public class ySimpleTerminalResizeListener {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
 
@@ -139,7 +139,7 @@ public class ySimpleTerminalResizeListener {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
 
@@ -215,7 +215,7 @@ public class ySimpleTerminalResizeListener {
         @Override
         public Variable.Variant call(Interpreter interpreter,
                                      List<Variable.Variant> arguments)
-                throws YsharpError {
+                throws YsharpException {
 
             yTerminalSize.yTerminalSizeInstance size =
                      yTerminalSize.requireTerminalSize(arguments.getFirst(), "SimpleTerminalResizeListener", 1);

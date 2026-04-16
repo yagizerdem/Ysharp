@@ -1,6 +1,6 @@
 package ysharp.treewalk.parser;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.lexer.Token;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class Parser {
         }
     }
 
-    public List<YsharpError> errors;
+    public List<YsharpException> errors;
 
     public boolean hadErrors (){
         return !errors.isEmpty();
@@ -61,11 +61,11 @@ public class Parser {
         return tokenStream.get(current - 1);
     }
 
-    private void consume(Token.TokenType expected, String message) throws YsharpError {
+    private void consume(Token.TokenType expected, String message) throws YsharpException {
         Token token = peek();
         if(!token.type.equals(expected)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.SYNTAX,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.SYNTAX,
                     token.line,
                     message
             );
@@ -115,7 +115,7 @@ public class Parser {
         while (peek().type != Token.TokenType.END_OF_FILE) {
             try {
                 list.add(parseAssignment());
-            }catch (YsharpError err) {
+            }catch (YsharpException err) {
                 sync();
             }
         }
@@ -130,7 +130,7 @@ public class Parser {
         while (peek().type != Token.TokenType.END_OF_FILE) {
             try {
                 program.program.add(parseDeclaration(true));
-            }catch (YsharpError err) {
+            }catch (YsharpException err) {
                 errors.add(err);
                 sync();
             }
@@ -197,7 +197,7 @@ public class Parser {
 
     // expression parser
 
-    private Expr parseAssignment() throws YsharpError {
+    private Expr parseAssignment() throws YsharpException {
 
         if(peek().type == Token.TokenType.LEFT_PAREN && isLambdaAhead()) {
             return parseLambda();
@@ -232,8 +232,8 @@ public class Parser {
             }
 
 
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.SYNTAX,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.SYNTAX,
                     op.line,
                     "Invalid assignment target." );
         }
@@ -241,7 +241,7 @@ public class Parser {
         return expr;
     }
 
-    private Expr parseTernary() throws YsharpError {
+    private Expr parseTernary() throws YsharpException {
         Expr nullCoalescing = parseNullCoalescing();
 
         // consume ?
@@ -263,7 +263,7 @@ public class Parser {
         return  nullCoalescing;
     }
 
-    private Expr parseNullCoalescing() throws YsharpError {
+    private Expr parseNullCoalescing() throws YsharpException {
         Expr pipeLine = parsePipeLine();
 
         if(match(peek(), Token.TokenType.DOUBLE_QUESTION_MARK)) {
@@ -291,7 +291,7 @@ public class Parser {
         return pipeLine;
     }
 
-    private Expr parsePipeLine() throws YsharpError {
+    private Expr parsePipeLine() throws YsharpException {
         Expr expr = parseLogicalOr();
 
         if(match(peek(), Token.TokenType.PIPE)) {
@@ -315,7 +315,7 @@ public class Parser {
         return  expr;
     }
 
-    private Expr parseLogicalOr() throws YsharpError {
+    private Expr parseLogicalOr() throws YsharpException {
         Expr expr = parseLogicalAnd();
 
         if(match(peek(), Token.TokenType.LOGICAL_OR)) {
@@ -343,7 +343,7 @@ public class Parser {
         return  expr;
     }
 
-    private Expr parseLogicalAnd() throws YsharpError {
+    private Expr parseLogicalAnd() throws YsharpException {
         Expr expr = parseBitwiseOr();
 
         if(match(peek(), Token.TokenType.LOGICAL_AND)) {
@@ -371,7 +371,7 @@ public class Parser {
         return  expr;
     }
 
-    private Expr parseBitwiseOr() throws YsharpError {
+    private Expr parseBitwiseOr() throws YsharpException {
         Expr expr = parseBitwiseXor();
 
         if(match(peek(), Token.TokenType.BITWISE_OR)) {
@@ -399,7 +399,7 @@ public class Parser {
         return  expr;
     }
 
-    private Expr parseBitwiseXor() throws YsharpError {
+    private Expr parseBitwiseXor() throws YsharpException {
         Expr expr = parseBitwiseAnd();
 
         if(match(peek(), Token.TokenType.BITWISE_XOR)) {
@@ -427,7 +427,7 @@ public class Parser {
         return  expr;
     }
 
-    private Expr parseBitwiseAnd() throws YsharpError {
+    private Expr parseBitwiseAnd() throws YsharpException {
         Expr expr = parseEquality();
 
         if(match(peek(), Token.TokenType.BITWISE_AND)) {
@@ -455,7 +455,7 @@ public class Parser {
         return  expr;
     }
 
-    private Expr parseEquality() throws YsharpError {
+    private Expr parseEquality() throws YsharpException {
         Expr expr = parseComparison();
 
         if (match(peek(),
@@ -493,7 +493,7 @@ public class Parser {
         return expr;
     }
 
-    private Expr parseComparison() throws YsharpError {
+    private Expr parseComparison() throws YsharpException {
         Expr expr = parseBitwiseShift();
 
         if (match(peek(),
@@ -535,7 +535,7 @@ public class Parser {
         return expr;
     }
 
-    private Expr parseBitwiseShift() throws YsharpError {
+    private Expr parseBitwiseShift() throws YsharpException {
         Expr expr = parseRange();
 
         if (match(peek(),
@@ -573,7 +573,7 @@ public class Parser {
         return expr;
     }
 
-    private Expr parseRange() throws YsharpError {
+    private Expr parseRange() throws YsharpException {
         Expr expr = parseTerm();
 
         if (match(peek(), Token.TokenType.DOUBLE_DOT)) {
@@ -607,7 +607,7 @@ public class Parser {
         return expr;
     }
 
-    private Expr parseTerm() throws YsharpError {
+    private Expr parseTerm() throws YsharpException {
         Expr expr = parseFactor();
 
         if (match(peek(),
@@ -644,7 +644,7 @@ public class Parser {
         return expr;
     }
 
-    private Expr parseFactor() throws YsharpError {
+    private Expr parseFactor() throws YsharpException {
         Expr expr = parseUnary();
 
         if (match(peek(),
@@ -684,7 +684,7 @@ public class Parser {
         return expr;
     }
 
-    private Expr parseUnary() throws YsharpError {
+    private Expr parseUnary() throws YsharpException {
         if (match(peek(),
                 Token.TokenType.BANG,
                 Token.TokenType.MINUS,
@@ -701,7 +701,7 @@ public class Parser {
         return parsePostfix();
     }
 
-    private Expr parsePostfix() throws YsharpError {
+    private Expr parsePostfix() throws YsharpException {
         Expr expr = parseCall();
 
         while (match(peek(),
@@ -715,7 +715,7 @@ public class Parser {
         return expr;
     }
 
-    private Expr parseCall() throws YsharpError {
+    private Expr parseCall() throws YsharpException {
         Expr calee = parsePrimary();
 
         while (peek().type == Token.TokenType.LEFT_PAREN ||
@@ -750,8 +750,8 @@ public class Parser {
             else if(match(peek(), Token.TokenType.DOT)) {
                 Token identifier = advance();
                 if(identifier.type != Token.TokenType.IDENTIFIER) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.SYNTAX,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.SYNTAX,
                             identifier.line,
                             "");
                 }
@@ -765,8 +765,8 @@ public class Parser {
             else if(match(peek(), Token.TokenType.OPTIONAL_CALL)) {
                 Token identifier = advance();
                 if(identifier.type != Token.TokenType.IDENTIFIER) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.SYNTAX,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.SYNTAX,
                             identifier.line,
                             "");
                 }
@@ -782,7 +782,7 @@ public class Parser {
         return  calee;
     }
 
-    private Expr parseSuperCall() throws YsharpError {
+    private Expr parseSuperCall() throws YsharpException {
 
         Token superToken = previous();
 
@@ -812,15 +812,15 @@ public class Parser {
             return superCallExpr;
         }
         else {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.SYNTAX,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.SYNTAX,
                     superToken.line,
                     "Expected '(' after 'super'."
             );
         }
     }
 
-    private Expr parsePrimary() throws YsharpError {
+    private Expr parsePrimary() throws YsharpException {
         if(match(peek(), Token.TokenType.LEFT_BRACKET)) {
             return parseArrayInitializer();
         }
@@ -838,7 +838,7 @@ public class Parser {
         return  parseAtom();
     }
 
-    private Expr parseArrayInitializer() throws YsharpError {
+    private Expr parseArrayInitializer() throws YsharpException {
         List<Expr> elements = new ArrayList<>();
 
         if (peek().type != Token.TokenType.RIGHT_BRACKET) {
@@ -856,7 +856,7 @@ public class Parser {
         return new Expr.ArrayInitializerExpr(elements);
     }
 
-    private Expr parseMapInitializer() throws YsharpError {
+    private Expr parseMapInitializer() throws YsharpException {
 
         Token leftCurlyBrace = previous();
 
@@ -867,8 +867,8 @@ public class Parser {
             Token keyToken = peek();
 
             if (keyToken.type != Token.TokenType.STRING) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.SYNTAX,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.SYNTAX,
                         keyToken.line,
                         "Expected string key in map initializer.");
             }
@@ -885,8 +885,8 @@ public class Parser {
                 keyToken = peek();
 
                 if (keyToken.type != Token.TokenType.STRING) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.SYNTAX,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.SYNTAX,
                             keyToken.line,
                             "Expected string key after ','.");
                 }
@@ -911,7 +911,7 @@ public class Parser {
         return new Expr.MapInitializerExpr(entries, leftCurlyBrace);
     }
 
-    private Expr parseAtom() throws YsharpError {
+    private Expr parseAtom() throws YsharpException {
 
         if (match(peek(),
                 Token.TokenType.INT,
@@ -936,14 +936,14 @@ public class Parser {
             return new Expr.GroupingExpr(expr);
         }
 
-        throw new YsharpError(
-                YsharpError.YsharpErrorType.SYNTAX,
+        throw new YsharpException(
+                YsharpException.YsharpErrorType.SYNTAX,
                 peek().line,
                 "Expected expression."
         );
     }
 
-    private Expr parseLambda() throws YsharpError {
+    private Expr parseLambda() throws YsharpException {
 
         Token leftParen = peek();
         consume(Token.TokenType.LEFT_PAREN,
@@ -957,8 +957,8 @@ public class Parser {
                 Token identifier = advance();
 
                 if (identifier.type != Token.TokenType.IDENTIFIER) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.SYNTAX,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.SYNTAX,
                             identifier.line,
                             "Expected parameter name in lambda."
                     );
@@ -971,8 +971,8 @@ public class Parser {
                     typeTag = advance();
 
                     if (typeTag.type != Token.TokenType.IDENTIFIER) {
-                        throw new YsharpError(
-                                YsharpError.YsharpErrorType.SYNTAX,
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.SYNTAX,
                                 typeTag.line,
                                 "Expected type identifier after ':' in lambda parameter."
                         );
@@ -992,8 +992,8 @@ public class Parser {
             advance(); // consume :
             returnType = advance();
             if(returnType.type != Token.TokenType.IDENTIFIER) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.SYNTAX,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.SYNTAX,
                         peek().line,
                         "Expected return type identifier after ':' in lambda."
                 );
@@ -1010,13 +1010,13 @@ public class Parser {
         return new Expr.LambdaExpr(params, returnType, parseAssignment(), leftParen);
     }
 
-    private Expr parseNewExpr() throws YsharpError {
+    private Expr parseNewExpr() throws YsharpException {
 
         Expr constructor = parseCall();
 
         if (!(constructor instanceof Expr.CallExpr call)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.SYNTAX,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.SYNTAX,
                     peek().line,
                     "Expected constructor call after 'new'."
             );
@@ -1027,7 +1027,7 @@ public class Parser {
 
     // stmt parser
 
-    private Stmt parseStmt() throws YsharpError {
+    private Stmt parseStmt() throws YsharpException {
 
         if(match(peek(), Token.TokenType.PRINT)) return parsePrint();
         if(match(peek(), Token.TokenType.PRINTLN)) return parsePrintln();
@@ -1055,7 +1055,7 @@ public class Parser {
         return  parseExprStmt();
     }
 
-    private Stmt parseExprStmt() throws YsharpError {
+    private Stmt parseExprStmt() throws YsharpException {
         Expr expr = parseAssignment();
         consume(Token.TokenType.SEMI_COLON,
                 "Expected ';' after expression.");
@@ -1063,7 +1063,7 @@ public class Parser {
         return new Stmt.ExprStmt(expr);
     }
 
-    private Stmt parsePrint() throws YsharpError {
+    private Stmt parsePrint() throws YsharpException {
         Expr expr = parseAssignment();
         consume(Token.TokenType.SEMI_COLON,
                 "expected ';' after print statement");
@@ -1071,7 +1071,7 @@ public class Parser {
         return new Stmt.PrintStmt(expr);
     }
 
-    private Stmt parsePrintln() throws YsharpError {
+    private Stmt parsePrintln() throws YsharpException {
         Expr expr = parseAssignment();
         consume(Token.TokenType.SEMI_COLON,
                 "expected ';' after println statement");
@@ -1079,7 +1079,7 @@ public class Parser {
         return new Stmt.PrintlnStmt(expr);
     }
 
-    private Stmt parseBlockStmt() throws YsharpError {
+    private Stmt parseBlockStmt() throws YsharpException {
         consume(Token.TokenType.DO,
                 "Expected 'do' to start block.");
 
@@ -1094,7 +1094,7 @@ public class Parser {
         return new Stmt.BlockStmt(stmtList);
     }
 
-    private Stmt parseIfStmt() throws YsharpError {
+    private Stmt parseIfStmt() throws YsharpException {
         Expr condition = parseAssignment();
         consume(Token.TokenType.THEN,
                 "Expected 'then' after if condition.");
@@ -1123,13 +1123,13 @@ public class Parser {
 
     }
 
-    private Stmt parseWhileStmt() throws YsharpError {
+    private Stmt parseWhileStmt() throws YsharpException {
 
         Expr condition = parseAssignment();
 
         if (peek().type == Token.TokenType.END_OF_FILE) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.SYNTAX,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.SYNTAX,
                     peek().line,
                     "Expected statement after while condition."
             );
@@ -1140,7 +1140,7 @@ public class Parser {
         return new Stmt.WhileStmt(condition, body);
     }
 
-    private Stmt parseForStmt() throws YsharpError {
+    private Stmt parseForStmt() throws YsharpException {
 
         // initializer
         Stmt initializer = null;
@@ -1193,12 +1193,12 @@ public class Parser {
         );
     }
 
-    private Stmt parseForInStmt() throws YsharpError {
+    private Stmt parseForInStmt() throws YsharpException {
         consume(Token.TokenType.VAR, "Expected 'var' keyword after 'for' in for-in loop.");
 
         Token identifier = peek();
         if (identifier.type != Token.TokenType.IDENTIFIER) {
-            throw new YsharpError(YsharpError.YsharpErrorType.SYNTAX, identifier.line,
+            throw new YsharpException(YsharpException.YsharpErrorType.SYNTAX, identifier.line,
                     "Expected variable name after 'var' in for-in loop, but found: " + identifier.lexeme);
         }
         advance();
@@ -1209,7 +1209,7 @@ public class Parser {
             if (peek().type == Token.TokenType.IDENTIFIER) {
                 advance();
             } else {
-                throw new YsharpError(YsharpError.YsharpErrorType.SYNTAX, typeName.line,
+                throw new YsharpException(YsharpException.YsharpErrorType.SYNTAX, typeName.line,
                         "Expected a valid type name after ':', but found: " + typeName.lexeme);
             }
         }
@@ -1224,12 +1224,12 @@ public class Parser {
         return new Stmt.ForInStmt(initializer, iterable, body);
     }
 
-    private Stmt parseForeachStmt() throws YsharpError {
+    private Stmt parseForeachStmt() throws YsharpException {
         consume(Token.TokenType.VAR, "Expected 'var' keyword after 'for' in foreach loop.");
 
         Token identifier = peek();
         if (identifier.type != Token.TokenType.IDENTIFIER) {
-            throw new YsharpError(YsharpError.YsharpErrorType.SYNTAX, identifier.line,
+            throw new YsharpException(YsharpException.YsharpErrorType.SYNTAX, identifier.line,
                     "Expected variable name after 'var' in foreach loop, but found: " + identifier.lexeme);
         }
         advance();
@@ -1240,7 +1240,7 @@ public class Parser {
             if (peek().type == Token.TokenType.IDENTIFIER) {
                 advance();
             } else {
-                throw new YsharpError(YsharpError.YsharpErrorType.SYNTAX, typeName.line,
+                throw new YsharpException(YsharpException.YsharpErrorType.SYNTAX, typeName.line,
                         "Expected a valid type name after ':', but found: " + typeName.lexeme);
             }
         }
@@ -1255,19 +1255,19 @@ public class Parser {
         return new Stmt.ForEachStmt(initializer, iterable, body);
     }
 
-    private Stmt parseBreakStmt() throws YsharpError {
+    private Stmt parseBreakStmt() throws YsharpException {
         consume(Token.TokenType.SEMI_COLON,
                 "Expected ';' after 'break'.");
         return new Stmt.BreakStmt();
     }
 
-    private Stmt parseContinueStmt() throws YsharpError {
+    private Stmt parseContinueStmt() throws YsharpException {
         consume(Token.TokenType.SEMI_COLON,
                 "Expected ';' after 'continue'.");
         return new Stmt.ContinueStmt();
     }
 
-    private Stmt parseReturnStmt() throws YsharpError {
+    private Stmt parseReturnStmt() throws YsharpException {
         Expr expr = parseAssignment();
 
         consume(Token.TokenType.SEMI_COLON,
@@ -1276,7 +1276,7 @@ public class Parser {
         return new Stmt.ReturnStmt(expr);
     }
 
-    private Stmt parseSwitchStmt() throws YsharpError {
+    private Stmt parseSwitchStmt() throws YsharpException {
 
         Expr condition = parseAssignment();
 
@@ -1306,8 +1306,8 @@ public class Parser {
             else if (match(peek(), Token.TokenType.DEFAULT)) {
 
                 if (defaultClause != null) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.SYNTAX,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.SYNTAX,
                             peek().line,
                             "Multiple default clauses in switch."
                     );
@@ -1319,8 +1319,8 @@ public class Parser {
                 defaultClause = parseBlockStmt();
             }
             else {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.SYNTAX,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.SYNTAX,
                         peek().line,
                         "Expected 'case', 'default' or 'end' inside switch."
                 );
@@ -1333,7 +1333,7 @@ public class Parser {
         return new Stmt.SwitchStmt(condition, cases, defaultClause);
     }
 
-    private Stmt parseThrowStmt() throws YsharpError {
+    private Stmt parseThrowStmt() throws YsharpException {
       Token throwToken = previous();
       Expr expr = parseAssignment();
 
@@ -1342,7 +1342,7 @@ public class Parser {
       return  new Stmt.ThrowStmt(throwToken, expr);
     }
 
-    private Stmt parseTryStmt() throws YsharpError {
+    private Stmt parseTryStmt() throws YsharpException {
 
         Token tryToken = previous();
 
@@ -1357,7 +1357,7 @@ public class Parser {
 
         Token errIdentifier = advance();
         if(errIdentifier.type != Token.TokenType.IDENTIFIER) {
-            throw new YsharpError(YsharpError.YsharpErrorType.SYNTAX,
+            throw new YsharpException(YsharpException.YsharpErrorType.SYNTAX,
                     errIdentifier.line,
                     "Expected identifier in catch clause.");
         }
@@ -1385,12 +1385,12 @@ public class Parser {
 
     // declaration parser
 
-    private Stmt parseDeclaration(boolean isGlobalDeclaration) throws YsharpError {
+    private Stmt parseDeclaration(boolean isGlobalDeclaration) throws YsharpException {
 
         boolean flag = match(peek(), Token.TokenType.EXPORT);
         if(!isGlobalDeclaration && flag) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.SYNTAX,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.SYNTAX,
                     peek().line,
                     "Export declarations are only allowed at the top level."
             );
@@ -1411,14 +1411,14 @@ public class Parser {
         return  parseStmt();
     }
 
-    private Stmt parseVarDeclaration(boolean isExported) throws YsharpError {
+    private Stmt parseVarDeclaration(boolean isExported) throws YsharpException {
         Token identifier = advance();
         Token typeTag = null;
         Expr initializer = null;
 
         if (identifier.type != Token.TokenType.IDENTIFIER) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.SYNTAX,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.SYNTAX,
                     identifier.line,
                     "Expected variable name after 'var'."
             );
@@ -1426,8 +1426,8 @@ public class Parser {
 
         if (match(peek(), Token.TokenType.COLON)) {
             if (peek().type == Token.TokenType.END_OF_FILE) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.SYNTAX,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.SYNTAX,
                         peek().line,
                         "Expected type after ':'."
                 );
@@ -1437,8 +1437,8 @@ public class Parser {
 
         if (match(peek(), Token.TokenType.ASSIGN)) {
             if (peek().type == Token.TokenType.END_OF_FILE) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.SYNTAX,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.SYNTAX,
                         peek().line,
                         "Expected initializer expression after '='."
                 );
@@ -1451,14 +1451,14 @@ public class Parser {
         return new Stmt.VarDeclaration(identifier, typeTag, initializer, isExported);
     }
 
-    private Stmt parseLetDeclaration(boolean isExported) throws YsharpError {
+    private Stmt parseLetDeclaration(boolean isExported) throws YsharpException {
         Token identifier = advance();
         Token typeTag = null;
         Expr initializer = null;
 
         if (identifier.type != Token.TokenType.IDENTIFIER) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.SYNTAX,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.SYNTAX,
                     identifier.line,
                     "Expected variable name after 'let'."
             );
@@ -1466,8 +1466,8 @@ public class Parser {
 
         if (match(peek(), Token.TokenType.COLON)) {
             if (peek().type == Token.TokenType.END_OF_FILE) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.SYNTAX,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.SYNTAX,
                         peek().line,
                         "Expected type after ':'."
                 );
@@ -1477,8 +1477,8 @@ public class Parser {
 
         if (match(peek(), Token.TokenType.ASSIGN)) {
             if (peek().type == Token.TokenType.END_OF_FILE) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.SYNTAX,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.SYNTAX,
                         peek().line,
                         "Expected initializer expression after '='."
                 );
@@ -1491,12 +1491,12 @@ public class Parser {
         return new Stmt.LetDeclaration(identifier, typeTag, initializer, isExported);
     }
 
-    private Stmt parseFunctionDeclaration(boolean isExported) throws YsharpError {
+    private Stmt parseFunctionDeclaration(boolean isExported) throws YsharpException {
 
         Token name = advance();
         if (name.type != Token.TokenType.IDENTIFIER) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.SYNTAX,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.SYNTAX,
                     name.line,
                     "Expected function name identifier."
             );
@@ -1513,8 +1513,8 @@ public class Parser {
 
                 Token paramName = advance();
                 if (paramName.type != Token.TokenType.IDENTIFIER) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.SYNTAX,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.SYNTAX,
                             paramName.line,
                             "Expected parameter name identifier."
                     );
@@ -1528,8 +1528,8 @@ public class Parser {
 
                     typeToken = advance();
                     if (typeToken.type != Token.TokenType.IDENTIFIER) {
-                        throw new YsharpError(
-                                YsharpError.YsharpErrorType.SYNTAX,
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.SYNTAX,
                                 typeToken.line,
                                 "Expected type identifier after ':'."
                         );
@@ -1554,8 +1554,8 @@ public class Parser {
 
             returnType = advance();
             if (returnType.type != Token.TokenType.IDENTIFIER) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.SYNTAX,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.SYNTAX,
                         returnType.line,
                         "Expected return type identifier after ':'."
                 );
@@ -1567,14 +1567,14 @@ public class Parser {
         return new Stmt.FunctionDeclaration(name, params, returnType, body, isExported);
     }
 
-    private Stmt parseConstDeclaration(boolean isExported) throws YsharpError {
+    private Stmt parseConstDeclaration(boolean isExported) throws YsharpException {
         Token identifier = advance();
         Token typeTag = null;
         Expr initializer = null;
 
         if (identifier.type != Token.TokenType.IDENTIFIER) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.SYNTAX,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.SYNTAX,
                     identifier.line,
                     "Expected variable name after 'const'."
             );
@@ -1582,8 +1582,8 @@ public class Parser {
 
         if (match(peek(), Token.TokenType.COLON)) {
             if (peek().type == Token.TokenType.END_OF_FILE) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.SYNTAX,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.SYNTAX,
                         peek().line,
                         "Expected type after ':'."
                 );
@@ -1592,8 +1592,8 @@ public class Parser {
         }
 
         if(peek().type != Token.TokenType.ASSIGN) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.SYNTAX,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.SYNTAX,
                     peek().line,
                     "Expected initializer expression after const declaration."
             );
@@ -1606,12 +1606,12 @@ public class Parser {
         return new Stmt.ConstDeclaration(identifier, typeTag, initializer, isExported);
     }
 
-    private Stmt parseClassDeclaration(boolean isSealed, boolean isExported) throws YsharpError {
+    private Stmt parseClassDeclaration(boolean isSealed, boolean isExported) throws YsharpException {
 
         Token name = advance();
         if (name.type != Token.TokenType.IDENTIFIER) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.SYNTAX,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.SYNTAX,
                     name.line,
                     "Expected class name after 'class'."
             );
@@ -1622,8 +1622,8 @@ public class Parser {
         if (match(peek(), Token.TokenType.EXTENDS)) {
             extend = advance();
             if (extend.type != Token.TokenType.IDENTIFIER) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.SYNTAX,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.SYNTAX,
                         extend.line,
                         "Expected superclass name after 'extends'."
                 );
@@ -1647,8 +1647,8 @@ public class Parser {
                 consume(Token.TokenType.LEFT_PAREN,
                         "Expected '(' after constructor.");
                 if (isStatic) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.SYNTAX,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.SYNTAX,
                             ctorToken.line,
                             "Constructor cannot be static."
                     );
@@ -1662,8 +1662,8 @@ public class Parser {
                         Token paramName = advance();
 
                         if (paramName.type != Token.TokenType.IDENTIFIER) {
-                            throw new YsharpError(
-                                    YsharpError.YsharpErrorType.SYNTAX,
+                            throw new YsharpException(
+                                    YsharpException.YsharpErrorType.SYNTAX,
                                     paramName.line,
                                     "Expected parameter name."
                             );
@@ -1676,8 +1676,8 @@ public class Parser {
                             typeToken = advance();
 
                             if (typeToken.type != Token.TokenType.IDENTIFIER) {
-                                throw new YsharpError(
-                                        YsharpError.YsharpErrorType.SYNTAX,
+                                throw new YsharpException(
+                                        YsharpException.YsharpErrorType.SYNTAX,
                                         typeToken.line,
                                         "Expected type identifier after ':'."
                                 );
@@ -1703,8 +1703,8 @@ public class Parser {
                     returnType = advance();
 
                     if (returnType.type != Token.TokenType.IDENTIFIER) {
-                        throw new YsharpError(
-                                YsharpError.YsharpErrorType.SYNTAX,
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.SYNTAX,
                                 returnType.line,
                                 "Expected return type identifier."
                         );
@@ -1745,8 +1745,8 @@ public class Parser {
                         Token paramName = advance();
 
                         if (paramName.type != Token.TokenType.IDENTIFIER) {
-                            throw new YsharpError(
-                                    YsharpError.YsharpErrorType.SYNTAX,
+                            throw new YsharpException(
+                                    YsharpException.YsharpErrorType.SYNTAX,
                                     paramName.line,
                                     "Expected parameter name."
                             );
@@ -1759,8 +1759,8 @@ public class Parser {
                             typeToken = advance();
 
                             if (typeToken.type != Token.TokenType.IDENTIFIER) {
-                                throw new YsharpError(
-                                        YsharpError.YsharpErrorType.SYNTAX,
+                                throw new YsharpException(
+                                        YsharpException.YsharpErrorType.SYNTAX,
                                         typeToken.line,
                                         "Expected type identifier after ':'."
                                 );
@@ -1786,8 +1786,8 @@ public class Parser {
                     returnType = advance();
 
                     if (returnType.type != Token.TokenType.IDENTIFIER) {
-                        throw new YsharpError(
-                                YsharpError.YsharpErrorType.SYNTAX,
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.SYNTAX,
                                 returnType.line,
                                 "Expected return type identifier."
                         );
@@ -1843,8 +1843,8 @@ public class Parser {
             }
 
             else {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.SYNTAX,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.SYNTAX,
                         peek().line,
                         "Expected class member (function, var, const)."
                 );
@@ -1864,13 +1864,13 @@ public class Parser {
         );
     }
 
-    private List<String> parseUseDeclaration() throws YsharpError {
+    private List<String> parseUseDeclaration() throws YsharpException {
         ArrayList<String> useDeclarations = new ArrayList<>();
          while (match(peek() , Token.TokenType.USE)) {
             Token modulePath = advance();
             if(modulePath.type != Token.TokenType.STRING) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.SYNTAX,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.SYNTAX,
                         modulePath.line,
                         "Expected module path string after 'use'."
                 );

@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Collections.Set;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Native.Collections.Array.function.instance.SetFn;
 import ysharp.treewalk.evaluator.Native.Collections.Set.instance.*;
@@ -14,8 +14,8 @@ public class ySet {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method called without valid 'this' context."
             );
@@ -24,8 +24,8 @@ public class ySet {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof ySetInstance)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method can only be called on Set objects."
             );
@@ -118,7 +118,7 @@ public class ySet {
         public Variable.Variant call(
                 Interpreter interpreter,
                 List<Variable.Variant> arguments)
-                throws YsharpError {
+                throws YsharpException {
 
             return new Variable.Variant(new ySetInstance());
         }

@@ -1,7 +1,7 @@
 package treewalk;
 
 import org.junit.jupiter.api.Test;
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.lexer.Cursor;
 import ysharp.treewalk.lexer.Preprocess;
 
@@ -180,8 +180,8 @@ public class PreprocessorTest {
             String program = "\\\"yagiz erdem\" ";
             var buf = Preprocess.mergeContinuation(program);
             fail("should throw unclosed double quote error");
-        } catch (YsharpError err) {
-            assertEquals(YsharpError.YsharpErrorType.SYNTAX, err.getType());
+        } catch (YsharpException err) {
+            assertEquals(YsharpException.YsharpErrorType.SYNTAX, err.getType());
         } catch (Exception ex) {
             fail("wrong exception type: " + ex.getMessage());
         }

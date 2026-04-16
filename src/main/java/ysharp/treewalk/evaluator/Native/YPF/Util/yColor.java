@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.YPF.Util;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Interpreter;
 import ysharp.treewalk.evaluator.Native.Collections.Array.function.statix.RangeFn;
 import ysharp.treewalk.evaluator.Variable;
@@ -47,8 +47,8 @@ public class yColor {
         }
 
         @Override
-        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
-            throw new YsharpError(YsharpError.YsharpErrorType.PROCESS, -1 ,
+        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
+            throw new YsharpException(YsharpException.YsharpErrorType.PROCESS, -1 ,
                     "YPF.Color is static class, cannot take instance with new expression of static classes");
         }
 

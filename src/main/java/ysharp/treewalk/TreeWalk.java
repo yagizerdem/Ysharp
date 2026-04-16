@@ -81,7 +81,7 @@ public class TreeWalk {
                 return;
             }
         }
-        catch (YsharpError err) {
+        catch (YsharpException err) {
             if(err.getPrintMessage()) {
                 StdIO.printStdErr("Runtime error:");
                 StdIO.printStdErr(err.toString());
@@ -119,7 +119,7 @@ public class TreeWalk {
                 Preprocess preprocess = new Preprocess();
                 List<Cursor.Pchar> buf = preprocess.process(ySharpCommand);
                 if(preprocess.hadErrors()){
-                    for(YsharpError err: preprocess.errors) {
+                    for(YsharpException err: preprocess.errors) {
                         System.err.println(err.getMessage());
                     }
                     continue;
@@ -128,7 +128,7 @@ public class TreeWalk {
                 Lexer lexer = new Lexer(buf);
                 var stream = lexer.scanTokens();
                 if(lexer.hadErrors()) {
-                    for(YsharpError err: lexer.errors) {
+                    for(YsharpException err: lexer.errors) {
                         System.err.println(err.getMessage());
                     }
                     continue;
@@ -137,7 +137,7 @@ public class TreeWalk {
                 Parser parser = new Parser(stream);
                 Parser.Program program = parser.parse();
                 if(parser.hadErrors()) {
-                    for(YsharpError err: parser.errors) {
+                    for(YsharpException err: parser.errors) {
                         System.err.println(err.getMessage());
                     }
                     continue;
@@ -147,7 +147,7 @@ public class TreeWalk {
                 resolver.resolve(program.program);
 
                 if(resolver.hadErrors()) {
-                    for(YsharpError err: resolver.errors) {
+                    for(YsharpException err: resolver.errors) {
                         System.err.println(err.getMessage());
                     }
                     continue;
@@ -155,13 +155,13 @@ public class TreeWalk {
 
                 interpreter.interpret(program.program);
                 if(interpreter.hadErrors()) {
-                    for(YsharpError err: interpreter.errors) {
+                    for(YsharpException err: interpreter.errors) {
                         System.err.println(err.getMessage());
                     }
                     continue;
                 }
             }
-            catch (YsharpError err) {
+            catch (YsharpException err) {
                 if(err.getPrintMessage()) {
                     StdIO.printStdErr("Runtime error:");
                     StdIO.printStdErr(err.toString());

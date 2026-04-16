@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Collections.Array.function.instance;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Native.Collections.Array.yArray;
 import ysharp.treewalk.evaluator.Native.function.binding.BoundNativeFunction;
@@ -16,7 +16,7 @@ public class ToStringFn extends Function.NativeFunction implements Callable {
     }
 
     @Override
-    public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+    public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
         requireArity(arguments, arity(), getFnName());
         yArray.yArrayInstance array = yArray.requireArrayThis(interpreter, getFnName());
 

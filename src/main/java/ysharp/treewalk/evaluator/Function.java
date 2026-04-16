@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.parser.Expr;
 import ysharp.treewalk.parser.Stmt;
 
@@ -80,13 +80,13 @@ public abstract class Function extends RuntimeObject implements Callable {
         @Override
         public Variable.Variant call(Interpreter interpreter,
                                      List<Variable.Variant> arguments)
-                throws YsharpError {
+                throws YsharpException {
 
             Environment newEnv = new Environment(this.closure);
 
             if (arguments.size() != declaration.params.size()) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.PROCESS,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.PROCESS,
                         declaration.name.line,
                         "Expected " + declaration.params.size() +
                                 " arguments but got " + arguments.size()
@@ -106,8 +106,8 @@ public abstract class Function extends RuntimeObject implements Callable {
                 }
 
                 if(!Interpreter.typeChecker(typeTag, arg)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             declaration.name.line,
                             "Parameter : " + declaration.params.get(i).name.lexeme + " type mismatch. Expected '" +
                                     typeTag + "' but got '" +
@@ -134,8 +134,8 @@ public abstract class Function extends RuntimeObject implements Callable {
                 }
 
                 if (!Interpreter.typeChecker(expectedType, returnValue.value)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             declaration.name.line,
                             "Return type mismatch. Expected '" +
                                     expectedType + "' but got '" +
@@ -185,13 +185,13 @@ public abstract class Function extends RuntimeObject implements Callable {
         @Override
         public Variable.Variant call(Interpreter interpreter,
                                      List<Variable.Variant> arguments)
-                throws YsharpError {
+                throws YsharpException {
 
             Environment newEnv = new Environment(this.closure);
 
             if (arguments.size() != lambdaExpr.params.size()) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.PROCESS,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.PROCESS,
                         lambdaExpr.leftParen.line,
                         "Expected " + lambdaExpr.params.size() +
                                 " arguments but got " + arguments.size()
@@ -211,8 +211,8 @@ public abstract class Function extends RuntimeObject implements Callable {
                 }
 
                 if(!Interpreter.typeChecker(typeTag, arg)) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             lambdaExpr.leftParen.line,
                             "Parameter : " + lambdaExpr.params.get(i).name.lexeme + " type mismatch. Expected '" +
                                     typeTag + "' but got '" +
@@ -324,7 +324,7 @@ public abstract class Function extends RuntimeObject implements Callable {
         }
 
         @Override
-        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
             int argCount = arguments.size();
 
@@ -336,8 +336,8 @@ public abstract class Function extends RuntimeObject implements Callable {
                         .call(interpreter, arguments);
             }
 
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "No overload found for function '" + name +
                             "' with " + argCount + " argument(s)."
@@ -350,7 +350,7 @@ public abstract class Function extends RuntimeObject implements Callable {
 
         public void addFunction(Variable.Variant fn, int argSize, boolean isExported) {
             if(this.dispatcher.containsKey(argSize)) {
-                throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,-1,
+                throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,-1,
                         "Variable '" +
                                 this.name +
                                 "' is already defined in this scope.");
@@ -363,8 +363,8 @@ public abstract class Function extends RuntimeObject implements Callable {
                 return this.dispatcher.get(argSize).variant;
             }
 
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     "Function '" + this.name + "' does not have an overload that accepts " + argSize +
                             (argSize <= 1 ? " argument." : " arguments." )

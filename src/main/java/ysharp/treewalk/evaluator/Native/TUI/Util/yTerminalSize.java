@@ -1,7 +1,7 @@
 package ysharp.treewalk.evaluator.Native.TUI.Util;
 
 import com.googlecode.lanterna.TerminalSize;
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 
 import java.util.List;
@@ -13,8 +13,8 @@ public class yTerminalSize {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method '" + fnName + "' called without a valid 'this' context."
             );
@@ -23,8 +23,8 @@ public class yTerminalSize {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof yTerminalSizeInstance)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method '" + fnName + "' expected 'TerminalSize' as 'this' but got '" + obj.getType() + "'."
             );
@@ -35,11 +35,11 @@ public class yTerminalSize {
 
     public static yTerminalSize.yTerminalSizeInstance requireTerminalSize (Variable.Variant v,
                                                  String fn,
-                                                 int index) throws YsharpError {
+                                                 int index) throws YsharpException {
 
         if (!v.isRuntimeObject()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     fn + " argument " + index + " must be a object."
             );
@@ -48,8 +48,8 @@ public class yTerminalSize {
         RuntimeObject obj = v.asRuntimeObject();
 
         if(!(obj instanceof yTerminalSize.yTerminalSizeInstance)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     fn + " argument " + index + " must be a TerminalSize object."
             );
@@ -93,7 +93,7 @@ public class yTerminalSize {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yTerminalSizeInstance self = requireTerminalSizeThis(interpreter, getFnName());
@@ -127,7 +127,7 @@ public class yTerminalSize {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yTerminalSizeInstance self = requireTerminalSizeThis(interpreter, getFnName());
@@ -160,7 +160,7 @@ public class yTerminalSize {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yTerminalSizeInstance self = requireTerminalSizeThis(interpreter, getFnName());
@@ -191,7 +191,7 @@ public class yTerminalSize {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
                 yTerminalSizeInstance self = requireTerminalSizeThis(interpreter, getFnName());
@@ -222,7 +222,7 @@ public class yTerminalSize {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
 
@@ -257,7 +257,7 @@ public class yTerminalSize {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
 
@@ -291,7 +291,7 @@ public class yTerminalSize {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
 
@@ -326,7 +326,7 @@ public class yTerminalSize {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
 
@@ -360,7 +360,7 @@ public class yTerminalSize {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
 
@@ -396,7 +396,7 @@ public class yTerminalSize {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
 
@@ -432,7 +432,7 @@ public class yTerminalSize {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
 
@@ -469,7 +469,7 @@ public class yTerminalSize {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
 
@@ -504,7 +504,7 @@ public class yTerminalSize {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 yTerminalSizeInstance self = requireTerminalSizeThis(interpreter, getFnName());
 
@@ -526,8 +526,8 @@ public class yTerminalSize {
                     );
                 }
 
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.PROCESS,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.PROCESS,
                         0,
                         "'withRelative' expects 1 or 2 arguments."
                 );
@@ -600,7 +600,7 @@ public class yTerminalSize {
         }
 
         @Override
-        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
 
             requireArity(arguments, arity(), getClassName());
 

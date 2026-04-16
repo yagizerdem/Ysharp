@@ -1,7 +1,7 @@
 package ysharp.treewalk.evaluator.Native.YPF.Container.Frame;
 
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 
 import javax.swing.JFrame;
@@ -18,8 +18,8 @@ public class yFrame {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method '" + fnName + "' called without 'this'."
             );
@@ -28,8 +28,8 @@ public class yFrame {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof yFrameInstance)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Expected Frame but got '" + obj.getType() + "'"
             );
@@ -76,7 +76,7 @@ public class yFrame {
 
                         @Override
                         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
-                                throws YsharpError {
+                                throws YsharpException {
 
                             yFrame.yFrameInstance frame =
                                     yFrame.requireFrameThis(interpreter, name);
@@ -111,7 +111,7 @@ public class yFrame {
                                 }
 
                                 if(m == null) {
-                                    throw  new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+                                    throw  new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                                             -1,
                                             "method overload not found");
                                 }
@@ -123,8 +123,8 @@ public class yFrame {
                                 );
 
                             } catch (Exception e) {
-                                throw new YsharpError(
-                                        YsharpError.YsharpErrorType.PROCESS,
+                                throw new YsharpException(
+                                        YsharpException.YsharpErrorType.PROCESS,
                                         0,
                                         "Native call failed: " + name
                                 );
@@ -177,7 +177,7 @@ public class yFrame {
 
         @Override
         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
-                throws YsharpError {
+                throws YsharpException {
 
             return new Variable.Variant(new yFrameInstance());
         }

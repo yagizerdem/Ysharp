@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Collections.WeakHashMap.function.instance;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Function;
 import ysharp.treewalk.evaluator.Interpreter;
 import ysharp.treewalk.evaluator.Native.Collections.WeakHashMap.yWeakHashMap;
@@ -18,7 +18,7 @@ public class GetFn extends Function.NativeFunction {
     @Override
     public Variable.Variant call(Interpreter interpreter,
                                  List<Variable.Variant> arguments)
-            throws YsharpError {
+            throws YsharpException {
 
         Variable.Variant key = arguments.getFirst();
         yWeakHashMap.yWeakHashMapInstance whm = yWeakHashMap.requireWeakHashMapThis(interpreter);

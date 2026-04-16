@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.YPF.Table;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Function;
 
@@ -16,8 +16,8 @@ public class yTable {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method '" + fnName + "' called without 'this'."
             );
@@ -26,8 +26,8 @@ public class yTable {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof yTableInstance)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Expected Table but got '" + obj.getType() + "'"
             );
@@ -66,7 +66,7 @@ public class yTable {
 
                         @Override
                         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
-                                throws YsharpError {
+                                throws YsharpException {
 
                             yTableInstance table =
                                     yTable.requireTableThis(interpreter, name);
@@ -106,8 +106,8 @@ public class yTable {
                                 }
 
                                 if (selected == null) {
-                                    throw new YsharpError(
-                                            YsharpError.YsharpErrorType.PROCESS,
+                                    throw new YsharpException(
+                                            YsharpException.YsharpErrorType.PROCESS,
                                             -1,
                                             "method overload not found"
                                     );
@@ -120,8 +120,8 @@ public class yTable {
                                 );
 
                             } catch (Exception e) {
-                                throw new YsharpError(
-                                        YsharpError.YsharpErrorType.PROCESS,
+                                throw new YsharpException(
+                                        YsharpException.YsharpErrorType.PROCESS,
                                         0,
                                         "Native call failed: " + name
                                 );
@@ -143,7 +143,7 @@ public class yTable {
 
                     @Override
                     public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
-                            throws YsharpError {
+                            throws YsharpException {
 
                         yTableInstance table = requireTableThis(interpreter, "addRow");
 
@@ -193,7 +193,7 @@ public class yTable {
 
         @Override
         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
-                throws YsharpError {
+                throws YsharpException {
 
             return new Variable.Variant(new yTableInstance());
         }

@@ -1,7 +1,7 @@
 package ysharp.treewalk.evaluator.Native.TUI.Util.TextColor;
 
 import com.googlecode.lanterna.TextColor;
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Native.Collections.Array.yArray;
 
@@ -11,11 +11,11 @@ public class yANSI {
 
     public static yANSIEnum requireANSIEnum (Variable.Variant v,
                                                  String fn,
-                                             int index) throws YsharpError {
+                                             int index) throws YsharpException {
 
         if (!v.isRuntimeObject()) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     fn + " argument " + index + " must be a object."
             );
@@ -24,8 +24,8 @@ public class yANSI {
         RuntimeObject obj = v.asRuntimeObject();
 
         if(!(obj instanceof yANSIEnum)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     fn + " argument " + index + " must be a ANSI object."
             );
@@ -38,8 +38,8 @@ public class yANSI {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method " + "'" + fnName+ "'" + "called without a valid 'this' context."
             );
@@ -48,8 +48,8 @@ public class yANSI {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof yANSIEnum)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method '" + fnName + "' expected 'ANSI' as 'this' but got '" + obj.getType() + "'."
             );
@@ -76,7 +76,7 @@ public class yANSI {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     requireArity(arguments, arity(), getFnName());
 
@@ -199,7 +199,7 @@ public class yANSI {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                     requireArity(arguments, arity(), getClassName());
                     String value = requireString(arguments.getFirst(), getClassName(), 1);
                     return new Variable.Variant(new yTextColor.yTextColorEnum(TextColor.ANSI.valueOf(value)));
@@ -228,7 +228,7 @@ public class yANSI {
                 }
 
                 @Override
-                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+                public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                     requireArity(arguments, arity(), getClassName());
                     TextColor.ANSI[] arr = TextColor.ANSI.values();
                     yArray.yArrayInstance yArray = new yArray.yArrayInstance();
@@ -259,9 +259,9 @@ public class yANSI {
         @Override
         public Variable.Variant call(Interpreter interpreter,
                                      List<Variable.Variant> arguments)
-                throws YsharpError {
+                throws YsharpException {
 
-            throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     "cannot take instance of ANSI class");
         }

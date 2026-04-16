@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Threading;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 
 import java.util.List;
@@ -13,8 +13,8 @@ public class ySemaphore {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method called without valid 'this' context."
             );
@@ -23,8 +23,8 @@ public class ySemaphore {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof ySemaphoreInstance)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method can only be called on Semaphore objects."
             );
@@ -59,14 +59,14 @@ public class ySemaphore {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 ySemaphoreInstance semaphore = requireSemaphoreThis(interpreter);
                 Semaphore lock = semaphore.getLock();
 
                 try {
                     lock.acquire();
                 } catch (InterruptedException ex) {
-                    throw new YsharpError(YsharpError.YsharpErrorType.PROCESS, -1,  "Semaphore operation interrupted.");
+                    throw new YsharpException(YsharpException.YsharpErrorType.PROCESS, -1,  "Semaphore operation interrupted.");
                 }
 
                 return new Variable.Variant(null);
@@ -91,7 +91,7 @@ public class ySemaphore {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 ySemaphoreInstance semaphore = requireSemaphoreThis(interpreter);
                 Semaphore lock = semaphore.getLock();
 
@@ -101,7 +101,7 @@ public class ySemaphore {
                 try {
                     lock.acquire(permits);
                 } catch (InterruptedException ex) {
-                    throw new YsharpError(YsharpError.YsharpErrorType.PROCESS, -1,  "Semaphore operation interrupted.");
+                    throw new YsharpException(YsharpException.YsharpErrorType.PROCESS, -1,  "Semaphore operation interrupted.");
                 }
 
                 return new Variable.Variant(null);
@@ -126,7 +126,7 @@ public class ySemaphore {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 ySemaphoreInstance semaphore = requireSemaphoreThis(interpreter);
                 Semaphore lock = semaphore.getLock();
 
@@ -153,7 +153,7 @@ public class ySemaphore {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 ySemaphoreInstance semaphore = requireSemaphoreThis(interpreter);
                 Semaphore lock = semaphore.getLock();
 
@@ -181,7 +181,7 @@ public class ySemaphore {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 ySemaphoreInstance semaphore = requireSemaphoreThis(interpreter);
                 Semaphore lock = semaphore.getLock();
 
@@ -208,7 +208,7 @@ public class ySemaphore {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 ySemaphoreInstance semaphore = requireSemaphoreThis(interpreter);
                 Semaphore lock = semaphore.getLock();
 
@@ -236,7 +236,7 @@ public class ySemaphore {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 ySemaphoreInstance semaphore = requireSemaphoreThis(interpreter);
                 Semaphore lock = semaphore.getLock();
 
@@ -262,7 +262,7 @@ public class ySemaphore {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 ySemaphoreInstance semaphore = requireSemaphoreThis(interpreter);
                 Semaphore lock = semaphore.getLock();
 
@@ -288,7 +288,7 @@ public class ySemaphore {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 ySemaphoreInstance semaphore = requireSemaphoreThis(interpreter);
                 Semaphore lock = semaphore.getLock();
 
@@ -314,7 +314,7 @@ public class ySemaphore {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 ySemaphoreInstance semaphore = requireSemaphoreThis(interpreter);
                 Semaphore lock = semaphore.getLock();
 
@@ -340,7 +340,7 @@ public class ySemaphore {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 ySemaphoreInstance semaphore = requireSemaphoreThis(interpreter);
                 Semaphore lock = semaphore.getLock();
 
@@ -366,7 +366,7 @@ public class ySemaphore {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 ySemaphoreInstance semaphore = requireSemaphoreThis(interpreter);
                 Semaphore lock = semaphore.getLock();
 
@@ -392,7 +392,7 @@ public class ySemaphore {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 ySemaphoreInstance semaphore = requireSemaphoreThis(interpreter);
                 Semaphore lock = semaphore.getLock();
 
@@ -420,7 +420,7 @@ public class ySemaphore {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 ySemaphoreInstance semaphore = requireSemaphoreThis(interpreter);
                 Semaphore lock = semaphore.getLock();
 
@@ -431,14 +431,14 @@ public class ySemaphore {
                 try {
                     unit = TimeUnit.valueOf(unitStr.toUpperCase());
                 } catch (IllegalArgumentException e) {
-                    throw new YsharpError(YsharpError.YsharpErrorType.PROCESS, -1,
+                    throw new YsharpException(YsharpException.YsharpErrorType.PROCESS, -1,
                             "Invalid TimeUnit: '" + unitStr + "'. Valid values: NANOSECONDS, MICROSECONDS, MILLISECONDS, SECONDS, MINUTES, HOURS, DAYS");
                 }
 
                 try {
                     return new Variable.Variant(lock.tryAcquire((long)timeout, unit));
                 } catch (InterruptedException ex) {
-                    throw new YsharpError(YsharpError.YsharpErrorType.PROCESS, -1,  "Semaphore operation interrupted.");
+                    throw new YsharpException(YsharpException.YsharpErrorType.PROCESS, -1,  "Semaphore operation interrupted.");
                 }
             }
 
@@ -461,7 +461,7 @@ public class ySemaphore {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 ySemaphoreInstance semaphore = requireSemaphoreThis(interpreter);
                 Semaphore lock = semaphore.getLock();
 
@@ -474,14 +474,14 @@ public class ySemaphore {
                 try {
                     unit = TimeUnit.valueOf(unitStr.toUpperCase());
                 } catch (IllegalArgumentException e) {
-                    throw new YsharpError(YsharpError.YsharpErrorType.PROCESS, -1,
+                    throw new YsharpException(YsharpException.YsharpErrorType.PROCESS, -1,
                             "Invalid TimeUnit: '" + unitStr + "'. Valid values: NANOSECONDS, MICROSECONDS, MILLISECONDS, SECONDS, MINUTES, HOURS, DAYS");
                 }
 
                 try {
                     return new Variable.Variant(lock.tryAcquire(permits, (long)timeout, unit));
                 } catch (InterruptedException ex) {
-                    throw new YsharpError(YsharpError.YsharpErrorType.PROCESS, -1,  "Semaphore operation interrupted.");
+                    throw new YsharpException(YsharpException.YsharpErrorType.PROCESS, -1,  "Semaphore operation interrupted.");
                 }
             }
 
@@ -536,14 +536,14 @@ public class ySemaphore {
         @Override
         public Variable.Variant call(Interpreter interpreter,
                                      List<Variable.Variant> arguments)
-                throws YsharpError {
+                throws YsharpException {
             requireArity(arguments, arity(), getClassName());
             int permits = requireInt(arguments.getFirst(), getClassName(), 1);
             boolean fair = requireBoolean(arguments.get(1), getClassName(), 2);
 
             if(permits < 0) {
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.PROCESS,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.PROCESS,
                         -1,
                         "Semaphore permits must be >= 0."
                 );

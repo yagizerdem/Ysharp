@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.TUI;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Interpreter;
 import ysharp.treewalk.evaluator.Native.TUI.Input.yKeyStroke;
 import ysharp.treewalk.evaluator.Native.TUI.Terminal.yDefaultTerminal;
@@ -103,9 +103,9 @@ public class TUI {
         @Override
         public Variable.Variant call(Interpreter interpreter,
                                      List<Variable.Variant> arguments)
-                throws YsharpError {
+                throws YsharpException {
 
-            throw new YsharpError(YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                     -1 ,
                     "cannot take instance of TUI class");
 

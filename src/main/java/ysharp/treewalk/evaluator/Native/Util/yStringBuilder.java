@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Util;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Native.Collections.Array.yArray;
 
@@ -12,8 +12,8 @@ public class yStringBuilder {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method '" + fnName + "' called without a valid 'this' context."
             );
@@ -22,8 +22,8 @@ public class yStringBuilder {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof yStringBuilderInstance)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method '" + fnName + "' expected 'StringBuilder' as 'this' but got '" + obj.getType() + "'."
             );
@@ -66,13 +66,13 @@ public class yStringBuilder {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 yStringBuilderInstance sb = requireStringBuilderThis(interpreter, getFnName());
 
                 if (arguments.isEmpty()) {
-                    throw new YsharpError(
-                            YsharpError.YsharpErrorType.PROCESS,
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
                             0,
                             "'append' expects at least 1 argument."
                     );
@@ -86,28 +86,17 @@ public class yStringBuilder {
                         return new Variable.Variant(sb);
                     }
 
-                    // boolean
                     if (value.value instanceof Boolean) {
                         sb.builder.append((Boolean) value.value);
                     }
-                    // number (int / double)
                     else if (value.value instanceof Number) {
                         sb.builder.append(((Number) value.value).doubleValue());
                     }
-                    // char (senin sistemine bağlı)
                     else if (value.value instanceof Character) {
                         sb.builder.append((Character) value.value);
                     }
-                    // string
                     else if (value.value instanceof String) {
                         sb.builder.append((String) value.value);
-                    }
-                    // array
-                    else if (value.value instanceof List<?>) {
-                        List<?> list = (List<?>) value.value;
-                        for (Object obj : list) {
-                            sb.builder.append(obj.toString());
-                        }
                     }
                     // fallback
                     else {
@@ -124,8 +113,8 @@ public class yStringBuilder {
                     Variable.Variant lenVar = arguments.get(2);
 
                     if (!(arrVar.value instanceof yArray.yArrayInstance)) {
-                        throw new YsharpError(
-                                YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
                                 0,
                                 "'append' first argument must be an array."
                         );
@@ -140,8 +129,8 @@ public class yStringBuilder {
                         Variable.Variant var = data.get(i);
 
                         if (!var.isChar()) {
-                            throw new YsharpError(
-                                    YsharpError.YsharpErrorType.PROCESS,
+                            throw new YsharpException(
+                                    YsharpException.YsharpErrorType.PROCESS,
                                     0,
                                     "'append(char[]) expected char at index " + i +
                                             " but got: " +
@@ -155,8 +144,8 @@ public class yStringBuilder {
                     }).toList();
 
                     if (offset < 0 || offset + len > list.size()) {
-                        throw new YsharpError(
-                                YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
                                 0,
                                 "Invalid offset/length."
                         );
@@ -169,8 +158,8 @@ public class yStringBuilder {
                     return new Variable.Variant(sb);
                 }
 
-                throw new YsharpError(
-                        YsharpError.YsharpErrorType.PROCESS,
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.PROCESS,
                         0,
                         "Invalid arguments for append."
                 );
@@ -190,6 +179,7 @@ public class yStringBuilder {
 
         yStringBuilder_Instance_Prototype.set(append.getFnName(), appendVar);
 
+
         // sb.appendLine(value)
         class AppendLineFn extends Function.NativeFunction implements Callable {
 
@@ -201,19 +191,103 @@ public class yStringBuilder {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
-
-                requireArity(arguments, arity(), getFnName());
+                    throws YsharpException {
 
                 yStringBuilderInstance sb = requireStringBuilderThis(interpreter, getFnName());
 
-                Variable.Variant value = arguments.getFirst();
-
-                if (value.value != null) {
-                    sb.builder.append(value.value.toString() + "\n");
+                if (arguments.isEmpty()) {
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
+                            0,
+                            "'append' expects at least 1 argument."
+                    );
                 }
 
-                return new Variable.Variant(sb);
+                if (arguments.size() == 1) {
+                    Variable.Variant value = arguments.getFirst();
+
+                    if (value.value == null) {
+                        sb.builder.append("null").append('\n');
+                        return new Variable.Variant(sb);
+                    }
+
+                    if (value.value instanceof Boolean) {
+                        sb.builder.append((Boolean) value.value).append('\n');
+                    }
+                    else if (value.value instanceof Number) {
+                        sb.builder.append(((Number) value.value).doubleValue()).append('\n');
+                    }
+                    else if (value.value instanceof Character) {
+                        sb.builder.append((Character) value.value).append('\n');
+                    }
+                    else if (value.value instanceof String) {
+                        sb.builder.append((String) value.value).append('\n');
+                    }
+                    // fallback
+                    else {
+                        sb.builder.append(value.value.toString()).append('\n');
+                    }
+
+                    return new Variable.Variant(sb);
+                }
+
+                if (arguments.size() == 3) {
+
+                    Variable.Variant arrVar = arguments.getFirst();
+                    Variable.Variant offsetVar = arguments.get(1);
+                    Variable.Variant lenVar = arguments.get(2);
+
+                    if (!(arrVar.value instanceof yArray.yArrayInstance)) {
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
+                                0,
+                                "'append' first argument must be an array."
+                        );
+                    }
+
+                    int offset = (int) offsetVar.implicitlyConvertNumber();
+                    int len = (int) lenVar.implicitlyConvertNumber();
+
+                    List<Variable.Variant> data = ((yArray.yArrayInstance) arrVar.value).data;
+
+                    for (int i = 0; i < data.size(); i++) {
+                        Variable.Variant var = data.get(i);
+
+                        if (!var.isChar()) {
+                            throw new YsharpException(
+                                    YsharpException.YsharpErrorType.PROCESS,
+                                    0,
+                                    "'append(char[]) expected char at index " + i +
+                                            " but got: " +
+                                            (var.value == null ? "null" : var.value.getClass().getSimpleName())
+                            );
+                        }
+                    }
+
+                    List<Character> list = data.stream().map(var -> {
+                        return  var.asCharacter();
+                    }).toList();
+
+                    if (offset < 0 || offset + len > list.size()) {
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
+                                0,
+                                "Invalid offset/length."
+                        );
+                    }
+
+                    for (int i = offset; i < offset + len; i++) {
+                        sb.builder.append(list.get(i).toString()).append('\n');
+                    }
+
+                    return new Variable.Variant(sb);
+                }
+
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.PROCESS,
+                        0,
+                        "Invalid arguments for append."
+                );
             }
 
             @Override
@@ -230,6 +304,176 @@ public class yStringBuilder {
 
         yStringBuilder_Instance_Prototype.set(appendLine.getFnName(), appendLineVar);
 
+        // sb.insert(index, data<char|string|int|...>, offset?, len? );
+        class InsertFn extends Function.NativeFunction implements Callable {
+
+            @Override
+            public int arity() {
+                return 1;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter,
+                                         List<Variable.Variant> arguments)
+                    throws YsharpException {
+
+                yStringBuilderInstance sb = requireStringBuilderThis(interpreter, getFnName());
+
+                if (arguments.size() < 2) {
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
+                            0,
+                            "'insert' expects at least 2 argument."
+                    );
+                }
+
+                if (arguments.size() == 2) {
+                    Variable.Variant index = arguments.getFirst();
+
+                    if(!index.isInt()) {
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
+                                0,
+                                "'insert' index must be number."
+                        );
+                    }
+
+                    Variable.Variant value = arguments.get(1);
+
+                    if (value.value instanceof Boolean) {
+                        sb.builder.insert((int)index.asInt(), (boolean) value.asBoolean());
+                    }
+                    else if (value.value instanceof Integer) {
+                        sb.builder.insert((int)index.asInt(), (int) value.asInt());
+                    }
+                    else if (value.value instanceof Double) {
+                        sb.builder.insert((int)index.asInt(), (double) value.asDouble());
+                    }
+                    else if (value.value instanceof String) {
+                        sb.builder.insert((int)index.asInt(), (String) value.asString());
+                    }
+                    else if (value.value == null) {
+                        sb.builder.insert((int)index.asInt(), "null");
+                    }
+                    else if (value.value instanceof yArray.yArrayInstance) {
+                        var arr = (yArray.yArrayInstance) value.value;
+                        for (int i = 0; i < arr.data.size(); i++) {
+                            if (!arr.data.get(i).isChar()) {
+                                throw new YsharpException(
+                                        YsharpException.YsharpErrorType.PROCESS,
+                                        0,
+                                        "'insert(char[]) expected char at index " + i
+                                );
+                            }
+                        }
+                        for (int i = 0; i < arr.data.size(); i++) {
+                            char c = arr.data.get(i).asCharacter();
+                            sb.builder.insert(index.asInt() + i , c);
+                        }
+                    }
+                                        // fallback
+                    else {
+                        sb.builder.insert((int)index.asInt(), value.value.toString());
+                    }
+
+                    return new Variable.Variant(sb);
+                }
+
+                if (arguments.size() == 4) {
+
+                    Variable.Variant indexVar = arguments.get(0);
+                    Variable.Variant arrVar = arguments.get(1);
+                    Variable.Variant offsetVar = arguments.get(2);
+                    Variable.Variant lenVar = arguments.get(3);
+
+                    if (!indexVar.isInt()) {
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
+                                0,
+                                "'insert' index must be a number."
+                        );
+                    }
+
+                    int index = indexVar.asInt();
+
+                    if (!(arrVar.value instanceof yArray.yArrayInstance)) {
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
+                                0,
+                                "'insert' second argument must be an array."
+                        );
+                    }
+
+                    if (!offsetVar.isInt() ||
+                            !lenVar.isInt()) {
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
+                                0,
+                                "'insert' offset and length must be numbers."
+                        );
+                    }
+
+                    int offset = offsetVar.asInt();
+                    int len = lenVar.asInt();
+
+                    List<Variable.Variant> data =
+                            ((yArray.yArrayInstance) arrVar.value).data;
+
+                    if (offset < 0 || len < 0 || offset + len > data.size()) {
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
+                                0,
+                                "Invalid offset/length."
+                        );
+                    }
+
+                    if (index < 0 || index > sb.builder.length()) {
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
+                                0,
+                                "Index out of bounds."
+                        );
+                    }
+
+                    for (int i = offset; i < offset + len; i++) {
+                        if (!data.get(i).isChar()) {
+                            throw new YsharpException(
+                                    YsharpException.YsharpErrorType.PROCESS,
+                                    0,
+                                    "'insert(char[]) expected char at index " + i
+                            );
+                        }
+                    }
+
+                    for (int i = 0; i < len; i++) {
+                        char c = data.get(offset + i).asCharacter();
+                        sb.builder.insert(index + i, c);
+                    }
+
+                    return new Variable.Variant(sb);
+                }
+
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.PROCESS,
+                        0,
+                        "Invalid arguments for insert."
+                );
+            }
+
+            @Override
+            public String getFnName() {
+                return "insert";
+            }
+        }
+
+        InsertFn insert = new InsertFn();
+        Variable insertVar = new Variable(
+                new Variable.Variant(insert),
+                true,
+                "function");
+
+        yStringBuilder_Instance_Prototype.set(insert.getFnName(), insertVar);
+
         // sb.toString()
         class ToStringFn extends Function.NativeFunction implements Callable {
 
@@ -241,7 +485,7 @@ public class yStringBuilder {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
 
@@ -278,7 +522,7 @@ public class yStringBuilder {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
 
@@ -315,7 +559,7 @@ public class yStringBuilder {
             @Override
             public Variable.Variant call(Interpreter interpreter,
                                          List<Variable.Variant> arguments)
-                    throws YsharpError {
+                    throws YsharpException {
 
                 requireArity(arguments, arity(), getFnName());
 
@@ -383,7 +627,7 @@ public class yStringBuilder {
 
         @Override
         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments)
-                throws YsharpError {
+                throws YsharpException {
 
             yStringBuilderInstance instance = new yStringBuilderInstance();
             return new Variable.Variant(instance);

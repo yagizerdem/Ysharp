@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Collections.HashTable;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Native.Collections.HashTable.function.instance.*;
 
@@ -14,8 +14,8 @@ public class yHashTable {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method 'add' called without a valid 'this' context."
             );
@@ -24,8 +24,8 @@ public class yHashTable {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof yHashTable.yHashTableInstance)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "'add' can only be called on map objects."
             );
@@ -123,7 +123,7 @@ public class yHashTable {
         }
 
         @Override
-        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
             Hashtable<Variable.Variant, Variable.Variant> value = new Hashtable<>();
             yHashTableInstance newMap = new yHashTableInstance(value);
 

@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Collections.Trie.Wrapper.T9Trie.function.instance;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Function;
 import ysharp.treewalk.evaluator.Interpreter;
 import ysharp.treewalk.evaluator.Native.Collections.Array.yArray;
@@ -21,7 +21,7 @@ public class InsertFn extends Function.NativeFunction {
     @Override
     public Variable.Variant call(Interpreter interpreter,
                                  List<Variable.Variant> arguments)
-            throws YsharpError {
+            throws YsharpException {
 
         this.requireArity(arguments, 2, "T9Trie.insert");
 
@@ -31,8 +31,8 @@ public class InsertFn extends Function.NativeFunction {
 
         RuntimeObject obj = valuesVariant.asRuntimeObject();
         if (!(obj instanceof yArray.yArrayInstance)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "T9Trie.insert: second argument must be an Array of values."
             );

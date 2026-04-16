@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Collections.IdentityHashMap;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Native.Collections.IdentityHashMap.function.instance.*;
 import java.util.IdentityHashMap;
@@ -13,8 +13,8 @@ public class yIdentityHashMap {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method called without a valid 'this' context."
             );
@@ -23,8 +23,8 @@ public class yIdentityHashMap {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof yIdentityHashMap.yIdentityHashMapInstance)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "This method can only be called on IdentityHashMap objects."
             );
@@ -126,7 +126,7 @@ public class yIdentityHashMap {
         @Override
         public Variable.Variant call(Interpreter interpreter,
                                      List<Variable.Variant> arguments)
-                throws YsharpError {
+                throws YsharpException {
 
             this.requireArity(arguments, 0, "IdentityHashMap");
 

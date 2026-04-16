@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Util;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 
 import java.time.Instant;
@@ -51,7 +51,7 @@ public class yTime {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     long now = System.currentTimeMillis() / 1000;
 
@@ -86,7 +86,7 @@ public class yTime {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     long now = System.currentTimeMillis();
 
@@ -121,7 +121,7 @@ public class yTime {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     long nano = System.nanoTime();
 
@@ -156,7 +156,7 @@ public class yTime {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
@@ -166,8 +166,8 @@ public class yTime {
                         Thread.sleep((long) ms);
                     }
                     catch (InterruptedException e) {
-                        throw new YsharpError(
-                                YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
                                 0,
                                 "Sleep interrupted"
                         );
@@ -204,7 +204,7 @@ public class yTime {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     String iso = Instant.now().toString();
 
@@ -238,7 +238,7 @@ public class yTime {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     double seconds = System.currentTimeMillis() / 1000.0;
 
@@ -273,7 +273,7 @@ public class yTime {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     double minutes = System.currentTimeMillis() / 60000.0;
 
@@ -307,7 +307,7 @@ public class yTime {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
@@ -346,7 +346,7 @@ public class yTime {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
@@ -385,15 +385,15 @@ public class yTime {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     requireArity(arguments, 1, getClassName());
 
                     Variable.Variant fnVar = arguments.getFirst();
 
                     if (!(fnVar.value instanceof Callable)) {
-                        throw new YsharpError(
-                                YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
                                 0,
                                 "Time.measure expects callable"
                         );
@@ -437,7 +437,7 @@ public class yTime {
         @Override
         public Variable.Variant call(Interpreter interpreter,
                                      List<Variable.Variant> arguments)
-                throws YsharpError {
+                throws YsharpException {
 
             yTime_Instance instance = new yTime_Instance();
             return new Variable.Variant(instance);

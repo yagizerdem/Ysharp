@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Collections.LinkedList.function.instance;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Function;
 import ysharp.treewalk.evaluator.Interpreter;
 import ysharp.treewalk.evaluator.Native.Collections.LinkedList.yLinkedList;
@@ -18,7 +18,7 @@ public class GetFn extends Function.NativeFunction {
     @Override
     public Variable.Variant call(Interpreter interpreter,
                                  List<Variable.Variant> arguments)
-            throws YsharpError {
+            throws YsharpException {
 
         Variable.Variant indexVariant = arguments.getFirst();
         yLinkedList.yLinkedListInstance list = yLinkedList.requireLinkedListThis(interpreter);
@@ -26,8 +26,8 @@ public class GetFn extends Function.NativeFunction {
         int index = ((Number) indexVariant.value).intValue();
 
         if (index < 0 || index >= list.size) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "LinkedList index out of bounds: " + index
             );

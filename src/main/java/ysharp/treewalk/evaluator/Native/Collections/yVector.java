@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Collections;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import java.util.List;
 
@@ -16,8 +16,8 @@ public class yVector {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method " + "'" + fnName+ "'" + "called without a valid 'this' context."
             );
@@ -26,8 +26,8 @@ public class yVector {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof yVector.IVector)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method '" + fnName + "' expected 'Vector' as 'this' but got '" + obj.getType() + "'."
             );
@@ -41,8 +41,8 @@ public class yVector {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method " + "'" + fnName+ "'" + "called without a valid 'this' context."
             );
@@ -51,8 +51,8 @@ public class yVector {
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
         if (!(obj instanceof VectorIteratorInstance)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Method '" + fnName + "' expected 'VectorIterator' as 'this' but got '" + obj.getType() + "'."
             );
@@ -92,7 +92,7 @@ public class yVector {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 requireArity(arguments, arity(), getFnName());
                 VectorIteratorInstance iterator = requireVectorIteratorThis(interpreter, getFnName());
                 Variable.Variant arrValue = iterator.getNext();
@@ -132,7 +132,7 @@ public class yVector {
         }
 
         @Override
-        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+        public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
             return null;
         }
 
@@ -193,7 +193,7 @@ public class yVector {
             }
 
             @Override
-            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpError {
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
                 requireArity(arguments, arity(), getFnName());
                 yVector.IVector vector = requireVectorThis(interpreter, getFnName());
 

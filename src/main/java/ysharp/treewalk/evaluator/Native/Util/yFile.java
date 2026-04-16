@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Util;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 
 import java.io.IOException;
@@ -27,7 +27,7 @@ public class yFile {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     requireArity(arguments,1,getClassName());
 
@@ -38,8 +38,8 @@ public class yFile {
                         return new Variable.Variant(new yString.yStringInstance(content));
                     }
                     catch (IOException e){
-                        throw new YsharpError(
-                                YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
                                 0,
                                 "File read failed: " + path
                         );
@@ -71,7 +71,7 @@ public class yFile {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     requireArity(arguments,2,getClassName());
 
@@ -83,8 +83,8 @@ public class yFile {
                         return new Variable.Variant(true);
                     }
                     catch (IOException e){
-                        throw new YsharpError(
-                                YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
                                 0,
                                 "File write failed: " + path
                         );
@@ -116,7 +116,7 @@ public class yFile {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     requireArity(arguments,2,getClassName());
 
@@ -131,8 +131,8 @@ public class yFile {
                         return new Variable.Variant(true);
                     }
                     catch (IOException e){
-                        throw new YsharpError(
-                                YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
                                 0,
                                 "File append failed: " + path
                         );
@@ -164,7 +164,7 @@ public class yFile {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     requireArity(arguments,1,getClassName());
 
@@ -200,7 +200,7 @@ public class yFile {
                 @Override
                 public Variable.Variant call(Interpreter interpreter,
                                              List<Variable.Variant> arguments)
-                        throws YsharpError {
+                        throws YsharpException {
 
                     requireArity(arguments,1,getClassName());
 
@@ -211,8 +211,8 @@ public class yFile {
                         return new Variable.Variant(true);
                     }
                     catch(IOException e){
-                        throw new YsharpError(
-                                YsharpError.YsharpErrorType.PROCESS,
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
                                 0,
                                 "File delete failed: " + path
                         );
@@ -243,9 +243,9 @@ public class yFile {
         @Override
         public Variable.Variant call(Interpreter interpreter,
                                      List<Variable.Variant> arguments)
-                throws YsharpError {
+                throws YsharpException {
 
-            throw new YsharpError(YsharpError.YsharpErrorType.PROCESS, -1 , "cannot take instance of static class");
+            throw new YsharpException(YsharpException.YsharpErrorType.PROCESS, -1 , "cannot take instance of static class");
         }
 
         @Override

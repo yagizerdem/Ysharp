@@ -1,6 +1,6 @@
 package ysharp.treewalk.evaluator.Native.Assert.function.statix;
 
-import ysharp.treewalk.YsharpError;
+import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Callable;
 import ysharp.treewalk.evaluator.Function;
 import ysharp.treewalk.evaluator.Interpreter;
@@ -18,7 +18,7 @@ public class EqualsFn extends Function.NativeFunction implements Callable {
     @Override
     public Variable.Variant call(Interpreter interpreter,
                                  List<Variable.Variant> arguments)
-            throws YsharpError {
+            throws YsharpException {
 
         requireArity(arguments, arity(), getFnName());
 
@@ -26,8 +26,8 @@ public class EqualsFn extends Function.NativeFunction implements Callable {
         Variable.Variant b = arguments.get(1);
 
         if (!a.value.equals(b.value)) {
-            throw new YsharpError(
-                    YsharpError.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     0,
                     "Assertion failed: expected '" + a.value + "' to equal '" + b.value + "'"
             );
