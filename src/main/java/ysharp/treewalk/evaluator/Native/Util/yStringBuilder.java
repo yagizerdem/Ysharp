@@ -2,6 +2,7 @@ package ysharp.treewalk.evaluator.Native.Util;
 
 import ysharp.treewalk.YsharpError;
 import ysharp.treewalk.evaluator.*;
+import ysharp.treewalk.evaluator.Native.Collections.Array.yArray;
 
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class yStringBuilder {
 
             @Override
             public int arity() {
-                return 1;
+                return -1;
             }
 
             @Override
@@ -67,17 +68,112 @@ public class yStringBuilder {
                                          List<Variable.Variant> arguments)
                     throws YsharpError {
 
-                requireArity(arguments, arity(), getFnName());
-
                 yStringBuilderInstance sb = requireStringBuilderThis(interpreter, getFnName());
 
-                Variable.Variant value = arguments.get(0);
-
-                if (value.value != null) {
-                    sb.builder.append(value.value.toString());
+                if (arguments.isEmpty()) {
+                    throw new YsharpError(
+                            YsharpError.YsharpErrorType.PROCESS,
+                            0,
+                            "'append' expects at least 1 argument."
+                    );
                 }
 
-                return new Variable.Variant(sb);
+                if (arguments.size() == 1) {
+                    Variable.Variant value = arguments.getFirst();
+
+                    if (value.value == null) {
+                        sb.builder.append("null");
+                        return new Variable.Variant(sb);
+                    }
+
+                    // boolean
+                    if (value.value instanceof Boolean) {
+                        sb.builder.append((Boolean) value.value);
+                    }
+                    // number (int / double)
+                    else if (value.value instanceof Number) {
+                        sb.builder.append(((Number) value.value).doubleValue());
+                    }
+                    // char (senin sistemine bağlı)
+                    else if (value.value instanceof Character) {
+                        sb.builder.append((Character) value.value);
+                    }
+                    // string
+                    else if (value.value instanceof String) {
+                        sb.builder.append((String) value.value);
+                    }
+                    // array
+                    else if (value.value instanceof List<?>) {
+                        List<?> list = (List<?>) value.value;
+                        for (Object obj : list) {
+                            sb.builder.append(obj.toString());
+                        }
+                    }
+                    // fallback
+                    else {
+                        sb.builder.append(value.value.toString());
+                    }
+
+                    return new Variable.Variant(sb);
+                }
+
+                if (arguments.size() == 3) {
+
+                    Variable.Variant arrVar = arguments.getFirst();
+                    Variable.Variant offsetVar = arguments.get(1);
+                    Variable.Variant lenVar = arguments.get(2);
+
+                    if (!(arrVar.value instanceof yArray.yArrayInstance)) {
+                        throw new YsharpError(
+                                YsharpError.YsharpErrorType.PROCESS,
+                                0,
+                                "'append' first argument must be an array."
+                        );
+                    }
+
+                    int offset = (int) offsetVar.implicitlyConvertNumber();
+                    int len = (int) lenVar.implicitlyConvertNumber();
+
+                    List<Variable.Variant> data = ((yArray.yArrayInstance) arrVar.value).data;
+
+                    for (int i = 0; i < data.size(); i++) {
+                        Variable.Variant var = data.get(i);
+
+                        if (!var.isChar()) {
+                            throw new YsharpError(
+                                    YsharpError.YsharpErrorType.PROCESS,
+                                    0,
+                                    "'append(char[]) expected char at index " + i +
+                                            " but got: " +
+                                            (var.value == null ? "null" : var.value.getClass().getSimpleName())
+                            );
+                        }
+                    }
+
+                    List<Character> list = data.stream().map(var -> {
+                        return  var.asCharacter();
+                    }).toList();
+
+                    if (offset < 0 || offset + len > list.size()) {
+                        throw new YsharpError(
+                                YsharpError.YsharpErrorType.PROCESS,
+                                0,
+                                "Invalid offset/length."
+                        );
+                    }
+
+                    for (int i = offset; i < offset + len; i++) {
+                        sb.builder.append(list.get(i).toString());
+                    }
+
+                    return new Variable.Variant(sb);
+                }
+
+                throw new YsharpError(
+                        YsharpError.YsharpErrorType.PROCESS,
+                        0,
+                        "Invalid arguments for append."
+                );
             }
 
             @Override
