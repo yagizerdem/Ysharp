@@ -6,9 +6,9 @@ import ysharp.treewalk.evaluator.Native.Collections.Array.yArray;
 
 import java.util.List;
 
-public class yStringBuilder {
+public class yStringBuffer {
 
-    public static yStringBuilderInstance requireStringBuilderThis(Interpreter interpreter, String fnName) {
+    public static yStringBuffer.yStringBufferInstance requireStringBufferThis(Interpreter interpreter, String fnName) {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
         if (thisVar == null) {
@@ -21,21 +21,21 @@ public class yStringBuilder {
 
         RuntimeObject obj = thisVar.value.asRuntimeObject();
 
-        if (!(obj instanceof yStringBuilderInstance)) {
+        if (!(obj instanceof yStringBuffer.yStringBufferInstance)) {
             throw new YsharpException(
                     YsharpException.YsharpErrorType.PROCESS,
                     0,
-                    "Method '" + fnName + "' expected 'StringBuilder' as 'this' but got '" + obj.getType() + "'."
+                    "Method '" + fnName + "' expected 'StringBuffer' as 'this' but got '" + obj.getType() + "'."
             );
         }
 
-        return (yStringBuilderInstance) obj;
+        return (yStringBuffer.yStringBufferInstance) obj;
     }
 
-    public static RuntimeObject yStringBuilder_Instance_Prototype;
+    public static RuntimeObject yStringBuffer_Instance_Prototype;
 
     static {
-        yStringBuilder_Instance_Prototype = new RuntimeObject() {
+        yStringBuffer_Instance_Prototype = new RuntimeObject() {
 
             @Override
             public boolean isTruthy() {
@@ -44,16 +44,17 @@ public class yStringBuilder {
 
             @Override
             public String getType() {
-                return "__StringBuilder__";
+                return "__StringBuffer__";
             }
 
             @Override
             public String toString() {
-                return "<prototype:StringBuilder>";
+                return "<prototype:__StringBuffer__>";
             }
         };
 
-        yStringBuilder_Instance_Prototype.prototype = yClass.ClassPrototype;
+        yStringBuffer_Instance_Prototype.prototype = yClass.ClassPrototype;
+
 
         // sb.append(value)
         class AppendFn extends Function.NativeFunction implements Callable {
@@ -68,7 +69,7 @@ public class yStringBuilder {
                                          List<Variable.Variant> arguments)
                     throws YsharpException {
 
-                yStringBuilderInstance sb = requireStringBuilderThis(interpreter, getFnName());
+                yStringBuffer.yStringBufferInstance sb = requireStringBufferThis(interpreter, getFnName());
 
                 if (arguments.isEmpty()) {
                     throw new YsharpException(
@@ -177,7 +178,7 @@ public class yStringBuilder {
                 true,
                 "function");
 
-        yStringBuilder_Instance_Prototype.set(append.getFnName(), appendVar);
+        yStringBuffer_Instance_Prototype.set(append.getFnName(), appendVar);
 
 
         // sb.appendLine(value)
@@ -193,7 +194,7 @@ public class yStringBuilder {
                                          List<Variable.Variant> arguments)
                     throws YsharpException {
 
-                yStringBuilderInstance sb = requireStringBuilderThis(interpreter, getFnName());
+                yStringBuffer.yStringBufferInstance sb = requireStringBufferThis(interpreter, getFnName());
 
                 if (arguments.isEmpty()) {
                     throw new YsharpException(
@@ -302,7 +303,8 @@ public class yStringBuilder {
                 true,
                 "function");
 
-        yStringBuilder_Instance_Prototype.set(appendLine.getFnName(), appendLineVar);
+        yStringBuffer_Instance_Prototype.set(appendLine.getFnName(), appendLineVar);
+
 
         // sb.insert(index, data<char|string|int|...>, offset?, len? );
         class InsertFn extends Function.NativeFunction implements Callable {
@@ -317,7 +319,7 @@ public class yStringBuilder {
                                          List<Variable.Variant> arguments)
                     throws YsharpException {
 
-                yStringBuilderInstance sb = requireStringBuilderThis(interpreter, getFnName());
+                yStringBuffer.yStringBufferInstance sb = requireStringBufferThis(interpreter, getFnName());
 
                 if (arguments.size() < 2) {
                     throw new YsharpException(
@@ -371,7 +373,7 @@ public class yStringBuilder {
                             sb.builder.insert(index.asInt() + i , c);
                         }
                     }
-                                        // fallback
+                    // fallback
                     else {
                         sb.builder.insert((int)index.asInt(), value.value.toString());
                     }
@@ -472,7 +474,7 @@ public class yStringBuilder {
                 true,
                 "function");
 
-        yStringBuilder_Instance_Prototype.set(insert.getFnName(), insertVar);
+        yStringBuffer_Instance_Prototype.set(insert.getFnName(), insertVar);
 
         // sb.toString()
         class ToStringFn extends Function.NativeFunction implements Callable {
@@ -489,7 +491,7 @@ public class yStringBuilder {
 
                 requireArity(arguments, arity(), getFnName());
 
-                yStringBuilderInstance sb = requireStringBuilderThis(interpreter, getFnName());
+                yStringBuffer.yStringBufferInstance sb = requireStringBufferThis(interpreter, getFnName());
 
                 return new Variable.Variant(
                         new yString.yStringInstance(sb.builder.toString())
@@ -508,8 +510,7 @@ public class yStringBuilder {
                 true,
                 "function");
 
-        yStringBuilder_Instance_Prototype.set(toString.getFnName(), toStringVar);
-
+        yStringBuffer_Instance_Prototype.set(toString.getFnName(), toStringVar);
 
         // sb.clear()
         class ClearFn extends Function.NativeFunction implements Callable {
@@ -526,7 +527,7 @@ public class yStringBuilder {
 
                 requireArity(arguments, arity(), getFnName());
 
-                yStringBuilderInstance sb = requireStringBuilderThis(interpreter, getFnName());
+                yStringBuffer.yStringBufferInstance sb = requireStringBufferThis(interpreter, getFnName());
 
                 sb.builder.setLength(0);
 
@@ -545,8 +546,7 @@ public class yStringBuilder {
                 true,
                 "function");
 
-        yStringBuilder_Instance_Prototype.set(clear.getFnName(), clearVar);
-
+        yStringBuffer_Instance_Prototype.set(clear.getFnName(), clearVar);
 
         // sb.length()
         class LengthFn extends Function.NativeFunction implements Callable {
@@ -563,7 +563,7 @@ public class yStringBuilder {
 
                 requireArity(arguments, arity(), getFnName());
 
-                yStringBuilderInstance sb = requireStringBuilderThis(interpreter, getFnName());
+                yStringBuffer.yStringBufferInstance sb =  requireStringBufferThis(interpreter, getFnName());
 
                 return new Variable.Variant(sb.builder.length());
             }
@@ -580,22 +580,22 @@ public class yStringBuilder {
                 true,
                 "function");
 
-        yStringBuilder_Instance_Prototype.set(length.getFnName(), lengthVar);
+        yStringBuffer_Instance_Prototype.set(length.getFnName(), lengthVar);
 
     }
 
-    public static class yStringBuilderInstance extends yClass.ClassObjectInstance {
+    public static class yStringBufferInstance extends yClass.ClassObjectInstance {
 
-        public final StringBuilder builder;
+        public final StringBuffer builder;
 
-        public yStringBuilderInstance() {
-            this.builder = new StringBuilder();
-            this.prototype = yStringBuilder_Instance_Prototype;
+        public yStringBufferInstance() {
+            this.builder = new StringBuffer();
+            this.prototype = yStringBuffer_Instance_Prototype;
         }
 
-        public yStringBuilderInstance(String initial) {
-            this.builder = new StringBuilder(initial);
-            this.prototype = yStringBuilder_Instance_Prototype;
+        public yStringBufferInstance(String initial) {
+            this.builder = new StringBuffer(initial);
+            this.prototype = yStringBuffer_Instance_Prototype;
         }
 
         @Override
@@ -605,18 +605,18 @@ public class yStringBuilder {
 
         @Override
         public String getType() {
-            return "StringBuilder";
+            return "StringBuffer";
         }
 
         @Override
         public String toString() {
-            return "<instance:StringBuilder>";
+            return "<instance:StringBuffer>";
         }
     }
 
-    public static class yStringBuilderClass extends yClass.SealedClassObject {
+    public static class yStringBufferClass extends yClass.SealedClassObject {
 
-        public yStringBuilderClass() {
+        public yStringBufferClass() {
             this.prototype = yClass.ClassPrototype;
 
         }
@@ -630,28 +630,28 @@ public class yStringBuilder {
         public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments)
                 throws YsharpException {
 
-            yStringBuilderInstance instance = new yStringBuilderInstance();
+            yStringBuilder.yStringBuilderInstance instance = new yStringBuilder.yStringBuilderInstance();
             return new Variable.Variant(instance);
         }
 
         @Override
         public String getClassName() {
-            return "StringBuilder";
+            return "StringBuffer";
         }
 
         @Override
         public String getType() {
-            return "StringBuilder";
+            return "StringBuffer";
         }
 
         @Override
         public String toString() {
-            return "<class:StringBuilder>";
+            return "<class:StringBuffer>";
         }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
-        yStringBuilderClass ctor = new yStringBuilderClass();
+        yStringBuffer.yStringBufferClass ctor = new yStringBuffer.yStringBufferClass();
         Variable.Variant variant = new Variable.Variant(ctor);
         Variable var = new Variable(variant, true, ctor.getType());
         interpreter.defineGlobal(ctor.getClassName(), var);
