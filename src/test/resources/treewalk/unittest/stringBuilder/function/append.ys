@@ -1,0 +1,129 @@
+println "StringBuilder.append test cases started";
+
+// basic string
+var sb1 = new StringBuilder();
+sb1.append("hello");
+Assert.equals(sb1.toString(), "hello");
+
+// chaining
+var sb2 = new StringBuilder();
+sb2.append("a").append("b").append("c");
+Assert.equals(sb2.toString(), "abc");
+
+// append number
+var sb3 = new StringBuilder();
+sb3.append(123);
+Assert.equals(sb3.toString(), "123.0");
+
+// append boolean
+var sb4 = new StringBuilder();
+sb4.append(true);
+Assert.equals(sb4.toString(), "true");
+
+// append char
+var sb5 = new StringBuilder();
+sb5.append('A');
+Assert.equals(sb5.toString(), "A");
+
+// append null
+var sb6 = new StringBuilder();
+sb6.append(null);
+Assert.equals(sb6.toString(), "null");
+
+// append mixed
+var sb7 = new StringBuilder();
+sb7.append("val=").append(10).append(", ok=").append(false);
+Assert.equals(sb7.toString(), "val=10.0, ok=false");
+
+// append multiple calls
+var sb8 = new StringBuilder();
+sb8.append("a");
+sb8.append("b");
+sb8.append("c");
+Assert.equals(sb8.toString(), "abc");
+
+// append empty string
+var sb9 = new StringBuilder();
+sb9.append("");
+Assert.equals(sb9.toString(), "");
+
+// append unicode
+var sb10 = new StringBuilder();
+sb10.append("çalış");
+Assert.equals(sb10.toString(), "çalış");
+
+
+// basic char array
+var sb11 = new StringBuilder();
+sb11.append(['a','b','c'], 0, 3);
+Assert.equals(sb11.toString(), "abc");
+
+// partial append
+var sb12 = new StringBuilder();
+sb12.append(['a','b','c','d'], 1, 2);
+Assert.equals(sb12.toString(), "bc");
+
+// append full then partial
+var sb13 = new StringBuilder();
+sb13.append(['x','y','z'], 0, 3);
+sb13.append(['a','b','c'], 1, 2);
+Assert.equals(sb13.toString(), "xyzbc");
+
+// offset = 0, len = 0
+var sb14 = new StringBuilder();
+sb14.append(['a','b','c'], 0, 0);
+Assert.equals(sb14.toString(), "");
+
+// offset at end
+var sb15 = new StringBuilder();
+sb15.append(['a','b','c'], 3, 0);
+Assert.equals(sb15.toString(), "");
+
+// multiple append arrays
+var sb16 = new StringBuilder();
+sb16.append(['a','b'], 0, 2);
+sb16.append(['c','d'], 0, 2);
+Assert.equals(sb16.toString(), "abcd");
+
+
+// non-array
+var sb17 = new StringBuilder();
+try do
+    sb17.append("abc", 0, 1);
+    Assert.fail("Expected array error");
+end
+catch(e) do
+    Assert.isTrue(true);
+end
+
+// non-char array
+var sb18 = new StringBuilder();
+try do
+    sb18.append([1,2,3], 0, 3);
+    Assert.fail("Expected char array error");
+end
+catch(e) do
+    Assert.isTrue(true);
+end
+
+// invalid offset/len
+var sb19 = new StringBuilder();
+try do
+    sb19.append(['a','b'], 1, 5);
+    Assert.fail("Expected invalid offset/length");
+end
+catch(e) do
+    Assert.isTrue(true);
+end
+
+// negative offset
+var sb20 = new StringBuilder();
+try do
+    sb20.append(['a','b'], -1, 1);
+    Assert.fail("Expected invalid offset");
+end
+catch(e) do
+    Assert.isTrue(true);
+end
+
+println "all append test cases successful";
