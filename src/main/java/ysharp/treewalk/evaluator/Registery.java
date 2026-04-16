@@ -35,6 +35,7 @@ public class Registery {
         // string
         yString.Register(interpreter);
         yStringBuilder.Register(interpreter);
+        yStringBuffer.Register(interpreter);
 
         // collections
         yArray.Register(interpreter);
