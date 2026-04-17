@@ -173,15 +173,15 @@ public class yString  {
 
                 Variable.Variant indexVar = arguments.getFirst();
 
-                if (!indexVar.canImplicitlyConvertNumber()) {
+                if (!indexVar.isIntCompatibleNumber()) {
                     throw new YsharpException(
                             YsharpException.YsharpErrorType.PROCESS,
                             0,
-                            "'charAt' index must be a number."
+                            "'charAt' index must be a integer."
                     );
                 }
 
-                int index = (int) indexVar.implicitlyConvertNumber();
+                int index = indexVar.asInt();
 
                 if (index < 0 || index >= instance.data.length()) {
                     throw new YsharpException(
@@ -228,18 +228,18 @@ public class yString  {
                 Variable.Variant startVar = arguments.get(0);
                 Variable.Variant endVar   = arguments.get(1);
 
-                if (!startVar.canImplicitlyConvertNumber() ||
-                        !endVar.canImplicitlyConvertNumber()) {
+                if (!startVar.isIntCompatibleNumber() ||
+                        !endVar.isIntCompatibleNumber()) {
 
                     throw new YsharpException(
                             YsharpException.YsharpErrorType.PROCESS,
                             0,
-                            "'substring' arguments must be numbers."
+                            "'substring' arguments must be integers."
                     );
                 }
 
-                int start = (int) startVar.implicitlyConvertNumber();
-                int end   = (int) endVar.implicitlyConvertNumber();
+                int start =  startVar.asInt();
+                int end   =  endVar.asInt();
 
                 int len = instance.data.length();
 
@@ -551,17 +551,17 @@ public class yString  {
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
 
-                Variable.Variant countVar = arguments.get(0);
+                Variable.Variant countVar = arguments.getFirst();
 
-                if (!countVar.canImplicitlyConvertNumber()) {
+                if (!countVar.isIntCompatibleNumber()) {
                     throw new YsharpException(
                             YsharpException.YsharpErrorType.PROCESS,
                             0,
-                            "'repeat' argument must be a number."
+                            "'repeat' argument must be a integer."
                     );
                 }
 
-                int count = (int) countVar.implicitlyConvertNumber();
+                int count = countVar.asInt();
 
                 if (count < 0) {
                     throw new YsharpException(
@@ -838,14 +838,14 @@ public class yString  {
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
 
-                Variable.Variant lenVar = arguments.get(0);
+                Variable.Variant lenVar = arguments.getFirst();
                 Variable.Variant padVar = arguments.get(1);
 
-                if (!lenVar.canImplicitlyConvertNumber()) {
+                if (!lenVar.isIntCompatibleNumber()) {
                     throw new YsharpException(
                             YsharpException.YsharpErrorType.PROCESS,
                             0,
-                            "'padLeft' first argument must be a number."
+                            "'padLeft' first argument must be a integer."
                     );
                 }
 
@@ -859,7 +859,7 @@ public class yString  {
                     );
                 }
 
-                int targetLength = (int) lenVar.implicitlyConvertNumber();
+                int targetLength = lenVar.asInt();
                 yStringInstance padString =
                         (yStringInstance) padVar.asRuntimeObject();
 
@@ -911,14 +911,14 @@ public class yString  {
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
 
-                Variable.Variant lenVar = arguments.get(0);
+                Variable.Variant lenVar = arguments.getFirst();
                 Variable.Variant padVar = arguments.get(1);
 
-                if (!lenVar.canImplicitlyConvertNumber()) {
+                if (!lenVar.isIntCompatibleNumber()) {
                     throw new YsharpException(
                             YsharpException.YsharpErrorType.PROCESS,
                             0,
-                            "'padRight' first argument must be a number."
+                            "'padRight' first argument must be a integer."
                     );
                 }
 
@@ -932,7 +932,7 @@ public class yString  {
                     );
                 }
 
-                int targetLength = (int) lenVar.implicitlyConvertNumber();
+                int targetLength = lenVar.asInt();
                 yStringInstance padString =
                         (yStringInstance) padVar.asRuntimeObject();
 
@@ -1544,17 +1544,17 @@ public class yString  {
                 requireArity(arguments, arity(), getFnName());
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
 
-                Variable.Variant indexVar = arguments.get(0);
+                Variable.Variant indexVar = arguments.getFirst();
 
-                if (!indexVar.canImplicitlyConvertNumber()) {
+                if (!indexVar.isIntCompatibleNumber()) {
                     throw new YsharpException(
                             YsharpException.YsharpErrorType.PROCESS,
                             0,
-                            "'charCodeAt' index must be a number."
+                            "'charCodeAt' index must be a integer."
                     );
                 }
 
-                int index = (int) indexVar.implicitlyConvertNumber();
+                int index = indexVar.asInt();
 
                 if (index < 0 || index >= instance.data.length()) {
                     throw new YsharpException(
@@ -1607,32 +1607,32 @@ public class yString  {
 
                 yStringInstance instance = requireStringThis(interpreter, getFnName());
 
-                Variable.Variant startVar = arguments.get(0);
+                Variable.Variant startVar = arguments.getFirst();
 
-                if (!startVar.canImplicitlyConvertNumber()) {
+                if (!startVar.isIntCompatibleNumber()) {
                     throw new YsharpException(
                             YsharpException.YsharpErrorType.PROCESS,
                             0,
-                            "'slice' start must be a number."
+                            "'slice' start must be a integer."
                     );
                 }
 
-                int start = (int) startVar.implicitlyConvertNumber();
+                int start = startVar.asInt();
 
                 int end;
 
                 if (arguments.size() == 2) {
                     Variable.Variant endVar = arguments.get(1);
 
-                    if (!endVar.canImplicitlyConvertNumber()) {
+                    if (!endVar.isIntCompatibleNumber()) {
                         throw new YsharpException(
                                 YsharpException.YsharpErrorType.PROCESS,
                                 0,
-                                "'slice' end must be a number."
+                                "'slice' end must be a integer."
                         );
                     }
 
-                    end = (int) endVar.implicitlyConvertNumber();
+                    end = endVar.asInt();
                 } else {
                     end = instance.data.length();
                 }

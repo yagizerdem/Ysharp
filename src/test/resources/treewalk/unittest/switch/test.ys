@@ -1,0 +1,207 @@
+println "switch statement test cases started";
+
+
+// test 1
+switch "12" do
+    case 12 : do
+        Assert.fail("should not match int 12 in test 1");
+        break;
+    end
+    case "12" : do
+        Assert.isTrue(true);
+    end
+    default : do
+        Assert.fail("should not enter default case in test 1");
+    end
+end
+
+
+// test 2
+switch 12 do
+    case "12" : do
+        Assert.fail("should not match string 12");
+        break;
+    end
+    case 12 : do
+        Assert.isTrue(true);
+    end
+    default : do
+        Assert.fail("should not hit default");
+    end
+end
+
+
+// test 3
+var hit = 0;
+
+switch 12.0 do
+    case 12.0 : do
+        hit = 2;
+        break;
+    end
+    case 12 : do
+        hit = 1;
+    end
+end
+
+Assert.equals(hit, 2);
+
+
+// test 4
+switch 'a' do
+    case "a" : do
+        Assert.fail("char should not match string");
+        break;
+    end
+    case 'a' : do
+        Assert.isTrue(true);
+    end
+end
+
+
+// test 5
+switch true do
+    case 1 : do
+        Assert.fail("bool should not match int");
+        break;
+    end
+    case true : do
+        Assert.isTrue(true);
+    end
+end
+
+// test 6
+switch 999 do
+    case 1 : do
+        Assert.fail("wrong match");
+        break;
+    end
+    case 2 : do
+        Assert.fail("wrong match");
+        break;
+    end
+    default : do
+        Assert.isTrue(true);
+    end
+end
+
+
+// test 7
+var hitSecond = false;
+
+switch 1 do
+    case 1 : do
+        hitSecond = false;
+        break;
+    end
+    case 2 : do
+        hitSecond = true;
+    end
+end
+
+Assert.isFalse(hitSecond);
+
+
+
+// test 8
+var count = 0;
+
+switch 1 do
+    case 1 : do
+        count = count + 1;
+    end
+    case 2 : do
+        count = count + 1;
+    end
+end
+
+Assert.equals(count, 2);
+
+
+var count = 0;
+
+switch 3 do
+    case 1 : do
+        count = count + 1;
+    end
+    case 2 : do
+        count = count + 1;
+    end
+    case 3 : do
+        count = count + 1;
+    end
+    case 4 : do
+        count = count + 1;
+    end
+end
+
+Assert.equals(count, 2);
+
+
+var count = 0;
+
+switch 999 do
+    case 1 : do
+        count = count + 1;
+    end
+    default : do
+        count = count + 1;
+        println "hti";
+    end
+    case 2 : do
+        count = count + 1;
+    end
+end
+
+Assert.equals(count, 2);
+
+var count = 0;
+
+switch 2 do
+    case 1 : do
+        count = count + 100;
+    end
+    case 2 : do
+        count = count + 1;
+        break;
+    end
+    case 3 : do
+        count = count + 100;
+    end
+end
+
+Assert.equals(count, 1);
+
+
+var result = 0;
+
+switch 1 do
+    case 1 : do
+        switch 2 do
+            case 2 : do
+                result = 10;
+                break;
+            end
+            case 3 : do
+                result = 20;
+            end
+        end
+        result = result + 1;
+    end
+end
+
+Assert.equals(result, 11);
+
+var x = 10;
+var hit = false;
+
+switch 15 do
+    case x + 5 : do
+        hit = true;
+    end
+end
+
+Assert.isTrue(hit);
+
+
+println "all switch statement cases successful";

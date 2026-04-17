@@ -1,16 +1,19 @@
-var searchMe = "peter piper picked a peck of pickled peppers";
-var max = searchMe.length;
-var numPs = 0;
-
-for var i = 0; i < max; i = i + 1 do
-
-    // interested only in 'p'
-    if (searchMe.charAt(i) != 'p') then  do
-        continue;
+switch "12" do
+    case 12 : do
+        println "hit";
+        break;
     end
-
-    // process 'p'
-    numPs = numPs + 1;
+    case 11 : do
+        println "aflj";
+        break;
+    end
+    case "12" : do
+        println "3rd case";
+    end
+    case 11 : do
+        println "3rd case";
+    end
+    default : do
+        println "default case";
+    end
 end
-
-println("Found " + numPs + " p's in the string.");

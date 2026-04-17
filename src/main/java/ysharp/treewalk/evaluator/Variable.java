@@ -88,6 +88,14 @@ public class Variable {
 
         public boolean isClassLike() { return this.isClass() || this.isClassInstance(); }
 
+        public boolean isIntCompatibleNumber() {
+            if(isInt()) {
+                return  true;
+            }
+            return isDouble() &&
+                    Math.abs(this.asDouble() - this.asDouble().intValue()) <  0.000001;
+        }
+
         public boolean isPrimitive() {
             return  isBoolean() ||
                     isNull() ||
@@ -111,6 +119,9 @@ public class Variable {
         // cast
 
         public Integer asInt(){
+            if(this.isDouble()) {
+                return  this.asDouble().intValue();
+            }
             return (Integer) this.value;
         }
 

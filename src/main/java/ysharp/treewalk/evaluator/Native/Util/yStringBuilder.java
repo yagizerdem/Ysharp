@@ -120,8 +120,16 @@ public class yStringBuilder {
                         );
                     }
 
-                    int offset = (int) offsetVar.implicitlyConvertNumber();
-                    int len = (int) lenVar.implicitlyConvertNumber();
+                    if(!offsetVar.isIntCompatibleNumber() || !lenVar.isIntCompatibleNumber()) {
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
+                                0,
+                                "'append()' offset and length must be integers."
+                        );
+                    }
+
+                    int offset = offsetVar.asInt();
+                    int len = lenVar.asInt();
 
                     List<Variable.Variant> data = ((yArray.yArrayInstance) arrVar.value).data;
 
@@ -245,8 +253,17 @@ public class yStringBuilder {
                         );
                     }
 
-                    int offset = (int) offsetVar.implicitlyConvertNumber();
-                    int len = (int) lenVar.implicitlyConvertNumber();
+                    if(!offsetVar.isIntCompatibleNumber() || !lenVar.isIntCompatibleNumber()) {
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
+                                0,
+                                "'appendLine()' offset and length must be integers."
+                        );
+                    }
+
+
+                    int offset = offsetVar.asInt();
+                    int len = lenVar.asInt();
 
                     List<Variable.Variant> data = ((yArray.yArrayInstance) arrVar.value).data;
 
@@ -330,7 +347,7 @@ public class yStringBuilder {
                 if (arguments.size() == 2) {
                     Variable.Variant index = arguments.getFirst();
 
-                    if(!index.isInt()) {
+                    if(!index.isIntCompatibleNumber()) {
                         throw new YsharpException(
                                 YsharpException.YsharpErrorType.PROCESS,
                                 0,
@@ -386,7 +403,7 @@ public class yStringBuilder {
                     Variable.Variant offsetVar = arguments.get(2);
                     Variable.Variant lenVar = arguments.get(3);
 
-                    if (!indexVar.isInt()) {
+                    if (!indexVar.isIntCompatibleNumber()) {
                         throw new YsharpException(
                                 YsharpException.YsharpErrorType.PROCESS,
                                 0,
@@ -404,8 +421,8 @@ public class yStringBuilder {
                         );
                     }
 
-                    if (!offsetVar.isInt() ||
-                            !lenVar.isInt()) {
+                    if (!offsetVar.isIntCompatibleNumber() ||
+                            !lenVar.isIntCompatibleNumber()) {
                         throw new YsharpException(
                                 YsharpException.YsharpErrorType.PROCESS,
                                 0,
