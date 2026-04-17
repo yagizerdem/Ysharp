@@ -1,61 +1,16 @@
-// basic length
-var sb = new StringBuffer();
+var searchMe = "peter piper picked a peck of pickled peppers";
+var max = searchMe.length;
+var numPs = 0;
 
-println(sb.length());
-// Output: 0
+for var i = 0; i < max; i = i + 1 do
 
+    // interested only in 'p'
+    if (searchMe.charAt(i) != 'p') then  do
+        continue;
+    end
 
-// after append
-var sb2 = new StringBuffer();
-
-sb2.append("abc");
-
-println(sb2.length());
-// Output: 3
-
-
-// length with number
-var sb3 = new StringBuffer();
-
-sb3.append(123);
-
-println(sb3.length());
-// Output: 5   ("123.0")
-
-
-// length after appendLine
-var sb4 = new StringBuffer();
-
-sb4.appendLine("a");
-
-println(sb4.length());
-// Output: 2   ("a\n")
-
-
-// dynamic length tracking
-var sb5 = new StringBuffer();
-
-var input = ["x","yy","zzz"];
-
-for var i = 0; i < input.length(); i = i + 1 do
-    sb5.append(input.get(i));
-    println("Current length: " + sb5.length());
+    // process 'p'
+    numPs = numPs + 1;
 end
 
-// Output:
-// 1
-// 3
-// 6
-
-
-// length after clear
-var sb6 = new StringBuffer();
-
-sb6.append("hello");
-
-println(sb6.length()); // 5
-
-sb6.clear();
-
-println(sb6.length());
-// Output: 0
+println("Found " + numPs + " p's in the string.");

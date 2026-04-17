@@ -580,22 +580,22 @@ public class Parser {
 
             Token op = previous();
 
-            Expr factor = parseFactor();
+            Expr term = parseTerm();
             Expr.RangeExpr rangeExpr = new Expr.RangeExpr(
                     expr,
                     op,
-                    factor
+                    term
             );
 
             while (match(peek(),
                     Token.TokenType.DOUBLE_DOT)) {
 
                 op = previous();
-                factor = parseFactor();
+                term = parseTerm();
                 Expr.RangeExpr rangeExpr_ = new Expr.RangeExpr(
                         rangeExpr,
                         op,
-                        factor
+                        term
                 );
 
                 rangeExpr = rangeExpr_;
