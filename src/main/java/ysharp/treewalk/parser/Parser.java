@@ -1284,7 +1284,7 @@ public class Parser {
                 "Expected 'do' after switch expression.");
 
         List<Stmt.SwitchStmt.CaseClause> cases = new ArrayList<>();
-        Stmt defaultClause = null;
+        boolean isDefaultExists = false;
 
         while (peek().type != Token.TokenType.END_ &&
                 peek().type != Token.TokenType.END_OF_FILE) {
@@ -1305,7 +1305,7 @@ public class Parser {
             }
             else if (match(peek(), Token.TokenType.DEFAULT)) {
 
-                if (defaultClause != null) {
+                if (isDefaultExists) {
                     throw new YsharpException(
                             YsharpException.YsharpErrorType.SYNTAX,
                             peek().line,
@@ -1313,10 +1313,18 @@ public class Parser {
                     );
                 }
 
+                isDefaultExists = true;
+
                 consume(Token.TokenType.COLON,
                         "Expected ':' after default.");
 
-                defaultClause = parseBlockStmt();
+
+                Stmt block = parseBlockStmt();
+
+                // default case has no matcher
+                cases.add(
+                        new Stmt.SwitchStmt.CaseClause(null, block, true)
+                );
             }
             else {
                 throw new YsharpException(
@@ -1330,7 +1338,7 @@ public class Parser {
         consume(Token.TokenType.END_,
                 "Expected 'end' after switch statement.");
 
-        return new Stmt.SwitchStmt(condition, cases, defaultClause);
+        return new Stmt.SwitchStmt(condition, cases);
     }
 
     private Stmt parseThrowStmt() throws YsharpException {

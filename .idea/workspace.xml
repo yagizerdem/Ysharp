@@ -5,14 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="06588b0d-6eee-4b4b-be52-23cf34ea7082" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/switch/test.ys" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/webdoc/docs/switch &amp; case.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Native/Util/yStringBuffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Native/Util/yStringBuffer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Native/Util/yStringBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Native/Util/yStringBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Variable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Variable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/yString.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/yString.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/treewalk/test/main.ys" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/treewalk/test/main.ys" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Interpreter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Interpreter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Resolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Resolver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/parser/Parser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/parser/Stmt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/parser/Stmt.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/switch/test.ys" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/switch/test.ys" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -285,8 +284,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Interpreter.java</url>
-          <line>1355</line>
-          <option name="timeStamp" value="66" />
+          <line>1315</line>
+          <option name="timeStamp" value="72" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

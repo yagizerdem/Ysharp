@@ -229,25 +229,31 @@ public abstract class Stmt {
 
         public final Expr condition;
         public final List<CaseClause> cases;
-        public final Stmt defaultClause;
+//        public final Stmt defaultClause;
 
         public static class CaseClause {
 
             public final Expr matchExpr;
             public final Stmt block;
+            public final boolean isDefault;
 
             public CaseClause(Expr matchExpr, Stmt block) {
                 this.matchExpr = matchExpr;
                 this.block = block;
+                isDefault = false;
+            }
+
+            public CaseClause(Expr matchExpr, Stmt block, boolean isDefault) {
+                this.matchExpr = matchExpr;
+                this.block = block;
+                this.isDefault = isDefault;
             }
         }
 
         public SwitchStmt(Expr condition,
-                          List<CaseClause> cases,
-                          Stmt defaultClause) {
+                          List<CaseClause> cases) {
             this.condition = condition;
             this.cases = cases;
-            this.defaultClause = defaultClause;
         }
 
         @Override

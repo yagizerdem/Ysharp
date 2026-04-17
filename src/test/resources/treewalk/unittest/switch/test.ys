@@ -9,6 +9,7 @@ switch "12" do
     end
     case "12" : do
         Assert.isTrue(true);
+        break;
     end
     default : do
         Assert.fail("should not enter default case in test 1");
@@ -24,6 +25,7 @@ switch 12 do
     end
     case 12 : do
         Assert.isTrue(true);
+        break;
     end
     default : do
         Assert.fail("should not hit default");
@@ -47,6 +49,7 @@ end
 Assert.equals(hit, 2);
 
 
+
 // test 4
 switch 'a' do
     case "a" : do
@@ -57,6 +60,7 @@ switch 'a' do
         Assert.isTrue(true);
     end
 end
+
 
 
 // test 5
@@ -102,7 +106,6 @@ end
 Assert.isFalse(hitSecond);
 
 
-
 // test 8
 var count = 0;
 
@@ -116,6 +119,7 @@ switch 1 do
 end
 
 Assert.equals(count, 2);
+
 
 
 var count = 0;
@@ -146,7 +150,6 @@ switch 999 do
     end
     default : do
         count = count + 1;
-        println "hti";
     end
     case 2 : do
         count = count + 1;
@@ -154,6 +157,8 @@ switch 999 do
 end
 
 Assert.equals(count, 2);
+
+
 
 var count = 0;
 
@@ -191,6 +196,7 @@ switch 1 do
 end
 
 Assert.equals(result, 11);
+
 
 var x = 10;
 var hit = false;

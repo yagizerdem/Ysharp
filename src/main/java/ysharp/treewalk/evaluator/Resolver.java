@@ -334,7 +334,6 @@ public class Resolver implements Expr.Visitor<Void> ,
             resolve(case_.matchExpr);
             resolve(case_.block);
         }
-        resolve(stmt.defaultClause);
     }
 
     @Override
