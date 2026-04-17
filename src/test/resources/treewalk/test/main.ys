@@ -1,33 +1,16 @@
-var text = "HelloYsharp";
+var searchMe = "peter piper picked a peck of pickled peppers";
+var max = searchMe.length;
+var numPs = 0;
 
-// basic usage
-println(text.slice(0, 5));    // Hello
-println(text.slice(5));       // Ysharp
+for var i = 0; i < max; i = i + 1 do
 
-// negative indices
-println(text.slice(-6));      // Ysharp
-println(text.slice(-6, -1));  // Yshar
+    // interested only in 'p'
+    if (searchMe.charAt(i) != 'p') then  do
+        continue;
+    end
 
-// middle extraction
-println(text.slice(2, 8));    // lloYsh
+    // process 'p'
+    numPs = numPs + 1;
+end
 
-// practical: get file extension
-var file = "archive.tar.gz";
-
-var ext = file.slice(file.lastIndexOf(".") + 1);
-println(ext);   // gz
-
-// practical: get last N characters
-var id = "USER_123456";
-println(id.slice(-6));   // 123456
-
-// combine with other methods
-var input = "   hello world   ";
-var result = input.trim().slice(0, 5).toUpper();
-
-println(result);   // HELLO
-
-// edge cases
-println(text.slice(0));        // HelloYsharp
-println(text.slice(100));      // "" (out of range)
-println(text.slice(-100));     // HelloYsharp (clamped)
+println("Found " + numPs + " p's in the string.");
