@@ -1,19 +1,38 @@
-switch "12" do
-    case 12 : do
-        println "hit";
-        break;
+function getMonthNumber(month) do
+    var monthNumber = 0;
+
+    if month == null then do
+        return monthNumber;
     end
-    case 11 : do
-        println "aflj";
-        break;
+
+    switch month.toLower() do
+        case "january" : do monthNumber = 1; break; end
+        case "february" : do monthNumber = 2; break; end
+        case "march" : do monthNumber = 3; break; end
+        case "april" : do monthNumber = 4; break; end
+        case "may" : do monthNumber = 5; break; end
+        case "june" : do monthNumber = 6; break; end
+        case "july" : do monthNumber = 7; break; end
+        case "august" : do monthNumber = 8; break; end
+        case "september" : do monthNumber = 9; break; end
+        case "october" : do monthNumber = 10; break; end
+        case "november" : do monthNumber = 11; break; end
+        case "december" : do monthNumber = 12; break; end
+        default : do monthNumber = 0; end
     end
-    case "12" : do
-        println "3rd case";
-    end
-    case 11 : do
-        println "3rd case";
-    end
-    default : do
-        println "default case";
-    end
+
+    return monthNumber;
+end
+
+
+
+var month = "August";
+
+var returnedMonthNumber = getMonthNumber(month);
+
+if returnedMonthNumber == 0 then do
+    println "Invalid month";
+end
+else do
+    println returnedMonthNumber;
 end

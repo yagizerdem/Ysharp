@@ -210,4 +210,21 @@ end
 Assert.isTrue(hit);
 
 
+class Human {}
+
+const h = new Human();
+
+switch h do
+    case 1 : do
+        Assert.fail("should not enter 1");
+    end
+    case h : do
+        Assert.isTrue(true);
+        break;
+    end
+    default : do
+        Assert.fail("should not enter default case");
+    end
+end
+
 println "all switch statement cases successful";
