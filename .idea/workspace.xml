@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="06588b0d-6eee-4b4b-be52-23cf34ea7082" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/webdoc/docs/functions.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Function.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Function.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/parser/Parser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/resources/treewalk/test/main.ys" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/treewalk/test/main.ys" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/switch/test.ys" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/switch/test.ys" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webdoc/docs/if..elif..else.md" beforeDir="false" afterPath="$PROJECT_DIR$/webdoc/docs/if &amp; elif &amp; else.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webdoc/docs/switch &amp; case.md" beforeDir="false" afterPath="$PROJECT_DIR$/webdoc/docs/switch &amp; case.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -266,11 +266,6 @@
           <option name="timeStamp" value="29" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Function.java</url>
-          <line>223</line>
-          <option name="timeStamp" value="45" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ysharp/treewalk/lexer/Lexer.java</url>
           <line>238</line>
           <option name="timeStamp" value="53" />
@@ -284,6 +279,11 @@
           <url>file://$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Interpreter.java</url>
           <line>1315</line>
           <option name="timeStamp" value="72" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ysharp/treewalk/parser/Parser.java</url>
+          <line>954</line>
+          <option name="timeStamp" value="73" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

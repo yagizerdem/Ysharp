@@ -236,14 +236,40 @@ public abstract class Function extends RuntimeObject implements Callable {
                 }
 
                 if(lambdaExpr.expr != null) {
-                    return interpreter.evaluate(
+                    Variable.Variant returnValue =  interpreter.evaluate(
                             lambdaExpr.expr,
                             newEnv
                     );
+
+                    if(!Interpreter.typeChecker(lambdaExpr.returnType.lexeme, returnValue)) {
+                        String expectedType = lambdaExpr.returnType.lexeme;;
+
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
+                                lambdaExpr.leftParen.line,
+                                "Return type mismatch. Expected '" +
+                                        expectedType + "' but got '" +
+                                        returnValue.getType() + "'."
+                        );
+                    }
+
+                    return returnValue;
                 }
 
 
             } catch (Signal.ReturnSignal returnValue) {
+                if(!Interpreter.typeChecker(lambdaExpr.returnType.lexeme, returnValue.value)) {
+                    String expectedType = lambdaExpr.returnType.lexeme;;
+
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
+                            lambdaExpr.leftParen.line,
+                            "Return type mismatch. Expected '" +
+                                    expectedType + "' but got '" +
+                                    returnValue.value.getType() + "'."
+                    );
+                }
+
                 return returnValue.value;
             }
 

@@ -168,6 +168,13 @@ public class Parser {
         if (cursor >= tokenStream.size())
             return false;
 
+        //  consume type tag if exist
+        if(tokenStream.get(cursor).type == Token.TokenType.COLON) {
+            cursor+= 2;
+            if (cursor >= tokenStream.size())
+                return false;
+        }
+
         return tokenStream.get(cursor).type == Token.TokenType.RIGHT_ARROW;
     }
 
@@ -970,13 +977,13 @@ public class Parser {
 
                     typeTag = advance();
 
-                    if (typeTag.type != Token.TokenType.IDENTIFIER) {
-                        throw new YsharpException(
-                                YsharpException.YsharpErrorType.SYNTAX,
-                                typeTag.line,
-                                "Expected type identifier after ':' in lambda parameter."
-                        );
-                    }
+//                    if (typeTag.type != Token.TokenType.IDENTIFIER) {
+//                        throw new YsharpException(
+//                                YsharpException.YsharpErrorType.SYNTAX,
+//                                typeTag.line,
+//                                "Expected type identifier after ':' in lambda parameter."
+//                        );
+//                    }
                 }
 
                 params.add(new Expr.LambdaExpr.Param(identifier, typeTag));
@@ -989,15 +996,14 @@ public class Parser {
 
         Token returnType = null;
         if(match(peek(), Token.TokenType.COLON)) {
-            advance(); // consume :
-            returnType = advance();
-            if(returnType.type != Token.TokenType.IDENTIFIER) {
-                throw new YsharpException(
-                        YsharpException.YsharpErrorType.SYNTAX,
-                        peek().line,
-                        "Expected return type identifier after ':' in lambda."
-                );
-            }
+            returnType = advance(); // type tag
+//            if(returnType.type != Token.TokenType.IDENTIFIER) {
+//                throw new YsharpException(
+//                        YsharpException.YsharpErrorType.SYNTAX,
+//                        peek().line,
+//                        "Expected return type identifier after ':' in lambda."
+//                );
+//            }
         }
 
         consume(Token.TokenType.RIGHT_ARROW,
@@ -1535,13 +1541,13 @@ public class Parser {
                     advance(); // consume ':'
 
                     typeToken = advance();
-                    if (typeToken.type != Token.TokenType.IDENTIFIER) {
-                        throw new YsharpException(
-                                YsharpException.YsharpErrorType.SYNTAX,
-                                typeToken.line,
-                                "Expected type identifier after ':'."
-                        );
-                    }
+//                    if (typeToken.type != Token.TokenType.IDENTIFIER) {
+//                        throw new YsharpException(
+//                                YsharpException.YsharpErrorType.SYNTAX,
+//                                typeToken.line,
+//                                "Expected type identifier after ':'."
+//                        );
+//                    }
                 }
 
                 params.add(
@@ -1561,13 +1567,13 @@ public class Parser {
             advance(); // consume ':'
 
             returnType = advance();
-            if (returnType.type != Token.TokenType.IDENTIFIER) {
-                throw new YsharpException(
-                        YsharpException.YsharpErrorType.SYNTAX,
-                        returnType.line,
-                        "Expected return type identifier after ':'."
-                );
-            }
+//            if (returnType.type != Token.TokenType.IDENTIFIER) {
+//                throw new YsharpException(
+//                        YsharpException.YsharpErrorType.SYNTAX,
+//                        returnType.line,
+//                        "Expected return type identifier after ':'."
+//                );
+//            }
         }
 
         Stmt body = parseBlockStmt();

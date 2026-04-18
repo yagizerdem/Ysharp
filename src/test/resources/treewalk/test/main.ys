@@ -1,38 +1,8 @@
-function getMonthNumber(month) do
-    var monthNumber = 0;
 
-    if month == null then do
-        return monthNumber;
-    end
+var a = (a : number, b : number) : string  => do
+    return Type.Converter.toString(a + b);
+end;
 
-    switch month.toLower() do
-        case "january" : do monthNumber = 1; break; end
-        case "february" : do monthNumber = 2; break; end
-        case "march" : do monthNumber = 3; break; end
-        case "april" : do monthNumber = 4; break; end
-        case "may" : do monthNumber = 5; break; end
-        case "june" : do monthNumber = 6; break; end
-        case "july" : do monthNumber = 7; break; end
-        case "august" : do monthNumber = 8; break; end
-        case "september" : do monthNumber = 9; break; end
-        case "october" : do monthNumber = 10; break; end
-        case "november" : do monthNumber = 11; break; end
-        case "december" : do monthNumber = 12; break; end
-        default : do monthNumber = 0; end
-    end
-
-    return monthNumber;
-end
+println a (1, 2);
 
 
-
-var month = "August";
-
-var returnedMonthNumber = getMonthNumber(month);
-
-if returnedMonthNumber == 0 then do
-    println "Invalid month";
-end
-else do
-    println returnedMonthNumber;
-end
