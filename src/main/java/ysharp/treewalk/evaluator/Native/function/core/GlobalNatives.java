@@ -111,4 +111,10 @@ public abstract class Clock extends Function.NativeFunction {
         @Override public int arity() { return 1; }
         @Override public String getFnName() { return "formatTime"; }
     }
+
+    public static void  Register(Interpreter interpreter) {
+        Now nowFn = new Now();
+        interpreter.global.define(nowFn.getFnName(),
+                new Variable(new Variable.Variant(nowFn), true, nowFn.getType()));
+    }
 }
