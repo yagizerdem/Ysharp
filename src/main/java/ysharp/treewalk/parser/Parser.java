@@ -168,6 +168,13 @@ public class Parser {
         if (cursor >= tokenStream.size())
             return false;
 
+        //  consume type tag if exist
+        if(tokenStream.get(cursor).type == Token.TokenType.COLON) {
+            cursor+= 2;
+            if (cursor >= tokenStream.size())
+                return false;
+        }
+
         return tokenStream.get(cursor).type == Token.TokenType.RIGHT_ARROW;
     }
 
@@ -970,13 +977,13 @@ public class Parser {
 
                     typeTag = advance();
 
-                    if (typeTag.type != Token.TokenType.IDENTIFIER) {
-                        throw new YsharpException(
-                                YsharpException.YsharpErrorType.SYNTAX,
-                                typeTag.line,
-                                "Expected type identifier after ':' in lambda parameter."
-                        );
-                    }
+//                    if (typeTag.type != Token.TokenType.IDENTIFIER) {
+//                        throw new YsharpException(
+//                                YsharpException.YsharpErrorType.SYNTAX,
+//                                typeTag.line,
+//                                "Expected type identifier after ':' in lambda parameter."
+//                        );
+//                    }
                 }
 
                 params.add(new Expr.LambdaExpr.Param(identifier, typeTag));
@@ -989,15 +996,14 @@ public class Parser {
 
         Token returnType = null;
         if(match(peek(), Token.TokenType.COLON)) {
-            advance(); // consume :
-            returnType = advance();
-            if(returnType.type != Token.TokenType.IDENTIFIER) {
-                throw new YsharpException(
-                        YsharpException.YsharpErrorType.SYNTAX,
-                        peek().line,
-                        "Expected return type identifier after ':' in lambda."
-                );
-            }
+            returnType = advance(); // type tag
+//            if(returnType.type != Token.TokenType.IDENTIFIER) {
+//                throw new YsharpException(
+//                        YsharpException.YsharpErrorType.SYNTAX,
+//                        peek().line,
+//                        "Expected return type identifier after ':' in lambda."
+//                );
+//            }
         }
 
         consume(Token.TokenType.RIGHT_ARROW,
@@ -1284,7 +1290,7 @@ public class Parser {
                 "Expected 'do' after switch expression.");
 
         List<Stmt.SwitchStmt.CaseClause> cases = new ArrayList<>();
-        Stmt defaultClause = null;
+        boolean isDefaultExists = false;
 
         while (peek().type != Token.TokenType.END_ &&
                 peek().type != Token.TokenType.END_OF_FILE) {
@@ -1305,7 +1311,7 @@ public class Parser {
             }
             else if (match(peek(), Token.TokenType.DEFAULT)) {
 
-                if (defaultClause != null) {
+                if (isDefaultExists) {
                     throw new YsharpException(
                             YsharpException.YsharpErrorType.SYNTAX,
                             peek().line,
@@ -1313,10 +1319,18 @@ public class Parser {
                     );
                 }
 
+                isDefaultExists = true;
+
                 consume(Token.TokenType.COLON,
                         "Expected ':' after default.");
 
-                defaultClause = parseBlockStmt();
+
+                Stmt block = parseBlockStmt();
+
+                // default case has no matcher
+                cases.add(
+                        new Stmt.SwitchStmt.CaseClause(null, block, true)
+                );
             }
             else {
                 throw new YsharpException(
@@ -1330,7 +1344,7 @@ public class Parser {
         consume(Token.TokenType.END_,
                 "Expected 'end' after switch statement.");
 
-        return new Stmt.SwitchStmt(condition, cases, defaultClause);
+        return new Stmt.SwitchStmt(condition, cases);
     }
 
     private Stmt parseThrowStmt() throws YsharpException {
@@ -1527,13 +1541,13 @@ public class Parser {
                     advance(); // consume ':'
 
                     typeToken = advance();
-                    if (typeToken.type != Token.TokenType.IDENTIFIER) {
-                        throw new YsharpException(
-                                YsharpException.YsharpErrorType.SYNTAX,
-                                typeToken.line,
-                                "Expected type identifier after ':'."
-                        );
-                    }
+//                    if (typeToken.type != Token.TokenType.IDENTIFIER) {
+//                        throw new YsharpException(
+//                                YsharpException.YsharpErrorType.SYNTAX,
+//                                typeToken.line,
+//                                "Expected type identifier after ':'."
+//                        );
+//                    }
                 }
 
                 params.add(
@@ -1553,13 +1567,13 @@ public class Parser {
             advance(); // consume ':'
 
             returnType = advance();
-            if (returnType.type != Token.TokenType.IDENTIFIER) {
-                throw new YsharpException(
-                        YsharpException.YsharpErrorType.SYNTAX,
-                        returnType.line,
-                        "Expected return type identifier after ':'."
-                );
-            }
+//            if (returnType.type != Token.TokenType.IDENTIFIER) {
+//                throw new YsharpException(
+//                        YsharpException.YsharpErrorType.SYNTAX,
+//                        returnType.line,
+//                        "Expected return type identifier after ':'."
+//                );
+//            }
         }
 
         Stmt body = parseBlockStmt();

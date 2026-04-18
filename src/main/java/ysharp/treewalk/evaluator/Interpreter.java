@@ -1315,32 +1315,36 @@ public class Interpreter implements
 
         Variable.Variant switchValue = evaluate(stmt.condition);
 
-        boolean executing = false;
+        int startIndex = -1;
+        int defaultIndex = -1;
+
+        for (int i = 0; i < stmt.cases.size(); i++) {
+            Stmt.SwitchStmt.CaseClause c = stmt.cases.get(i);
+
+            if (c.isDefault) {
+                defaultIndex = i;
+                continue;
+            }
+
+            Variable.Variant caseValue = evaluate(c.matchExpr);
+
+            if (switchValue.equals(caseValue)) {
+                startIndex = i;
+                break;
+            }
+        }
+
+        if (startIndex == -1) {
+            startIndex = defaultIndex;
+        }
+
+        if (startIndex == -1) return;
 
         try {
-
-            for (Stmt.SwitchStmt.CaseClause caseClause : stmt.cases) {
-
-                if (!executing) {
-                    Variable.Variant caseValue = evaluate(caseClause.matchExpr);
-
-                    if (switchValue.equals(caseValue)) {
-                        executing = true;
-                    }
-                }
-
-                if (executing) {
-                    execute(caseClause.block);
-                }
+            for (int i = startIndex; i < stmt.cases.size(); i++) {
+                execute(stmt.cases.get(i).block);
             }
-
-            // default case
-            if (!executing && stmt.defaultClause != null) {
-                execute(stmt.defaultClause);
-            }
-
         } catch (Signal.BreakSignal signal) {
-            // break Fallthrough
         }
     }
 

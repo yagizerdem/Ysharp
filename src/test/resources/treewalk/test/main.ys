@@ -1,16 +1,5 @@
-var searchMe = "peter piper picked a peck of pickled peppers";
-var max = searchMe.length;
-var numPs = 0;
-
-for var i = 0; i < max; i = i + 1 do
-
-    // interested only in 'p'
-    if (searchMe.charAt(i) != 'p') then  do
-        continue;
-    end
-
-    // process 'p'
-    numPs = numPs + 1;
+function apply(x, fn) do
+    return fn(x);
 end
 
-println("Found " + numPs + " p's in the string.");
+println(apply(5, (x) => x * 2));
