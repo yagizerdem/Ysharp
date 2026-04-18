@@ -1642,6 +1642,30 @@ public class Interpreter implements
                         "Constructor called with incorrect number of arguments. Expected " + this.arity() + "."
                 );
 
+                // check constructor parameters type match
+
+                if(constructorFn != null) {
+                    for(int i = 0; i < arguments.size(); i++) {
+                        if(!Interpreter.typeChecker(constructorFn.params.get(i).type !=  null ?
+                                constructorFn.params.get(i).type.lexeme : "any", arguments.get(i))) {
+
+                            String expectedType = constructorFn.params.get(i).type !=  null ?
+                                    constructorFn.params.get(i).type.lexeme : "any";
+
+                            throw new YsharpException(
+                                    YsharpException.YsharpErrorType.PROCESS,
+                                    constructorFn.name.line,
+                                    "Constructor parameter " +
+                                            "(" + constructorFn.params.get(i).name.lexeme + ")" +
+                                            " type mismatch. Expected '" +
+                                            expectedType + "' but got '" +
+                                            arguments.get(i).getType() + "'."
+                            );
+
+                        }
+                    }
+                }
+
                 yClass.ClassObjectInstance instance = new yClass.ClassObjectInstance() {
                     @Override
                     public boolean isTruthy() {
@@ -2048,6 +2072,7 @@ public class Interpreter implements
 
     public static boolean typeChecker(String type, Variable.Variant variant) {
         if(variant.isNull()) return true;
+        if(type.equals("any")) return true;
 
         switch (type) {
 

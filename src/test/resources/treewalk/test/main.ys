@@ -1,5 +1,21 @@
-function apply(x, fn) do
-    return fn(x);
-end
+class MyObject {
+    var name;
+    var message;
+    constructor(name : string, message : string) do
+        this.name = name;
+        this.message = message;
+    end
 
-println(apply(5, (x) => x * 2));
+    getName() do
+        return this.name;
+    end
+
+    getMessage() do
+        return this.message;
+    end
+}
+
+var obj = new MyObject("Ali", "Hello");
+
+println(obj.getName());    // Ali
+println(obj.getMessage()); // Hello

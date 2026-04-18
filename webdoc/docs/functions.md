@@ -1,3 +1,7 @@
+---
+sidebar_position: 15
+---
+
 ### General
 
 Ysharp functions are blocks of code that perform a specific task.
@@ -57,7 +61,7 @@ If no value is returned, the function implicitly returns `null`.
 > Function parameters and return type support type tags. You can optionally use type tags to
 > explicitly declare types.
 
-#### Example
+#### Examples
 
 ````ysharp
 function sum2Num(a, b) do
