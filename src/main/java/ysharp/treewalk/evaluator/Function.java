@@ -241,8 +241,8 @@ public abstract class Function extends RuntimeObject implements Callable {
                             newEnv
                     );
 
-                    if(!Interpreter.typeChecker(lambdaExpr.returnType.lexeme, returnValue)) {
-                        String expectedType = lambdaExpr.returnType.lexeme;;
+                    if(!Interpreter.typeChecker(lambdaExpr.returnType != null ? lambdaExpr.returnType.lexeme : "any", returnValue)) {
+                        String expectedType = lambdaExpr.returnType != null ? lambdaExpr.returnType.lexeme : "any";
 
                         throw new YsharpException(
                                 YsharpException.YsharpErrorType.PROCESS,
@@ -258,8 +258,8 @@ public abstract class Function extends RuntimeObject implements Callable {
 
 
             } catch (Signal.ReturnSignal returnValue) {
-                if(!Interpreter.typeChecker(lambdaExpr.returnType.lexeme, returnValue.value)) {
-                    String expectedType = lambdaExpr.returnType.lexeme;;
+                if(!Interpreter.typeChecker(lambdaExpr.returnType != null ? lambdaExpr.returnType.lexeme : "any", returnValue.value)) {
+                    String expectedType = lambdaExpr.returnType != null ? lambdaExpr.returnType.lexeme : "any";
 
                     throw new YsharpException(
                             YsharpException.YsharpErrorType.PROCESS,

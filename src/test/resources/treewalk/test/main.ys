@@ -1,8 +1,5 @@
+function apply(x, fn) do
+    return fn(x);
+end
 
-var a = (a : number, b : number) : string  => do
-    return Type.Converter.toString(a + b);
-end;
-
-println a (1, 2);
-
-
+println(apply(5, (x) => x * 2));

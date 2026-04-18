@@ -1,7 +1,7 @@
 ### General
 
 Ysharp functions are blocks of code that perform a specific task.
-A functions allows us to reuse code, improving both efficiency and organization.
+Functions allows us to reuse code, improving both efficiency and organization.
 
 - Functions are reusable code blocks designed to perform a particular task. (write once, run many times)
 - Functions are executed when they are called or invoked.
@@ -130,7 +130,7 @@ println arr.toString();
 Function Overloading is a feature found in many object-oriented programming languages,
 where multiple functions can share the same name but differ in the number or type of parameters.
 While languages like C++ and Java natively support function overloading,
-Ysharp support Function Overloading in a different way.
+Ysharp supports Function Overloading in a different way.
 
 ### Ysharp Overloading Rules
 
@@ -173,3 +173,85 @@ end
 > Instead, it relies purely on arity-based dispatch, making the function resolution simple and predictable.
 
 
+## Lambda Expressions
+
+Lambda Expressions is a function without a name, mainly used for specific or short-term tasks, 
+and is often assigned to variables or passed as arguments where reuse is not required.
+
+- It omits the function name and is defined using the function keyword or arrow syntax.
+- It is commonly used as callbacks or for one-time execution within a limited scope.
+- They are lightweight compared to regular functions
+
+### Types of Lambda Expressions
+
+Ysharp supports two types of lambda expressions:
+
+
+#### 1. Expression Lambda
+
+This form consists of a single expression and returns its result implicitly.
+
+<code>
+(parameters) => expression
+</code>
+
+- The expression is evaluated
+- The result is automatically returned
+- No return keyword is required
+
+````
+var add = (a, b) => a + b;
+
+println(add(2, 3));   // 5
+
+var add = (a : number, b : number) : number => a + b;
+
+println(add(2, 3));   // 5
+````
+
+
+#### 2. Block Lambda
+
+This form uses a do ... end block and allows multiple statements.
+
+<code>
+(parameters) => do
+    statements
+end
+</code>
+
+- Multiple statements can be written
+- return must be used explicitly to return a value
+
+````ysharp
+var add = (a, b) => do
+    var result = a + b
+    return result
+end
+
+println(add(2, 3))   // 5
+````
+
+### Examples
+
+
+````ysharp
+function apply(x, fn) do
+    return fn(x);
+end
+
+println(apply(5, (x) => x * 2));
+````
+
+````ysharp
+var arr = [1, 2, 3, 4];
+
+var doubled = arr.map((x) => x * 2);
+
+println(doubled.toString());   // [2, 4, 6, 8]
+````
+
+> Notes <br/>
+> - Expression lambdas are concise and preferred for simple operations
+> - Block lambdas are used when multiple steps are required
+> - Only block lambdas support explicit return
