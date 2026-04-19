@@ -1704,10 +1704,11 @@ public class Interpreter implements
                 // initialize fields from super class
                 if(stmt.superName != null) {
                     // if super call explicitly override it must be first statement
-                    boolean explicitSuper = constructorFn != null;
+                    boolean explicitCtor = constructorFn != null;
 
                     // super must be first
-                    if(explicitSuper) {
+                    if(explicitCtor) {
+                        boolean explicitSuper = false;
                         Stmt.BlockStmt body = (Stmt.BlockStmt)constructorFn.body;
                         for(Stmt stmt_ : body.stmtList) {
                             if(stmt_ instanceof Stmt.ExprStmt && ((Stmt.ExprStmt) stmt_).expr instanceof Expr.SuperCallExpr) {
@@ -1716,16 +1717,35 @@ public class Interpreter implements
                             }
                         }
 
-                        Stmt stmt_ = body.stmtList.getFirst();
-                        if(!(stmt_ instanceof Stmt.ExprStmt && ((Stmt.ExprStmt) stmt_).expr instanceof Expr.SuperCallExpr)) {
-                            throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
-                                    -1,
-                                    "super() must be the first statement in the constructor.");
+                        if(!explicitSuper) {
+                            // implicit super: call parent constructor with no args now
+                            Variable parentClassVar = interpreter.curEnv.getValue(stmt.superName);
+                            yClass.ClassObject parentClass = parentClassVar.value.asClass();
+
+                            Variable.Variant superInstanceVariant =
+                                    parentClass.call(interpreter, new ArrayList<>());
+
+                            yClass.ClassObjectInstance superInstance =
+                                    superInstanceVariant.asClassInstance();
+
+                            for (var field : superInstance.fields.entrySet()) {
+                                instance.set(field.getKey(), field.getValue());
+                            }
                         }
+                        else {
+                            Stmt stmt_ = body.stmtList.getFirst();
+                            if(!(stmt_ instanceof Stmt.ExprStmt && ((Stmt.ExprStmt) stmt_).expr instanceof Expr.SuperCallExpr)) {
+                                throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
+                                        -1,
+                                        "super() must be the first statement in the constructor.");
+                            }
+                        }
+
+
 
                     }
 
-                    if (!explicitSuper) {
+                    if (!explicitCtor) {
                         // implicit super: call parent constructor with no args now
                         Variable parentClassVar = interpreter.curEnv.getValue(stmt.superName);
                         yClass.ClassObject parentClass = parentClassVar.value.asClass();

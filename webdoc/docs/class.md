@@ -444,7 +444,7 @@ println f(); // 10
 
 ---
 
-### constructor function
+### constructor function & super keyword
 
 A class can define at most one `constructor` method. Defining more than one
 is a `syntax` error at class declaration time.
@@ -478,18 +478,105 @@ environment as `this`, making it accessible throughout the constructor body.
 
 #### `super` Binding
 
-If the class extends another class, the parent `ClassObject` is also injected
-into the constructor environment as `super`. This allows the constructor to
-call the parent constructor explicitly via `super()`.
+If the class extends another class, the parent `ClassObject` is injected into
+the constructor environment as `super`. This allows the constructor to call
+the parent constructor explicitly via `super()`.
 
-`super()` **must be the first statement** in the constructor body when the
-class has a superclass. Placing it anywhere else is a `process` error:
+If the child class has a constructor and contains an explicit `super()` call,
+it **must be the first statement** in the constructor body. Placing it anywhere
+else is a `process` error:
+
+**super() must be the first statement in the constructor.**
+
+If the child class has a constructor but no explicit `super()` call, the parent
+constructor is called **implicitly with zero arguments** before the constructor
+body runs. If the parent constructor requires arguments, this will fail at
+runtime.
+
+If the child class has **no constructor at all**, the parent constructor is
+also called implicitly with zero arguments during instantiation.
 
 
-If no explicit `super()` call is present, the parent constructor is called
-implicitly with zero arguments before the child constructor body runs.
+#### Example: `super` Binding
 
-#### Instance Initialization Order
+````ysharp
+class Animal {
+    var name;
+    constructor(name) do
+        this.name = name;
+    end
+}
+
+class Dog extends Animal {
+    constructor(name) do
+        super(name); // must be first
+    end
+}
+
+const d = new Dog("Rex");
+println d.name; // Rex
+````
+
+- Missing super() (Implicit Call)
+
+````ysharp
+class Animal {
+    var type;
+    constructor() do
+        this.type = "animal";
+    end
+}
+
+class Dog extends Animal {
+    constructor() do
+        // no super() call
+    end
+}
+
+const d = new Dog();
+println d.type; // animal (implicit super())
+````
+
+- Implicit super() Failure (Parent Requires Arguments)
+
+````ysharp
+class Animal {
+    var name;
+    constructor(name) do
+        this.name = name;
+    end
+}
+
+class Dog extends Animal {
+    constructor() do
+        // no super(name)
+    end
+}
+
+const d = new Dog(); // runtime error
+````
+
+- super() Not First Statement (Error)
+
+````ysharp
+class Animal {
+    constructor() do
+    end
+}
+
+class Dog extends Animal {
+    constructor() do
+        println "before super";
+        super(); //  error
+    end
+}
+
+var d = new Dog();
+````
+
+--- 
+
+### Instance Initialization Order
 
 When a class is instantiated, the following steps happen in order:
 
@@ -501,7 +588,9 @@ When a class is instantiated, the following steps happen in order:
 5. The constructor body executes with `this` and `super` in scope.
 6. The fully initialized instance is returned.
 
-#### Invocation
+--- 
+
+### Invocation
 
 The constructor is called automatically when a class is instantiated via `new`.
 The `ClassObject` itself is `Callable` invoking it triggers the constructor
@@ -509,7 +598,7 @@ body with the provided arguments.
 
 `var p = new Point(1, 2);`
 
-### Inheritance
+## Inheritance
 
 A class can optionally extend another class by referencing a super class name,
 stored as `superClassName` on the `ClassObject`. When a class inherits from
@@ -525,3 +614,158 @@ is a runtime error.
 |---------------------|-----------------------|---------------------------------|
 | `ClassObject`       | &#10003; Yes          | Standard user-defined class     |
 | `SealedClassObject` | &#10005; No           | Cannot be used as a super class |
+
+
+
+### Method Resolution via Prototype Chain
+
+Instance methods are not copied onto each instance they live on the
+`InstancePrototype`. When a child class extends a parent, the child's
+`InstancePrototype` prototype is set to the parent's `InstancePrototype`,
+forming a chain:
+
+If a method exists on both the child and the parent, the child's version
+is found first in the chain effectively overriding the parent's.
+
+### Field Inheritance
+
+Instance properties defined on the parent are copied onto the child instance
+during construction, either through an explicit `super()` call or the implicit
+zero-argument parent constructor invocation. After copying, the child's own
+instance properties are initialized on top  if a property name conflicts,
+the child's declaration takes precedence.
+
+> **Note** <br/>
+> Fields (properties) are **not stored on the prototype**.  
+> Unlike methods, fields always belong directly to the **instance itself**.  
+> Each instance has its own separate copy of fields, and they are initialized
+> during object construction.
+
+
+### Example: Prototype Method Resolution & Field Inheritance
+
+
+#### Method Resolution via Prototype Chain
+
+````ysharp
+class Animal {
+    speak() do
+        return "animal sound";
+    end
+}
+
+class Dog extends Animal {
+    speak() do
+        return "bark";
+    end
+}
+
+const d = new Dog();
+
+println d.speak(); // bark (child overrides parent)
+````
+
+#### Field Inheritance (Copy-on-Construction)
+
+````ysharp
+class Animal {
+    var type = "animal";
+}
+
+class Dog extends Animal {
+    var type = "dog";
+    var name = "unknown";
+}
+
+const d = new Dog();
+
+println d.type; // dog (child overrides)
+println d.name; // unknown
+````
+
+### sealed  Keyword
+
+The `sealed` keyword is used to prevent a class from being extended.
+A sealed class cannot be used as a parent class in inheritance.
+
+---
+
+#### Basic Usage
+
+```ysharp
+sealed class Animal {
+    speak() do
+        return "some sound";
+    end
+}
+```
+
+#### Invalid Inheritance
+
+```ysharp
+sealed class Animal {
+}
+
+class Dog extends Animal {  // error
+}
+```
+
+Error:
+
+```
+Class 'Dog' cannot extend sealed class 'Animal'.
+```
+
+#### Use Cases
+
+Use `sealed` when:
+
+- You want to restrict inheritance
+- The class represents a final implementation
+- You want to protect internal logic from being overridden
+- You want to guarantee predictable behavior
+
+#### Sealed vs Non-Sealed
+
+```ysharp
+class Base {
+    foo() do
+        return 1;
+    end
+}
+
+sealed class FinalBase {
+    foo() do
+        return 2;
+    end
+}
+
+class A extends Base { }       // allowed
+class B extends FinalBase { }  //  error
+```
+
+#### Interaction with Methods
+
+Sealing a class prevents inheritance but does not affect method behavior
+inside the class.
+
+```ysharp
+sealed class Logger {
+    log(msg) do
+        println msg;
+    end
+}
+
+const l = new Logger();
+l.log("hello"); // works
+```
+
+#### Important Notes
+
+- `sealed` applies only to class inheritance.
+- It does **not** prevent:
+    - Creating instances
+    - Calling methods
+    - Using properties
+- A sealed class behaves like a normal class in every way except it cannot
+  be extended.

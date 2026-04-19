@@ -1,12 +1,8 @@
-class Human {
-    constructor() do
-
+sealed class Logger {
+    log(msg) do
+        println msg;
     end
 }
 
-class Test extends Human {
-    constructor(a) do
-    end
-}
-
-var t = new Test(1);
+const l = new Logger();
+l.log("hello"); // works
