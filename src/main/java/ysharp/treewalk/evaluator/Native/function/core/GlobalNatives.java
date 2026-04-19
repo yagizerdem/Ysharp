@@ -1,20 +1,17 @@
 package ysharp.treewalk.evaluator.Native.function.core;
 
 import ysharp.treewalk.YsharpException;
+import ysharp.treewalk.evaluator.Callable;
 import ysharp.treewalk.evaluator.Function;
 import ysharp.treewalk.evaluator.Interpreter;
 import ysharp.treewalk.evaluator.Variable;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public abstract class Clock extends Function.NativeFunction {
+public abstract class GlobalNatives extends Function.NativeFunction {
 
     // now() -> epoch milliseconds
-    public static class Now extends Clock {
+    public static class Now extends GlobalNatives {
 
         @Override
         public Variable.Variant call(Interpreter i, List<Variable.Variant> args)
@@ -28,45 +25,15 @@ public abstract class Clock extends Function.NativeFunction {
         @Override public String getFnName() { return "now"; }
     }
 
-    // time() -> epoch seconds
-    public static class Time extends Clock {
-
-        @Override
-        public Variable.Variant call(Interpreter i, List<Variable.Variant> args)
-                throws YsharpException {
-
-            requireArity(args, 0, getFnName());
-            return new Variable.Variant(System.currentTimeMillis() / 1000);
-        }
-
-        @Override public int arity() { return 0; }
-        @Override public String getFnName() { return "time"; }
-    }
-
-    // nanoTime() -> high resolution timer
-    public static class NanoTime extends Clock {
-
-        @Override
-        public Variable.Variant call(Interpreter i, List<Variable.Variant> args)
-                throws YsharpException {
-
-            requireArity(args, 0, getFnName());
-            return new Variable.Variant(System.nanoTime());
-        }
-
-        @Override public int arity() { return 0; }
-        @Override public String getFnName() { return "nanoTime"; }
-    }
-
     // sleep(ms)
-    public static class Sleep extends Clock {
+    public static class Sleep extends GlobalNatives {
 
         @Override
         public Variable.Variant call(Interpreter i, List<Variable.Variant> args)
                 throws YsharpException {
 
             requireArity(args, 1, getFnName());
-            long ms = (long) requireNumber(args.get(0), getFnName(), 1);
+            long ms = (long) requireNumber(args.getFirst(), getFnName(), 1);
 
             try {
                 Thread.sleep(ms);
@@ -85,8 +52,8 @@ public abstract class Clock extends Function.NativeFunction {
         @Override public String getFnName() { return "sleep"; }
     }
 
-    // formatTime(timestamp)
-    public static class FormatTime extends Clock {
+    // callable(object)
+    public static class CallableFn extends GlobalNatives {
 
         @Override
         public Variable.Variant call(Interpreter i, List<Variable.Variant> args)
@@ -94,27 +61,67 @@ public abstract class Clock extends Function.NativeFunction {
 
             requireArity(args, 1, getFnName());
 
-            long ts = (long) requireNumber(args.get(0), getFnName(), 1);
+            Variable.Variant value = args.get(0);
 
-            LocalDateTime dt = LocalDateTime.ofInstant(
-                    Instant.ofEpochMilli(ts),
-                    ZoneId.systemDefault()
-            );
+            boolean result = false;
 
-            String formatted = dt.format(
-                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-            );
+            // callable check
+            if (value.value instanceof Callable) {
+                result = true;
+            }
 
-            return new Variable.Variant(formatted);
+            return new Variable.Variant(result);
         }
 
         @Override public int arity() { return 1; }
-        @Override public String getFnName() { return "formatTime"; }
+
+        @Override public String getFnName() { return "callable"; }
+    }
+
+    // chr(codepoint)
+    public static class ChrFn extends GlobalNatives {
+
+        @Override
+        public Variable.Variant call(Interpreter i, List<Variable.Variant> args)
+                throws YsharpException {
+
+            requireArity(args, 1, getFnName());
+
+            long code = (long) requireNumber(args.getFirst(), getFnName(), 1);
+
+            if (code < 0 || code > 0x10FFFF) {
+                throw new YsharpException(
+                        YsharpException.YsharpErrorType.PROCESS,
+                        -1,
+                        "chr() codepoint out of range (0..0x10FFFF)"
+                );
+            }
+
+            String result = new String(Character.toChars((int) code));
+
+            return new Variable.Variant(result);
+        }
+
+        @Override public int arity() { return 1; }
+
+        @Override public String getFnName() { return "chr"; }
     }
 
     public static void  Register(Interpreter interpreter) {
         Now nowFn = new Now();
         interpreter.global.define(nowFn.getFnName(),
                 new Variable(new Variable.Variant(nowFn), true, nowFn.getType()));
+
+        Sleep sleepFn = new Sleep();
+        interpreter.global.define(sleepFn.getFnName(),
+                new Variable(new Variable.Variant(sleepFn), true, sleepFn.getType()));
+
+        CallableFn callableFn = new CallableFn();
+        interpreter.global.define(callableFn.getFnName(),
+                new Variable(new Variable.Variant(callableFn), true, callableFn.getType()));
+
+        ChrFn chrFn = new ChrFn();
+        interpreter.global.define(chrFn.getFnName(),
+                new Variable(new Variable.Variant(chrFn), true, chrFn.getType()));
     }
 }

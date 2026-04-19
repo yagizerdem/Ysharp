@@ -1,21 +1,12 @@
-class MyObject {
+
+
+class Human {
     var name;
-    var message;
-    constructor(name : string, message : string) do
-        this.name = name;
-        this.message = message;
-    end
+    var name;
 
-    getName() do
-        return this.name;
-    end
-
-    getMessage() do
-        return this.message;
-    end
 }
 
-var obj = new MyObject("Ali", "Hello");
 
-println(obj.getName());    // Ali
-println(obj.getMessage()); // Hello
+const h = new Human();
+
+println [1,2].getPrototype().getPrototype().getPrototype();

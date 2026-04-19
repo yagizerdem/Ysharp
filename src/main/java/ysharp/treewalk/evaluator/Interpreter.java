@@ -1708,6 +1708,7 @@ public class Interpreter implements
                         }
 
                     }
+
                     if (!explicitSuper) {
                         // implicit super: call parent constructor with no args now
                         Variable parentClassVar = interpreter.curEnv.getValue(stmt.superName);
