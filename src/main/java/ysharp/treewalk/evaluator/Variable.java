@@ -182,6 +182,10 @@ public class Variable {
             return (Callable) this.value;
         }
 
+        public Function.LambdaObject asLambda(){
+            return (Function.LambdaObject) this.value;
+        }
+
         public yClass.ClassObject asClass() {
             return (yClass.ClassObject) this.value;
         }

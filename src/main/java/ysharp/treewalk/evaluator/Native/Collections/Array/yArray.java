@@ -229,7 +229,7 @@ public class yArray {
 
         @Override
         public String getType() {
-            return "Array";
+            return "_Array_";
         }
 
         @Override

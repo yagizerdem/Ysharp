@@ -1,12 +1,12 @@
-
-
 class Human {
-    var name;
-    var name;
+    constructor() do
 
+    end
 }
 
+class Test extends Human {
+    constructor(a) do
+    end
+}
 
-const h = new Human();
-
-println [1,2].getPrototype().getPrototype().getPrototype();
+var t = new Test(1);

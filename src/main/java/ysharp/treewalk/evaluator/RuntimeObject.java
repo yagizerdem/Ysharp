@@ -53,6 +53,19 @@ public abstract class RuntimeObject {
         return var;
     }
 
+    public Variable remove(String name) {
+        Variable var = null;
+        if(fields.containsKey(name)) {
+            var  = fields.get(name);
+            fields.remove(name);
+        }
+        return var;
+    }
+
+    public boolean exists(String name) {
+        return  this.get(name) != null;
+    }
+
     public void setPrototype(RuntimeObject proto) {
         this.prototype = proto;
     }

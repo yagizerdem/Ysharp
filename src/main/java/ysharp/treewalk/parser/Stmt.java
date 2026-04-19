@@ -478,22 +478,31 @@ public abstract class Stmt {
 
         public static class Property {
 
+            public static enum PropertyType {
+                LET,
+                CONST,
+                VAR
+            }
+
             public final Token name;
             public final Token type;
             public final Expr initializer;
             public final boolean isConst;
             public final  boolean isStatic;
+            public final PropertyType declType;
 
             public Property(Token name,
                             Token type,
                             Expr initializer,
                             boolean isConst,
-                            boolean isStatic) {
+                            boolean isStatic,
+                            PropertyType declType) {
                 this.name = name;
                 this.type = type;
                 this.initializer = initializer;
                 this.isConst = isConst;
                 this.isStatic = isStatic;
+                this.declType = declType;
             }
         }
 
