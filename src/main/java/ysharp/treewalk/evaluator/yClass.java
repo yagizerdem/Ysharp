@@ -65,12 +65,7 @@ public class yClass {
 
         }
 
-        GetTypeFn getType = new GetTypeFn();
-        Variable getTypeVar = new Variable(
-                new Variable.Variant(getType),
-                true,
-                "function");
-            ClassPrototype.set(getType.getFnName(), getTypeVar);
+        ClassPrototype.RegisterNativeFn(new GetTypeFn());
 
         class GetPrototypeFn extends Function.NativeFunction {
 
@@ -91,12 +86,7 @@ public class yClass {
 
         }
 
-        GetPrototypeFn getPrototype = new GetPrototypeFn();
-        Variable getPrototypeVar = new Variable(
-                new Variable.Variant(getPrototype),
-                true,
-                "function");
-        ClassPrototype.set(getPrototype.getFnName(), getPrototypeVar);
+        ClassPrototype.RegisterNativeFn(new GetPrototypeFn());
 
     }
 

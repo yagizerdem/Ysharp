@@ -1834,7 +1834,26 @@ public class Parser {
                                 varDecl.type,
                                 varDecl.initializer,
                                 false,
-                                isStatic
+                                isStatic,
+                                Stmt.ClassDeclaration.Property.PropertyType.VAR
+                        )
+                );
+            }
+
+            // let property
+            else if (match(peek(), Token.TokenType.LET)) {
+
+                Stmt.LetDeclaration letDecl =
+                        (Stmt.LetDeclaration) parseLetDeclaration(false);
+
+                properties.add(
+                        new Stmt.ClassDeclaration.Property(
+                                letDecl.identifier,
+                                letDecl.type,
+                                letDecl.initializer,
+                                false,
+                                isStatic,
+                                Stmt.ClassDeclaration.Property.PropertyType.LET
                         )
                 );
             }
@@ -1851,7 +1870,8 @@ public class Parser {
                                 constDecl.type,
                                 constDecl.initializer,
                                 true,
-                                isStatic
+                                isStatic,
+                                Stmt.ClassDeclaration.Property.PropertyType.CONST
                         )
                 );
             }

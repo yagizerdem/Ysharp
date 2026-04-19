@@ -753,7 +753,6 @@ public class Interpreter implements
     public Variable.Variant visitGetExpr(Expr.GetExpr expr) {
 
         Variable.Variant object = evaluate(expr.object);
-        boolean isStatic = object.isClass();
 
         if (!object.isRuntimeObject()) {
             throw new YsharpException(
@@ -775,25 +774,41 @@ public class Interpreter implements
             );
         }
 
-        // class itself does not need this keyword only insntaces need this keyword
-        if(!isStatic) {
-            if (field.value.isNativeFunction()) {
-                Function.NativeFunction fn = field.value.asNativeFunction();
+        if (field.value.isNativeFunction()) {
+            Function.NativeFunction fn = field.value.asNativeFunction();
 
-                BoundNativeFunction bound =
-                        new BoundNativeFunction(fn, instance, "this");
+            BoundNativeFunction bound =
+                    new BoundNativeFunction(fn, instance, "this");
 
-                return new Variable.Variant(bound);
-            }
+            return new Variable.Variant(bound);
+        }
 
-            if (field.value.isFunctionOverload()) {
-                Function.FunctionOverload fn = field.value.asFunctionOverload();
+        if (field.value.isFunctionOverload()) {
+            Function.FunctionOverload fn = field.value.asFunctionOverload();
 
-                BoundNativeFunction bound =
-                        new BoundNativeFunction(fn, instance, "this");
+            BoundNativeFunction bound =
+                    new BoundNativeFunction(fn, instance, "this");
 
-                return new Variable.Variant(bound);
-            }
+            return new Variable.Variant(bound);
+        }
+
+        if (field.value.isLambda()) {
+            Environment oldEnv = field.value.asLambda().closure;
+            Environment closure = new Environment(oldEnv);
+
+            Function.LambdaObject lambdaFn = field.value.asLambda();
+
+            Variable thisVariable = new Variable(
+                    new Variable.Variant(instance),
+                    true,
+                    "function");
+
+            closure.define("this", thisVariable);
+
+            lambdaFn.closure = closure;
+
+
+            return new Variable.Variant(lambdaFn);
         }
 
 
@@ -1642,6 +1657,30 @@ public class Interpreter implements
                         "Constructor called with incorrect number of arguments. Expected " + this.arity() + "."
                 );
 
+                // check constructor parameters type match
+
+                if(constructorFn != null) {
+                    for(int i = 0; i < arguments.size(); i++) {
+                        if(!Interpreter.typeChecker(constructorFn.params.get(i).type !=  null ?
+                                constructorFn.params.get(i).type.lexeme : "any", arguments.get(i))) {
+
+                            String expectedType = constructorFn.params.get(i).type !=  null ?
+                                    constructorFn.params.get(i).type.lexeme : "any";
+
+                            throw new YsharpException(
+                                    YsharpException.YsharpErrorType.PROCESS,
+                                    constructorFn.name.line,
+                                    "Constructor parameter " +
+                                            "(" + constructorFn.params.get(i).name.lexeme + ")" +
+                                            " type mismatch. Expected '" +
+                                            expectedType + "' but got '" +
+                                            arguments.get(i).getType() + "'."
+                            );
+
+                        }
+                    }
+                }
+
                 yClass.ClassObjectInstance instance = new yClass.ClassObjectInstance() {
                     @Override
                     public boolean isTruthy() {
@@ -1665,26 +1704,48 @@ public class Interpreter implements
                 // initialize fields from super class
                 if(stmt.superName != null) {
                     // if super call explicitly override it must be first statement
-                    Stmt.BlockStmt body = (Stmt.BlockStmt)constructorFn.body;
-                    boolean explicitSuper = false;
-                    for(Stmt stmt_ : body.stmtList) {
-                        if(stmt_ instanceof Stmt.ExprStmt && ((Stmt.ExprStmt) stmt_).expr instanceof Expr.SuperCallExpr) {
-                            explicitSuper = true;
-                            break;
-                        }
-                    }
+                    boolean explicitCtor = constructorFn != null;
 
                     // super must be first
-                    if(explicitSuper) {
-                        Stmt stmt_ = body.stmtList.getFirst();
-                        if(!(stmt_ instanceof Stmt.ExprStmt && ((Stmt.ExprStmt) stmt_).expr instanceof Expr.SuperCallExpr)) {
-                            throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
-                                    -1,
-                                    "super() must be the first statement in the constructor.");
+                    if(explicitCtor) {
+                        boolean explicitSuper = false;
+                        Stmt.BlockStmt body = (Stmt.BlockStmt)constructorFn.body;
+                        for(Stmt stmt_ : body.stmtList) {
+                            if(stmt_ instanceof Stmt.ExprStmt && ((Stmt.ExprStmt) stmt_).expr instanceof Expr.SuperCallExpr) {
+                                explicitSuper = true;
+                                break;
+                            }
                         }
 
+                        if(!explicitSuper) {
+                            // implicit super: call parent constructor with no args now
+                            Variable parentClassVar = interpreter.curEnv.getValue(stmt.superName);
+                            yClass.ClassObject parentClass = parentClassVar.value.asClass();
+
+                            Variable.Variant superInstanceVariant =
+                                    parentClass.call(interpreter, new ArrayList<>());
+
+                            yClass.ClassObjectInstance superInstance =
+                                    superInstanceVariant.asClassInstance();
+
+                            for (var field : superInstance.fields.entrySet()) {
+                                instance.set(field.getKey(), field.getValue());
+                            }
+                        }
+                        else {
+                            Stmt stmt_ = body.stmtList.getFirst();
+                            if(!(stmt_ instanceof Stmt.ExprStmt && ((Stmt.ExprStmt) stmt_).expr instanceof Expr.SuperCallExpr)) {
+                                throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
+                                        -1,
+                                        "super() must be the first statement in the constructor.");
+                            }
+                        }
+
+
+
                     }
-                    if (!explicitSuper) {
+
+                    if (!explicitCtor) {
                         // implicit super: call parent constructor with no args now
                         Variable parentClassVar = interpreter.curEnv.getValue(stmt.superName);
                         yClass.ClassObject parentClass = parentClassVar.value.asClass();
@@ -1699,18 +1760,28 @@ public class Interpreter implements
                             instance.set(field.getKey(), field.getValue());
                         }
                     }
+
                 }
 
                 // add instance properties of super class to child class
 
                 for(var prop :   instanceProperty) {
+
+                    if(instance.exists(prop.name.lexeme)) {
+                        Variable var = instance.get(prop.name.lexeme);
+                        if(var.enableRedeclare && prop.declType == Stmt.ClassDeclaration.Property.PropertyType.VAR) {
+                            instance.remove(prop.name.lexeme);
+                        }
+                    }
+
                     instance.set(prop.name.lexeme,
                             new Variable(
                                     prop.initializer != null ?
-                                            new Variable.Variant(interpreter.evaluate(prop.initializer).value):
+                                            new Variable.Variant(interpreter.evaluate(prop.initializer, closure).value):
                                             new Variable.Variant(null),
                                     prop.isConst,
-                                    prop.type == null ? "any" :  prop.type.lexeme));
+                                    prop.type == null ? "any" :  prop.type.lexeme,
+                                    prop.declType == Stmt.ClassDeclaration.Property.PropertyType.VAR));
                 }
 
                 if(constructorFn != null) {
@@ -1762,7 +1833,7 @@ public class Interpreter implements
 
             @Override
             public String getType() {
-                return stmt.name.lexeme;
+                return "_" + stmt.name.lexeme + "_";
             }
         };
 
@@ -1770,7 +1841,7 @@ public class Interpreter implements
 
         klass.superClassName = stmt.superName; // allowed to be null
 
-        klass.closure = this.curEnv;
+        klass.closure = new Environment(this.curEnv);
 
 
         // static methods reside in class itself
@@ -1819,10 +1890,18 @@ public class Interpreter implements
                 );
             }
 
+            if(klass.exists(prop.name.lexeme)) {
+                Variable var = klass.get(prop.name.lexeme);
+                if(var.enableRedeclare && prop.declType == Stmt.ClassDeclaration.Property.PropertyType.VAR) {
+                    klass.remove(prop.name.lexeme);
+                }
+            }
+
             klass.set(prop.name.lexeme, new Variable(
                     prop.initializer == null ? new Variable.Variant(null) : new Variable.Variant(this.evaluate(prop.initializer).value),
                     prop.isConst,
-                    prop.type == null ? "any" : prop.type.lexeme
+                    prop.type == null ? "any" : prop.type.lexeme,
+                    prop.declType == Stmt.ClassDeclaration.Property.PropertyType.VAR
             ));
         }
 
@@ -1859,7 +1938,7 @@ public class Interpreter implements
             List<Function.NativeFunction> list = instanceMethodsFn.get(key);
             if(list.size() == 1) {
                 klass.InstancePrototype.set(key, new Variable(
-                        new Variable.Variant(list.get(0)),
+                        new Variable.Variant(list.getFirst()),
                         true,
                         "function"
                 ));
@@ -2048,6 +2127,7 @@ public class Interpreter implements
 
     public static boolean typeChecker(String type, Variable.Variant variant) {
         if(variant.isNull()) return true;
+        if(type.equals("any")) return true;
 
         switch (type) {
 

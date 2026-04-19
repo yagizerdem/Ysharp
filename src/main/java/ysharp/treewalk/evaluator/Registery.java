@@ -26,7 +26,7 @@ import ysharp.treewalk.evaluator.Native.Threading.yThread;
 import ysharp.treewalk.evaluator.Native.Util.*;
 import ysharp.treewalk.evaluator.Native.Util.Type.Type;
 import ysharp.treewalk.evaluator.Native.YPF.YPF;
-import ysharp.treewalk.evaluator.Native.function.core.Debug;
+import ysharp.treewalk.evaluator.Native.function.core.GlobalNatives;
 
 public class Registery {
 
@@ -80,9 +80,6 @@ public class Registery {
         TUI.Register(interpreter);
 
 
-        // global functions
-        Debug.Register(interpreter);
-
         // LINQ
         Queryable.Register(interpreter);
 
@@ -97,5 +94,9 @@ public class Registery {
 
         // Assert
         yAssert.Register(interpreter);
+
+
+        // global native functions
+        GlobalNatives.Register(interpreter);
     }
 }

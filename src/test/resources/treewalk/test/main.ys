@@ -1,5 +1,8 @@
-function apply(x, fn) do
-    return fn(x);
-end
+sealed class Logger {
+    log(msg) do
+        println msg;
+    end
+}
 
-println(apply(5, (x) => x * 2));
+const l = new Logger();
+l.log("hello"); // works

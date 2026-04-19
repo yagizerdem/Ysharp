@@ -9,8 +9,21 @@ import java.util.*;
 
 public class Resolver implements Expr.Visitor<Void> ,
         Stmt.Visitor {
+
+    private static class Variable {
+        public boolean isInitialized;
+        public boolean canRedeclare;
+
+        public Variable (boolean isInitialized, boolean canRedeclare){
+            this.isInitialized =isInitialized;
+            this.canRedeclare = canRedeclare;
+        }
+
+        public Variable (){}
+    }
+
     private final Interpreter interpreter;
-    private final Stack<Map<String, Boolean>> scopes = new Stack<>();
+    private final Stack<Map<String, Variable>> scopes = new Stack<>();
     public final List<YsharpException> errors = new ArrayList<>();
 
     public boolean hadErrors (){
@@ -74,23 +87,28 @@ public class Resolver implements Expr.Visitor<Void> ,
         }
     }
 
-    private void declare(Token name) {
+    private void declare(Token name, boolean canRedeclare) {
         if (scopes.isEmpty()) return;
 
-        Map<String, Boolean> scope = scopes.peek();
-        if (scope.containsKey(name.lexeme)) {
+        Map<String, Variable> scope = scopes.peek();
+        if (scope.containsKey(name.lexeme) && !scope.get(name.lexeme).canRedeclare) {
             throw new YsharpException(
                     YsharpException.YsharpErrorType.PROCESS,
                     -1,
                     "Already a variable with this name in this scope.");
         }
 
-        scope.put(name.lexeme, false);
+        Variable var = new Variable(false, canRedeclare);
+
+        scope.put(name.lexeme, var);
     }
+
 
     private void define(Token name) {
         if (scopes.isEmpty()) return;
-        scopes.peek().put(name.lexeme, true);
+        Variable var = scopes.peek().get(name.lexeme);
+        var.isInitialized = true;
+        scopes.peek().put(name.lexeme, var);
     }
 
     // expr visitor
@@ -179,7 +197,8 @@ public class Resolver implements Expr.Visitor<Void> ,
     @Override
     public Void visitVariableExpr(Expr.VariableExpr expr) {
         if (!scopes.isEmpty() &&
-                scopes.peek().get(expr.name.lexeme) == Boolean.FALSE) {
+                scopes.peek().containsKey(expr.name.lexeme) &&
+                scopes.peek().get(expr.name.lexeme).isInitialized == Boolean.FALSE) {
             throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                     -1 ,
                     "Can't read local variable in its own initializer.");
@@ -209,7 +228,7 @@ public class Resolver implements Expr.Visitor<Void> ,
     public Void visitLambdaExpr(Expr.LambdaExpr expr) {
         beginScope();
         for(var param : expr.params)  {
-            declare(param.name);
+            declare(param.name, false);
             define(param.name);
         }
         resolve(expr.expr);
@@ -350,25 +369,25 @@ public class Resolver implements Expr.Visitor<Void> ,
 
     @Override
     public void visitVarDeclaration(Stmt.VarDeclaration stmt) {
-        declare(stmt.identifier);
+        declare(stmt.identifier, true);
         resolve(stmt.initializer);
         define(stmt.identifier);
     }
 
     @Override
     public void visitLetDeclaration(Stmt.LetDeclaration stmt) {
-        declare(stmt.identifier);
+        declare(stmt.identifier, false);
         resolve(stmt.initializer);
         define(stmt.identifier);
     }
 
     @Override
     public void visitFunctionDeclaration(Stmt.FunctionDeclaration stmt) {
-        declare(stmt.name);
+        declare(stmt.name, false);
         define(stmt.name);
         beginScope();
         for(var arg : stmt.params) {
-            declare(arg.name);
+            declare(arg.name, false);
             define(arg.name);
         }
         Stmt.BlockStmt block = (Stmt.BlockStmt )stmt.body;
@@ -379,19 +398,19 @@ public class Resolver implements Expr.Visitor<Void> ,
 
     @Override
     public void visitConstDeclaration(Stmt.ConstDeclaration stmt) {
-        declare(stmt.identifier);
+        declare(stmt.identifier, false);
         resolve(stmt.initializer);
         define(stmt.identifier);
     }
 
     @Override
     public void visitClassDeclaration(Stmt.ClassDeclaration stmt) {
-        declare(stmt.name);
+        declare(stmt.name, false);
         define(stmt.name);
         beginScope();
 
         for(var prop : stmt.properties) {
-            declare(prop.name);
+            declare(prop.name, prop.declType == Stmt.ClassDeclaration.Property.PropertyType.VAR);
             define(prop.name);
             resolve(prop.initializer);
         }
@@ -399,7 +418,7 @@ public class Resolver implements Expr.Visitor<Void> ,
         for(var method : stmt.methods) {
             beginScope();
             for(var arg : method.params) {
-                declare(arg.name);
+                declare(arg.name, false);
                 define(arg.name);
             }
             if(method.body instanceof Stmt.BlockStmt) {
