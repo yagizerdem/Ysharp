@@ -43,8 +43,6 @@ public class ComputeFn extends Function.NativeFunction {
         if(fn.arity() >= 1)  args.add(key);
         if(fn.arity() >= 2) args.add(oldVal);
 
-        System.out.println(fn.arity());
-
         Variable.Variant result = fn.call(interpreter, args);
 
         if (result == null || result.value == null) {
