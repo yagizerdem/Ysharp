@@ -40,8 +40,10 @@ public class ComputeFn extends Function.NativeFunction {
         Variable.Variant oldVal = hm.data.getOrDefault(key, new Variable.Variant(null));
 
         List<Variable.Variant> args = new ArrayList<>();
-        args.add(key);
-        args.add(oldVal);
+        if(fn.arity() >= 1)  args.add(key);
+        if(fn.arity() >= 2) args.add(oldVal);
+
+        System.out.println(fn.arity());
 
         Variable.Variant result = fn.call(interpreter, args);
 

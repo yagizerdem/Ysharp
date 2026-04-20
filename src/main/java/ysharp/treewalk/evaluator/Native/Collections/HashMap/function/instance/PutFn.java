@@ -24,7 +24,7 @@ public class PutFn extends Function.NativeFunction {
         Variable.Variant value = arguments.get(1);
         yHashMap.yHashMapInstance hm = yHashMap.requireHashMapThis(interpreter);
 
-        Variable.Variant previous = hm.data.put(key, new Variable.Variant(value.value));
+        Variable.Variant previous = hm.data.put(new Variable.Variant(key.value), new Variable.Variant(value.value));
 
         return previous != null ? previous : new Variable.Variant(null);
     }
