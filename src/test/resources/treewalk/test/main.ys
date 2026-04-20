@@ -1,16 +1,19 @@
-var map = {};
+class MyError {
+    var message;
+    constructor(message) do
+        this.message = message;
+    end
 
-// key does not exist → compute and insert
-map.computeIfAbsent("a", (key) => 100);
+    toString() do
+        return "MyError: " + this.message;
+    end
+}
 
-println map.get("a"); // 100
 
-// key already exists → callback NOT called
-map.computeIfAbsent("a", (key) => 999);
-
-println map.get("a"); // 100
-
-// callback returns null → nothing inserted
-map.computeIfAbsent("b", (key) => null);
-
-println map.get("b"); // null
+try do
+    var err = new MyError("Invalid operation");
+    throw err;
+end
+catch (ex) do
+    println ex.toString(); // calls toString()
+end

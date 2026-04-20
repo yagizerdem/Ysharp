@@ -258,6 +258,7 @@ public class Variable {
 
         @Override
         public String toString() {
+            if(this.value == null) return "null";
             return this.value.toString();
         }
 

@@ -59,7 +59,7 @@ public class yHashMap {
         // hm.toString()
         yHashMap_Instance_Prototype.RegisterNativeFn(new ToStringFn());
         // hm.put(key, value)
-        yHashMap_Instance_Prototype.RegisterNativeFn(new PutFn());
+        yHashMap_Instance_Prototype.RegisterNativeFn(new PutFn(), List.of("add"));
         // hm.get(key)
         yHashMap_Instance_Prototype.RegisterNativeFn(new GetFn());
         // hm.getOrDefault(key, default)
