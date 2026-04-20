@@ -68,7 +68,9 @@ fruits.push("peach");
 println fruits.size(); // 3
 ````
 
-## Reference
+## References
+
+### Instance methods
 
 | Method                | Signature                                             | Return Type         | Description                                                                                                                           |
 |-----------------------|-------------------------------------------------------|---------------------|---------------------------------------------------------------------------------------------------------------------------------------|
@@ -117,9 +119,17 @@ println fruits.size(); // 3
 | `unshift`             | `arr.unshift(value : any)`                            | `int`               | Adds an element to the beginning of the array, shifts existing elements to the right, and returns the new size                        |
 
 
+### Static methods
 
 
-## Examples
+| Method     | Signature                                    | Return Type | Description                                                                    |
+|------------|----------------------------------------------|-------------|--------------------------------------------------------------------------------|
+| `isArray`  | `Array.isArray(value : any)`                 | `bool`      | Returns true if the given value is an array instance                           |
+| `of`       | `Array.of(...values : any)`                  | `Array`     | Creates a new array from the given arguments                                   |
+| `range`    | `Array.range(start : int, end : int, step?)` | `Array`     | Creates a new array containing a sequence of numbers from start to end         |
+
+
+## Examples / instance methods
 
 ### add
 
@@ -1276,3 +1286,69 @@ arr.unshift(0);
 
 println arr.toString(); // [ 0 , 5 , 10 , 20 ]
 ````
+
+---
+
+## Examples / static methods
+
+### isArray
+
+- Returns `true` if the given value is an array
+- Returns `false` otherwise  
+
+````ysharp
+var arr = [1, 2, 3];
+
+println Array.isArray(arr); // true
+println Array.isArray(10);      // false
+println Array.isArray("hello"); // false
+println Array.isArray(null);    // false
+````
+
+
+### of
+- Creates a new array from the given arguments
+- Accepts variable number of values
+
+````ysharp
+var arr = Array.of(1, 2, 3);
+
+println arr.toString(); // [ 1 , 2 , 3 ]
+var arr = Array.of("a", "b", "c");
+
+println arr.toString(); // [ a , b , c ]
+var arr = Array.of();
+
+println arr.toString(); // [ ]
+var obj = { "value": 10 };
+
+var arr = Array.of(obj, obj);
+
+println arr.toString(); // [ {value:10} , {value:10} ]
+````
+
+### range
+
+- Creates a sequence of numbers from start to end (exclusive)
+- Optional step parameter (default = 1)
+- Supports negative step
+
+
+````ysharp
+var arr = Array.range(0, 5);
+
+println arr.toString(); // [ 0 , 1 , 2 , 3 , 4 ]
+var arr = Array.range(1, 10, 2);
+
+println arr.toString(); // [ 1 , 3 , 5 , 7 , 9 ]
+var arr = Array.range(5, 0, -1);
+
+println arr.toString(); // [ 5 , 4 , 3 , 2 , 1 ]
+try do
+    Array.range(0, 10, 0);
+end
+catch(e) do
+    println "step cannot be zero";
+end
+````
+

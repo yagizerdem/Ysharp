@@ -6,13 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="06588b0d-6eee-4b4b-be52-23cf34ea7082" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Native/Collections/Array/function/instance/AverageFn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Native/Collections/Array/function/instance/AverageFn.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Native/Collections/Array/function/instance/JoinFn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Native/Collections/Array/function/instance/JoinFn.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Native/Collections/Array/function/instance/ToStringFn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Native/Collections/Array/function/instance/ToStringFn.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/resources/treewalk/test/main.ys" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/treewalk/test/main.ys" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/collections/array/function/core.ys" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/collections/array/function/core.ys" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/webdoc/docs/collections/Array.md" beforeDir="false" afterPath="$PROJECT_DIR$/webdoc/docs/collections/Array.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webdoc/docs/string.md" beforeDir="false" afterPath="$PROJECT_DIR$/webdoc/docs/string.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
