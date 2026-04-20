@@ -28,7 +28,7 @@ public class AverageFn extends Function.NativeFunction implements Callable {
 
         for (int i = 0; i < array.data.size(); i++) {
             Variable.Variant current = array.data.get(i);
-            if (current != null && current.canImplicitlyConvertNumber()) {
+            if (current != null && current.isNumber()) {
                 sum += current.implicitlyConvertNumber();
                 count++;
             }

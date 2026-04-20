@@ -40,10 +40,12 @@ public class JoinFn extends Function.NativeFunction implements Callable {
                     List<Variable.Variant> args = new ArrayList<>();
                     builder.append(bound.call(interpreter, args));
                 } else {
-                    builder.append(element.value.toString());
+                    if(element.value == null) builder.append("null");
+                    else builder.append(element.value.toString());
                 }
             } else {
-                builder.append(element.value.toString());
+                if(element.value == null) builder.append("null");
+                else builder.append(element.value.toString());
             }
 
             if (i < array.data.size() - 1) {

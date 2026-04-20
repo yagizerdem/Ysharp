@@ -138,7 +138,7 @@ for var i = 0; i < 1000; i++ do
 end
 
 for var i = 0; i < 500; i++ do
-    arr.remove(0); // sürekli shift
+    arr.remove(0); //
 end
 
 Assert.equals(arr.size(), 500);

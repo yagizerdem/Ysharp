@@ -1,4 +1,18 @@
-var arr = new Array();
-println arr.getType();
-println Array.getType();
-println arr.getPrototype().getType();
+var arr = [2, 3];
+
+var size = arr.unshift(1);
+
+println size;           // 3
+println arr.toString(); // [ 1 , 2 , 3 ]
+var arr = [];
+
+arr.unshift("hello");
+
+println arr.toString(); // [ hello ]
+println arr.size();     // 1
+var arr = [10, 20];
+
+arr.unshift(5);
+arr.unshift(0);
+
+println arr.toString(); // [ 0 , 5 , 10 , 20 ]
