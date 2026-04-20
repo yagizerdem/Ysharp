@@ -6,7 +6,7 @@ import ysharp.treewalk.evaluator.*;
 
 import java.util.List;
 
-public class NullFn extends Function.NativeFunction implements Callable {
+public class isNullFn extends Function.NativeFunction implements Callable {
 
     @Override
     public int arity() {
@@ -35,6 +35,6 @@ public class NullFn extends Function.NativeFunction implements Callable {
 
     @Override
     public String getFnName() {
-        return "null";
+        return "isNull";
     }
 }

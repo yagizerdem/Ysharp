@@ -53,7 +53,7 @@ Full api list below :
 | `slice`                  | `str.slice(start : int, end? : int)`                   | `string`    | Returns a substring from start to end (end optional, supports negative indices)             |
 
 
-## Samples
+## Examples
 
 ### length 
 

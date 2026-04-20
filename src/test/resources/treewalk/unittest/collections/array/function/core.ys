@@ -1,0 +1,149 @@
+println "Array core operations test started";
+
+println "-".repeat(50);
+
+// -------------------- GET --------------------
+println "get tests";
+
+var arr = [10, 20, 30];
+
+Assert.equals(arr.get(0), 10);
+Assert.equals(arr.get(1), 20);
+Assert.equals(arr.get(2), 30);
+
+println "invalid index";
+try do
+    arr.get(5);
+    Assert.fail("get out of bounds should throw");
+end
+catch(e) do
+    Assert.isTrue(true);
+end
+
+println "-".repeat(50);
+
+// -------------------- SET --------------------
+println "set tests";
+
+var arr = [1,2,3];
+
+arr.set(1, 99); // [1,99,3]
+
+Assert.equals(arr.get(1), 99);
+
+println "overwrite test";
+arr.set(1, 42);
+Assert.equals(arr.get(1), 42);
+
+println "invalid index";
+
+println "-".repeat(50);
+
+try do
+    arr.set(10, 5);
+    Assert.fail("set out of bounds should throw");
+end
+catch(e) do
+    Assert.isTrue(true);
+end
+
+println "-".repeat(50);
+
+// -------------------- REMOVE --------------------
+println "remove tests";
+
+var arr = [1,2,3,4];
+
+arr.remove(1); // remove 2 [1,3,4]
+
+Assert.equals(arr.size(), 3);
+Assert.equals(arr.get(1), 3);
+Assert.equals(arr.get(2), 4);
+
+println "remove first";
+arr.remove(0); // [3,4]
+Assert.equals(arr.get(0), 3);
+
+println "remove last";
+arr.remove(arr.size() - 1); // [3]
+Assert.equals(arr.size(), 1);
+Assert.equals(arr.get(0), 3);
+
+println "invalid index";
+try do
+    arr.remove(5);
+    Assert.fail("remove out of bounds should throw");
+end
+catch(e) do
+    Assert.isTrue(true);
+end
+
+println "-".repeat(50);
+
+// -------------------- POP --------------------
+println "pop tests";
+
+var arr = [10,20,30];
+
+var last = arr.pop();
+
+Assert.equals(last, 30);
+Assert.equals(arr.size(), 2);
+Assert.equals(arr.get(1), 20);
+
+println "multiple pop";
+
+arr.pop(); // 20
+arr.pop(); // 10
+
+Assert.equals(arr.size(), 0);
+
+println "pop on empty";
+try do
+    arr.pop();
+    Assert.fail("pop on empty should throw");
+end
+catch(e) do
+    Assert.isTrue(true);
+end
+
+println "-".repeat(50);
+
+// -------------------- INTERACTION TEST --------------------
+println "interaction test";
+
+var arr = [];
+
+arr.add(1);
+arr.add(2);
+arr.add(3);
+
+arr.remove(1);   // [1,3]
+arr.set(1, 99);  // [1,99]
+arr.add(5);      // [1,99,5]
+
+Assert.equals(arr.get(0), 1);
+Assert.equals(arr.get(1), 99);
+Assert.equals(arr.get(2), 5);
+
+println "-".repeat(50);
+
+// -------------------- STRESS TEST --------------------
+println "stress test";
+
+var arr = [];
+
+for var i = 0; i < 1000; i++ do
+    arr.add(i);
+end
+
+for var i = 0; i < 500; i++ do
+    arr.remove(0); //
+end
+
+Assert.equals(arr.size(), 500);
+Assert.equals(arr.get(0), 500);
+
+println "-".repeat(50);
+
+println "Array core operations test successful";

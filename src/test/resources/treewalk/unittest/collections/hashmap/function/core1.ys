@@ -1,0 +1,195 @@
+println "HashMap core operations test started";
+
+println "-".repeat(50);
+
+// -------------------- PUT / GET --------------------
+println "put / get tests";
+
+var map = {};
+
+map.put("a", 10);
+map.put("b", 20);
+
+Assert.equals(map.get("a"), 10);
+Assert.equals(map.get("b"), 20);
+
+println "overwrite test";
+map.put("a", 99);
+Assert.equals(map.get("a"), 99);
+
+println "-".repeat(50);
+
+// -------------------- GET OR DEFAULT --------------------
+println "getOrDefault tests";
+
+Assert.equals(map.getOrDefault("a", 0), 99);
+Assert.equals(map.getOrDefault("x", 42), 42);
+
+println "-".repeat(50);
+
+// -------------------- CONTAINS --------------------
+println "contains tests";
+
+Assert.isTrue(map.containsKey("a"));
+Assert.isTrue(map.containsValue(20));
+Assert.isTrue(!map.containsKey("z"));
+
+println "-".repeat(50);
+
+// -------------------- REMOVE --------------------
+println "remove tests";
+
+var removed = map.remove("b");
+
+Assert.equals(removed, 20);
+Assert.isTrue(!map.containsKey("b"));
+
+println "remove non-existing";
+Assert.equals(map.remove("x"), null);
+
+println "-".repeat(50);
+
+// -------------------- SIZE / EMPTY --------------------
+println "size / isEmpty tests";
+
+Assert.equals(map.size(), 1);
+Assert.isTrue(!map.isEmpty());
+
+map.clear();
+
+Assert.equals(map.size(), 0);
+Assert.isTrue(map.isEmpty());
+
+println "-".repeat(50);
+
+// -------------------- PUT IF ABSENT --------------------
+println "putIfAbsent tests";
+
+map.putIfAbsent("a", 1);
+Assert.equals(map.get("a"), 1);
+
+map.putIfAbsent("a", 999);
+Assert.equals(map.get("a"), 1);
+
+println "-".repeat(50);
+
+// -------------------- REPLACE --------------------
+println "replace tests";
+
+map.replace("a", 50);
+Assert.equals(map.get("a"), 50);
+
+println "replace non-existing";
+Assert.equals(map.replace("x", 10), null);
+
+println "-".repeat(50);
+
+// -------------------- COMPUTE --------------------
+println "compute tests";
+
+map.put("k", 5);
+
+map.compute("k", (key, val) => val + 10);
+Assert.equals(map.get("k"), 15);
+
+println "compute remove (return null)";
+map.compute("k", (key, val) => null);
+Assert.equals(map.get("k"), null);
+
+println "-".repeat(50);
+
+// -------------------- COMPUTE IF ABSENT --------------------
+println "computeIfAbsent tests";
+
+map.computeIfAbsent("x", (k) => 100);
+Assert.equals(map.get("x"), 100);
+
+map.computeIfAbsent("x", (k) => 999);
+Assert.equals(map.get("x"), 100);
+
+println "-".repeat(50);
+
+// -------------------- COMPUTE IF PRESENT --------------------
+println "computeIfPresent tests";
+
+map.computeIfPresent("x", (k, v) => v + 1);
+Assert.equals(map.get("x"), 101);
+
+println "computeIfPresent remove";
+map.computeIfPresent("x", (k, v) => null);
+Assert.equals(map.get("x"), null);
+
+println "-".repeat(50);
+
+// -------------------- MERGE --------------------
+println "merge tests";
+
+map.merge("m", 10, (a, b) => a + b);
+Assert.equals(map.get("m"), 10);
+
+map.merge("m", 5, (a, b) => a + b);
+Assert.equals(map.get("m"), 15);
+
+println "merge remove";
+map.merge("m", 5, (a, b) => null);
+Assert.equals(map.get("m"), null);
+
+println "-".repeat(50);
+
+// -------------------- KEYS / VALUES / ENTRIES --------------------
+println "keys / values / entries tests";
+
+map.put("a", 1);
+map.put("b", 2);
+
+var keys = map.keys();
+var values = map.values();
+var entries = map.entries();
+
+Assert.equals(keys.size(), 2);
+Assert.equals(values.size(), 2);
+Assert.equals(entries.size(), 2);
+
+println "-".repeat(50);
+
+// -------------------- CLONE --------------------
+println "clone tests";
+
+var cloned = map.clone();
+
+Assert.equals(cloned.get("a"), 1);
+Assert.equals(cloned.get("b"), 2);
+
+cloned.put("a", 999);
+Assert.equals(map.get("a"), 1); // shallow copy check
+
+println "-".repeat(50);
+
+// -------------------- TO STRING --------------------
+println "toString test";
+
+var str = map.toString();
+Assert.isTrue(str.contains("a=1"));
+Assert.isTrue(str.contains("b=2"));
+
+println "-".repeat(50);
+
+// -------------------- STRESS TEST --------------------
+println "stress test";
+
+var map = {};
+
+for var i = 0; i < 1000; i++ do
+    map.put(i, i * 2);
+end
+
+for var i = 0; i < 500; i++ do
+    map.remove(i);
+end
+
+Assert.equals(map.size(), 500);
+Assert.equals(map.get(999), 1998);
+
+println "-".repeat(50);
+
+println "HashMap core operations test successful";

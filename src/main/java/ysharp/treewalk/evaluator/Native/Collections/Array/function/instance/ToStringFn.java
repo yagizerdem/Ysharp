@@ -32,11 +32,13 @@ public class ToStringFn extends Function.NativeFunction implements Callable {
                     builder.append(bound.call(interpreter, args));
                 }
                 else {
-                    builder.append(var.value.toString());
+                    if(var.value == null) builder.append("null");
+                    else builder.append(var.value.toString());
                 }
             }
             else {
-                builder.append(var.value.toString());
+                if(var.value == null) builder.append("null");
+                else builder.append(var.value.toString());
             }
 
             builder.append(" ");

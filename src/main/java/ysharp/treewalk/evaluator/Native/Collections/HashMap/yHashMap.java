@@ -167,7 +167,7 @@ public class yHashMap {
 
         @Override
         public String getType() {
-            return "HashMap";
+            return "_HashMap_";
         }
 
         @Override

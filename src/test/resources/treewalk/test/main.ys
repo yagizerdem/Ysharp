@@ -1,8 +1,16 @@
-sealed class Logger {
-    log(msg) do
-        println msg;
-    end
-}
+var map = {};
 
-const l = new Logger();
-l.log("hello"); // works
+// key does not exist → compute and insert
+map.computeIfAbsent("a", (key) => 100);
+
+println map.get("a"); // 100
+
+// key already exists → callback NOT called
+map.computeIfAbsent("a", (key) => 999);
+
+println map.get("a"); // 100
+
+// callback returns null → nothing inserted
+map.computeIfAbsent("b", (key) => null);
+
+println map.get("b"); // null
