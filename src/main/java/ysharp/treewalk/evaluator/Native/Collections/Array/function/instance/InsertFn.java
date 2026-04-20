@@ -24,7 +24,7 @@ public class InsertFn extends Function.NativeFunction implements Callable {
         requireArity(arguments, arity(), getFnName());
         yArray.yArrayInstance array = yArray.requireArrayThis(interpreter, getFnName());
 
-        Variable.Variant indexVar = arguments.get(0);
+        Variable.Variant indexVar = arguments.getFirst();
         Variable.Variant value    = arguments.get(1);
 
         if (!indexVar.canImplicitlyConvertNumber()) {
@@ -45,7 +45,7 @@ public class InsertFn extends Function.NativeFunction implements Callable {
             );
         }
 
-        array.data.add(index, value);
+        array.data.add(index, new Variable.Variant(value.value));
 
         return new Variable.Variant(array.data.size());
     }

@@ -63,7 +63,7 @@ public class yAssert {
             // Assert.notEqueals(a, b)
             this.RegisterNativeFn(new NotEqualsFn());
             // Assert.null(a)
-            this.RegisterNativeFn(new NullFn());
+            this.RegisterNativeFn(new isNullFn());
             // Assert.notNull(a)
             this.RegisterNativeFn(new NotNullFn());
             // Assert.fail("optional message"?)

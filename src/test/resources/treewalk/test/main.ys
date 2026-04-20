@@ -1,8 +1,4 @@
-sealed class Logger {
-    log(msg) do
-        println msg;
-    end
-}
-
-const l = new Logger();
-l.log("hello"); // works
+var arr = new Array();
+println arr.getType();
+println Array.getType();
+println arr.getPrototype().getType();
