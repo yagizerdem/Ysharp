@@ -5,15 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="06588b0d-6eee-4b4b-be52-23cf34ea7082" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/collections/array/function/addFn.ys" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/collections/array/function/insertFn.ys" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/treewalk/unittest/collections/array/function/core.ys" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Native/Assert/function/statix/NullFn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Native/Assert/function/statix/isNullFn.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Native/Assert/yAssert.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Native/Assert/yAssert.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Native/Collections/Array/function/instance/InsertFn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Native/Collections/Array/function/instance/InsertFn.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/treewalk/test/main.ys" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/treewalk/test/main.ys" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -160,7 +153,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="ysharp.Main" />
       <module name="Ysharp.main" />
-      <option name="PROGRAM_PARAMETERS" value="C:\Users\yagiz\Desktop\ysharp\Ysharp\src\test\resources\treewalk\unittest\collections\array\function\insertFn.ys" />
+      <option name="PROGRAM_PARAMETERS" value="C:\Users\yagiz\Desktop\ysharp\Ysharp\src\test\resources\treewalk\unittest\collections\array\function\core.ys" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
