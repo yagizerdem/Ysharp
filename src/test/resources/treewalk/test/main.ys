@@ -1,4 +1,15 @@
-var arr = new Array();
-println arr.getType();
-println Array.getType();
-println arr.getPrototype().getType();
+var arr = Array.range(0, 5);
+
+println arr.toString(); // [ 0 , 1 , 2 , 3 , 4 ]
+var arr = Array.range(1, 10, 2);
+
+println arr.toString(); // [ 1 , 3 , 5 , 7 , 9 ]
+var arr = Array.range(5, 0, -1);
+
+println arr.toString(); // [ 5 , 4 , 3 , 2 , 1 ]
+try do
+    Array.range(0, 10, 0);
+end
+catch(e) do
+    println "step cannot be zero";
+end
