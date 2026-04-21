@@ -30,11 +30,11 @@ public abstract class GlobalNatives extends Function.NativeFunction {
                 throws YsharpException {
 
             requireArity(args, 0, getFnName());
-            return new Variable.Variant(System.currentTimeMillis());
+            return new Variable.Variant((double)System.currentTimeMillis());
         }
 
         @Override public int arity() { return 0; }
-        @Override public String getFnName() { return "now"; }
+        @Override public String getFnName() { return "__now"; }
     }
 
     // sleep(ms)
@@ -61,7 +61,7 @@ public abstract class GlobalNatives extends Function.NativeFunction {
         }
 
         @Override public int arity() { return 1; }
-        @Override public String getFnName() { return "sleep"; }
+        @Override public String getFnName() { return "__sleep"; }
     }
 
     // callable(object)
@@ -87,7 +87,7 @@ public abstract class GlobalNatives extends Function.NativeFunction {
 
         @Override public int arity() { return 1; }
 
-        @Override public String getFnName() { return "callable"; }
+        @Override public String getFnName() { return "__callable"; }
     }
 
     // chr(codepoint)
@@ -111,12 +111,12 @@ public abstract class GlobalNatives extends Function.NativeFunction {
 
             String result = new String(Character.toChars((int) code));
 
-            return new Variable.Variant(result);
+            return new Variable.Variant(new yString.yStringInstance(result));
         }
 
         @Override public int arity() { return 1; }
 
-        @Override public String getFnName() { return "chr"; }
+        @Override public String getFnName() { return "__chr"; }
     }
 
     // eval(string)
@@ -171,7 +171,7 @@ public abstract class GlobalNatives extends Function.NativeFunction {
 
         @Override public int arity() { return 1; }
 
-        @Override public String getFnName() { return "eval"; }
+        @Override public String getFnName() { return "__eval"; }
     }
 
     // abs(number)
@@ -192,7 +192,7 @@ public abstract class GlobalNatives extends Function.NativeFunction {
 
         @Override public int arity() { return 1; }
 
-        @Override public String getFnName() { return "abs"; }
+        @Override public String getFnName() { return "__abs"; }
     }
 
     // all(iterable)
@@ -225,7 +225,7 @@ public abstract class GlobalNatives extends Function.NativeFunction {
 
         @Override public int arity() { return 1; }
 
-        @Override public String getFnName() { return "all"; }
+        @Override public String getFnName() { return "__all"; }
     }
 
     // any(iterable)
@@ -258,7 +258,7 @@ public abstract class GlobalNatives extends Function.NativeFunction {
 
         @Override public int arity() { return 1; }
 
-        @Override public String getFnName() { return "any"; }
+        @Override public String getFnName() { return "__any"; }
     }
 
     // bin(int)
@@ -278,12 +278,12 @@ public abstract class GlobalNatives extends Function.NativeFunction {
                 binaryString = "-" + binaryString;
             }
 
-            return new Variable.Variant(binaryString);
+            return new Variable.Variant(new yString.yStringInstance(binaryString));
         }
 
         @Override public int arity() { return 1; }
 
-        @Override public String getFnName() { return "bin"; }
+        @Override public String getFnName() { return "__bin"; }
     }
 
     // bool(variable)
@@ -302,7 +302,7 @@ public abstract class GlobalNatives extends Function.NativeFunction {
 
         @Override public int arity() { return 1; }
 
-        @Override public String getFnName() { return "bool"; }
+        @Override public String getFnName() { return "__bool"; }
     }
 
     public static class ExecFn extends GlobalNatives {
@@ -375,7 +375,7 @@ public abstract class GlobalNatives extends Function.NativeFunction {
 
         @Override public int arity() { return 1; }
 
-        @Override public String getFnName() { return "exec"; }
+        @Override public String getFnName() { return "__exec"; }
     }
 
     // double()
@@ -429,7 +429,7 @@ public abstract class GlobalNatives extends Function.NativeFunction {
 
         @Override public int arity() { return 1; }
 
-        @Override public String getFnName() { return "double"; }
+        @Override public String getFnName() { return "__double"; }
     }
 
     public static class IntFn extends GlobalNatives {
@@ -489,7 +489,7 @@ public abstract class GlobalNatives extends Function.NativeFunction {
 
         @Override public int arity() { return 1; }
 
-        @Override public String getFnName() { return "int"; }
+        @Override public String getFnName() { return "__int"; }
     }
 
 
@@ -530,7 +530,7 @@ public abstract class GlobalNatives extends Function.NativeFunction {
 
         @Override public int arity() { return 1; }
 
-        @Override public String getFnName() { return "hash"; }
+        @Override public String getFnName() { return "__hash"; }
     }
 
 
@@ -554,7 +554,7 @@ public abstract class GlobalNatives extends Function.NativeFunction {
 
         @Override public int arity() { return 1; }
 
-        @Override public String getFnName() { return "id"; }
+        @Override public String getFnName() { return "__id"; }
     }
 
 
@@ -573,7 +573,7 @@ public abstract class GlobalNatives extends Function.NativeFunction {
         }
 
         @Override public int arity() { return 1; }
-        @Override public String getFnName() { return "isInstance"; }
+        @Override public String getFnName() { return "__isInstance"; }
     }
 
     // isClass(value)
@@ -591,7 +591,7 @@ public abstract class GlobalNatives extends Function.NativeFunction {
         }
 
         @Override public int arity() { return 1; }
-        @Override public String getFnName() { return "isClass"; }
+        @Override public String getFnName() { return "__isClass"; }
     }
 
     // input()
@@ -613,7 +613,7 @@ public abstract class GlobalNatives extends Function.NativeFunction {
             }
 
             if (!args.isEmpty()) {
-                String prompt = requireString(args.get(0), getFnName(), 1);
+                String prompt = requireString(args.getFirst(), getFnName(), 1);
                 System.out.print(prompt);
                 System.out.flush();
             }
@@ -629,7 +629,7 @@ public abstract class GlobalNatives extends Function.NativeFunction {
                     );
                 }
 
-                return new Variable.Variant(line);
+                return new Variable.Variant(new yString.yStringInstance(line));
 
             } catch (IOException e) {
                 throw new YsharpException(
@@ -641,7 +641,7 @@ public abstract class GlobalNatives extends Function.NativeFunction {
         }
 
         @Override public int arity() { return -1; }
-        @Override public String getFnName() { return "input"; }
+        @Override public String getFnName() { return "__input"; }
     }
 
 
@@ -666,7 +666,7 @@ public abstract class GlobalNatives extends Function.NativeFunction {
         }
 
         @Override public int arity() { return 1; }
-        @Override public String getFnName() { return "len"; }
+        @Override public String getFnName() { return "__len"; }
     }
 
 
@@ -726,7 +726,7 @@ public abstract class GlobalNatives extends Function.NativeFunction {
         }
 
         @Override public int arity() { return -1; }
-        @Override public String getFnName() { return "max"; }
+        @Override public String getFnName() { return "__max"; }
     }
 
 
@@ -786,7 +786,7 @@ public abstract class GlobalNatives extends Function.NativeFunction {
         }
 
         @Override public int arity() { return -1; }
-        @Override public String getFnName() { return "min"; }
+        @Override public String getFnName() { return "__min"; }
     }
 
 
@@ -812,7 +812,7 @@ public abstract class GlobalNatives extends Function.NativeFunction {
         }
 
         @Override public int arity() { return 1; }
-        @Override public String getFnName() { return "str"; }
+        @Override public String getFnName() { return "__str"; }
     }
 
 
@@ -838,7 +838,7 @@ public abstract class GlobalNatives extends Function.NativeFunction {
 
         @Override public int arity() { return 1; }
 
-        @Override public String getFnName() { return "round"; }
+        @Override public String getFnName() { return "__round"; }
     }
 
     // sum()
@@ -876,7 +876,7 @@ public abstract class GlobalNatives extends Function.NativeFunction {
 
         @Override public int arity() { return -1; }
 
-        @Override public String getFnName() { return "sum"; }
+        @Override public String getFnName() { return "__sum"; }
     }
 
 

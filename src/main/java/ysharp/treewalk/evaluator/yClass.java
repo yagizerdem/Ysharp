@@ -55,7 +55,7 @@ public class yClass {
 
             @Override
             public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> arguments) throws YsharpException {
-                return new Variable.Variant(requireThis(interpreter).getType());
+                return new Variable.Variant(new yString.yStringInstance(requireThis(interpreter).getType()));
             }
 
             @Override

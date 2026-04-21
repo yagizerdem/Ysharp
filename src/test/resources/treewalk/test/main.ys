@@ -1,5 +1,1 @@
-var arr = [1,2,4];
 
-println max(arr);
-
-println str(arr) ;
