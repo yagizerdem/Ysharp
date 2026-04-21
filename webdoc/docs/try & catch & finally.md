@@ -26,11 +26,11 @@ You associate exception handlers with a try block by providing one catch block d
 No code can be between the end of the try block and the beginning of the catch block.
 
 ````ysharp
-try {
+try do
 
-} catch (ex) {
+end catch (ex) do
 
-}
+end
 ````
 Ysharp does not use typed exception parameters in `catch` because the language is dynamic 
 The type of the thrown value is not known at compile time and may be user-defined
