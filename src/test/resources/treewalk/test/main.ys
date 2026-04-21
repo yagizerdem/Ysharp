@@ -1,14 +1,1 @@
-var arr = [1,2,3,4,5];
 
-println all(arr);
-
-arr.clear();
-
-arr.push(435);
-arr.push(0);
-
-
-
-
-println all(arr);
-println any(arr);
