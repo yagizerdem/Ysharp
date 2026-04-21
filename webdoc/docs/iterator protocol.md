@@ -69,7 +69,7 @@ foreach var item in myCollection {
 The loop variable can be optionally typed. If a type annotation is provided, the interpreter validates each value returned by `getNext()` against the declared type at runtime.
 
 ```ysharp
-foreach (int item in numbers) {
+foreach var item in numbers {
     println(item);
 }
 ```
