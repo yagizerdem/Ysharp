@@ -289,6 +289,144 @@ const log = acc.createLogger();
 println log(); // Yagiz -> balance: 300
 ````
 
+### new keyword
+
+The `new` keyword is used to create a new instance of a class. When invoked, it calls the class's constructor with the provided arguments and returns a fully initialized `Class-instance`.
+
+#### Syntax
+
+```ysharp
+var instance = new ClassName(arg1, arg2, ...);
+```
+
+#### How It Works
+
+Calling `new` on a class triggers the following steps in order:
+
+1. A blank `Class-instance` is created.
+2. The `InstancePrototype` is assigned to the instance's prototype chain.
+3. If the class has a superclass, super fields are copied onto the instance (either via explicit `super()` or implicit zero-arg call).
+4. Declared instance properties are initialized on the instance.
+5. The constructor body executes with `this` and `super` in scope.
+6. The fully initialized instance is returned.
+
+#### Basic Usage
+
+```ysharp
+class Point {
+    var x;
+    var y;
+
+    constructor(x: int, y: int) do
+        this.x = x;
+        this.y = y;
+    end
+}
+
+const p = new Point(3, 5);
+println p.x; // 3
+println p.y; // 5
+```
+
+#### No-Constructor Class
+
+If a class defines no constructor, it accepts zero arguments and the instance is created with only its declared properties initialized.
+
+```ysharp
+class Box {
+    var width = 10;
+    var height = 20;
+}
+
+const b = new Box();
+println b.width;  // 10
+println b.height; // 20
+```
+
+#### `new` with Inheritance
+
+When instantiating a derived class, the parent constructor is also invoked — either explicitly via `super()` or implicitly with zero arguments.
+
+```ysharp
+class Animal {
+    var name;
+
+    constructor(name) do
+        this.name = name;
+    end
+}
+
+class Dog extends Animal {
+    var breed;
+
+    constructor(name, breed) do
+        super(name);
+        this.breed = breed;
+    end
+}
+
+const d = new Dog("Rex", "Labrador");
+println d.name;  // Rex
+println d.breed; // Labrador
+```
+
+#### `new` with Sealed Classes
+
+`new` works normally on sealed classes. Sealing a class only prevents inheritance — it does not affect instantiation.
+
+```ysharp
+sealed class Config {
+    var env = "production";
+}
+
+const c = new Config();
+println c.env; // production
+```
+
+#### `new` with Class Closures
+
+Since classes are first-class values in Ysharp, `new` can be used on a class returned from a function or stored in a variable.
+
+```ysharp
+function makeCounter(start) do
+    class Counter {
+        var count = start;
+
+        increment() do
+            this.count = this.count + 1;
+        end
+
+        get() do
+            return this.count;
+        end
+    }
+
+    return Counter;
+end
+
+const Counter = makeCounter(10);
+const c = new Counter();
+c.increment();
+println c.get(); // 11
+```
+
+#### Important Notes
+
+- `new` must be followed by a callable `ClassObject`. Using it on a non-class value is a runtime error.
+- `new` always returns a `Class-instance` — the only runtime object that **does not** implement the `Callable` interface.
+- Static members defined on the class are **not** available on the instance returned by `new`.
+
+```ysharp
+class MathUtil {
+    static var pi = 3.14;
+}
+
+const m = new MathUtil();
+println MathUtil.pi; // 3.14
+println m.pi;        // undefined
+```
+
+
 
 ### static
 

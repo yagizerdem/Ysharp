@@ -43,7 +43,7 @@ public class ComputeIfAbsentFn extends Function.NativeFunction {
         Callable fn = fnVariant.asCallable();
 
         List<Variable.Variant> args = new ArrayList<>();
-        args.add(key);
+        if(fn.arity() >= 1) args.add(key);
 
         Variable.Variant result = fn.call(interpreter, args);
 

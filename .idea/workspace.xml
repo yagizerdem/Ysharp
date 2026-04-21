@@ -5,9 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="06588b0d-6eee-4b4b-be52-23cf34ea7082" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/webdoc/docs/collections/Array.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webdoc/docs/collections/HashMap.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< HEAD
+=======
+      <change beforePath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Native/Collections/HashMap/function/instance/ComputeFn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Native/Collections/HashMap/function/instance/ComputeFn.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/resources/treewalk/test/main.ys" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/treewalk/test/main.ys" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webdoc/docs/collections/Array.md" beforeDir="false" afterPath="$PROJECT_DIR$/webdoc/docs/collections/Array.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webdoc/docs/collections/HashMap.md" beforeDir="false" afterPath="$PROJECT_DIR$/webdoc/docs/collections/HashMap.md" afterDir="false" />
+>>>>>>> b3388d2ea6ab38b06bbd70ba817f7287e3edaa1c
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -290,6 +296,11 @@
           <url>file://$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Native/LINQ/Queryable.java</url>
           <line>733</line>
           <option name="timeStamp" value="130" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ysharp/treewalk/evaluator/Native/Collections/HashMap/function/instance/RemoveFn.java</url>
+          <line>22</line>
+          <option name="timeStamp" value="131" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

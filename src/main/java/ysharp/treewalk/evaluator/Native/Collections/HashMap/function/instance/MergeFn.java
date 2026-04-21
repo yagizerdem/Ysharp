@@ -47,8 +47,8 @@ public class MergeFn extends Function.NativeFunction {
         Callable fn = fnVariant.asCallable();
 
         List<Variable.Variant> args = new ArrayList<>();
-        args.add(existing);
-        args.add(value);
+        if(fn.arity() >= 1) args.add(existing);
+        if(fn.arity() >= 2) args.add(value);
 
         Variable.Variant result = fn.call(interpreter, args);
 

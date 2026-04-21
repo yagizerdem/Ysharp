@@ -43,8 +43,8 @@ public class ComputeIfPresentFn extends Function.NativeFunction {
         Callable fn = fnVariant.asCallable();
 
         List<Variable.Variant> args = new ArrayList<>();
-        args.add(key);
-        args.add(existing);
+        if(fn.arity() >= 1) args.add(key);
+        if(fn.arity() >= 2) args.add(existing);
 
         Variable.Variant result = fn.call(interpreter, args);
 

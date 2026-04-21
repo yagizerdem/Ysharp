@@ -215,6 +215,18 @@ public class Interpreter implements
                     );
                 }
 
+                if(left.isString() && right.isNull()) {
+                    return new Variable.Variant(
+                            new yString.yStringInstance(left.asString() + "null")
+                    );
+                }
+
+                if(left.isNull() && right.isString()) {
+                    return new Variable.Variant(
+                            new yString.yStringInstance("null" + right.asString())
+                    );
+                }
+
                 throw new YsharpException(
                         YsharpException.YsharpErrorType.PROCESS,
                         expr.op.line,

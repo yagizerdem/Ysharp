@@ -26,7 +26,7 @@ public class PutIfAbsentFn extends Function.NativeFunction {
 
         Variable.Variant existing = hm.data.putIfAbsent(key, value);
 
-        return existing != null ? new Variable.Variant(existing) : new Variable.Variant(null);
+        return existing != null ? new Variable.Variant(existing.value) : new Variable.Variant(null);
     }
 
     @Override
