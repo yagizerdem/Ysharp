@@ -1,19 +1,14 @@
-class MyError {
-    var message;
-    constructor(message) do
-        this.message = message;
-    end
+var arr = [1,2,3,4,5];
 
-    toString() do
-        return "MyError: " + this.message;
-    end
-}
+println all(arr);
+
+arr.clear();
+
+arr.push(435);
+arr.push(0);
 
 
-try do
-    var err = new MyError("Invalid operation");
-    throw err;
-end
-catch (ex) do
-    println ex.toString(); // calls toString()
-end
+
+
+println all(arr);
+println any(arr);
