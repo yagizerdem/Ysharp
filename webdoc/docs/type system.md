@@ -153,3 +153,152 @@ Ysharp supports two types of classes:
 You can visit class, function and string api documentation to 
 get more details, theese topics are very deep and i dont want to
 go over every single api in this section.
+
+
+## Type tags
+
+Type tags adds syntax on top of Ysharp expressions, allowing developers to add types.
+
+Unlike statically typed languages, Ysharp does **not** enforce types at compile time.  
+Instead, type tags are checked **at runtime** to ensure that assigned values are compatible.
+
+
+
+Type tags are used to:
+
+- Improve code readability
+- Catch type errors early (at runtime)
+- Document developer intent
+- Add lightweight type safety without losing flexibility
+
+### Syntax
+
+Type tags are declared after variable or parameter names:
+
+````ysharp
+var x : int = 10;
+var name : string = "yagiz";
+var flag : bool = true;
+````
+
+If no type is provided, default is any. Programmer do not have to write any.
+Any type matches with all value types .
+
+````ysharp
+var x : any = 10;
+````
+
+### Supported Type Tags
+
+#### Primitive Types
+
+- int
+- double
+- number (accepts both int and double)
+- char
+- bool
+
+#### Special Types
+
+any &rarr; accepts all values
+function
+string
+
+###  Custom Types
+
+User defined class names can also be used:
+
+````ysharp
+class Person {}
+
+var p : Person = new Person(); // OK
+````
+
+### Runtime Type Checking
+
+Type checking happens during assignment:
+
+````
+var x : int = 10;
+x = 20;     // OK
+x = "text"; // ERROR
+````
+
+#### Null Behavior
+
+`null` is allowed for all types:
+
+````ysharp
+var x : int = null;     // OK
+var name : string = null; // OK
+````
+
+#### Type Compatibility
+
+````ysharp
+var x : number = 10;     // OK (int &rarr; number)
+var y : number = 3.14;   // OK (double &rarr; number)
+
+var z : int = 3.14;      // ERROR
+````
+
+### Function Parameters
+
+Type tags can be used in function parameters:
+
+````ysharp
+function add(a : int, b : int) do
+    return a + b;
+end
+
+add(10, 20);   // OK
+add(10, "x");  // ERROR
+
+````
+
+### Return Types
+
+````ysharp
+function square(x : int) : int do
+    return x * x;
+end
+
+var a : int = square(4); // 16 OK
+var b : string = square(4) // ERROR
+````
+
+````ysharp
+// function cannot return string since it has int type taf for return
+
+function test() : int do
+  return "string";
+end
+
+test();
+````
+
+### Class Fields
+
+Type tags can be used in class properties:
+
+````ysharp
+class User {
+    var name : string;
+    var age : int;
+}
+````
+
+### Type Tags vs Dynamic Typing
+
+Ysharp remains fully dynamic, even with type tags:
+
+- Types are optional
+- Types are enforced only at runtime
+- No compile time type system exists
+
+### Best Practices
+
+- Use `any` only when necessary
+- Prefer `number` over `int/double` if flexibility is needed
+- Use type tags in public APIs (functions, classes)
+- Avoid over typing internal temporary variables

@@ -394,6 +394,7 @@ This section describes the following types of literals:
 
 - Boolean literals
 - Numeric literals
+- Char literals
 - String literals
 - Array literals
 - HashMap literals
@@ -428,6 +429,15 @@ var price = 99.90;
 > Unlike some languages, Ysharp automatically treats a number as a 
 > floating point if it contains a decimal point. 
 > Otherwise, it is treated as an integer.
+
+### Char Literals
+
+Char literal is a constant value that represents 
+a single character from the Unicode character set
+
+````ysharp
+var c = 'a';
+````
 
 ### String Literals
 
