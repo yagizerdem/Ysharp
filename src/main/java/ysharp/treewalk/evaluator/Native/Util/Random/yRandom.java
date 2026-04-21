@@ -59,7 +59,7 @@ public class yRandom {
 
         @Override
         public String getType() {
-            return "Random";
+            return "_Random_";
         }
     }
 

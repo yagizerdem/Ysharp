@@ -15,7 +15,9 @@ a new string object is created instead of altering the original one.
 Standard library provide a lot of string utility functions. <br/> 
 Full api list below :
 
-### Reference
+## Reference
+
+### Instance methods
 
 | Method                   | Signature                                              | Return Type | Description                                                                                 |
 |--------------------------|--------------------------------------------------------|-------------|---------------------------------------------------------------------------------------------|
