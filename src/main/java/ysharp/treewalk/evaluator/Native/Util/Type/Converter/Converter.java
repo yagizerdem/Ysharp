@@ -52,7 +52,7 @@ public class Converter {
 
         @Override
         public String getType() {
-            return "Converter";
+            return "_Converter_";
         }
 
         @Override

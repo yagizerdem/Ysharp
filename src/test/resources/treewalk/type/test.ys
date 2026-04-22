@@ -1,12 +1,4 @@
+var a : number = 10;
 
-var a = [];
-
-
-println Type.getType(a);
-
-println Type.getType(a.toNativeArrayList());
-
-
-println Type.isNativeObject(a.toNativeArrayList());
-
-println Type.isString("lajf");
+println Type.getType(a); // int
+println Type.getTypeTag(a); // number
