@@ -302,3 +302,142 @@ Ysharp remains fully dynamic, even with type tags:
 - Prefer `number` over `int/double` if flexibility is needed
 - Use type tags in public APIs (functions, classes)
 - Avoid over typing internal temporary variables
+
+
+## Type Api
+
+There is a separate api for making type checks and type conversions. 
+
+### Type Class
+
+#### Static Methods
+
+| Method            | Signature                         | Return Type     | Description                                                                               |
+|-------------------|-----------------------------------|-----------------|-------------------------------------------------------------------------------------------|
+| `getType`         | `Type.getType(value)`             | `string`        | Returns the type name of the given value (e.g. "number", "string", "array")               |
+| `getTypeTag`      | `Type.getTypeTag(value)`          | `string`        | Returns the user-defined or environment-specific type tag associated with the given value |
+| `isBool`          | `isBool(value: any)`              | `bool`          | Returns true if the given value is of type boolean                                        |
+| `isChar`          | `isChar(value: any)`              | `bool`          | Returns true if the given value is of type char                                           |
+| `isClass`         | `isClass(value: any)`             | `bool`          | Returns true if the given value is of type class                                          |
+| `isClassInstance` | `isClassInstance(value: any)`     | `bool`          | Returns true if the given value is a class instance                                       |
+| `isDouble`        | `isDouble(value: any)`            | `bool`          | Returns true if the given value is of type double                                         |
+| `isFunction`      | `isFunction(value: any)`          | `bool`          | Returns true if the given value is a function or callable                                 |
+| `isInt`           | `isInt(value: any)`               | `bool`          | Returns true if the given value is of type integer                                        |
+| `isNativeObject`  | `isNativeObject(value: any)`      | `bool`          | Returns true if the given value is a native (Java-backed) object                          |
+| `isString`        | `isString(value: any)`            | `bool`          | Returns true if the given value is of type string                                         |
+
+
+#### Static Class
+
+| Class            | Constructor Signature           | Type                              | Description                                 |
+|------------------|---------------------------------|-----------------------------------|---------------------------------------------|
+ | `Type.Converter` | `no signature - static class`   | `_Converter_` `<class:Converter>` | `Converter` class used for data conversions | 
+
+
+### Converter Class
+
+#### Static Methods
+
+| Method         | Signature                              | Return Type | Description                                                 |
+|----------------|----------------------------------------|-------------|-------------------------------------------------------------|
+| constructor    | Type.Converter()                       | -           | Static class, cannot be instantiated                        |
+| toString       | Type.Converter.toString(v : any)       | string      | Converts given value to string                              |
+| toInt          | Type.Converter.toInt(v : any)          | int         | Converts given value to integer                             |
+| toDouble       | Type.Converter.toDouble(v : any)       | double      | Converts given value to double                              |
+| toChar         | Type.Converter.toChar(v : any)         | char        | Converts given value to char                                |
+| toBool         | Type.Converter.toBool(v : any)         | bool        | Converts given value to boolean                             |
+| toNativeObject | Type.Converter.toNativeObject(v : any) | any         | Converts value to native (Java-backed) object               |
+
+
+### Examples
+
+````ysharp
+var a = 10;
+var b = 10.5;
+var c = "hello";
+var d = true;
+
+println(Type.isInt(a));        // true
+println(Type.isDouble(b));     // true
+println(Type.isString(c));     // true
+println(Type.isBool(d));       // true
+````
+
+
+````ysharp
+class User {
+    var name;
+    constructor(name) do
+        this.name = name;
+    end
+}
+
+var u = new User("yağız");
+
+println(Type.isClass(User));          // true
+println(Type.isClassInstance(u));     // true
+println(Type.isClassInstance(User));  // false
+````
+
+````ysharp
+function add(a, b) do
+    return a + b;
+end
+
+var x = 5;
+
+println(Type.isFunction(add)); // true
+println(Type.isFunction(x));   // false
+````
+
+````ysharp
+var a : number = 10;
+
+println Type.getType(a); // int
+println Type.getTypeTag(a); // number
+````
+
+
+````ysharp
+var arr = [1, 2, 3];
+
+println(Type.isNativeObject(arr.toNativeArray)); // true
+println(Type.isNativeObject(Type.Converter.toNativeObject(arr))); // true
+println(Type.isNativeObject(arr)); // true
+````
+
+````ysharp
+var x = "123";
+
+var n = Type.Converter.toInt(x);
+println(n + 1); // 124
+
+var d = Type.Converter.toDouble("3.14");
+println(d * 2); // 6.28
+
+var s = Type.Converter.toString(999);
+println(s); // "999"
+````
+
+````ysharp
+var x = "abc";
+
+var n = Type.Converter.toInt(x); // throws error
+````
+
+````ysharp
+function process(value) do
+    if Type.isInt(value) then do
+        return value * 2;
+    end
+
+    if Type.isString(value) then do
+        return value + "!";
+    end
+
+    return null;
+end
+
+println(process(10));     // 20
+println(process("test")); // "test!"
+````

@@ -26,6 +26,7 @@ import ysharp.treewalk.evaluator.Native.Threading.yThread;
 import ysharp.treewalk.evaluator.Native.Util.*;
 import ysharp.treewalk.evaluator.Native.Util.Math.yMath;
 import ysharp.treewalk.evaluator.Native.Util.Type.Type;
+import ysharp.treewalk.evaluator.Native.Util.UUID.yUUID;
 import ysharp.treewalk.evaluator.Native.YPF.YPF;
 import ysharp.treewalk.evaluator.Native.function.core.GlobalNatives;
 

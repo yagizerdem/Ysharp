@@ -3,8 +3,6 @@ package ysharp.treewalk.evaluator.Native.function.core;
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Native.Collections.yVector;
-import ysharp.treewalk.evaluator.Native.Util.Type.Converter;
-import ysharp.treewalk.evaluator.Native.Util.Type.Type;
 import ysharp.treewalk.lexer.Lexer;
 import ysharp.treewalk.lexer.Preprocess;
 import ysharp.treewalk.lexer.Token;
@@ -15,9 +13,7 @@ import ysharp.treewalk.parser.Stmt;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.Buffer;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public abstract class GlobalNatives extends Function.NativeFunction {

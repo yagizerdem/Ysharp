@@ -104,17 +104,24 @@ public class Variable {
                     isChar();
         }
 
+        public boolean isJavaNative() {
+            return !(isPrimitive() || isRuntimeObject());
+        }
+
         public boolean canImplicitlyConvertNumber(){
             return this.isNumber() ||
                     this.isChar() ||
                     this.isBoolean();
         }
 
+
+
         // runtime objects
 
         public boolean isRuntimeObject() {
             return value instanceof RuntimeObject;
         }
+
 
         // cast
 
@@ -278,16 +285,15 @@ public class Variable {
 
             if (isString()) return "string";
 
+            // ysharp's object
             if (isRuntimeObject()) {
                 RuntimeObject obj = asRuntimeObject();
                 return obj.getType();
             }
 
-            throw new YsharpException(
-                    YsharpException.YsharpErrorType.PROCESS,
-                    -1,
-                    "Internal error: Unknown Variant runtime type: " + value.getClass()
-            );
+            // native java objects
+            return this.value.getClass().getName();
+
         }
 
     }
