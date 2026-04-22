@@ -1,34 +1,31 @@
-package ysharp.treewalk.evaluator.Native.Util.Type;
+package ysharp.treewalk.evaluator.Native.Util.Type.Converter;
 
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
-import ysharp.treewalk.evaluator.Native.Util.Type.Converter.Converter;
-import ysharp.treewalk.evaluator.Native.Util.Type.functions.statix.*;
+import ysharp.treewalk.evaluator.Native.Util.Type.Converter.function.statix.*;
 
 import java.util.List;
 
-public class Type {
+public class Converter {
 
-    public static class TypeClass extends yClass.SealedClassObject {
+    public static class ConverterClass extends yClass.SealedClassObject {
 
-        private TypeClass(){
+        public ConverterClass() {
             this.prototype =  yClass.ClassPrototype;
 
-            // methods
-            RegisterNativeFn(new GetTypeFn());
-            RegisterNativeFn(new GetTypeTagFn());
-            RegisterNativeFn(new IsClassFn());
-            RegisterNativeFn(new IsClassInstanceFn());
-            RegisterNativeFn(new IsFunctionFn());
-            RegisterNativeFn(new IsIntFn());
-            RegisterNativeFn(new IsDoubleFn());
-            RegisterNativeFn(new IsCharFn());
-            RegisterNativeFn(new IsStringFn());
-            RegisterNativeFn(new IsBool());
-            RegisterNativeFn(new IsNativeObject());
+            // Type.Converter.toString(data);
+            RegisterNativeFn(new ToStringFn());
+            // Type.Converter.toInt(data);
+            RegisterNativeFn(new ToIntFn());
+            // Type.Converter.toDouble(data);
+            RegisterNativeFn(new ToDoubleFn());
+            // Type.Converter.toChar(data);
+            RegisterNativeFn(new ToCharFn());
+            // Type.Converter.toBool(data);
+            RegisterNativeFn(new ToBoolFn());
+            // Type.Converter.toNativeObject(data);
+            RegisterNativeFn(new ToNativeObject());
 
-            // class
-            RegisterClass(new Converter.ConverterClass());
         }
 
         @Override
@@ -50,23 +47,23 @@ public class Type {
 
         @Override
         public String getClassName() {
-            return "Type";
+            return "Converter";
         }
 
         @Override
         public String getType() {
-            return "Type";
+            return "Converter";
         }
 
         @Override
         public String toString() {
-            return "<class:Type>";
+            return "<class:Converter>";
         }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
 
-        TypeClass ctor = new TypeClass();
+        ConverterClass ctor = new ConverterClass();
 
         Variable.Variant variant = new Variable.Variant(ctor);
         Variable var = new Variable(variant,
