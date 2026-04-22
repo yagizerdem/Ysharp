@@ -35,7 +35,7 @@ public class RemoveFirstFn extends Function.NativeFunction {
 
         list.size--;
 
-        return removed;
+        return new Variable.Variant(removed.value);
     }
 
     @Override

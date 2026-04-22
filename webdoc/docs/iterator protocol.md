@@ -10,8 +10,8 @@ Ysharp provides a built-in iterator protocol that allows custom objects to be us
 
 The iterator protocol consists of two layers:
 
-1. **The Iterable** — an object that exposes an `iter()` method returning an iterator.
-2. **The Iterator** — an object that exposes a `getNext()` method returning successive values, and `null` when exhausted.
+1. **The Iterable** &rarr; an object that exposes an `iter()` method returning an iterator.
+2. **The Iterator** &rarr; an object that exposes a `getNext()` method returning successive values, and `null` when exhausted.
 
 ---
 

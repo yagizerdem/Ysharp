@@ -153,7 +153,7 @@ public class yLinkedList {
 
         @Override
         public String getType() {
-            return "LinkedList";
+            return "_LinkedList_";
         }
 
         @Override

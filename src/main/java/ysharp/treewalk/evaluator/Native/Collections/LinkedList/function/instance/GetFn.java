@@ -38,7 +38,7 @@ public class GetFn extends Function.NativeFunction {
             current = current.next;
         }
 
-        return current.value;
+        return new Variable.Variant(current.value.value);
     }
 
     @Override
