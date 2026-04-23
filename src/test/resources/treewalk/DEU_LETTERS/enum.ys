@@ -1,5 +1,0 @@
-export class Mode {
-    static const EASY = 0;
-    static const MEDIUM = 1;
-    static const HARD = 2;
-}
