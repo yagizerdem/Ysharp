@@ -26,7 +26,7 @@ public class PeekFirstFn extends Function.NativeFunction {
             return new Variable.Variant(null);
         }
 
-        return list.head.value;
+        return new Variable.Variant(list.head.value.value);
     }
 
     @Override

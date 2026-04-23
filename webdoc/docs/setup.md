@@ -7,8 +7,8 @@ sidebar_position: 2
 Ysharp is a JVM based language, JDK 21 or upper versions should be installed in your system. If JDK installations
 are incomplete in your system you can [download](https://www.oracle.com/java/technologies/downloads/) here
 
-Ysharp Interpreter is also needed to be installed in system. You can [download](https://github.com/yagizerdem/Ysharp/releases/tag/v0.0.1) Interpreter .jar file
-from this this link  https://github.com/yagizerdem/Ysharp/releases/tag/v0.0.1
+Ysharp Interpreter is also needed to be installed in system. You can [download](https://github.com/yagizerdem/ysharp/releases/latest) Interpreter .jar file
+from this this link  https://github.com/yagizerdem/ysharp/releases/latest
 
 ## Running Ysharp scripts
 Check your JDK version from terminal with ```java --version```

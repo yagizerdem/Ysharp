@@ -26,7 +26,7 @@ public class PeekLastFn extends Function.NativeFunction {
             return new Variable.Variant(null);
         }
 
-        return list.tail.value;
+        return new Variable.Variant(list.tail.value.value);
     }
 
     @Override

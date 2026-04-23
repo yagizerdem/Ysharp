@@ -40,7 +40,7 @@ public class SetFn extends Function.NativeFunction {
         }
 
         Variable.Variant old = current.value;
-        current.value = value;
+        current.value = new Variable.Variant(value.value);
 
         return old;
     }
