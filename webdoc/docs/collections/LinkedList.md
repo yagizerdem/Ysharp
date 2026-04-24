@@ -4,13 +4,14 @@ sidebar_position: 3
 
 # LinkedList
 
+## General
+
 `LinkedList` is a built-in collection class in Ysharp that implements a singly linked list. It provides efficient insertion and removal at both ends, making it well suited for queue and stack style operations.
 
 > **Note** <br/>
 > Unlike `Array`, `LinkedList` does not provide constant-time random access. 
 > Accessing or modifying an element by index requires traversing the list from the head.
 
-## Constructor
 
 ```ysharp
 var list = new LinkedList();

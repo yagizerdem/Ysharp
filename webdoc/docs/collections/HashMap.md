@@ -12,7 +12,7 @@ It stores elements in key-value pairs, where, Keys are unique. and Values can be
 - Insertion order is not preserved in HashMap. To preserve the insertion order, LinkedHashMap is used and to maintain sorted order, TreeMap is used.
 - HashMap allows one null key and multiple null values. If a null key is added multiple times, it overwrites the previous value.
 
-## References
+## Reference
 
 ### Instance methods
 

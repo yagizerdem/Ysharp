@@ -1,11 +1,10 @@
-var ll = new LinkedList();
+var stack = new Stack();
 
-for var i =0 ; i < 10; i++ do
-    ll.addFirst(i);
-end
+stack.push(10);
+stack.push(20);
+stack.push(30);
 
-println ll.toString();
 
-foreach var item in ll do
+foreach var item in stack do
     println item;
 end
