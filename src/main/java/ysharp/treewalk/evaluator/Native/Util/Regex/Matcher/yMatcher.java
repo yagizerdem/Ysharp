@@ -74,7 +74,7 @@ public class yMatcher {
 
     public static class yMatcherInstance extends yClass.ClassObjectInstance {
 
-        public final Matcher matcher;
+        public Matcher matcher;
 
         public yMatcherInstance(java.util.regex.Matcher mathcer) {
             this.prototype = yMatcher_Instance_Prototype;

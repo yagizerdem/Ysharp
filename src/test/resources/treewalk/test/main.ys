@@ -1,10 +1,6 @@
-var p = new Needle.Pattern("(a|b)c*" , Needle.Pattern.CASE_INSENSITIVE);
-
-println "hit";
-
-var m : Matcher = p.matcher("AcccAbAcb");
-
-println p.flags();
 
 
-println Needle.Matcher.quoteReplacement("price is $5");
+
+
+
+

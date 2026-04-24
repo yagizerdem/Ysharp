@@ -25,7 +25,7 @@ public class EndFn extends Function.NativeFunction {
             throw new YsharpException(
                     YsharpException.YsharpErrorType.PROCESS,
                     -1,
-                    "end() accepts at most 1 argument: group (int or string)."
+                    "_end() accepts at most 1 argument: group (int or string)."
             );
         }
 
@@ -70,6 +70,6 @@ public class EndFn extends Function.NativeFunction {
 
     @Override
     public String getFnName() {
-        return "end";
+        return "_end";
     }
 }

@@ -72,7 +72,7 @@ public class Interpreter implements
 
     public Interpreter copy() {
         Interpreter newInterpreter = new Interpreter();
-        newInterpreter.curEnv = this.curEnv;
+        newInterpreter.curEnv = new Environment(this.curEnv);
         newInterpreter.global = this.global;
         newInterpreter.locals = this.locals;
         newInterpreter.exports = this.exports;

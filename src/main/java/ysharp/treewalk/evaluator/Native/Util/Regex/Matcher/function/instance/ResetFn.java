@@ -37,9 +37,9 @@ public class ResetFn extends Function.NativeFunction implements Callable {
                 String input = requireString(arguments.getFirst(), getFnName(), 1);
 
                 java.util.regex.Pattern pattern = matcher.matcher.pattern();
-                java.util.regex.Matcher newMatcher = pattern.matcher(input);
+                matcher.matcher = pattern.matcher(input);
 
-                return new Variable.Variant(new yMatcher.yMatcherInstance(newMatcher));
+                return new Variable.Variant(matcher);
             }
 
         } catch (Exception e) {
