@@ -4,7 +4,6 @@ import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Interpreter;
 import ysharp.treewalk.evaluator.Native.TUI.Input.yKeyStroke;
 import ysharp.treewalk.evaluator.Native.TUI.Terminal.yDefaultTerminal;
-import ysharp.treewalk.evaluator.Native.TUI.Terminal.yScrollSwingTerminal;
 import ysharp.treewalk.evaluator.Native.TUI.Terminal.ySwingTerminal;
 import ysharp.treewalk.evaluator.Native.TUI.Util.TextColor.yTextColor;
 import ysharp.treewalk.evaluator.Native.TUI.Util.ySGR;
@@ -39,13 +38,6 @@ public class TUI {
             );
             this.set(swingTerminal.getClassName(), swingTerminalVar);
 
-            yScrollSwingTerminal.yScrollSwingTerminalClass scrollSwingTerminal = new yScrollSwingTerminal.yScrollSwingTerminalClass();
-            Variable scrollSwingTerminalVar = new Variable(
-                    new Variable.Variant(swingTerminal),
-                    true,
-                    scrollSwingTerminal.getType()
-            );
-            this.set(scrollSwingTerminal.getClassName(), scrollSwingTerminalVar);
 
             // fonts
             ySGR.ySGRClass sgr = new ySGR.ySGRClass();

@@ -1,6 +1,7 @@
 package ysharp.treewalk.evaluator.Native.TUI.Terminal;
 
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
+import com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
 import com.googlecode.lanterna.terminal.swing.SwingTerminalFrame;
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Interpreter;
@@ -81,6 +82,45 @@ public class yDefaultTerminal {
                         }
                     });
                 }
+
+                if (instance instanceof AWTTerminalFrame frame) {
+                    frame.setTitle("Ysharp TUI");
+                    // load ysharp logo
+                    URL logoUrl = getClass().getClassLoader().getResource("ysharplogo.png");
+
+                    BufferedImage icon = null;
+
+                    if (logoUrl != null) {
+                        icon = ImageIO.read(logoUrl);
+                    }
+
+                    if (icon != null) {
+                        frame.setIconImage(icon);
+                    }
+
+                    frame.setIconImage(icon);
+
+                    frame.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosing(WindowEvent e) {
+                            assign("isClosed", new Variable.Variant(true));
+
+                            try {
+                                instance.close();
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+
+                            System.exit(0);
+                        }
+
+                        @Override
+                        public void windowClosed(WindowEvent e) {
+                            assign("isClosed", new Variable.Variant(true));
+                        }
+                    });
+                }
+
             }
             catch (IOException ex) {
                 throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
