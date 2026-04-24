@@ -1,4 +1,4 @@
-package ysharp.treewalk.evaluator.Native.Util;
+package ysharp.treewalk.evaluator.Native.Util.Random;
 
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;

@@ -21,10 +21,13 @@ import ysharp.treewalk.evaluator.Native.LINQ.Queryable;
 import ysharp.treewalk.evaluator.Native.Network.yHttp;
 import ysharp.treewalk.evaluator.Native.Range;
 import ysharp.treewalk.evaluator.Native.TUI.TUI;
-import ysharp.treewalk.evaluator.Native.Threading.ySemaphore;
-import ysharp.treewalk.evaluator.Native.Threading.yThread;
+import ysharp.treewalk.evaluator.Native.Concurrency.ySemaphore;
+import ysharp.treewalk.evaluator.Native.Concurrency.Threading.yThread;
 import ysharp.treewalk.evaluator.Native.Util.*;
 import ysharp.treewalk.evaluator.Native.Util.Math.yMath;
+import ysharp.treewalk.evaluator.Native.Util.Random.yRandom;
+import ysharp.treewalk.evaluator.Native.Util.Regex.Pattern.yPattern;
+import ysharp.treewalk.evaluator.Native.Util.Regex.yNeedle;
 import ysharp.treewalk.evaluator.Native.Util.Type.Type;
 import ysharp.treewalk.evaluator.Native.Util.UUID.yUUID;
 import ysharp.treewalk.evaluator.Native.YPF.YPF;
@@ -97,6 +100,9 @@ public class Registery {
         // Assert
         yAssert.Register(interpreter);
 
+
+        // regex
+        yNeedle.Register(interpreter);
 
         // global native functions
         GlobalNatives.Register(interpreter);

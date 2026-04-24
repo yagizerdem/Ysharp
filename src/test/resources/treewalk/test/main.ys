@@ -1,38 +1,10 @@
-class Range {
-    var start = 0;
-    var _end = 0;
+var p = new Needle.Pattern("(a|b)c*" , Needle.Pattern.CASE_INSENSITIVE);
 
-    constructor(start, _end) do
-        this.start = start;
-        this._end = _end;
-    end
+println "hit";
 
-    iter() do
-        return new RangeIterator(this.start, this._end);
-    end
-}
+var m : Matcher = p.matcher("AcccAbAcb");
 
-class RangeIterator {
-    var current = 0;
-    var _end = 0;
+println p.flags();
 
-    constructor(start, _end) do
-        this.current = start;
-        this._end = _end;
-    end
 
-    getNext() do
-        if this.current > this._end then do
-            return null;
-        end
-        var value = this.current;
-        this.current++;
-        return value;
-    end
-}
-
-var r = new Range(1, 5);
-
-foreach var n in r do
-    println(n); // 1 2 3 4 5
-end
+println Needle.Matcher.quoteReplacement("price is $5");
