@@ -3,7 +3,9 @@ package ysharp.treewalk.evaluator.Native.Collections.LinkedList;
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Native.Collections.LinkedList.function.instance.*;
+import ysharp.treewalk.evaluator.Native.Collections.yVector;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class yLinkedList {
@@ -53,7 +55,8 @@ public class yLinkedList {
                 return "<prototype:LinkedList>";
             }
         };
-        yLinkedList_Instance_Prototype.prototype = yClass.ClassPrototype;
+        yLinkedList_Instance_Prototype.prototype = yVector.Vector_Instance_Prototype;
+
         // list.toString()
         yLinkedList_Instance_Prototype.RegisterNativeFn(new ToStringFn());
         // list.addFirst(value)
@@ -100,7 +103,7 @@ public class yLinkedList {
         }
     }
 
-    public static class yLinkedListInstance extends yClass.ClassObjectInstance {
+    public static class yLinkedListInstance extends yClass.ClassObjectInstance implements yVector.IVector {
 
         public Node head;
         public Node tail;
@@ -126,6 +129,17 @@ public class yLinkedList {
         @Override
         public String toString() {
             return "<instance:LinkedList>";
+        }
+
+        @Override
+        public List<Variable.Variant> getData() {
+            List<Variable.Variant>  vector = new ArrayList<>();
+            Node cur = this.head;
+            while (cur != null) {
+                vector.add(cur.value);
+                cur = cur.next;
+            }
+            return vector;
         }
     }
 
