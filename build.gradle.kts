@@ -17,6 +17,7 @@ dependencies {
     implementation("com.googlecode.lanterna:lanterna:3.1.2")
     implementation("com.formdev:flatlaf:3.5.4")
     implementation("org.processing:core:3.3.7")
+    implementation("com.google.code.gson:gson:2.11.0")
 }
 
 tasks.test {
