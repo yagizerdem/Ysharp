@@ -25,7 +25,7 @@ public class ySwingTerminal {
 
             @Override
             public String getType() {
-                return "__YSPFTerminal__";
+                return "__YPFTerminal__";
             }
         };
         ySwingTerminal_Instance_Prototype.prototype = yBaseTerminal.yBaseTerminal_Instance_Prototype;
@@ -49,12 +49,12 @@ public class ySwingTerminal {
 
         @Override
         public String getType() {
-            return "YSPFTerminal";
+            return "YPFTerminal";
         }
 
         @Override
         public String toString() {
-            return "<instance:YSPFTerminal>";
+            return "<instance:YPFTerminal>";
         }
     }
 
@@ -83,12 +83,12 @@ public class ySwingTerminal {
 
         @Override
         public String getClassName() {
-            return "YSPFTerminal";
+            return "YPFTerminal";
         }
 
         @Override
         public String getType() {
-            return "YSPFTerminal";
+            return "YPFTerminal";
         }
     }
 

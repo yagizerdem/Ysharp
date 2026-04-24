@@ -25,7 +25,7 @@ public class yScrollSwingTerminal {
 
             @Override
             public String getType() {
-                return "__YSPFScrollTerminal__";
+                return "__YPFScrollTerminal__";
             }
         };
         yScrollSwingTerminal_Instance_Prototype.prototype = yBaseTerminal.yBaseTerminal_Instance_Prototype;
@@ -49,12 +49,12 @@ public class yScrollSwingTerminal {
 
         @Override
         public String getType() {
-            return "YSPFScrollTerminal";
+            return "YPFScrollTerminal";
         }
 
         @Override
         public String toString() {
-            return "<instance:YSPFScrollTerminal>";
+            return "<instance:YPFScrollTerminal>";
         }
     }
 
@@ -83,12 +83,12 @@ public class yScrollSwingTerminal {
 
         @Override
         public String getClassName() {
-            return "YSPFScrollTerminal";
+            return "YPFScrollTerminal";
         }
 
         @Override
         public String getType() {
-            return "YSPFScrollTerminal";
+            return "YPFScrollTerminal";
         }
     }
 
