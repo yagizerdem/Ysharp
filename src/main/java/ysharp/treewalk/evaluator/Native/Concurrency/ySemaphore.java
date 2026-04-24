@@ -1,4 +1,4 @@
-package ysharp.treewalk.evaluator.Native.Threading;
+package ysharp.treewalk.evaluator.Native.Concurrency;
 
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
