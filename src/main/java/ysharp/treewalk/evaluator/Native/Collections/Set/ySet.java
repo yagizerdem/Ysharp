@@ -55,9 +55,9 @@ public class ySet {
         // set.toString()
         ySet_Instance_Prototype.RegisterNativeFn(new ToStringFn());
         // set.add("data")
-        ySet_Instance_Prototype.RegisterNativeFn(new AddFn());
+        ySet_Instance_Prototype.RegisterNativeFn(new AddFn(), List.of("set"));
         // set.remove("data")
-        ySet_Instance_Prototype.RegisterNativeFn(new SetFn());
+        ySet_Instance_Prototype.RegisterNativeFn(new RemoveFn());
         // set.contains("data")
         ySet_Instance_Prototype.RegisterNativeFn(new ContainsFn());
         // set.clear()
@@ -75,7 +75,7 @@ public class ySet {
         // set.isSubsetOf(other)
         ySet_Instance_Prototype.RegisterNativeFn(new IsSubsetFn());
         // set.empty()
-        ySet_Instance_Prototype.RegisterNativeFn(new EmptyFn());
+        ySet_Instance_Prototype.RegisterNativeFn(new EmptyFn(), List.of("isEmpty"));
         // set.isSupersetOf(other)
         ySet_Instance_Prototype.RegisterNativeFn(new IsSupersetFn());
         // set.equals(other)
