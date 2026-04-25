@@ -3,8 +3,10 @@ package ysharp.treewalk.evaluator.Native.Collections.ArrayDeque;
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Native.Collections.ArrayDeque.function.instance.*;
+import ysharp.treewalk.evaluator.Native.Collections.yVector;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.List;
 
 public class yArrayDeque {
@@ -54,7 +56,7 @@ public class yArrayDeque {
                 return "<prototype:ArrayDeque>";
             }
         };
-        yArrayDeque_Instance_Prototype.prototype = yClass.ClassPrototype;
+        yArrayDeque_Instance_Prototype.prototype = yVector.Vector_Instance_Prototype;
 
         // deque.toString()
         yArrayDeque_Instance_Prototype.RegisterNativeFn(new ToStringFn());
@@ -89,7 +91,7 @@ public class yArrayDeque {
 
     }
 
-    public static class yArrayDequeInstance extends yClass.ClassObjectInstance {
+    public static class yArrayDequeInstance extends yClass.ClassObjectInstance implements yVector.IVector {
 
         public final ArrayDeque<Variable.Variant> data;
 
@@ -111,6 +113,17 @@ public class yArrayDeque {
         @Override
         public String toString() {
             return "<instance:ArrayDeque>";
+        }
+
+        @Override
+        public List<Variable.Variant> getData() {
+            List<Variable.Variant> vector = data.stream().toList();
+            // copy
+            vector.stream().map(var -> {
+                return new Variable.Variant(var.value);
+            }).toList();
+
+            return vector;
         }
     }
 
