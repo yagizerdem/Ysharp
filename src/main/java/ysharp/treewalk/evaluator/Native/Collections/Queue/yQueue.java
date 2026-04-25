@@ -54,7 +54,7 @@ public class yQueue {
                 return "<prototype:Queue>";
             }
         };
-        yQueue_Instance_Prototype.prototype = yClass.ClassPrototype;
+        yQueue_Instance_Prototype.prototype = yVector.Vector_Instance_Prototype;
 
         // queue.toString()
         yQueue_Instance_Prototype.RegisterNativeFn(new ToStringFn());

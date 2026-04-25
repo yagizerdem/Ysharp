@@ -1,10 +1,7 @@
-var stack = new Stack();
+var queue = new Queue();
 
-stack.push(10);
-stack.push(20);
-stack.push(30);
+queue.enqueue(10);
+queue.enqueue(20);
+queue.enqueue(30);
 
-
-foreach var item in stack do
-    println item;
-end
+println queue.toString(); // [ 10, 20, 30 ]
