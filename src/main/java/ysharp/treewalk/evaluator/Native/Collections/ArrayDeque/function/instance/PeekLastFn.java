@@ -26,7 +26,7 @@ public class PeekLastFn extends Function.NativeFunction {
             return new Variable.Variant(null);
         }
 
-        return deque.data.peekLast();
+        return new Variable.Variant(deque.data.peekLast().value);
     }
 
     @Override

@@ -5,6 +5,7 @@ import ysharp.treewalk.evaluator.Function;
 import ysharp.treewalk.evaluator.Interpreter;
 import ysharp.treewalk.evaluator.Native.Collections.Trie.Wrapper.MapTrie.yMapTrie;
 import ysharp.treewalk.evaluator.Variable;
+import ysharp.treewalk.evaluator.yString;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class ToStringFn extends Function.NativeFunction {
 
         yMapTrie.yMapTrieInstance trie = yMapTrie.requireTrieThis(interpreter);
 
-        return new Variable.Variant(trie.data.toString());
+        return new Variable.Variant(new yString.yStringInstance(trie.data.toString()));
     }
 
     @Override

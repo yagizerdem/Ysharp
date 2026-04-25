@@ -23,7 +23,7 @@ public class AddLastFn extends Function.NativeFunction {
         Variable.Variant value = arguments.getFirst();
         yArrayDeque.yArrayDequeInstance deque = yArrayDeque.requireArrayDequeThis(interpreter);
 
-        deque.data.addLast(value);
+        deque.data.addLast(new Variable.Variant(value.value));
 
         return new Variable.Variant(deque.data.size());
     }

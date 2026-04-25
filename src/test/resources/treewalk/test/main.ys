@@ -1,25 +1,41 @@
-var set = new Set();
+var d = new ArrayDeque();
 
-// empty set
-println set.isEmpty(); // true
-println set.empty();   // true
+// empty
+println d.toString(); // []
 
-// add element
-set.add(10);
+// basic usage
+d.addLast(1);
+d.addLast(2);
+d.addLast(3);
 
-println set.isEmpty(); // false
-println set.empty();   // false
+println d.toString(); // [1, 2, 3]
 
-// remove element
-set.remove(10);
+// addFirst effect
+d.addFirst(0);
+println d.toString(); // [0, 1, 2, 3]
 
-println set.isEmpty(); // true
-println set.empty();   // true
+// after remove
+d.removeLast();
+println d.toString(); // [0, 1, 2]
 
-// multiple operations
-set.add(1);
-set.add(2);
-set.clear();
+// duplicates
+d.clear();
 
-println set.isEmpty(); // true
-println set.empty();   // true
+d.addLast(7);
+d.addLast(7);
+d.addLast(7);
+
+println d.toString(); // [7, 7, 7]
+
+// mixed types
+d.clear();
+
+d.addLast(10);
+d.addLast("hello");
+d.addLast(true);
+
+println d.toString(); // [10, "hello", true]
+
+// clear
+d.clear();
+println d.toString(); // []

@@ -26,7 +26,7 @@ public class RemoveLastFn extends Function.NativeFunction {
             return new Variable.Variant(null);
         }
 
-        return deque.data.removeLast();
+        return new Variable.Variant(deque.data.removeLast().value);
     }
 
     @Override

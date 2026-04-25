@@ -23,7 +23,7 @@ public class AddFirstFn extends Function.NativeFunction {
         Variable.Variant value = arguments.getFirst();
         yArrayDeque.yArrayDequeInstance deque = yArrayDeque.requireArrayDequeThis(interpreter);
 
-        deque.data.addFirst(value);
+        deque.data.addFirst(new Variable.Variant(value.value));
 
         return new Variable.Variant(deque.data.size());
     }
