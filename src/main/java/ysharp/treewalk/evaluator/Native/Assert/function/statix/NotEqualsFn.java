@@ -23,7 +23,7 @@ public class NotEqualsFn extends Function.NativeFunction implements Callable {
         Variable.Variant a = arguments.getFirst();
         Variable.Variant b = arguments.get(1);
 
-        if (a.value.equals(b.value)) {
+        if (a.equals(b)) {
             throw new YsharpException(
                     YsharpException.YsharpErrorType.PROCESS,
                     0,

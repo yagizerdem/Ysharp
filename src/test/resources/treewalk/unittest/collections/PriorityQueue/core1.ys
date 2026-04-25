@@ -1,0 +1,1035 @@
+println "Priority queue core operations test started";
+
+println "enqueue test";
+
+var pq = new PriorityQueue();
+
+// -------------------- INITIAL --------------------
+Assert.isTrue(pq.isEmpty());
+
+// -------------------- SINGLE INSERT --------------------
+pq.enqueue(10, 5);
+
+Assert.equals(pq.size(), 1);
+Assert.equals(pq.peek(), 10);
+Assert.equals(pq.peekPriority(), 5);
+
+// -------------------- MULTIPLE INSERT --------------------
+pq.enqueue(20, 3);
+pq.enqueue(30, 7);
+
+// min-heap
+Assert.equals(pq.size(), 3);
+Assert.equals(pq.peek(), 20);
+Assert.equals(pq.peekPriority(), 3);
+
+// -------------------- ORDER CHECK --------------------
+Assert.equals(pq.dequeue(), 20);
+Assert.equals(pq.dequeue(), 10);
+Assert.equals(pq.dequeue(), 30);
+
+Assert.isTrue(pq.isEmpty());
+
+// -------------------- DUPLICATE VALUES --------------------
+pq.enqueue(5, 10);
+pq.enqueue(5, 1);
+pq.enqueue(5, 5);
+
+Assert.equals(pq.size(), 3);
+Assert.equals(pq.dequeue(), 5); // priority 1
+Assert.equals(pq.dequeue(), 5); // priority 5
+Assert.equals(pq.dequeue(), 5); // priority 10
+
+Assert.isTrue(pq.isEmpty());
+
+// -------------------- MIXED TYPES --------------------
+pq.enqueue(10, 5);
+pq.enqueue("hello", 2);
+pq.enqueue(true, 3);
+
+Assert.equals(pq.peek(), "hello");
+Assert.equals(pq.dequeue(), "hello");
+Assert.equals(pq.dequeue(), true);
+Assert.equals(pq.dequeue(), 10);
+
+Assert.isTrue(pq.isEmpty());
+
+// -------------------- SAME PRIORITY --------------------
+pq.enqueue(1, 5);
+pq.enqueue(2, 5);
+pq.enqueue(3, 5);
+
+Assert.equals(pq.size(), 3);
+
+var a = pq.dequeue();
+var b = pq.dequeue();
+var c = pq.dequeue();
+
+Assert.equals(pq.size(), 0);
+
+Assert.isTrue(a != null);
+Assert.isTrue(b != null);
+Assert.isTrue(c != null);
+
+// -------------------- NEGATIVE PRIORITY --------------------
+pq.enqueue("low", 100);
+pq.enqueue("high", -1);
+
+Assert.equals(pq.peek(), "high");
+Assert.equals(pq.dequeue(), "high");
+Assert.equals(pq.dequeue(), "low");
+
+Assert.isTrue(pq.isEmpty());
+
+// -------------------- NO SIDE EFFECT --------------------
+var before = pq.size();
+pq.peek();
+Assert.equals(pq.size(), before);
+
+println "-".repeat(50);
+
+
+println "addLast test";
+
+var d = new ArrayDeque();
+
+Assert.isTrue(d.isEmpty());
+
+d.addLast(10);
+Assert.equals(d.size(), 1);
+Assert.equals(d.peekFirst(), 10);
+Assert.equals(d.peekLast(), 10);
+
+d.addLast(20);
+d.addLast(30);
+
+Assert.equals(d.size(), 3);
+Assert.equals(d.peekFirst(), 10);
+Assert.equals(d.peekLast(), 30);
+
+Assert.equals(d.removeFirst(), 10);
+Assert.equals(d.removeFirst(), 20);
+Assert.equals(d.removeFirst(), 30);
+
+Assert.isTrue(d.isEmpty());
+
+d.addFirst(1);
+d.addLast(2);
+d.addFirst(0);
+d.addLast(3);
+
+Assert.equals(d.size(), 4);
+Assert.equals(d.peekFirst(), 0);
+Assert.equals(d.peekLast(), 3);
+
+d.clear();
+
+d.addLast(5);
+d.addLast(5);
+d.addLast(5);
+
+Assert.equals(d.size(), 3);
+
+Assert.equals(d.removeLast(), 5);
+Assert.equals(d.removeLast(), 5);
+Assert.equals(d.removeLast(), 5);
+
+Assert.isTrue(d.isEmpty());
+
+d.addLast(10);
+d.addLast("hello");
+d.addLast(true);
+
+Assert.equals(d.size(), 3);
+Assert.equals(d.peekFirst(), 10);
+Assert.equals(d.peekLast(), true);
+
+d.clear();
+Assert.isTrue(d.isEmpty());
+
+d.addLast(100);
+Assert.equals(d.peekLast(), 100);
+
+println "-".repeat(50);
+
+println "removeFirst test";
+
+var d = new ArrayDeque();
+
+// should throw when empty
+try do
+    d.removeFirst();
+    Assert.fail("removeFirst on empty should throw");
+end
+catch(e) do
+    Assert.isTrue(true);
+end
+
+// single element
+d.addLast(10);
+
+Assert.equals(d.removeFirst(), 10);
+Assert.isTrue(d.isEmpty());
+
+// multiple elements
+d.addLast(1);
+d.addLast(2);
+d.addLast(3);
+
+Assert.equals(d.removeFirst(), 1);
+Assert.equals(d.peekFirst(), 2);
+Assert.equals(d.size(), 2);
+
+// order check
+Assert.equals(d.removeFirst(), 2);
+Assert.equals(d.removeFirst(), 3);
+
+Assert.isTrue(d.isEmpty());
+
+// mix with addFirst
+d.addFirst(10);
+d.addFirst(20);
+d.addLast(30);
+
+Assert.equals(d.removeFirst(), 20);
+Assert.equals(d.removeFirst(), 10);
+Assert.equals(d.removeFirst(), 30);
+
+Assert.isTrue(d.isEmpty());
+
+// duplicates
+d.addLast(5);
+d.addLast(5);
+d.addLast(5);
+
+Assert.equals(d.removeFirst(), 5);
+Assert.equals(d.removeFirst(), 5);
+Assert.equals(d.removeFirst(), 5);
+
+Assert.isTrue(d.isEmpty());
+
+// mixed types
+d.addLast(10);
+d.addLast("hello");
+d.addLast(true);
+
+Assert.equals(d.removeFirst(), 10);
+Assert.equals(d.removeFirst(), "hello");
+Assert.equals(d.removeFirst(), true);
+
+Assert.isTrue(d.isEmpty());
+
+println "-".repeat(50);
+
+println "removeLast test";
+
+var d = new ArrayDeque();
+
+// should throw when empty
+try do
+    d.removeLast();
+    Assert.fail("removeLast on empty should throw");
+end
+catch(e) do
+    Assert.isTrue(true);
+end
+
+// single element
+d.addLast(10);
+
+Assert.equals(d.removeLast(), 10);
+Assert.isTrue(d.isEmpty());
+
+// multiple elements
+d.addLast(1);
+d.addLast(2);
+d.addLast(3);
+
+Assert.equals(d.removeLast(), 3);
+Assert.equals(d.peekLast(), 2);
+Assert.equals(d.size(), 2);
+
+// order check
+Assert.equals(d.removeLast(), 2);
+Assert.equals(d.removeLast(), 1);
+
+Assert.isTrue(d.isEmpty());
+
+// mix with addFirst
+d.addFirst(10);
+d.addFirst(20);
+d.addLast(30);
+
+Assert.equals(d.removeLast(), 30);
+Assert.equals(d.removeLast(), 10);
+Assert.equals(d.removeLast(), 20);
+
+Assert.isTrue(d.isEmpty());
+
+// duplicates
+d.addLast(5);
+d.addLast(5);
+d.addLast(5);
+
+Assert.equals(d.removeLast(), 5);
+Assert.equals(d.removeLast(), 5);
+Assert.equals(d.removeLast(), 5);
+
+Assert.isTrue(d.isEmpty());
+
+// mixed types
+d.addLast(10);
+d.addLast("hello");
+d.addLast(true);
+
+Assert.equals(d.removeLast(), true);
+Assert.equals(d.removeLast(), "hello");
+Assert.equals(d.removeLast(), 10);
+
+Assert.isTrue(d.isEmpty());
+
+println "-".repeat(50);
+
+
+println "peekFirst test";
+
+var d = new ArrayDeque();
+
+// should throw when empty
+try do
+    d.peekFirst();
+    Assert.fail("peekFirst on empty should throw");
+end
+catch(e) do
+    Assert.isTrue(true);
+end
+
+// single element
+d.addLast(10);
+
+Assert.equals(d.peekFirst(), 10);
+Assert.equals(d.size(), 1);
+
+// multiple elements
+d.addLast(20);
+d.addLast(30);
+
+Assert.equals(d.peekFirst(), 10);
+Assert.equals(d.size(), 3);
+
+// no removal effect
+var first = d.peekFirst();
+Assert.equals(first, 10);
+Assert.equals(d.size(), 3);
+
+// order check after remove
+Assert.equals(d.removeFirst(), 10);
+Assert.equals(d.peekFirst(), 20);
+Assert.equals(d.size(), 2);
+
+// mix with addFirst
+d.addFirst(5);
+d.addFirst(1);
+
+Assert.equals(d.peekFirst(), 1);
+Assert.equals(d.size(), 4);
+
+// duplicates
+d.clear();
+
+d.addLast(7);
+d.addLast(7);
+d.addLast(7);
+
+Assert.equals(d.peekFirst(), 7);
+Assert.equals(d.size(), 3);
+
+// mixed types
+d.clear();
+
+d.addLast(10);
+d.addLast("hello");
+d.addLast(true);
+
+Assert.equals(d.peekFirst(), 10);
+Assert.equals(d.size(), 3);
+
+println "-".repeat(50);
+
+
+println "peekLast test";
+
+var d = new ArrayDeque();
+
+// should throw when empty
+try do
+    d.peekLast();
+    Assert.fail("peekLast on empty should throw");
+end
+catch(e) do
+    Assert.isTrue(true);
+end
+
+// single element
+d.addLast(10);
+
+Assert.equals(d.peekLast(), 10);
+Assert.equals(d.size(), 1);
+
+// multiple elements
+d.addLast(20);
+d.addLast(30);
+
+Assert.equals(d.peekLast(), 30);
+Assert.equals(d.size(), 3);
+
+// no removal effect
+var last = d.peekLast();
+Assert.equals(last, 30);
+Assert.equals(d.size(), 3);
+
+// order check after remove
+Assert.equals(d.removeLast(), 30);
+Assert.equals(d.peekLast(), 20);
+Assert.equals(d.size(), 2);
+
+// mix with addFirst
+d.addFirst(5);
+d.addFirst(1);
+
+Assert.equals(d.peekLast(), 20);
+Assert.equals(d.size(), 4);
+
+// duplicates
+d.clear();
+
+d.addLast(7);
+d.addLast(7);
+d.addLast(7);
+
+Assert.equals(d.peekLast(), 7);
+Assert.equals(d.size(), 3);
+
+// mixed types
+d.clear();
+
+d.addLast(10);
+d.addLast("hello");
+d.addLast(true);
+
+Assert.equals(d.peekLast(), true);
+Assert.equals(d.size(), 3);
+
+println "-".repeat(50);
+
+
+println "contains test";
+
+var d = new ArrayDeque();
+
+// empty
+Assert.isTrue(!d.contains(10));
+
+// single element
+d.addLast(10);
+
+Assert.isTrue(d.contains(10));
+Assert.isTrue(!d.contains(20));
+
+// multiple elements
+d.addLast(20);
+d.addLast(30);
+
+Assert.isTrue(d.contains(10));
+Assert.isTrue(d.contains(20));
+Assert.isTrue(d.contains(30));
+Assert.isTrue(!d.contains(999));
+
+// no order dependency
+Assert.isTrue(d.contains(30));
+
+// after removal
+d.removeFirst();
+
+Assert.isTrue(!d.contains(10));
+Assert.isTrue(d.contains(20));
+Assert.isTrue(d.contains(30));
+
+// duplicates
+d.clear();
+
+d.addLast(5);
+d.addLast(5);
+d.addLast(5);
+
+Assert.isTrue(d.contains(5));
+
+d.removeFirst();
+Assert.isTrue(d.contains(5));
+
+d.removeFirst();
+d.removeFirst();
+
+Assert.isTrue(!d.contains(5));
+
+// mixed types
+d.addLast(10);
+d.addLast("hello");
+d.addLast(true);
+
+Assert.isTrue(d.contains(10));
+Assert.isTrue(d.contains("hello"));
+Assert.isTrue(d.contains(true));
+Assert.isTrue(!d.contains(false));
+
+// no side effect
+var before = d.size();
+d.contains(10);
+Assert.equals(d.size(), before);
+
+println "-".repeat(50);
+
+println "removeFirstOccurrence test";
+
+var d = new ArrayDeque();
+
+// empty
+Assert.isTrue(!d.removeFirstOccurrence(10));
+
+// single element
+d.addLast(10);
+
+Assert.isTrue(d.removeFirstOccurrence(10));
+Assert.isTrue(d.isEmpty());
+
+// not found
+d.addLast(1);
+d.addLast(2);
+d.addLast(3);
+
+Assert.isTrue(!d.removeFirstOccurrence(999));
+Assert.equals(d.size(), 3);
+
+// multiple elements
+d.clear();
+
+d.addLast(1);
+d.addLast(2);
+d.addLast(3);
+d.addLast(2);
+d.addLast(4);
+
+Assert.isTrue(d.removeFirstOccurrence(2));
+
+Assert.equals(d.size(), 4);
+Assert.equals(d.removeFirst(), 1);
+Assert.equals(d.removeFirst(), 3);
+Assert.equals(d.removeFirst(), 2);
+Assert.equals(d.removeFirst(), 4);
+
+Assert.isTrue(d.isEmpty());
+
+// remove head
+d.addLast(5);
+d.addLast(6);
+d.addLast(7);
+
+Assert.isTrue(d.removeFirstOccurrence(5));
+
+Assert.equals(d.peekFirst(), 6);
+Assert.equals(d.size(), 2);
+
+// remove tail
+Assert.isTrue(d.removeFirstOccurrence(7));
+
+Assert.equals(d.peekLast(), 6);
+Assert.equals(d.size(), 1);
+
+// duplicates
+d.clear();
+
+d.addLast(9);
+d.addLast(9);
+d.addLast(9);
+
+Assert.isTrue(d.removeFirstOccurrence(9));
+
+Assert.equals(d.size(), 2);
+Assert.equals(d.removeFirst(), 9);
+Assert.equals(d.removeFirst(), 9);
+
+Assert.isTrue(d.isEmpty());
+
+// mixed types
+d.addLast(10);
+d.addLast("hello");
+d.addLast(true);
+
+Assert.isTrue(d.removeFirstOccurrence("hello"));
+Assert.isTrue(!d.contains("hello"));
+Assert.equals(d.size(), 2);
+
+// no side effect when not found
+var before = d.size();
+
+Assert.isTrue(!d.removeFirstOccurrence("world"));
+Assert.equals(d.size(), before);
+
+println "-".repeat(50);
+
+
+println "removeLastOccurrence test";
+
+var d = new ArrayDeque();
+
+// empty
+Assert.isTrue(!d.removeLastOccurrence(10));
+
+// single element
+d.addLast(10);
+
+Assert.isTrue(d.removeLastOccurrence(10));
+Assert.isTrue(d.isEmpty());
+
+// not found
+d.addLast(1);
+d.addLast(2);
+d.addLast(3);
+
+Assert.isTrue(!d.removeLastOccurrence(999));
+Assert.equals(d.size(), 3);
+
+// multiple elements
+d.clear();
+
+d.addLast(1);
+d.addLast(2);
+d.addLast(3);
+d.addLast(2);
+d.addLast(4);
+
+Assert.isTrue(d.removeLastOccurrence(2));
+
+Assert.equals(d.size(), 4);
+Assert.equals(d.removeFirst(), 1);
+Assert.equals(d.removeFirst(), 2);
+Assert.equals(d.removeFirst(), 3);
+Assert.equals(d.removeFirst(), 4);
+
+Assert.isTrue(d.isEmpty());
+
+// remove tail
+d.addLast(5);
+d.addLast(6);
+d.addLast(7);
+
+Assert.isTrue(d.removeLastOccurrence(7));
+
+Assert.equals(d.peekLast(), 6);
+Assert.equals(d.size(), 2);
+
+// remove head
+Assert.isTrue(d.removeLastOccurrence(5));
+
+Assert.equals(d.peekFirst(), 6);
+Assert.equals(d.size(), 1);
+
+// duplicates
+d.clear();
+
+d.addLast(9);
+d.addLast(9);
+d.addLast(9);
+
+Assert.isTrue(d.removeLastOccurrence(9));
+
+Assert.equals(d.size(), 2);
+Assert.equals(d.removeLast(), 9);
+Assert.equals(d.removeLast(), 9);
+
+Assert.isTrue(d.isEmpty());
+
+// mixed types
+d.addLast(10);
+d.addLast("hello");
+d.addLast(true);
+
+Assert.isTrue(d.removeLastOccurrence("hello"));
+Assert.isTrue(!d.contains("hello"));
+Assert.equals(d.size(), 2);
+
+// no side effect when not found
+var before = d.size();
+
+Assert.isTrue(!d.removeLastOccurrence("world"));
+Assert.equals(d.size(), before);
+
+println "-".repeat(50);
+
+
+println "size test";
+
+var d = new ArrayDeque();
+
+// initial
+Assert.equals(d.size(), 0);
+
+// after single add
+d.addLast(10);
+Assert.equals(d.size(), 1);
+
+// multiple adds
+d.addFirst(20);
+d.addLast(30);
+
+Assert.equals(d.size(), 3);
+
+// after remove
+d.removeFirst();
+Assert.equals(d.size(), 2);
+
+d.removeLast();
+Assert.equals(d.size(), 1);
+
+// duplicates
+d.clear();
+
+d.addLast(5);
+d.addLast(5);
+d.addLast(5);
+
+Assert.equals(d.size(), 3);
+
+// mixed types
+d.clear();
+
+d.addLast(10);
+d.addLast("hello");
+d.addLast(true);
+
+Assert.equals(d.size(), 3);
+
+// after clear
+d.clear();
+Assert.equals(d.size(), 0);
+
+// no side effect
+var before = d.size();
+d.size();
+Assert.equals(d.size(), before);
+
+println "-".repeat(50);
+
+
+println "isEmpty test";
+
+var d = new ArrayDeque();
+
+// initial
+Assert.isTrue(d.isEmpty());
+
+// after add
+d.addLast(10);
+Assert.isTrue(!d.isEmpty());
+
+// after remove
+d.removeFirst();
+Assert.isTrue(d.isEmpty());
+
+// multiple operations
+d.addLast(1);
+d.addLast(2);
+d.addFirst(3);
+
+Assert.isTrue(!d.isEmpty());
+
+d.removeFirst();
+d.removeLast();
+d.removeFirst();
+
+Assert.isTrue(d.isEmpty());
+
+// after clear
+d.addLast(100);
+d.addLast(200);
+
+d.clear();
+Assert.isTrue(d.isEmpty());
+
+// no side effect
+var before = d.isEmpty();
+d.isEmpty();
+Assert.equals(d.isEmpty(), before);
+
+println "-".repeat(50);
+
+println "clear test";
+
+var d = new ArrayDeque();
+
+// initial
+d.clear();
+Assert.isTrue(d.isEmpty());
+Assert.equals(d.size(), 0);
+
+// after add
+d.addLast(10);
+d.addLast(20);
+d.addFirst(5);
+
+Assert.equals(d.size(), 3);
+
+// clear
+d.clear();
+
+Assert.isTrue(d.isEmpty());
+Assert.equals(d.size(), 0);
+
+// reuse after clear
+d.addLast(100);
+Assert.equals(d.size(), 1);
+Assert.equals(d.peekFirst(), 100);
+
+// multiple clears
+d.clear();
+d.clear();
+
+Assert.isTrue(d.isEmpty());
+Assert.equals(d.size(), 0);
+
+// mixed types
+d.addLast(10);
+d.addLast("hello");
+d.addLast(true);
+
+Assert.equals(d.size(), 3);
+
+d.clear();
+
+Assert.isTrue(d.isEmpty());
+Assert.equals(d.size(), 0);
+
+// no side effect
+var before = d.size();
+d.clear();
+Assert.equals(d.size(), before);
+
+println "-".repeat(50);
+
+println "toArray test";
+
+var d = new ArrayDeque();
+
+// empty
+var arr = d.toArray();
+Assert.equals(arr.size(), 0);
+
+// basic order
+d.addLast(1);
+d.addLast(2);
+d.addLast(3);
+
+var arr = d.toArray();
+
+Assert.equals(arr.size(), 3);
+Assert.equals(arr.get(0), 1);
+Assert.equals(arr.get(1), 2);
+Assert.equals(arr.get(2), 3);
+
+// addFirst effect
+d.clear();
+
+d.addLast(10);
+d.addLast(20);
+d.addFirst(5);
+
+var arr = d.toArray();
+
+Assert.equals(arr.size(), 3);
+Assert.equals(arr.get(0), 5);
+Assert.equals(arr.get(1), 10);
+Assert.equals(arr.get(2), 20);
+
+// after remove
+d.removeFirst();
+
+var arr = d.toArray();
+
+Assert.equals(arr.size(), 2);
+Assert.equals(arr.get(0), 10);
+Assert.equals(arr.get(1), 20);
+
+// duplicates
+d.clear();
+
+d.addLast(7);
+d.addLast(7);
+d.addLast(7);
+
+var arr = d.toArray();
+
+Assert.equals(arr.size(), 3);
+Assert.equals(arr.get(0), 7);
+Assert.equals(arr.get(1), 7);
+Assert.equals(arr.get(2), 7);
+
+// mixed types
+d.clear();
+
+d.addLast(10);
+d.addLast("hello");
+d.addLast(true);
+
+var arr = d.toArray();
+
+Assert.equals(arr.size(), 3);
+Assert.equals(arr.get(0), 10);
+Assert.equals(arr.get(1), "hello");
+Assert.equals(arr.get(2), true);
+
+// independence check
+var arr = d.toArray();
+
+d.addLast(999);
+
+Assert.equals(arr.size(), 3);
+
+// after clear
+d.clear();
+
+var arr = d.toArray();
+
+Assert.equals(arr.size(), 0);
+
+println "-".repeat(50);
+
+println "clone test";
+
+var d1 = new ArrayDeque();
+
+// empty clone
+var d2 = d1.clone();
+
+Assert.isTrue(d2.isEmpty());
+Assert.equals(d2.size(), 0);
+
+// basic clone
+d1.addLast(1);
+d1.addLast(2);
+d1.addLast(3);
+
+var d2 = d1.clone();
+
+Assert.equals(d1.size(), 3);
+Assert.equals(d2.size(), 3);
+
+Assert.equals(d2.peekFirst(), 1);
+Assert.equals(d2.peekLast(), 3);
+
+// independence
+d1.addLast(4);
+
+Assert.equals(d1.size(), 4);
+Assert.equals(d2.size(), 3);
+
+Assert.equals(d2.peekLast(), 3);
+
+// modify clone
+d2.addFirst(0);
+
+Assert.equals(d2.peekFirst(), 0);
+Assert.equals(d1.peekFirst(), 1);
+
+// order preserved
+Assert.equals(d2.removeFirst(), 0);
+Assert.equals(d2.removeFirst(), 1);
+Assert.equals(d2.removeFirst(), 2);
+Assert.equals(d2.removeFirst(), 3);
+
+Assert.isTrue(d2.isEmpty());
+
+// duplicates
+d1.clear();
+
+d1.addLast(5);
+d1.addLast(5);
+d1.addLast(5);
+
+var d2 = d1.clone();
+
+Assert.equals(d2.size(), 3);
+
+Assert.equals(d2.removeFirst(), 5);
+Assert.equals(d2.removeFirst(), 5);
+Assert.equals(d2.removeFirst(), 5);
+
+// mixed types
+d1.clear();
+
+d1.addLast(10);
+d1.addLast("hello");
+d1.addLast(true);
+
+var d2 = d1.clone();
+
+Assert.equals(d2.size(), 3);
+Assert.equals(d2.removeFirst(), 10);
+Assert.equals(d2.removeFirst(), "hello");
+Assert.equals(d2.removeFirst(), true);
+
+Assert.isTrue(d2.isEmpty());
+
+println "-".repeat(50);
+
+println "toString test";
+
+var d = new ArrayDeque();
+
+// empty
+Assert.equals(d.toString(), "[]");
+
+// basic order
+d.addLast(1);
+d.addLast(2);
+d.addLast(3);
+
+Assert.equals(d.toString(), "[1, 2, 3]");
+
+// addFirst effect
+d.addFirst(0);
+Assert.equals(d.toString(), "[0, 1, 2, 3]");
+
+// after remove
+d.removeLast();
+Assert.equals(d.toString(), "[0, 1, 2]");
+
+// duplicates
+d.clear();
+
+d.addLast(7);
+d.addLast(7);
+d.addLast(7);
+
+Assert.equals(d.toString(), "[7, 7, 7]");
+
+// mixed types
+d.clear();
+
+d.addLast(10);
+d.addLast("hello");
+d.addLast(true);
+
+Assert.equals(d.toString(), "[10, hello, true]");
+
+// after clear
+d.clear();
+Assert.equals(d.toString(), "[]");
+
+// no side effect
+var before = d.toString();
+d.toString();
+Assert.equals(d.toString(), before);
+
+println "-".repeat(50);
+
+println "Priority queue core operations test successful";

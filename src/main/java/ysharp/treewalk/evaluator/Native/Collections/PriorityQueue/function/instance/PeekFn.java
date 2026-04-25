@@ -26,7 +26,7 @@ public class PeekFn extends Function.NativeFunction {
             return new Variable.Variant(null);
         }
 
-        return pq.heap.getFirst().value;
+        return new Variable.Variant(pq.heap.getFirst().value.value);
     }
 
     @Override

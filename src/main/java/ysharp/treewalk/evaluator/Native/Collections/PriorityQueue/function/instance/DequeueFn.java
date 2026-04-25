@@ -36,7 +36,7 @@ public class DequeueFn extends Function.NativeFunction {
             pq.siftDown(0);
         }
 
-        return top.value;
+        return new Variable.Variant(top.value.value);
     }
 
     @Override
