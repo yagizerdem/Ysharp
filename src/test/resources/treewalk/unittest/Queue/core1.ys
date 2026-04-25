@@ -1,0 +1,149 @@
+println "Queue core operations test started";
+
+println "-".repeat(50);
+
+// -------------------- ENQUEUE / DEQUEUE --------------------
+println "enqueue / dequeue tests";
+
+var q = new Queue();
+
+q.enqueue(10);
+q.enqueue(20);
+q.enqueue(30);
+
+Assert.equals(q.size(), 3);
+
+var val = q.dequeue();
+
+Assert.equals(val, 10);
+Assert.equals(q.size(), 2);
+Assert.equals(q.peek(), 20);
+
+println "-".repeat(50);
+
+// -------------------- PEEK --------------------
+println "peek tests";
+
+Assert.equals(q.peek(), 20);
+
+q.dequeue(); // 20
+q.dequeue(); // 30
+
+println "peek on empty";
+
+try do
+    q.peek();
+    Assert.fail("peek on empty should throw");
+end
+catch(e) do
+    Assert.isTrue(true);
+end
+
+println "-".repeat(50);
+
+// -------------------- POLL --------------------
+println "poll tests";
+
+var q = new Queue();
+
+println q.poll(); // null
+
+q.enqueue(1);
+q.enqueue(2);
+
+Assert.equals(q.poll(), 1);
+Assert.equals(q.poll(), 2);
+Assert.equals(q.poll(), null);
+
+println "-".repeat(50);
+
+// -------------------- EMPTY --------------------
+println "empty tests";
+
+var q = new Queue();
+
+Assert.isTrue(q.empty());
+Assert.isTrue(q.isEmpty());
+
+q.enqueue(1);
+
+Assert.isTrue(!q.empty());
+Assert.isTrue(!q.isEmpty());
+
+q.dequeue();
+
+Assert.isTrue(q.empty());
+
+println "-".repeat(50);
+
+// -------------------- SIZE --------------------
+println "size tests";
+
+var q = new Queue();
+
+Assert.equals(q.size(), 0);
+
+q.enqueue(10);
+q.enqueue(20);
+
+Assert.equals(q.size(), 2);
+
+q.dequeue();
+
+Assert.equals(q.size(), 1);
+
+println "-".repeat(50);
+
+// -------------------- FIFO ORDER --------------------
+println "FIFO order test";
+
+var q = new Queue();
+
+for var i = 0; i < 5; i++ do
+    q.enqueue(i);
+end
+
+for var i = 0; i < 5; i++ do
+    Assert.equals(q.dequeue(), i);
+end
+
+println "-".repeat(50);
+
+// -------------------- INTERACTION TEST --------------------
+println "interaction test";
+
+var q = new Queue();
+
+q.enqueue(1);
+q.enqueue(2);
+q.enqueue(3);
+
+q.dequeue(); // [2,3]
+q.enqueue(4); // [2,3,4]
+
+Assert.equals(q.peek(), 2);
+Assert.equals(q.dequeue(), 2);
+Assert.equals(q.dequeue(), 3);
+Assert.equals(q.dequeue(), 4);
+
+println "-".repeat(50);
+
+// -------------------- STRESS TEST --------------------
+println "stress test";
+
+var q = new Queue();
+
+for var i = 0; i < 1000; i++ do
+    q.enqueue(i);
+end
+
+for var i = 0; i < 500; i++ do
+    q.dequeue();
+end
+
+Assert.equals(q.size(), 500);
+Assert.equals(q.peek(), 500);
+
+println "-".repeat(50);
+
+println "Queue core operations test successful";

@@ -1,0 +1,163 @@
+println "Stack core operations test started";
+
+println "-".repeat(50);
+
+// -------------------- PUSH / POP --------------------
+println "push / pop tests";
+
+var stack = new Stack();
+
+stack.push(10);
+stack.push(20);
+stack.push(30);
+
+Assert.equals(stack.size(), 3);
+
+var val = stack.pop();
+
+Assert.equals(val, 30);
+Assert.equals(stack.size(), 2);
+Assert.equals(stack.peek(), 20);
+
+println "-".repeat(50);
+
+// -------------------- PEEK --------------------
+println "peek tests";
+
+Assert.equals(stack.peek(), 20);
+
+stack.pop(); // 20
+stack.pop(); // 10
+
+println "peek on empty";
+
+try do
+    stack.peek();
+    Assert.fail("peek on empty should throw");
+end
+catch(e) do
+    Assert.isTrue(true);
+end
+
+println "-".repeat(50);
+
+// -------------------- EMPTY --------------------
+println "empty tests";
+
+var stack = new Stack();
+
+Assert.isTrue(stack.empty());
+
+stack.push(1);
+Assert.isTrue(!stack.empty());
+
+stack.pop();
+Assert.isTrue(stack.empty());
+
+println "-".repeat(50);
+
+// -------------------- CONTAINS --------------------
+println "contains tests";
+
+stack.push(10);
+stack.push(20);
+
+Assert.isTrue(stack.contains(10));
+Assert.isTrue(!stack.contains(99));
+
+println "-".repeat(50);
+
+// -------------------- SEARCH --------------------
+println "search tests";
+
+stack.clear();
+
+stack.push(5);
+stack.push(10);
+stack.push(15);
+
+// Java Stack mantığı: top = 1
+Assert.equals(stack.search(15), 1);
+Assert.equals(stack.search(10), 2);
+Assert.equals(stack.search(5), 3);
+Assert.equals(stack.search(99), -1);
+
+println "-".repeat(50);
+
+// -------------------- CLEAR --------------------
+println "clear tests";
+
+stack.clear();
+
+Assert.equals(stack.size(), 0);
+Assert.isTrue(stack.empty());
+
+println "-".repeat(50);
+
+// -------------------- CLONE --------------------
+println "clone tests";
+
+stack.push(1);
+stack.push(2);
+stack.push(3);
+
+var cloned = stack.clone();
+
+Assert.equals(cloned.size(), 3);
+Assert.equals(cloned.peek(), 3);
+
+cloned.pop();
+Assert.equals(stack.size(), 3); // original unaffected
+
+println "-".repeat(50);
+
+// -------------------- REVERSE --------------------
+println "reverse tests";
+
+stack.clear();
+
+stack.push(1);
+stack.push(2);
+stack.push(3); // top = 3
+
+stack = stack.reverse();
+
+Assert.equals(stack.pop(), 1);
+Assert.equals(stack.pop(), 2);
+Assert.equals(stack.pop(), 3);
+
+println "-".repeat(50);
+
+// -------------------- TO ARRAY --------------------
+println "toArray tests";
+
+stack.push(10);
+stack.push(20);
+
+var arr = stack.toArray();
+
+Assert.equals(arr.size(), 2);
+Assert.equals(arr.get(0), 10);
+Assert.equals(arr.get(1), 20);
+
+println "-".repeat(50);
+
+// -------------------- STRESS TEST --------------------
+println "stress test";
+
+var stack = new Stack();
+
+for var i = 0; i < 1000; i++ do
+    stack.push(i);
+end
+
+for var i = 0; i < 500; i++ do
+    stack.pop();
+end
+
+Assert.equals(stack.size(), 500);
+Assert.equals(stack.peek(), 499);
+
+println "-".repeat(50);
+
+println "Stack core operations test successful";

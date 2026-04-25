@@ -68,7 +68,7 @@ fruits.push("peach");
 println fruits.size(); // 3
 ````
 
-## References
+## Reference
 
 ### Instance methods
 

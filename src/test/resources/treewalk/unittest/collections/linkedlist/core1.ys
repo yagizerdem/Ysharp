@@ -1,0 +1,148 @@
+println "LinkedList core operations test started";
+
+println "-".repeat(50);
+
+// -------------------- ADD FIRST / LAST --------------------
+println "addFirst / addLast tests";
+
+var list = new LinkedList();
+
+list.addFirst(10); // [10]
+list.addLast(20);  // [10,20]
+list.addFirst(5);  // [5,10,20]
+
+Assert.equals(list.size(), 3);
+Assert.equals(list.get(0), 5);
+Assert.equals(list.get(1), 10);
+Assert.equals(list.get(2), 20);
+
+println "-".repeat(50);
+
+// -------------------- PEEK --------------------
+println "peek tests";
+
+Assert.equals(list.peekFirst(), 5);
+Assert.equals(list.peekLast(), 20);
+
+println "-".repeat(50);
+
+// -------------------- REMOVE FIRST / LAST --------------------
+println "removeFirst / removeLast tests";
+
+list.removeFirst(); // [10,20]
+Assert.equals(list.get(0), 10);
+
+list.removeLast(); // [10]
+Assert.equals(list.size(), 1);
+Assert.equals(list.get(0), 10);
+
+println "remove until empty";
+
+list.removeFirst(); // []
+Assert.isTrue(list.isEmpty());
+
+println "remove on empty";
+try do
+    list.removeFirst();
+    Assert.fail("removeFirst on empty should throw");
+end
+catch(e) do
+    Assert.isTrue(true);
+end
+
+println "-".repeat(50);
+
+// -------------------- GET / SET --------------------
+println "get / set tests";
+
+var list = new LinkedList();
+
+list.addLast(1);
+list.addLast(2);
+list.addLast(3);
+
+Assert.equals(list.get(1), 2);
+
+list.set(1, 99);
+Assert.equals(list.get(1), 99);
+
+println "invalid index";
+
+try do
+    list.get(10);
+    Assert.fail("get out of bounds should throw");
+end
+catch(e) do
+    Assert.isTrue(true);
+end
+
+println "-".repeat(50);
+
+// -------------------- CONTAINS / INDEXOF --------------------
+println "contains / indexOf tests";
+
+Assert.isTrue(list.contains(99));
+Assert.equals(list.indexOf(99), 1);
+Assert.equals(list.indexOf(123), -1);
+
+println "-".repeat(50);
+
+// -------------------- CLEAR --------------------
+println "clear tests";
+
+list.clear();
+
+Assert.equals(list.size(), 0);
+Assert.isTrue(list.isEmpty());
+
+println "-".repeat(50);
+
+// -------------------- TO ARRAY --------------------
+println "toArray tests";
+
+list.addLast(1);
+list.addLast(2);
+list.addLast(3);
+
+var arr = list.toArray();
+
+Assert.equals(arr.size(), 3);
+Assert.equals(arr.get(0), 1);
+Assert.equals(arr.get(1), 2);
+Assert.equals(arr.get(2), 3);
+
+println "-".repeat(50);
+
+// -------------------- CLONE --------------------
+println "clone tests";
+
+var cloned = list.clone();
+
+Assert.equals(cloned.get(0), 1);
+Assert.equals(cloned.get(1), 2);
+Assert.equals(cloned.get(2), 3);
+
+cloned.set(0, 999);
+Assert.equals(list.get(0), 1); // shallow copy check
+
+println "-".repeat(50);
+
+// -------------------- STRESS TEST --------------------
+println "stress test";
+
+var list = new LinkedList();
+
+for var i = 0; i < 1000; i++ do
+    list.addLast(i);
+end
+
+for var i = 0; i < 500; i++ do
+    list.removeFirst();
+end
+
+Assert.equals(list.size(), 500);
+Assert.equals(list.get(0), 500);
+
+println "-".repeat(50);
+
+println "LinkedList core operations test successful";

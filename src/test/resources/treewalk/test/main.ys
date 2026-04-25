@@ -1,6 +1,7 @@
+var queue = new Queue();
 
+queue.enqueue(10);
+queue.enqueue(20);
+queue.enqueue(30);
 
-
-
-
-
+println queue.toString(); // [ 10, 20, 30 ]
