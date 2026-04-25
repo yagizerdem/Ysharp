@@ -1,39 +1,31 @@
-// basic failure
-try do
-    Assert.fail("this should fail");
-end
-catch(e) do
-    println "caught"; // expected
-end
+println "Rock Paper Scissors in Ysharp!";
 
-// without message
-try do
-    Assert.fail();
-end
-catch(e) do
-    println "caught"; // expected
-end
+var moves = ["rock", "paper", "scissors"];
 
-// conditional failure
-var value = 10;
+var beats = {
+    "rock": "scissors",
+    "paper": "rock",
+    "scissors": "paper"
+};
 
-try do
-    if value != 20 then do
-        Assert.fail("unexpected value");
+while(true) do
+    print("\nMake your move: ");
+    var user = __input();
+
+    if user == "q" then do break; end
+
+    if !moves.contains(user) then do
+        print("Invalid move! Valid moves are: ");
+        println(moves);
+        continue;
     end
-end
-catch(e) do
-    println "caught";
-end
 
-// inside test logic
-var pq = new PriorityQueue();
+    var computer = moves.get(Random.nextInt(0, moves.size()));
 
-try do
-    if pq.isEmpty() then do
-        Assert.fail("queue should not be empty here");
-    end
-end
-catch(e) do
-    println "caught";
+    println "\nYour move: " + user ;
+    println "Computer's move: " + computer;
+
+    if beats.get(computer) == user then do println "\nComputer wins!"; end
+    if beats.get(user) == computer then do println "\nYou win!"; end
+    if user == computer then do println "\nIt's a draw!"; end
 end
