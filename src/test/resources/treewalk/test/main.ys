@@ -1,7 +1,25 @@
-var queue = new Queue();
+var set = new Set();
 
-queue.enqueue(10);
-queue.enqueue(20);
-queue.enqueue(30);
+// empty set
+println set.isEmpty(); // true
+println set.empty();   // true
 
-println queue.toString(); // [ 10, 20, 30 ]
+// add element
+set.add(10);
+
+println set.isEmpty(); // false
+println set.empty();   // false
+
+// remove element
+set.remove(10);
+
+println set.isEmpty(); // true
+println set.empty();   // true
+
+// multiple operations
+set.add(1);
+set.add(2);
+set.clear();
+
+println set.isEmpty(); // true
+println set.empty();   // true

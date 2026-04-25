@@ -260,7 +260,15 @@ public class Variable {
 
         @Override
         public int hashCode() {
-            return value == null ? 0 : value.hashCode();
+            if (value == null) return 0;
+
+            if (isNumber()) {
+                double d = implicitlyConvertNumber();
+                long rounded = Math.round(d * 1e9);
+                return Long.hashCode(rounded);
+            }
+
+            return value.hashCode();
         }
 
         @Override

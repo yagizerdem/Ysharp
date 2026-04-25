@@ -20,8 +20,14 @@ public class ContainsFn extends Function.NativeFunction {
             throws YsharpException {
 
         ySet.ySetInstance set = ySet.requireSetThis(interpreter);
-        return new Variable.Variant(
-                set.data.contains(arguments.getFirst()));
+
+        for(var data : set.data) {
+            if(data.equals(arguments.getFirst())) {
+                return  new Variable.Variant(true);
+            }
+        }
+
+        return  new Variable.Variant(false);
     }
 
     @Override

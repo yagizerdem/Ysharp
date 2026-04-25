@@ -23,8 +23,11 @@ public class CloneFn extends Function.NativeFunction {
         ySet.ySetInstance set = ySet.requireSetThis(interpreter);
 
         // shallow copy
-        HashSet<Variable.Variant> clonedData =
-                new HashSet<>(set.data);
+        HashSet<Variable.Variant> clonedData = new HashSet<>();
+
+        for(var variant : set.data) {
+            clonedData.add(new Variable.Variant(variant.value));
+        }
 
         ySet.ySetInstance newSet =
                 new ySet.ySetInstance(clonedData);

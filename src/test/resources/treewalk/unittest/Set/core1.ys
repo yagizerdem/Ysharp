@@ -1,0 +1,185 @@
+println "Set core operations test started";
+
+println "-".repeat(50);
+
+// -------------------- ADD / SIZE --------------------
+println "add / size tests";
+
+var s = new Set();
+
+s.add(10);
+s.add(20);
+s.add(30);
+s.add(10); // duplicate
+
+Assert.equals(s.size(), 3);
+
+println "-".repeat(50);
+
+// -------------------- CONTAINS --------------------
+println "contains tests";
+
+Assert.isTrue(s.contains(10));
+Assert.isTrue(s.contains(20));
+Assert.isTrue(!s.contains(999));
+
+println "-".repeat(50);
+
+// -------------------- REMOVE --------------------
+println "remove tests";
+
+s.remove(20);
+
+Assert.equals(s.size(), 2);
+Assert.isTrue(!s.contains(20));
+
+println "-".repeat(50);
+
+// -------------------- CLEAR --------------------
+println "clear tests";
+
+s.clear();
+
+Assert.equals(s.size(), 0);
+Assert.isTrue(s.empty());
+Assert.isTrue(!s.contains(10));
+
+println "-".repeat(50);
+
+// -------------------- CLONE --------------------
+println "clone tests";
+
+var s1 = new Set();
+s1.add(1);
+s1.add(2);
+
+var s2 = s1.clone();
+
+Assert.equals(s2.size(), 2);
+Assert.isTrue(s2.contains(1));
+Assert.isTrue(s2.contains(2));
+
+s1.add(3);
+
+Assert.isTrue(!s2.contains(3)); // clone bağımsız olmalı
+
+println "-".repeat(50);
+
+// -------------------- UNION --------------------
+println "union tests";
+
+var a = new Set();
+a.add(1);
+a.add(2);
+
+var b = new Set();
+b.add(2);
+b.add(3);
+
+var u = a.union(b);
+
+Assert.equals(u.size(), 3);
+Assert.isTrue(u.contains(1));
+Assert.isTrue(u.contains(2));
+Assert.isTrue(u.contains(3));
+
+println "-".repeat(50);
+
+// -------------------- INTERSECTION --------------------
+println "intersection tests";
+
+var i = a.intersection(b);
+
+Assert.equals(i.size(), 1);
+Assert.isTrue(i.contains(2));
+
+println "-".repeat(50);
+
+// -------------------- DIFFERENCE --------------------
+println "difference tests";
+
+var d = a.difference(b);
+
+Assert.equals(d.size(), 1);
+Assert.isTrue(d.contains(1));
+
+println "-".repeat(50);
+
+// -------------------- SUBSET / SUPERSET --------------------
+println "subset / superset tests";
+
+var s1 = new Set();
+s1.add(1);
+s1.add(2);
+
+var s2 = new Set();
+s2.add(1);
+s2.add(2);
+s2.add(3);
+
+Assert.isTrue(s1.isSubsetOf(s2));
+Assert.isTrue(s2.isSupersetOf(s1));
+Assert.isTrue(!s2.isSubsetOf(s1));
+
+println "-".repeat(50);
+
+// -------------------- EQUALS --------------------
+println "equals tests";
+
+var x = new Set();
+x.add(1);
+x.add(2);
+
+var y = new Set();
+y.add(2);
+y.add(1);
+
+Assert.isTrue(x.equals(y));
+
+y.add(3);
+
+Assert.isTrue(!x.equals(y));
+
+println "-".repeat(50);
+
+// -------------------- EMPTY --------------------
+println "empty tests";
+
+var s = new Set();
+
+Assert.isTrue(s.empty());
+
+s.add(1);
+
+Assert.isTrue(!s.empty());
+
+println "-".repeat(50);
+
+// -------------------- STRESS TEST --------------------
+println "stress test";
+
+var s = new Set();
+
+for var i = 0; i < 1000; i++ do
+    s.add(i);
+end
+
+Assert.equals(s.size(), 1000);
+
+for var i = 0; i < 500; i++ do
+    s.remove(i);
+end
+
+Assert.equals(s.size(), 500);
+
+for var i = 0; i < 500; i++ do
+    Assert.isTrue(!s.contains(i));
+end
+
+for var i = 500; i < 1000; i++ do
+    Assert.isTrue(s.contains(i));
+end
+
+println "-".repeat(50);
+
+println "Set core operations test successful";

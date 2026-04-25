@@ -20,7 +20,7 @@ public class AddFn extends Function.NativeFunction {
             throws YsharpException {
 
         ySet.ySetInstance set = ySet.requireSetThis(interpreter);
-        set.data.add(arguments.getFirst());
+        set.data.add(new Variable.Variant(arguments.getFirst().value));
 
         return new Variable.Variant(set.data.size());
     }
