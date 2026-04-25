@@ -29,7 +29,7 @@ public class EqualsFn extends Function.NativeFunction implements Callable {
             return new Variable.Variant(a.value == null && b.value == null);
         }
 
-        if (!a.value.equals(b.value)) {
+        if (!a.equals(b)) {
             throw new YsharpException(
                     YsharpException.YsharpErrorType.PROCESS,
                     0,

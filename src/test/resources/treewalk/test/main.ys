@@ -1,41 +1,39 @@
-var d = new ArrayDeque();
+// basic failure
+try do
+    Assert.fail("this should fail");
+end
+catch(e) do
+    println "caught"; // expected
+end
 
-// empty
-println d.toString(); // []
+// without message
+try do
+    Assert.fail();
+end
+catch(e) do
+    println "caught"; // expected
+end
 
-// basic usage
-d.addLast(1);
-d.addLast(2);
-d.addLast(3);
+// conditional failure
+var value = 10;
 
-println d.toString(); // [1, 2, 3]
+try do
+    if value != 20 then do
+        Assert.fail("unexpected value");
+    end
+end
+catch(e) do
+    println "caught";
+end
 
-// addFirst effect
-d.addFirst(0);
-println d.toString(); // [0, 1, 2, 3]
+// inside test logic
+var pq = new PriorityQueue();
 
-// after remove
-d.removeLast();
-println d.toString(); // [0, 1, 2]
-
-// duplicates
-d.clear();
-
-d.addLast(7);
-d.addLast(7);
-d.addLast(7);
-
-println d.toString(); // [7, 7, 7]
-
-// mixed types
-d.clear();
-
-d.addLast(10);
-d.addLast("hello");
-d.addLast(true);
-
-println d.toString(); // [10, "hello", true]
-
-// clear
-d.clear();
-println d.toString(); // []
+try do
+    if pq.isEmpty() then do
+        Assert.fail("queue should not be empty here");
+    end
+end
+catch(e) do
+    println "caught";
+end
