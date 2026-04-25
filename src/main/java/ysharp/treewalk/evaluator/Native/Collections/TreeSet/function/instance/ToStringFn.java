@@ -5,6 +5,7 @@ import ysharp.treewalk.evaluator.Function;
 import ysharp.treewalk.evaluator.Interpreter;
 import ysharp.treewalk.evaluator.Native.Collections.TreeSet.yTreeSet;
 import ysharp.treewalk.evaluator.Variable;
+import ysharp.treewalk.evaluator.yString;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class ToStringFn extends Function.NativeFunction {
 
         sb.append("]");
 
-        return new Variable.Variant(sb.toString());
+        return new Variable.Variant(new yString.yStringInstance(sb.toString()));
     }
 
     @Override

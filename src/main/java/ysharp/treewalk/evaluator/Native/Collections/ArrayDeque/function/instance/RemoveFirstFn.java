@@ -26,7 +26,7 @@ public class RemoveFirstFn extends Function.NativeFunction {
             return new Variable.Variant(null);
         }
 
-        return deque.data.removeFirst();
+        return new Variable.Variant(deque.data.removeFirst().value);
     }
 
     @Override

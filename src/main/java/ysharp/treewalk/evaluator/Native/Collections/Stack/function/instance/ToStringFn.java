@@ -46,7 +46,7 @@ public class ToStringFn extends Function.NativeFunction implements Callable {
         builder.append(" ");
         builder.append("]");
 
-        return new Variable.Variant(builder.toString());
+        return new Variable.Variant(new yString.yStringInstance(builder.toString()));
     }
 
     @Override

@@ -26,7 +26,7 @@ public class PeekFirstFn extends Function.NativeFunction {
             return new Variable.Variant(null);
         }
 
-        return deque.data.peekFirst();
+        return new Variable.Variant(deque.data.peekFirst().value);
     }
 
     @Override

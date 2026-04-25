@@ -23,7 +23,9 @@ public class CloneFn extends Function.NativeFunction {
         yArrayDeque.yArrayDequeInstance original = yArrayDeque.requireArrayDequeThis(interpreter);
         yArrayDeque.yArrayDequeInstance cloned = new yArrayDeque.yArrayDequeInstance();
 
-        cloned.data.addAll(original.data);
+        cloned.data.addAll(original.data.stream().map(val -> {
+            return new Variable.Variant(val.value);
+        }).toList());
 
         return new Variable.Variant(cloned);
     }
