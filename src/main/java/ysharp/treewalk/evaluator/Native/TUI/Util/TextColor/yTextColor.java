@@ -141,7 +141,7 @@ public class yTextColor {
             throw new YsharpException(
                     YsharpException.YsharpErrorType.PROCESS,
                     -1,
-                    "cannot take instance of TextColor class");
+                    "cannot take instance of static TextColor class");
         }
 
         @Override

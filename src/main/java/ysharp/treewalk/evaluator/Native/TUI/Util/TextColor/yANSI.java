@@ -9,31 +9,6 @@ import java.util.List;
 
 public class yANSI {
 
-    public static yANSIEnum requireANSIEnum (Variable.Variant v,
-                                                 String fn,
-                                             int index) throws YsharpException {
-
-        if (!v.isRuntimeObject()) {
-            throw new YsharpException(
-                    YsharpException.YsharpErrorType.PROCESS,
-                    -1,
-                    fn + " argument " + index + " must be a object."
-            );
-        }
-
-        RuntimeObject obj = v.asRuntimeObject();
-
-        if(!(obj instanceof yANSIEnum)) {
-            throw new YsharpException(
-                    YsharpException.YsharpErrorType.PROCESS,
-                    -1,
-                    fn + " argument " + index + " must be a ANSI object."
-            );
-        }
-
-        return (yANSIEnum) obj;
-    }
-
     private static yANSIEnum requireANSIThis (Interpreter interpreter, String fnName) {
         Variable thisVar = interpreter.curEnv.getValue("this");
 
@@ -169,23 +144,59 @@ public class yANSI {
                             true,
                             "function"));
 
+            this.set("DEFAULT",
+                    new Variable(new Variable.Variant(
+                            new yTextColor.yTextColorEnum(TextColor.ANSI.DEFAULT)),
+                            true,
+                            "function"));
+
             // bright
 
-            this.set("BRIGHT_RED",
+            this.set("BLACK_BRIGHT",
+                    new Variable(new Variable.Variant(
+                            new yTextColor.yTextColorEnum(TextColor.ANSI.BLACK_BRIGHT)),
+                            true,
+                            "function"));
+
+            this.set("RED_BRIGHT",
                     new Variable(new Variable.Variant(
                             new yTextColor.yTextColorEnum(TextColor.ANSI.RED_BRIGHT)),
                             true,
                             "function"));
 
-            this.set("BRIGHT_GREEN",
+            this.set("GREEN_BRIGHT",
                     new Variable(new Variable.Variant(
                             new yTextColor.yTextColorEnum(TextColor.ANSI.GREEN_BRIGHT)),
                             true,
                             "function"));
 
-            this.set("BRIGHT_BLUE",
+            this.set("YELLOW_BRIGHT",
+                    new Variable(new Variable.Variant(
+                            new yTextColor.yTextColorEnum(TextColor.ANSI.YELLOW_BRIGHT)),
+                            true,
+                            "function"));
+
+            this.set("BLUE_BRIGHT",
                     new Variable(new Variable.Variant(
                             new yTextColor.yTextColorEnum(TextColor.ANSI.BLUE_BRIGHT)),
+                            true,
+                            "function"));
+
+            this.set("MAGENTA_BRIGHT",
+                    new Variable(new Variable.Variant(
+                            new yTextColor.yTextColorEnum(TextColor.ANSI.MAGENTA_BRIGHT)),
+                            true,
+                            "function"));
+
+            this.set("CYAN_BRIGHT",
+                    new Variable(new Variable.Variant(
+                            new yTextColor.yTextColorEnum(TextColor.ANSI.CYAN_BRIGHT)),
+                            true,
+                            "function"));
+
+            this.set("WHITE_BRIGHT",
+                    new Variable(new Variable.Variant(
+                            new yTextColor.yTextColorEnum(TextColor.ANSI.WHITE_BRIGHT)),
                             true,
                             "function"));
 
