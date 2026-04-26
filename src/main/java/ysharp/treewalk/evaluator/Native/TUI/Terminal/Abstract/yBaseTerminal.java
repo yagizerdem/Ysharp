@@ -100,13 +100,7 @@ public class yBaseTerminal {
             }
         }
 
-        PutCharacterFn putCharacter = new PutCharacterFn();
-        Variable putCharacterVar = new Variable(
-                new Variable.Variant(putCharacter),
-                true,
-                "function");
-        yBaseTerminal_Instance_Prototype.set(putCharacter.getFnName(), putCharacterVar);
-
+        yBaseTerminal_Instance_Prototype.RegisterNativeFn(new PutCharacterFn());
 
         // terminal.clearScreen()
         class ClearScreenFn extends Function.NativeFunction implements Callable {
@@ -123,6 +117,8 @@ public class yBaseTerminal {
 
                 try {
                     terminal.instance.clearScreen();
+
+                    if(terminal.get("autoFlush").value.isTruthy())  terminal.instance.flush();
                 }
                 catch (IOException ex) {
                     throw new YsharpException(
@@ -141,13 +137,7 @@ public class yBaseTerminal {
             }
         }
 
-        ClearScreenFn clearScreen = new ClearScreenFn();
-        Variable clearScreenVar = new Variable(
-                new Variable.Variant(clearScreen),
-                true,
-                "function");
-        yBaseTerminal_Instance_Prototype.set(clearScreen.getFnName(), clearScreenVar);
-
+        yBaseTerminal_Instance_Prototype.RegisterNativeFn(new ClearScreenFn());
 
         // terminal.flush()
         class FlushFn extends Function.NativeFunction implements Callable {
@@ -182,12 +172,7 @@ public class yBaseTerminal {
             }
         }
 
-        FlushFn flush = new FlushFn();
-        Variable flushVar = new Variable(
-                new Variable.Variant(flush),
-                true,
-                "function");
-        yBaseTerminal_Instance_Prototype.set(flush.getFnName(), flushVar);
+        yBaseTerminal_Instance_Prototype.RegisterNativeFn(new FlushFn());
 
         // terminal.close()
         class CloseFn extends Function.NativeFunction implements Callable {
@@ -222,12 +207,7 @@ public class yBaseTerminal {
             }
         }
 
-        CloseFn close = new CloseFn();
-        Variable closeVar = new Variable(
-                new Variable.Variant(close),
-                true,
-                "function");
-        yBaseTerminal_Instance_Prototype.set(close.getFnName(), closeVar);
+        yBaseTerminal_Instance_Prototype.RegisterNativeFn(new CloseFn());
 
         // terminal.bell()
         class BellFn extends Function.NativeFunction implements Callable {
@@ -262,13 +242,7 @@ public class yBaseTerminal {
             }
         }
 
-        BellFn bell = new BellFn();
-        Variable bellVar = new Variable(
-                new Variable.Variant(bell),
-                true,
-                "function");
-        yBaseTerminal_Instance_Prototype.set(bell.getFnName(), bellVar);
-
+        yBaseTerminal_Instance_Prototype.RegisterNativeFn(new BellFn());
 
         // terminal.enterPrivateMode()
         class EnterPrivateModeFn extends Function.NativeFunction implements Callable {
@@ -303,12 +277,7 @@ public class yBaseTerminal {
             }
         }
 
-        EnterPrivateModeFn enterPrivateMode = new EnterPrivateModeFn();
-        Variable enterPrivateModeVar = new Variable(
-                new Variable.Variant(enterPrivateMode),
-                true,
-                "function");
-        yBaseTerminal_Instance_Prototype.set(enterPrivateMode.getFnName(), enterPrivateModeVar);
+        yBaseTerminal_Instance_Prototype.RegisterNativeFn(new EnterPrivateModeFn());
 
 
         // terminal.exitPrivateMode()
@@ -344,12 +313,8 @@ public class yBaseTerminal {
             }
         }
 
-        ExitPrivateModeFn exitPrivateMode = new ExitPrivateModeFn();
-        Variable exitPrivateModeVar = new Variable(
-                new Variable.Variant(exitPrivateMode),
-                true,
-                "function");
-        yBaseTerminal_Instance_Prototype.set(exitPrivateMode.getFnName(), exitPrivateModeVar);
+
+        yBaseTerminal_Instance_Prototype.RegisterNativeFn(new ExitPrivateModeFn());
 
         // terminal.setCursorPosition(x, y)
         class SetCursorPositionFn extends Function.NativeFunction implements Callable {
@@ -387,13 +352,7 @@ public class yBaseTerminal {
             }
         }
 
-        SetCursorPositionFn setCursorPosition = new SetCursorPositionFn();
-        Variable setCursorPositionVar = new Variable(
-                new Variable.Variant(setCursorPosition),
-                true,
-                "function");
-        yBaseTerminal_Instance_Prototype.set(setCursorPosition.getFnName(), setCursorPositionVar);
-
+        yBaseTerminal_Instance_Prototype.RegisterNativeFn(new SetCursorPositionFn());
 
         // terminal.disableSgr(SGR) Deactivates an SGR (Selected Graphic Rendition) code which has previously been activated through enableSGR(..).
         class DisableSgrFn extends Function.NativeFunction implements Callable {
@@ -430,12 +389,8 @@ public class yBaseTerminal {
             }
         }
 
-        DisableSgrFn disableSgr = new DisableSgrFn();
-        Variable disableSgrVar = new Variable(
-                new Variable.Variant(disableSgr),
-                true,
-                "function");
-        yBaseTerminal_Instance_Prototype.set(disableSgr.getFnName(), disableSgrVar);
+        yBaseTerminal_Instance_Prototype.RegisterNativeFn(new DisableSgrFn());
+
 
         // terminal.enableSgr(SRG)  Activates an SGR (Selected Graphic Rendition) code.
         class EnableSgrFn extends Function.NativeFunction implements Callable {
@@ -472,12 +427,8 @@ public class yBaseTerminal {
             }
         }
 
-        EnableSgrFn enableSgr = new EnableSgrFn();
-        Variable enableSgrVar = new Variable(
-                new Variable.Variant(enableSgr),
-                true,
-                "function");
-        yBaseTerminal_Instance_Prototype.set(enableSgr.getFnName(), enableSgrVar);
+
+        yBaseTerminal_Instance_Prototype.RegisterNativeFn(new EnableSgrFn());
 
         // terminal.resetColorAndSGR()
         class ResetColorAndSrgFn extends Function.NativeFunction implements Callable {
@@ -511,12 +462,7 @@ public class yBaseTerminal {
             }
         }
 
-        ResetColorAndSrgFn resetColorAndSGR = new ResetColorAndSrgFn();
-        Variable resetColorAndSGRVar = new Variable(
-                new Variable.Variant(resetColorAndSGR),
-                true,
-                "function");
-        yBaseTerminal_Instance_Prototype.set(resetColorAndSGR.getFnName(), resetColorAndSGRVar);
+        yBaseTerminal_Instance_Prototype.RegisterNativeFn(new ResetColorAndSrgFn());
 
         // terminal.setBackgroundColor(TextColor)
         class SetBackgroundColorFn extends Function.NativeFunction implements Callable {
@@ -551,13 +497,7 @@ public class yBaseTerminal {
             }
         }
 
-        SetBackgroundColorFn setBackgroundColor = new SetBackgroundColorFn();
-        Variable setBackgroundColorVar = new Variable(
-                new Variable.Variant(setBackgroundColor),
-                true,
-                "function");
-        yBaseTerminal_Instance_Prototype.set(setBackgroundColor.getFnName(), setBackgroundColorVar);
-
+        yBaseTerminal_Instance_Prototype.RegisterNativeFn(new SetBackgroundColorFn());
 
         // terminal.setForegroundColor(TextColor)
         class SetForegroundColorFn extends Function.NativeFunction implements Callable {
@@ -592,12 +532,7 @@ public class yBaseTerminal {
             }
         }
 
-        SetForegroundColorFn setForegroundColor = new SetForegroundColorFn();
-        Variable setForegroundColorVar = new Variable(
-                new Variable.Variant(setForegroundColor),
-                true,
-                "function");
-        yBaseTerminal_Instance_Prototype.set(setForegroundColor.getFnName(), setForegroundColorVar);
+        yBaseTerminal_Instance_Prototype.RegisterNativeFn(new SetForegroundColorFn());
 
         // terminal.setCursorVisible(bool)
         class SetCursorVisibleFn extends Function.NativeFunction implements Callable {
@@ -632,12 +567,8 @@ public class yBaseTerminal {
             }
         }
 
-        SetCursorVisibleFn setCursorVisible = new SetCursorVisibleFn();
-        Variable setCursorVisibleVar = new Variable(
-                new Variable.Variant(setCursorVisible),
-                true,
-                "function");
-        yBaseTerminal_Instance_Prototype.set(setCursorVisible.getFnName(), setCursorVisibleVar);
+        yBaseTerminal_Instance_Prototype.RegisterNativeFn(new SetCursorVisibleFn());
+
 
         // terminal.write(string | char)
         class WriteFn extends Function.NativeFunction implements Callable {
@@ -692,13 +623,7 @@ public class yBaseTerminal {
             }
         }
 
-
-        WriteFn write = new WriteFn();
-        Variable writeVar = new Variable(
-                new Variable.Variant(write),
-                true,
-                "function");
-        yBaseTerminal_Instance_Prototype.set(write.getFnName(), writeVar);
+        yBaseTerminal_Instance_Prototype.RegisterNativeFn(new WriteFn());
 
         // terminal.writeLine(string | char)
         class WriteLineFn extends Function.NativeFunction implements Callable {
@@ -755,13 +680,7 @@ public class yBaseTerminal {
             }
         }
 
-        WriteLineFn writeLine = new WriteLineFn();
-        Variable writeLineVar = new Variable(
-                new Variable.Variant(writeLine),
-                true,
-                "function");
-        yBaseTerminal_Instance_Prototype.set(writeLine.getFnName(), writeLineVar);
-
+        yBaseTerminal_Instance_Prototype.RegisterNativeFn(new WriteLineFn());
 
         // terminal.readKey()
         class ReadKeyFn extends Function.NativeFunction implements Callable {
@@ -798,14 +717,7 @@ public class yBaseTerminal {
             }
         }
 
-        ReadKeyFn readKey = new ReadKeyFn();
-        Variable readKeyVar = new Variable(
-                new Variable.Variant(readKey),
-                true,
-                "function");
-
-        yBaseTerminal_Instance_Prototype.set(readKey.getFnName(), readKeyVar);
-
+        yBaseTerminal_Instance_Prototype.RegisterNativeFn(new ReadKeyFn());
 
         // terminal.pollKey()
         class PollKeyFn extends Function.NativeFunction implements Callable {
@@ -852,13 +764,7 @@ public class yBaseTerminal {
             }
         }
 
-        PollKeyFn pollKey = new PollKeyFn();
-        Variable pollKeyVar = new Variable(
-                new Variable.Variant(pollKey),
-                true,
-                "function");
-
-        yBaseTerminal_Instance_Prototype.set(pollKey.getFnName(), pollKeyVar);
+        yBaseTerminal_Instance_Prototype.RegisterNativeFn(new PollKeyFn());
 
         // terminal.clearInputBuffer();
         class ClearInputBufferFn extends Function.NativeFunction implements Callable {
@@ -904,13 +810,7 @@ public class yBaseTerminal {
             }
         }
 
-        ClearInputBufferFn clearInputBuffer = new ClearInputBufferFn();
-        Variable clearInputBufferVar = new Variable(
-                new Variable.Variant(clearInputBuffer),
-                true,
-                "function");
-        yBaseTerminal_Instance_Prototype.set(clearInputBuffer.getFnName(), clearInputBufferVar);
-
+        yBaseTerminal_Instance_Prototype.RegisterNativeFn(new ClearInputBufferFn());
 
         // terminal.getTerminalSize();
         class GetTerminalSizeFn extends Function.NativeFunction implements Callable {
@@ -949,14 +849,7 @@ public class yBaseTerminal {
             }
         }
 
-        GetTerminalSizeFn getTerminalSize = new GetTerminalSizeFn();
-        Variable getTerminalSizeVar = new Variable(
-                new Variable.Variant(getTerminalSize),
-                true,
-                "function");
-
-        yBaseTerminal_Instance_Prototype.set(getTerminalSize.getFnName(), getTerminalSizeVar);
-
+        yBaseTerminal_Instance_Prototype.RegisterNativeFn(new GetTerminalSizeFn());
 
         // terminal.addResizeListener();
         class AddResizeListenerFn extends Function.NativeFunction implements Callable {
@@ -1011,13 +904,9 @@ public class yBaseTerminal {
                 return "addResizeListener";
             }
         }
-        AddResizeListenerFn addResizeListener = new AddResizeListenerFn();
-        Variable addResizeListenerVar = new Variable(
-                new Variable.Variant(addResizeListener),
-                true,
-                "function");
 
-        yBaseTerminal_Instance_Prototype.set(addResizeListener.getFnName(), addResizeListenerVar);
+        yBaseTerminal_Instance_Prototype.RegisterNativeFn(new AddResizeListenerFn());
+
     }
 
 }

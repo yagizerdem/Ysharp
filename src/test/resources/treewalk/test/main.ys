@@ -1,31 +1,22 @@
-println "Rock Paper Scissors in Ysharp!";
 
-var moves = ["rock", "paper", "scissors"];
 
-var beats = {
-    "rock": "scissors",
-    "paper": "rock",
-    "scissors": "paper"
-};
+var terminal = new TUI.YPFTerminal();
 
-while(true) do
-    print("\nMake your move: ");
-    var user = __input();
+println terminal;
+terminal.autoFlush = true;
 
-    if user == "q" then do break; end
+terminal.putCharacter('a');
 
-    if !moves.contains(user) then do
-        print("Invalid move! Valid moves are: ");
-        println(moves);
-        continue;
-    end
+terminal.setCursorPosition(10, 10);
 
-    var computer = moves.get(Random.nextInt(0, moves.size()));
+terminal.writeLine("jfljalfjajf");
 
-    println "\nYour move: " + user ;
-    println "Computer's move: " + computer;
 
-    if beats.get(computer) == user then do println "\nComputer wins!"; end
-    if beats.get(user) == computer then do println "\nYou win!"; end
-    if user == computer then do println "\nIt's a draw!"; end
-end
+__sleep(2000);
+
+terminal.clearScreen();
+terminal.flush();
+
+var key = terminal.readKey();
+
+println key;
