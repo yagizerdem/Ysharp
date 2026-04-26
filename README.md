@@ -42,7 +42,7 @@ while(true) do
 
     if !moves.contains(user) then do
         print("Invalid move! Valid moves are: ");
-        println(moves);
+        println moves.toString();
         continue;
     end
 
@@ -55,7 +55,6 @@ while(true) do
     if beats.get(user) == computer then do println "\nYou win!"; end
     if user == computer then do println "\nIt's a draw!"; end
 end
-
 ````
 
 ## Ysharp at a Glance
