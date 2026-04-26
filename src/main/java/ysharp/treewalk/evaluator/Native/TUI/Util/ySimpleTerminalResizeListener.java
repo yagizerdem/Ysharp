@@ -235,7 +235,7 @@ public class ySimpleTerminalResizeListener {
 
         @Override
         public String getType() {
-            return "SimpleTerminalResizeListener";
+            return "_SimpleTerminalResizeListener_";
         }
 
         @Override

@@ -1,22 +1,4 @@
+const terminal = new TUI.YPFTerminal();
 
-
-var terminal = new TUI.YPFTerminal();
-
-println terminal;
 terminal.autoFlush = true;
-
-terminal.putCharacter('a');
-
-terminal.setCursorPosition(10, 10);
-
-terminal.writeLine("jfljalfjajf");
-
-
-__sleep(2000);
-
-terminal.clearScreen();
-terminal.flush();
-
-var key = terminal.readKey();
-
-println key;
+terminal.writeLine("Hello World");

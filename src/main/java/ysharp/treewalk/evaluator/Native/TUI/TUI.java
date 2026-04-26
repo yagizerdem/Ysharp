@@ -1,5 +1,6 @@
 package ysharp.treewalk.evaluator.Native.TUI;
 
+import com.googlecode.lanterna.TextColor;
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Interpreter;
 import ysharp.treewalk.evaluator.Native.TUI.Input.yKeyStroke;
@@ -22,68 +23,29 @@ public class TUI {
             this.prototype =  yClass.ClassPrototype;
 
             // terminal types
-            yDefaultTerminal.yDefaultTerminalClass defaultTerminal = new yDefaultTerminal.yDefaultTerminalClass();
-            Variable defaultTerminalVar = new Variable(
-                    new Variable.Variant(defaultTerminal),
-                    true,
-                    defaultTerminal.getType()
-            );
-            this.set(defaultTerminal.getClassName(), defaultTerminalVar);
 
-            ySwingTerminal.ySwingTerminalClass swingTerminal = new ySwingTerminal.ySwingTerminalClass();
-            Variable swingTerminalVar = new Variable(
-                    new Variable.Variant(swingTerminal),
-                    true,
-                    swingTerminal.getType()
-            );
-            this.set(swingTerminal.getClassName(), swingTerminalVar);
+            // default terminal
+            RegisterClass(new yDefaultTerminal.yDefaultTerminalClass());
 
+            // YPFTerminal
+            RegisterClass(new ySwingTerminal.ySwingTerminalClass());
+
+            //
 
             // fonts
-            ySGR.ySGRClass sgr = new ySGR.ySGRClass();
-            Variable sgrVar = new Variable(
-                    new Variable.Variant(sgr),
-                    true,
-                    sgr.getType()
-            );
-            this.set(sgr.getClassName(), sgrVar);
+            RegisterClass(new ySGR.ySGRClass());
 
             // foreground background color
-            yTextColor.yTextColorClass textColor = new yTextColor.yTextColorClass();
-            Variable textColorVar = new Variable(
-                    new Variable.Variant(textColor),
-                    true,
-                    textColor.getType()
-            );
-            this.set(textColor.getClassName(), textColorVar);
+            RegisterClass(new yTextColor.yTextColorClass());
 
             // key stroke
-            yKeyStroke.yKeyStrokeClass keyStroke = new yKeyStroke.yKeyStrokeClass();
-            Variable yKeyStrokeVar = new Variable(
-                    new Variable.Variant(keyStroke),
-                    true,
-                    keyStroke.getType()
-            );
-            this.set(keyStroke.getClassName(), yKeyStrokeVar);
+            RegisterClass(new yKeyStroke.yKeyStrokeClass());
 
+            // terminal size
+            RegisterClass(new yTerminalSize.yTerminalSizeClass());
 
-            yTerminalSize.yTerminalSizeClass terminalSize = new yTerminalSize.yTerminalSizeClass();
-            Variable terminalSizeVar = new Variable(
-                    new Variable.Variant(terminalSize),
-                    true,
-                    terminalSize.getType()
-            );
-            this.set(terminalSize.getClassName(), terminalSizeVar);
-
-
-            ySimpleTerminalResizeListener.ySimpleTerminalResizeListenerClass simpleTerminalResizeListener = new ySimpleTerminalResizeListener.ySimpleTerminalResizeListenerClass();
-            Variable simpleTerminalResizeListenerVar = new Variable(
-                    new Variable.Variant(simpleTerminalResizeListener),
-                    true,
-                    simpleTerminalResizeListener.getType()
-            );
-            this.set(simpleTerminalResizeListener.getClassName(), simpleTerminalResizeListenerVar);
-
+            // terminal resize listener
+            RegisterClass(new ySimpleTerminalResizeListener.ySimpleTerminalResizeListenerClass());
 
         }
 

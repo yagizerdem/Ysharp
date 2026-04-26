@@ -220,7 +220,7 @@ public class ySGR {
 
             throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
                     -1,
-                    "cannot take instance of SGR class");
+                    "cannot take instance of static SGR class");
         }
 
         @Override
@@ -230,7 +230,7 @@ public class ySGR {
 
         @Override
         public String getType() {
-            return "SGR";
+            return "_SGR_";
         }
 
         @Override
