@@ -12,7 +12,7 @@ type FeatureItem = {
 const FeatureList: FeatureItem[] = [
   {
     title: "Easy to Use",
-    Svg: require("@site/static/img/undraw_docusaurus_mountain.svg").default,
+    // Svg: require("@site/static/img/undraw_docusaurus_mountain.svg").default,
     description: (
       <>
         Ysharp delivers a smooth developer
@@ -24,7 +24,7 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: "Modern Programming, Powered by the JVM",
-    Svg: require("@site/static/img/undraw_docusaurus_tree.svg").default,
+    // Svg: require("@site/static/img/undraw_docusaurus_tree.svg").default,
     description: (
       <>
         Ysharp runs on the JVM, gaining access to decades
@@ -36,7 +36,7 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: "Desktop Apps, Simplified",
-    Svg: require("@site/static/img/undraw_docusaurus_react.svg").default,
+    // Svg: require("@site/static/img/undraw_docusaurus_react.svg").default,
     description: (
       <>
         Create desktop applications out of the box
@@ -51,7 +51,7 @@ function Feature({ title, Svg, description }: FeatureItem) {
   return (
     <div className={clsx("col col--4")}>
       <div className="text--center">
-        <Svg className={styles.featureSvg} role="img" />
+        {Svg && <Svg className={styles.featureSvg} role="img" />}
       </div>
       <div className="text--center padding-horiz--md">
         <Heading as="h3">{title}</Heading>
