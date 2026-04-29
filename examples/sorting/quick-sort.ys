@@ -1,0 +1,27 @@
+export function quickSort(arr) do
+    if arr.size() <= 1 then do
+        return arr;
+    end
+
+    var L = [];
+    var R = [];
+    var pivot = arr.get(arr.size() / 2);
+
+    for var i = 1; i < arr.size(); i++ do
+        if arr.get(i) < pivot then do
+            L.push(arr.get(i));
+        end
+        else do
+            R.push(arr.get(i));
+        end
+    end
+
+    var sorted_L = quickSort(L);
+    var sorted_R = quickSort(R);
+
+    var res = [];
+    res = res.concat(sorted_L);
+    res.push(pivot);
+    res = res.concat(sorted_R);
+    return res;
+end

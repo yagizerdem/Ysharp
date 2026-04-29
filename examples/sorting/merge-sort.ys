@@ -1,0 +1,62 @@
+export function mergeSort(arr : Array) do
+
+    function merge(arr : Array, left : int, mid : int, right : int) do
+
+        var L = new Array();
+        var R = new Array();
+
+        var i : int = left;
+        while i < mid + 1 do
+            L.add(arr.get(i));
+            i++;
+        end
+
+        var j : int = mid + 1;
+        while j < right + 1 do
+            R.add(arr.get(j));
+            j++;
+        end
+
+        var li : int = 0;
+        var ri : int = 0;
+        var k  : int = left;
+
+        while li < L.size() && ri < R.size() do
+            if L.get(li) <= R.get(ri) then do
+                arr.set(k, L.get(li));
+                li++;
+            end
+            else do
+                arr.set(k, R.get(ri));
+                ri++;
+            end
+            k++;
+        end
+
+        while li < L.size() do
+            arr.set(k, L.get(li));
+            li++; k++;
+        end
+
+        while ri < R.size() do
+            arr.set(k, R.get(ri));
+            ri++; k++;
+        end
+
+    end
+
+
+    function divide(arr : Array, left : int, right : int) do
+        if left >= right then do return null; end
+
+        var mid : int = left + (right - left) / 2;
+
+        divide(arr, left, mid);
+        divide(arr, mid + 1, right);
+
+        merge(arr, left, mid, right);
+    end
+
+    divide(arr, 0, arr.size() - 1);
+
+end
