@@ -1,0 +1,133 @@
+use "quick-sort.ys";
+use "tim-sort.ys";
+use "merge-sort.ys";
+use "heap-sort.ys";
+use "data.ys";
+
+
+function test(algorithm, name, arr, fn : function) do
+    println algorithm + " " + name;
+
+    var c = arr.clone();
+
+    var start_time = __now();
+
+    c = fn(c);
+
+    var end_time = __now();
+
+    println c.take(50).toString();
+    println "elapsed time : " + (end_time - start_time) + "ms.";
+    println "-".repeat(100);
+end
+
+
+function test2(algorithm, name, arr, fn : function) do
+    println algorithm + " " + name;
+
+    var c = arr.clone();
+
+    var start_time = __now();
+
+    fn(c);
+
+    var end_time = __now();
+
+    println c.take(50).toString();
+    println "elapsed time : " + (end_time - start_time) + "ms.";
+    println "-".repeat(100);
+end
+
+
+// QUICK SORT
+
+
+// RANDOM
+test("quickSort", "1k random", arr_1k_random, quickSort);
+test("quickSort", "10k random", arr_10k_random, quickSort);
+test("quickSort", "100k random", arr_100k_random, quickSort);
+
+// INCREASING
+test("quickSort", "1k increasing", arr_1k_inc, quickSort);
+test("quickSort", "10k increasing", arr_10k_inc, quickSort);
+test("quickSort", "100k increasing", arr_100k_inc, quickSort);
+
+// DECREASING
+test("quickSort", "1k decreasing", arr_1k_dec, quickSort);
+test("quickSort", "10k decreasing", arr_10k_dec, quickSort);
+test("quickSort", "100k decreasing", arr_100k_dec, quickSort);
+
+// SEMI-ORDERED
+test("timSort", "1k semi", arr_1k_semi, quickSort);
+test("timSort", "10k semi", arr_10k_semi, quickSort);
+test("timSort", "100k semi", arr_100k_semi, quickSort);
+
+
+// TIM SORT
+
+
+// RANDOM
+test("timSort", "1k random", arr_1k_random, timSort);
+test("timSort", "10k random", arr_10k_random, timSort);
+test("timSort", "100k random", arr_100k_random, timSort);
+
+// INCREASING
+test("timSort", "1k increasing", arr_1k_inc, timSort);
+test("timSort", "10k increasing", arr_10k_inc, timSort);
+test("timSort", "100k increasing", arr_100k_inc, timSort);
+
+// DECREASING
+test("timSort", "1k decreasing", arr_1k_dec, timSort);
+test("timSort", "10k decreasing", arr_10k_dec, timSort);
+test("timSort", "100k decreasing", arr_100k_dec, timSort);
+
+// SEMI-ORDERED
+test("timSort", "1k semi", arr_1k_semi, timSort);
+test("timSort", "10k semi", arr_10k_semi, timSort);
+test("timSort", "100k semi", arr_100k_semi, timSort);
+
+
+// MERGE SORT
+
+// RANDOM
+test2("mergeSort", "1k random", arr_1k_random, mergeSort);
+test2("mergeSort", "10k random", arr_10k_random, mergeSort);
+test2("mergeSort", "100k random", arr_100k_random, mergeSort);
+
+// INCREASING
+test2("mergeSort", "1k increasing", arr_1k_inc, mergeSort);
+test2("mergeSort", "10k increasing", arr_10k_inc, mergeSort);
+test2("mergeSort", "100k increasing", arr_100k_inc, mergeSort);
+
+// DECREASING
+test2("mergeSort", "1k decreasing", arr_1k_dec, mergeSort);
+test2("mergeSort", "10k decreasing", arr_10k_dec, mergeSort);
+test2("mergeSort", "100k decreasing", arr_100k_dec, mergeSort);
+
+// SEMI-ORDERED
+test2("mergeSort", "1k semi", arr_1k_semi, mergeSort);
+test2("mergeSort", "10k semi", arr_10k_semi, mergeSort);
+test2("mergeSort", "100k semi", arr_100k_semi, mergeSort);
+
+
+// HEAP SORT
+
+// RANDOM
+test("heapSort", "1k random", arr_1k_random, heapSort);
+test("heapSort", "10k random", arr_10k_random, heapSort);
+test("heapSort", "100k random", arr_100k_random, heapSort);
+
+// INCREASING
+test("heapSort", "1k increasing", arr_1k_inc, heapSort);
+test("heapSort", "10k increasing", arr_10k_inc, heapSort);
+test("heapSort", "100k increasing", arr_100k_inc, heapSort);
+
+// DECREASING
+test("heapSort", "1k decreasing", arr_1k_dec, heapSort);
+test("heapSort", "10k decreasing", arr_10k_dec, heapSort);
+test("heapSort", "100k decreasing", arr_100k_dec, heapSort);
+
+// SEMI-ORDERED
+test("heapSort", "1k semi", arr_1k_semi, heapSort);
+test("heapSort", "10k semi", arr_10k_semi, heapSort);
+test("heapSort", "100k semi", arr_100k_semi, heapSort);
