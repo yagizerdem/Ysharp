@@ -19,7 +19,7 @@ public class yHttp {
             public boolean isTruthy() { return true; }
 
             @Override
-            public String getType() { return "http_prototype"; }
+            public String getType() { return "__http__"; }
         };
     }
 

@@ -1,4 +1,6 @@
-const terminal = new TUI.YPFTerminal();
 
-terminal.autoFlush = true;
-terminal.writeLine("Hello World");
+var c : char =  IO.stdin.readKey();
+
+println c;
+
+

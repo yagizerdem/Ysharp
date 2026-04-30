@@ -17,6 +17,7 @@ import ysharp.treewalk.evaluator.Native.Collections.Trie.Wrapper.MapTrie.yMapTri
 import ysharp.treewalk.evaluator.Native.Collections.Trie.Wrapper.SortedMapTrie.ySortedMapTrie;
 import ysharp.treewalk.evaluator.Native.Collections.Trie.Wrapper.T9Trie.yT9Trie;
 import ysharp.treewalk.evaluator.Native.Collections.WeakHashMap.yWeakHashMap;
+import ysharp.treewalk.evaluator.Native.IO.yIO;
 import ysharp.treewalk.evaluator.Native.LINQ.Queryable;
 import ysharp.treewalk.evaluator.Native.Network.yHttp;
 import ysharp.treewalk.evaluator.Native.Range;
@@ -106,5 +107,8 @@ public class Registery {
 
         // global native functions
         GlobalNatives.Register(interpreter);
+
+        // IO
+        yIO.Register(interpreter);
     }
 }
