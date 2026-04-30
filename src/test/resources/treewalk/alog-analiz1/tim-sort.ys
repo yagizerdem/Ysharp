@@ -1,0 +1,176 @@
+var minRUN : int = 32;
+
+function calcMinRun(n : int) : int do
+    var n_ = n;
+    var r : int = 0;
+    while n_ >= minRUN do
+            r |= (n & 1);
+            n_ >>= 1;
+    end
+    return n_ + r;
+end
+
+
+function insertionSort(arr, left, right) do
+    for var i = left + 1; i <= right; i++ do
+        var key = arr.get(i);
+        var j = i - 1;
+
+        while j >= left && arr.get(j) > key do
+            arr.set(j + 1, arr.get(j));
+            j = j - 1;
+        end
+
+        arr.set(j + 1, key);
+    end
+end
+
+
+function merge(arr, l, m, r) do
+    var left = [];
+    var right = [];
+
+    for var i = l; i <= m; i++ do
+        left.push(arr.get(i));
+    end
+
+    for var i = m + 1; i <= r; i++ do
+        right.push(arr.get(i));
+    end
+
+    var i = 0;
+    var j = 0;
+    var k = l;
+
+    while i < left.size() && j < right.size() do
+        if left.get(i) <= right.get(j) then do
+            arr.set(k, left.get(i));
+            i = i + 1;
+        end
+        else do
+            arr.set(k, right.get(j));
+            j = j + 1;
+        end
+        k = k + 1;
+    end
+
+    while i < left.size() do
+        arr.set(k, left.get(i));
+        i = i + 1;
+        k = k + 1;
+    end
+
+    while j < right.size() do
+        arr.set(k, right.get(j));
+        j = j + 1;
+        k = k + 1;
+    end
+end
+
+function reverse(arr, l, r) do
+    var l_ = l;
+    var r_ = r;
+    while l_ < r do
+        var temp = arr.get(l_);
+        arr.set(l_, arr.get(r));
+        arr.set(r, temp);
+
+        l_ = l_ + 1;
+        r_ = r_ - 1;
+    end
+end
+
+function findRun(arr, start, n) do
+    var end_ = start + 1;
+
+    if end_ == n then do
+        return end_;
+    end
+
+    if arr.get(end_) < arr.get(start) then do
+        // descending
+        while end_ < n && arr.get(end_) < arr.get(end_ - 1) do
+            end_ = end_ + 1;
+        end
+
+        reverse(arr, start, end_ - 1);
+    end
+    else do
+        // ascending
+        while end_ < n && arr.get(end_) >= arr.get(end_ - 1) do
+            end_ = end_ + 1;
+        end
+    end
+
+    return end_;
+end
+
+export function timSort(arr) do
+    var n = arr.size();
+    var minRun = calcMinRun(n);
+
+    var runs = [];
+
+    var i = 0;
+
+    while i < n do
+        var runEnd = findRun(arr, i, n);
+        var runLen = runEnd - i;
+
+        if runLen < minRun then do
+            var end_ = i + minRun;
+            if end_ > n then do
+                end_ = n;
+            end
+
+            insertionSort(arr, i, end_ - 1);
+            runEnd = end_;
+        end
+
+        runs.push([i, runEnd]);
+        i = runEnd;
+
+        // merge balance
+        while runs.size() > 1 do
+            var run1 = runs.get(runs.size() - 2);
+            var run2 = runs.get(runs.size() - 1);
+
+            var l1 = run1.get(0);
+            var r1 = run1.get(1);
+            var l2 = run2.get(0);
+            var r2 = run2.get(1);
+
+            var len1 = r1 - l1;
+            var len2 = r2 - l2;
+
+            if len1 <= len2 then do
+                merge(arr, l1, r1 - 1, r2 - 1);
+
+                runs.remove(runs.size() - 1);
+                runs.set(runs.size() - 1, [l1, r2]);
+            end
+            else do
+                break;
+            end
+        end
+    end
+
+    // final merge
+    while runs.size() > 1 do
+        var run1 = runs.get(runs.size() - 2);
+        var run2 = runs.get(runs.size() - 1);
+
+        var l1 = run1.get(0);
+        var r1 = run1.get(1);
+        var l2 = run2.get(0);
+        var r2 = run2.get(1);
+
+        merge(arr, l1, r1 - 1, r2 - 1);
+
+        runs.remove(runs.size() - 1);
+        runs.set(runs.size() - 1, [l1, r2]);
+    end
+
+    return arr;
+end
+

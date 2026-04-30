@@ -1,0 +1,88 @@
+// random
+
+export const arr_1k_random = [];
+export const arr_10k_random = [];
+export const arr_100k_random = [];
+
+for var i = 0; i < 1000; i++ do
+    arr_1k_random.push(Random.nextInt(0, 9999999));
+end
+
+for var i = 0; i < 10000; i++ do
+    arr_10k_random.push(Random.nextInt(0, 9999999));
+end
+
+for var i = 0; i < 100000; i++ do
+    arr_100k_random.push(Random.nextInt(0, 9999999));
+end
+
+
+// inc
+export const arr_1k_inc = [];
+export const arr_10k_inc = [];
+export const arr_100k_inc = [];
+
+for var i = 0; i < 1000; i++ do
+    arr_1k_inc.push(i);
+end
+
+for var i = 0; i < 10000; i++ do
+    arr_10k_inc.push(i);
+end
+
+for var i = 0; i < 100000; i++ do
+    arr_100k_inc.push(i);
+end
+
+
+// dec
+
+export const arr_1k_dec = [];
+export const arr_10k_dec = [];
+export const arr_100k_dec = [];
+
+for var i = 1000; i > 0; i-- do
+    arr_1k_dec.push(i);
+end
+
+for var i = 10000; i > 0; i-- do
+    arr_10k_dec.push(i);
+end
+
+for var i = 100000; i > 0; i-- do
+    arr_100k_dec.push(i);
+end
+
+
+export const arr_1k_semi = [];
+export const arr_10k_semi = [];
+export const arr_100k_semi = [];
+
+for var i = 0; i < 1000; i++ do
+    arr_1k_semi.push(i);
+end
+
+for var i = 0; i < 10000; i++ do
+    arr_10k_semi.push(i);
+end
+
+for var i = 0; i < 100000; i++ do
+    arr_100k_semi.push(i);
+end
+
+function disturb(arr) do
+    var swaps = arr.size() / 20; // %5
+
+    for var i = 0; i < swaps; i++ do
+        var a = Random.nextInt(0, arr.size() - 1);
+        var b = Random.nextInt(0, arr.size() - 1);
+
+        var temp = arr.get(a);
+        arr.set(a, arr.get(b));
+        arr.set(b, temp);
+    end
+end
+
+disturb(arr_1k_semi);
+disturb(arr_10k_semi);
+disturb(arr_100k_semi);

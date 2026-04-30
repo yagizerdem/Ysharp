@@ -60,8 +60,14 @@ public class Loader {
     }
 
     public Hashtable<String, Variable> loadEnv() throws Exception {
-        List<String> importPaths = this.root.program.
-                useDeclaration.stream().map(m -> this.resolvePath(Paths.get(this.root.modulePath).getParent().toString(), m)).toList();
+        Path basePath = Paths.get(this.root.modulePath).toAbsolutePath();
+        Path parent = basePath.getParent();
+
+        String baseDir = (parent == null) ? "." : parent.toString();
+
+        List<String> importPaths = this.root.program.useDeclaration.stream()
+                .map(m -> this.resolvePath(baseDir, m))
+                .toList();
 
         importPaths.forEach(this::ensurePathExist);
 
