@@ -26,7 +26,8 @@ lambda
 - primary &rarr; array | map | atom | new_expr
 - atom &rarr;
 IDENTIFIER |
-NUMBER |
+DECIMAL_NUMBER |
+HEX_NUMBER |
 STRING |
 CHAR |
 true |
@@ -141,6 +142,9 @@ block
 "function" |
 "any" |
 IDENTIFIER = [class name]
+
+HEX_NUMBER &rarr; 0x[0-9A-Fa-f]+
+DECIMAL_NUMBER &rarr; [0-9]+
 
 ### program
 ``this is the start point of program``

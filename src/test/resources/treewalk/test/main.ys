@@ -1,6 +1,4 @@
-
-var c : char =  IO.stdin.readKey();
-
-println c;
+var num = 0xff;
+println num & 0x0f;
 
 

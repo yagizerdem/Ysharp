@@ -93,6 +93,10 @@ public class Lexer {
         return c >= '0' && c <= '9';
     }
 
+    private boolean isHexDigit(char c) {
+        return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
+    }
+
     private boolean isAlphaNumeric(char c) {
         return isAlpha(c) || isDigit(c);
     }
@@ -104,6 +108,7 @@ public class Lexer {
     // Pchar overloads
     private boolean isAlpha(Cursor.Pchar pc)        { return isAlpha(pc.c); }
     private boolean isDigit(Cursor.Pchar pc)        { return isDigit(pc.c); }
+    private boolean isHexDigit(Cursor.Pchar pc)     { return  isHexDigit(pc.c); }
     private boolean isAlphaNumeric(Cursor.Pchar pc) { return isAlphaNumeric(pc.c); }
 
     private void addToken(Token.TokenType type) {
@@ -140,7 +145,7 @@ public class Lexer {
         return null;
     }
 
-    private void collectNumber() throws YsharpException {
+    private void collectDecimalNumber() throws YsharpException {
         while (isDigit(Cursor.peek(source, cursor.current))) Cursor.advance(source, cursor);
 
         boolean isDouble = false;
@@ -163,6 +168,20 @@ public class Lexer {
         } else {
             addToken(Token.TokenType.DOUBLE, new Token.Literal.Double(Double.parseDouble(sub)));
         }
+    }
+
+    private void collectHexNumber() throws YsharpException {
+        while (isHexDigit(Cursor.peek(source, cursor.current))) Cursor.advance(source, cursor);
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = start; i < cursor.current; i++) {
+            sb.append(source.get(i).c);
+        }
+        String hex = sb.toString().substring(2); // trim the header part 0x
+        // 1A = 26
+        int val = Integer.parseInt(hex, 16);
+
+        addToken(Token.TokenType.INT, new Token.Literal.Int(val));
     }
 
     private void collectIdentifier() throws YsharpException {
@@ -398,6 +417,12 @@ public class Lexer {
                 if (Cursor.match(source, cursor, '.')) { addToken(Token.TokenType.DOUBLE_DOT); return; }
                 addToken(Token.TokenType.DOT);
             }
+            // hex number start with 0x prefix
+            case '0' -> {
+                if(Cursor.match(source, cursor, 'x')) {
+                    collectHexNumber();
+                }
+            }
 
             // three char tokens
             case '<' -> {
@@ -422,8 +447,9 @@ public class Lexer {
                     Cursor.consumeSpace(source, cursor);
                 } else if (isAlpha(c)) {
                     collectIdentifier();
-                } else if (isDigit(c)) {
-                    collectNumber();
+                }
+                else if (isDigit(c)) {
+                    collectDecimalNumber();
                 } else if (Cursor.stopSet(c, Cursor.CharMask.DoubleQuote)) {
                     int charIdx = Math.max(cursor.current - 1, 0);
                     if (!Cursor.isEscapedBackslash(source, charIdx)) {
