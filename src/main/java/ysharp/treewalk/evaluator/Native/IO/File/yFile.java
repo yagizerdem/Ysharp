@@ -1,7 +1,11 @@
-package ysharp.treewalk.evaluator.Native.IO.file;
+package ysharp.treewalk.evaluator.Native.IO.File;
 
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
+import ysharp.treewalk.evaluator.Native.IO.File.function.statix.AppendFn;
+import ysharp.treewalk.evaluator.Native.IO.File.function.statix.DeleteFn;
+import ysharp.treewalk.evaluator.Native.IO.File.function.statix.ReadFn;
+import ysharp.treewalk.evaluator.Native.IO.File.function.statix.WriteFn;
 
 import java.util.List;
 
@@ -28,8 +32,10 @@ public class yFile {
         public yFileClass() {
             this.prototype = yClass.ClassPrototype;
 
-
-
+            this.prototype.RegisterNativeFn(new ReadFn());
+            this.prototype.RegisterNativeFn(new WriteFn());
+            this.prototype.RegisterNativeFn(new AppendFn());
+            this.prototype.RegisterNativeFn(new DeleteFn());
         }
 
         @Override
@@ -62,7 +68,7 @@ public class yFile {
 
         @Override
         public String getType() {
-            return "_file_";
+            return "_File_";
         }
     }
 

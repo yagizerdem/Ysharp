@@ -417,12 +417,6 @@ public class Lexer {
                 if (Cursor.match(source, cursor, '.')) { addToken(Token.TokenType.DOUBLE_DOT); return; }
                 addToken(Token.TokenType.DOT);
             }
-            // hex number start with 0x prefix
-            case '0' -> {
-                if(Cursor.match(source, cursor, 'x')) {
-                    collectHexNumber();
-                }
-            }
 
             // three char tokens
             case '<' -> {
@@ -443,6 +437,15 @@ public class Lexer {
             }
 
             default -> {
+                // hex number start with 0x prefix
+                if (c == '0' && Cursor.peekNext(source, cursor.current).c == 'x') {
+                    // trim prefix 0x
+                    Cursor.advance(source, cursor);
+                    Cursor.advance(source, cursor);
+                    collectHexNumber();
+                    break;
+                }
+
                 if (Cursor.isSpace(c)) {
                     Cursor.consumeSpace(source, cursor);
                 } else if (isAlpha(c)) {

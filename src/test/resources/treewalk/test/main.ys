@@ -1,5 +1,7 @@
-var p = Path.join("C:", "Users", "yagiz", "..", "Desktop", "sorular");
 
 
-println Path.normalize(p);
+
+
+
+
 

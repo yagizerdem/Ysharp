@@ -76,7 +76,6 @@ public class Registery {
         yMath.Register(interpreter);
         yUUID.Register(interpreter);
         yTime.Register(interpreter);
-        yFile.Register(interpreter);
         yRandom.Register(interpreter);
         yDateTime.Register(interpreter);
         yCrypto.Register(interpreter);

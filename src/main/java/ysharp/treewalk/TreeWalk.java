@@ -6,7 +6,10 @@ import ysharp.treewalk.lexer.Lexer;
 import ysharp.treewalk.lexer.Preprocess;
 import ysharp.treewalk.parser.Parser;
 
+import java.io.File;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Hashtable;
 import java.util.List;
@@ -24,7 +27,10 @@ public class TreeWalk {
         }
 
         if(args.length == 1) {
-            executeFile(interpreter, args[0]);
+
+            String mainModuleAbsolutePath = FileSystems.getDefault().getPath(args[0]).normalize().toAbsolutePath().toString();
+            interpreter.cwd = Path.of(mainModuleAbsolutePath).getParent().toString();
+            executeFile(interpreter, mainModuleAbsolutePath);
         }
         else {
             REPL(interpreter);
