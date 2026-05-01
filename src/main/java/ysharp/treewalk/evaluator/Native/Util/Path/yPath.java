@@ -370,6 +370,130 @@ public class yPath {
             SubPathFn subPath = new SubPathFn();
             this.set(subPath.getFnName(), new Variable(new Variable.Variant(subPath), true, "function"));
 
+            class GetExtensionFn extends Function.NativeFunction {
+
+                @Override
+                public int arity() {
+                    return 1;
+                }
+
+                @Override
+                public Variable.Variant call(Interpreter interpreter,
+                                             List<Variable.Variant> arguments)
+                        throws YsharpException {
+
+                    requireArity(arguments, arity(), getFnName());
+                    String uri = requireString(arguments.getFirst(), getFnName(), 1);
+
+                    Path path = Path.of(uri);
+                    Path fileNamePath = path.getFileName();
+
+                    if (fileNamePath == null) {
+                        return new Variable.Variant(null);
+                    }
+
+                    String fileName = fileNamePath.toString();
+                    int dotIndex = fileName.lastIndexOf('.');
+
+                    if (dotIndex <= 0) {
+                        return new Variable.Variant(null);
+                    }
+
+                    String ext = fileName.substring(dotIndex);
+                    return new Variable.Variant(new yString.yStringInstance(ext));
+                }
+
+                @Override
+                public String getFnName() {
+                    return "getExtension";
+                }
+            }
+
+            GetExtensionFn getExtension = new GetExtensionFn();
+            this.set(getExtension.getFnName(), new Variable(new Variable.Variant(getExtension), true, "function"));
+
+            class NormalizeFn extends Function.NativeFunction {
+
+                @Override
+                public int arity() { return 1; }
+
+                @Override
+                public Variable.Variant call(Interpreter interpreter,
+                                             List<Variable.Variant> arguments)
+                        throws YsharpException {
+
+                    requireArity(arguments, arity(), getFnName());
+                    String uri = requireString(arguments.getFirst(), getFnName(), 1);
+
+                    String normalized = Path.of(uri).normalize().toString();
+                    return new Variable.Variant(new yString.yStringInstance(normalized));
+                }
+
+                @Override
+                public String getFnName() { return "normalize"; }
+            }
+
+            NormalizeFn normalize = new NormalizeFn();
+            this.set(normalize.getFnName(), new Variable(new Variable.Variant(normalize), true, "function"));
+
+            class ResolveFn extends Function.NativeFunction {
+
+                @Override
+                public int arity() { return 2; }
+
+                @Override
+                public Variable.Variant call(Interpreter interpreter,
+                                             List<Variable.Variant> arguments)
+                        throws YsharpException {
+
+                    requireArity(arguments, arity(), getFnName());
+                    String base  = requireString(arguments.get(0), getFnName(), 1);
+                    String other = requireString(arguments.get(1), getFnName(), 2);
+
+                    String resolved = Path.of(base).resolve(other).toString();
+                    return new Variable.Variant(new yString.yStringInstance(resolved));
+                }
+
+                @Override
+                public String getFnName() { return "resolve"; }
+            }
+
+            ResolveFn resolve = new ResolveFn();
+            this.set(resolve.getFnName(), new Variable(new Variable.Variant(resolve), true, "function"));
+
+            class RelativizeFn extends Function.NativeFunction {
+
+                @Override
+                public int arity() { return 2; }
+
+                @Override
+                public Variable.Variant call(Interpreter interpreter,
+                                             List<Variable.Variant> arguments)
+                        throws YsharpException {
+
+                    requireArity(arguments, arity(), getFnName());
+                    String base   = requireString(arguments.get(0), getFnName(), 1);
+                    String target = requireString(arguments.get(1), getFnName(), 2);
+
+                    try {
+                        String rel = Path.of(base).relativize(Path.of(target)).toString();
+                        return new Variable.Variant(new yString.yStringInstance(rel));
+                    } catch (IllegalArgumentException e) {
+                        throw new YsharpException(
+                                YsharpException.YsharpErrorType.PROCESS,
+                                -1,
+                                getFnName() + "() both paths must be either absolute or relative. " + e.getMessage()
+                        );
+                    }
+                }
+
+                @Override
+                public String getFnName() { return "relativize"; }
+            }
+
+            RelativizeFn relativize = new RelativizeFn();
+            this.set(relativize.getFnName(), new Variable(new Variable.Variant(relativize), true, "function"));
+
         }
 
         @Override

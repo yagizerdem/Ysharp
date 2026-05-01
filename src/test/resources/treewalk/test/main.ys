@@ -1,20 +1,5 @@
-var p = Path.join("C:", "Users", "yagiz", "Desktop", "sorular");
+var p = Path.join("C:", "Users", "yagiz", "..", "Desktop", "sorular");
 
-println Path.isDirExist(p);
 
-var p = Path.join(p, "Ekran görüntüsü 2025-06-26 233952.png");
+println Path.normalize(p);
 
-println Path.isFileExist(p);
-
-println p;
-
-println Path.getFileName(p);
-
-println Path.getParent(Path.getParent(p));
-
-println Path.getRoot(p);
-
-println Path.getNameCount(p);
-
-println Path.subPath(p, 2, 4);
-println Path.subPath(p, 2, 10);
