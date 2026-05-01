@@ -1,4 +1,5 @@
-var num = 0xff;
-println num & 0x0f;
+var p = Path.join("C:", "Users", "yagiz", "..", "Desktop", "sorular");
 
+
+println Path.normalize(p);
 
