@@ -1,37 +1,35 @@
-package ysharp.treewalk.evaluator.Native.IO;
+package ysharp.treewalk.evaluator.Native.IO.file;
 
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
-import ysharp.treewalk.evaluator.Native.IO.file.yFile;
-import ysharp.treewalk.evaluator.Native.IO.stderr.yStdErr;
-import ysharp.treewalk.evaluator.Native.IO.stdin.yStdIn;
-import ysharp.treewalk.evaluator.Native.IO.stdout.yStdOut;
 
 import java.util.List;
 
-public class yIO {
+public class yFile {
 
-    public static RuntimeObject yIO_Prototype;
+    public static RuntimeObject yFile_Prototype;
 
     static {
-        yIO_Prototype = new RuntimeObject() {
+        yFile_Prototype = new RuntimeObject() {
             @Override
-            public boolean isTruthy() { return true; }
+            public boolean isTruthy() {
+                return true;
+            }
 
             @Override
-            public String getType() { return "__IO_"; }
+            public String getType() {
+                return "__FILE__";
+            }
         };
     }
 
-    public static class yIOClass extends yClass.ClassObject {
+    public static class yFileClass extends yClass.ClassObject {
 
-        public yIOClass() {
+        public yFileClass() {
             this.prototype = yClass.ClassPrototype;
 
-            RegisterClass(new yStdErr.yStdErrClass());
-            RegisterClass(new yStdOut.yStdOutClass());
-            RegisterClass(new yStdIn.yStdInClass());
-            RegisterClass(new yFile.yFileClass());
+
+
         }
 
         @Override
@@ -45,14 +43,16 @@ public class yIO {
                 List<Variable.Variant> arguments
         ) throws YsharpException {
 
-            throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
+            throw new YsharpException(
+                    YsharpException.YsharpErrorType.PROCESS,
                     -1,
-                    "IO is static class, cannot take instnace");
+                    "File is static class, cannot take instance"
+            );
         }
 
         @Override
         public String getClassName() {
-            return "IO";
+            return "File";
         }
 
         @Override
@@ -62,13 +62,13 @@ public class yIO {
 
         @Override
         public String getType() {
-            return "_IO_";
+            return "_file_";
         }
     }
 
     public static void Register(Interpreter interpreter) throws Exception {
 
-        yIOClass ctor = new yIOClass();
+        yFileClass ctor = new yFileClass();
         Variable.Variant variant = new Variable.Variant(ctor);
         Variable var = new Variable(variant, false, "function");
 
