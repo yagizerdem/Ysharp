@@ -20,6 +20,7 @@ public class Interpreter implements
     public Map<Expr, Integer> locals;
     public List<YsharpException> errors;
     public List<String> exports;
+    public String cwd;
 
     public boolean hadErrors() {
         return !errors.isEmpty();

@@ -2,15 +2,9 @@ package ysharp.treewalk.evaluator.Native.Util.Regex;
 
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
-import ysharp.treewalk.evaluator.Native.Util.Math.yMath;
 import ysharp.treewalk.evaluator.Native.Util.Regex.Matcher.yMatcher;
 import ysharp.treewalk.evaluator.Native.Util.Regex.Pattern.yPattern;
-import ysharp.treewalk.evaluator.Native.Util.yCrypto;
-import ysharp.treewalk.evaluator.Native.Util.yFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 
 public class yNeedle {

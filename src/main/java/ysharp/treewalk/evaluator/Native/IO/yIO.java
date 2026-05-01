@@ -2,14 +2,31 @@ package ysharp.treewalk.evaluator.Native.IO;
 
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
-import ysharp.treewalk.evaluator.Native.IO.file.yFile;
+import ysharp.treewalk.evaluator.Native.IO.File.yFile;
 import ysharp.treewalk.evaluator.Native.IO.stderr.yStdErr;
 import ysharp.treewalk.evaluator.Native.IO.stdin.yStdIn;
 import ysharp.treewalk.evaluator.Native.IO.stdout.yStdOut;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 public class yIO {
+
+    public static Path resolvePath(Interpreter interpreter, String pathText) {
+        Path input = Paths.get(pathText);
+
+        if (input.isAbsolute()) {
+            return input.normalize();
+        }
+
+        Path base = Paths.get(interpreter.cwd)
+                .toAbsolutePath()
+                .normalize();
+
+        return base.resolve(input).normalize();
+    }
+
 
     public static RuntimeObject yIO_Prototype;
 

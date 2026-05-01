@@ -5,6 +5,8 @@ import ysharp.treewalk.lexer.Cursor;
 import ysharp.treewalk.lexer.Lexer;
 import ysharp.treewalk.lexer.Preprocess;
 import ysharp.treewalk.parser.Parser;
+
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -86,6 +88,7 @@ public class Loader {
             if(curNode.equals(this.root)) continue;
 
             Interpreter interpreter = new Interpreter();
+            interpreter.cwd = Path.of(curNode.modulePath).getParent().toString();
             Registery.register(interpreter);
 
             Resolver resolver = new Resolver(interpreter);
@@ -238,7 +241,8 @@ public class Loader {
 
     private String resolvePath(String curModulePath, String moduleImport) {
         Path path = Paths.get(curModulePath);
-        return path.resolve(moduleImport).normalize().toString();
+        String absolutePath = FileSystems.getDefault().getPath(path.toString()).normalize().toAbsolutePath().toString();
+        return Path.of(absolutePath).resolve(moduleImport).normalize().toString();
     }
 
     private void ensurePathExist(String path) {
