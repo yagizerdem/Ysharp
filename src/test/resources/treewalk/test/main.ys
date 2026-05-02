@@ -2,6 +2,9 @@
 
 
 
+var canvas = new Canvas();
+
+canvas.createContext();
 
 
 

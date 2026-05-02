@@ -20,6 +20,7 @@ import ysharp.treewalk.evaluator.Native.Collections.WeakHashMap.yWeakHashMap;
 import ysharp.treewalk.evaluator.Native.IO.yIO;
 import ysharp.treewalk.evaluator.Native.LINQ.Queryable;
 import ysharp.treewalk.evaluator.Native.Network.yHttp;
+import ysharp.treewalk.evaluator.Native.P5ys.yCanvas;
 import ysharp.treewalk.evaluator.Native.Range;
 import ysharp.treewalk.evaluator.Native.TUI.TUI;
 import ysharp.treewalk.evaluator.Native.Concurrency.ySemaphore;
@@ -109,5 +110,8 @@ public class Registery {
 
         // IO
         yIO.Register(interpreter);
+
+        // Canvas
+        yCanvas.Register(interpreter);
     }
 }
