@@ -14,10 +14,6 @@ import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) throws  Exception {
-        // TreeWalk.start(args);
-        DrawingContext drawingContext = new DrawingContext();
-
-        drawingContext.drawLine(10, 20, 40, 50, Color.RED);
-
+         TreeWalk.start(args);
     }
 }
