@@ -1,32 +1,17 @@
-
-const d = 10;
-
-const t = new Thread((a, b, c) => do
-    while true && !Thread.current().isInterrupted()  do
-        try do
-          println "active";
-            __sleep(300);
-        end
-        catch(e) do
-            break;
-        end
+function slow() do
+    try do
+        __sleep(5000);
     end
-end,1,2,3);
+    catch(e) do
+        return null;
+    end
+end
 
-
+let t = new Thread(slow);
 t.start();
 
-println t.isAlive();
-
-__sleep(2000);
-t.interrupt();
-
-println t.isAlive();
-
-t.join();
-
-println t.isAlive();
-
-
-
-
+t.joinTimeout(1000);
+if (t.isAlive()) then do
+    println "thread is still running, interrupting";
+    t.interrupt();
+end
