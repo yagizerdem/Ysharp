@@ -1,0 +1,177 @@
+println "IdentityHashMap core operations test started";
+
+println "-".repeat(50);
+
+
+println "clear tests";
+
+var ihm = new IdentityHashMap();
+
+ihm.put("a", 10);
+ihm.put("b", 20);
+ihm.put("c", 30);
+
+Assert.equals(ihm.size(), 3);
+Assert.isTrue(!ihm.isEmpty());
+
+var result = ihm.clear();
+
+Assert.equals(result, null);
+Assert.equals(ihm.size(), 0);
+Assert.isTrue(ihm.isEmpty());
+
+println "clear empty map";
+
+result = ihm.clear();
+
+Assert.equals(result, null);
+Assert.equals(ihm.size(), 0);
+Assert.isTrue(ihm.isEmpty());
+
+println "clear after re-put";
+
+ihm.put("x", 100);
+ihm.put("y", 200);
+
+Assert.equals(ihm.size(), 2);
+Assert.isTrue(!ihm.isEmpty());
+
+result = ihm.clear();
+
+Assert.equals(result, null);
+Assert.equals(ihm.size(), 0);
+Assert.isTrue(ihm.isEmpty());
+
+println "-".repeat(50);
+
+
+println "IdentityHashMap core operations test started";
+
+println "-".repeat(50);
+
+// -------------------- CLONE --------------------
+println "clone tests";
+
+var ihm = new IdentityHashMap();
+
+ihm.put("a", 10);
+ihm.put("b", 20);
+ihm.put("c", 30);
+
+var cloned = ihm.clone();
+
+Assert.equals(cloned.get("a"), 10);
+Assert.equals(cloned.get("b"), 20);
+Assert.equals(cloned.get("c"), 30);
+
+Assert.equals(cloned.size(), 3);
+Assert.equals(ihm.size(), 3);
+
+println "clone independence test";
+
+cloned.put("a", 999);
+cloned.put("d", 40);
+
+Assert.equals(cloned.get("a"), 999);
+Assert.equals(ihm.get("a"), 10);
+
+Assert.equals(cloned.get("d"), 40);
+Assert.equals(ihm.get("d"), null);
+
+Assert.equals(cloned.size(), 4);
+Assert.equals(ihm.size(), 3);
+
+println "remove from clone";
+
+var removed = cloned.remove("b");
+
+Assert.equals(removed, 20);
+Assert.equals(cloned.get("b"), null);
+Assert.equals(ihm.get("b"), 20);
+
+Assert.equals(cloned.size(), 3);
+Assert.equals(ihm.size(), 3);
+
+println "clear clone";
+
+cloned.clear();
+
+Assert.equals(cloned.size(), 0);
+Assert.isTrue(cloned.isEmpty());
+
+Assert.equals(ihm.size(), 3);
+Assert.isTrue(!ihm.isEmpty());
+
+println "clone empty map";
+
+var emptyIhm = new IdentityHashMap();
+var emptyClone = emptyIhm.clone();
+
+Assert.equals(emptyClone.size(), 0);
+Assert.isTrue(emptyClone.isEmpty());
+
+println "-".repeat(50);
+
+println "IdentityHashMap core operations test successful";
+
+
+println "IdentityHashMap core operations test started";
+
+println "-".repeat(50);
+
+// -------------------- CONTAINS KEY --------------------
+println "containsKey tests";
+
+var ihm = new IdentityHashMap();
+
+ihm.put("a", 10);
+ihm.put("b", 20);
+ihm.put("c", 30);
+
+Assert.isTrue(ihm.containsKey("a"));
+Assert.isTrue(ihm.containsKey("b"));
+Assert.isTrue(ihm.containsKey("c"));
+
+println "containsKey non-existing key";
+
+Assert.isTrue(!ihm.containsKey("x"));
+Assert.isTrue(!ihm.containsKey("z"));
+
+println "containsKey after overwrite";
+
+ihm.put("a", 999);
+
+Assert.isTrue(ihm.containsKey("a"));
+Assert.equals(ihm.get("a"), 999);
+Assert.equals(ihm.size(), 3);
+
+println "containsKey after remove";
+
+var removed = ihm.remove("b");
+
+Assert.equals(removed, 20);
+Assert.isTrue(!ihm.containsKey("b"));
+Assert.isTrue(ihm.containsKey("a"));
+Assert.isTrue(ihm.containsKey("c"));
+
+println "containsKey after clear";
+
+ihm.clear();
+
+Assert.equals(ihm.size(), 0);
+Assert.isTrue(ihm.isEmpty());
+Assert.isTrue(!ihm.containsKey("a"));
+Assert.isTrue(!ihm.containsKey("c"));
+
+println "containsKey empty map";
+
+var emptyIhm = new IdentityHashMap();
+
+Assert.isTrue(!emptyIhm.containsKey("a"));
+
+println "-".repeat(50);
+
+println "IdentityHashMap core operations test successful";
+
+
+println "IdentityHashMap operations test successful";

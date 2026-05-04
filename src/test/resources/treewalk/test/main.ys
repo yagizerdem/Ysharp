@@ -1,6 +1,31 @@
 
+const d = 10;
+
+const t = new Thread((a, b, c) => do
+    while true && !Thread.current().isInterrupted()  do
+        try do
+          println "active";
+            __sleep(300);
+        end
+        catch(e) do
+            break;
+        end
+    end
+end,1,2,3);
 
 
+t.start();
+
+println t.isAlive();
+
+__sleep(2000);
+t.interrupt();
+
+println t.isAlive();
+
+t.join();
+
+println t.isAlive();
 
 
 

@@ -1,0 +1,834 @@
+println "HashTable core operations test started";
+
+println "-".repeat(50);
+
+// -------------------- CLEAR --------------------
+println "clear tests";
+
+var ht = new HashTable();
+
+ht.put("a", 10);
+ht.put("b", 20);
+ht.put("c", 30);
+
+Assert.equals(ht.size(), 3);
+Assert.isTrue(!ht.isEmpty());
+
+var result = ht.clear();
+
+Assert.equals(result, null);
+Assert.equals(ht.size(), 0);
+Assert.isTrue(ht.isEmpty());
+
+println "clear empty table";
+
+result = ht.clear();
+
+Assert.equals(result, null);
+Assert.equals(ht.size(), 0);
+Assert.isTrue(ht.isEmpty());
+
+println "-".repeat(50);
+
+println "clone tests";
+
+var ht = new HashTable();
+
+ht.put("a", 10);
+ht.put("b", 20);
+ht.put("c", 30);
+
+var cloned = ht.clone();
+
+Assert.equals(cloned.get("a"), 10);
+Assert.equals(cloned.get("b"), 20);
+Assert.equals(cloned.get("c"), 30);
+
+Assert.equals(cloned.size(), 3);
+Assert.equals(ht.size(), 3);
+
+println "clone independence test";
+
+cloned.put("a", 999);
+cloned.put("d", 40);
+
+Assert.equals(cloned.get("a"), 999);
+Assert.equals(ht.get("a"), 10);
+
+Assert.equals(cloned.get("d"), 40);
+Assert.equals(ht.get("d"), null);
+
+Assert.equals(cloned.size(), 4);
+Assert.equals(ht.size(), 3);
+
+println "remove from clone";
+
+var removed = cloned.remove("b");
+
+Assert.equals(removed, 20);
+Assert.equals(cloned.get("b"), null);
+Assert.equals(ht.get("b"), 20);
+
+Assert.equals(cloned.size(), 3);
+Assert.equals(ht.size(), 3);
+
+println "clear clone";
+
+cloned.clear();
+
+Assert.equals(cloned.size(), 0);
+Assert.isTrue(cloned.isEmpty());
+
+Assert.equals(ht.size(), 3);
+Assert.isTrue(!ht.isEmpty());
+
+println "-".repeat(50);
+
+
+println "HashTable core operations test started";
+
+println "-".repeat(50);
+
+// -------------------- CONTAINS KEY --------------------
+println "containsKey tests";
+
+var ht = new HashTable();
+
+ht.put("a", 10);
+ht.put("b", 20);
+ht.put("c", 30);
+
+Assert.isTrue(ht.containsKey("a"));
+Assert.isTrue(ht.containsKey("b"));
+Assert.isTrue(ht.containsKey("c"));
+
+println "containsKey non-existing key";
+
+Assert.isTrue(!ht.containsKey("x"));
+Assert.isTrue(!ht.containsKey("z"));
+
+println "containsKey after overwrite";
+
+ht.put("a", 999);
+
+Assert.isTrue(ht.containsKey("a"));
+Assert.equals(ht.get("a"), 999);
+
+println "containsKey after remove";
+
+var removed = ht.remove("b");
+
+Assert.equals(removed, 20);
+Assert.isTrue(!ht.containsKey("b"));
+Assert.isTrue(ht.containsKey("a"));
+Assert.isTrue(ht.containsKey("c"));
+
+println "containsKey after clear";
+
+ht.clear();
+
+Assert.equals(ht.size(), 0);
+Assert.isTrue(ht.isEmpty());
+Assert.isTrue(!ht.containsKey("a"));
+Assert.isTrue(!ht.containsKey("c"));
+
+println "-".repeat(50);
+
+println "HashTable core operations test successful";
+
+println "HashTable core operations test started";
+
+println "-".repeat(50);
+
+// -------------------- ENTRIES --------------------
+println "entries tests";
+
+var ht = new HashTable();
+
+ht.put("a", 10);
+ht.put("b", 20);
+ht.put("c", 30);
+
+var entries = ht.entries();
+
+Assert.equals(entries.size(), 3);
+
+println "entry pair structure tests";
+
+var foundA = false;
+var foundB = false;
+var foundC = false;
+
+for var i = 0; i < entries.size(); i++ do
+    var pair = entries.get(i);
+
+    Assert.equals(pair.size(), 2);
+
+    var key = pair.get(0);
+    var value = pair.get(1);
+
+    if key == "a" then do
+        Assert.equals(value, 10);
+        foundA = true;
+    end
+
+    if key == "b" then do
+        Assert.equals(value, 20);
+        foundB = true;
+    end
+
+    if key == "c" then do
+        Assert.equals(value, 30);
+        foundC = true;
+    end
+end
+
+Assert.isTrue(foundA);
+Assert.isTrue(foundB);
+Assert.isTrue(foundC);
+
+println "entries after remove";
+
+ht.remove("b");
+
+entries = ht.entries();
+
+Assert.equals(entries.size(), 2);
+
+foundA = false;
+foundB = false;
+foundC = false;
+
+for var i = 0; i < entries.size(); i++ do
+    var pair = entries.get(i);
+
+    Assert.equals(pair.size(), 2);
+
+    var key = pair.get(0);
+    var value = pair.get(1);
+
+    if key == "a" then do
+        Assert.equals(value, 10);
+        foundA = true;
+    end
+
+    if key == "b" then do
+        foundB = true;
+    end
+
+    if key == "c" then do
+        Assert.equals(value, 30);
+        foundC = true;
+    end
+end
+
+Assert.isTrue(foundA);
+Assert.isTrue(!foundB);
+Assert.isTrue(foundC);
+
+println "entries after clear";
+
+ht.clear();
+
+entries = ht.entries();
+
+Assert.equals(entries.size(), 0);
+
+println "entries empty table";
+
+var emptyHt = new HashTable();
+entries = emptyHt.entries();
+
+Assert.equals(entries.size(), 0);
+
+println "-".repeat(50);
+
+println "HashTable core operations test successful";
+
+println "HashTable core operations test started";
+
+println "-".repeat(50);
+
+// -------------------- GET --------------------
+println "get tests";
+
+var ht = new HashTable();
+
+ht.put("a", 10);
+ht.put("b", 20);
+ht.put("c", 30);
+
+Assert.equals(ht.get("a"), 10);
+Assert.equals(ht.get("b"), 20);
+Assert.equals(ht.get("c"), 30);
+
+println "get non-existing key";
+
+Assert.equals(ht.get("x"), null);
+Assert.equals(ht.get("z"), null);
+
+println "get after overwrite";
+
+ht.put("a", 999);
+
+Assert.equals(ht.get("a"), 999);
+Assert.equals(ht.get("b"), 20);
+
+println "get after remove";
+
+var removed = ht.remove("b");
+
+Assert.equals(removed, 20);
+Assert.equals(ht.get("b"), null);
+Assert.equals(ht.get("a"), 999);
+Assert.equals(ht.get("c"), 30);
+
+println "get after clear";
+
+ht.clear();
+
+Assert.equals(ht.size(), 0);
+Assert.equals(ht.get("a"), null);
+Assert.equals(ht.get("c"), null);
+
+println "get empty table";
+
+var emptyHt = new HashTable();
+
+Assert.equals(emptyHt.get("a"), null);
+
+println "-".repeat(50);
+
+println "HashTable core operations test successful";
+
+println "HashTable core operations test started";
+
+println "-".repeat(50);
+
+// -------------------- IS EMPTY --------------------
+println "isEmpty tests";
+
+var ht = new HashTable();
+
+Assert.isTrue(ht.isEmpty());
+Assert.equals(ht.size(), 0);
+
+println "isEmpty after put";
+
+ht.put("a", 10);
+
+Assert.isTrue(!ht.isEmpty());
+Assert.equals(ht.size(), 1);
+
+println "isEmpty after multiple puts";
+
+ht.put("b", 20);
+ht.put("c", 30);
+
+Assert.isTrue(!ht.isEmpty());
+Assert.equals(ht.size(), 3);
+
+println "isEmpty after remove but still has items";
+
+var removed = ht.remove("b");
+
+Assert.equals(removed, 20);
+Assert.isTrue(!ht.isEmpty());
+Assert.equals(ht.size(), 2);
+
+println "isEmpty after removing all items";
+
+ht.remove("a");
+ht.remove("c");
+
+Assert.isTrue(ht.isEmpty());
+Assert.equals(ht.size(), 0);
+
+println "isEmpty after clear";
+
+ht.put("x", 100);
+ht.put("y", 200);
+
+Assert.isTrue(!ht.isEmpty());
+
+ht.clear();
+
+Assert.isTrue(ht.isEmpty());
+Assert.equals(ht.size(), 0);
+
+println "isEmpty after clear on empty table";
+
+ht.clear();
+
+Assert.isTrue(ht.isEmpty());
+Assert.equals(ht.size(), 0);
+
+println "-".repeat(50);
+
+println "HashTable core operations test successful";
+
+
+println "HashTable core operations test started";
+
+println "-".repeat(50);
+
+// -------------------- KEYS --------------------
+println "keys tests";
+
+var ht = new HashTable();
+
+ht.put("a", 10);
+ht.put("b", 20);
+ht.put("c", 30);
+
+var keys = ht.keys();
+
+Assert.equals(keys.size(), 3);
+
+println "keys contains existing keys";
+
+Assert.isTrue(keys.contains("a"));
+Assert.isTrue(keys.contains("b"));
+Assert.isTrue(keys.contains("c"));
+
+println "keys does not contain values";
+
+Assert.isTrue(!keys.contains(10));
+Assert.isTrue(!keys.contains(20));
+Assert.isTrue(!keys.contains(30));
+
+println "keys after overwrite";
+
+ht.put("a", 999);
+
+keys = ht.keys();
+
+Assert.equals(keys.size(), 3);
+Assert.isTrue(keys.contains("a"));
+Assert.isTrue(keys.contains("b"));
+Assert.isTrue(keys.contains("c"));
+
+println "keys after remove";
+
+var removed = ht.remove("b");
+
+Assert.equals(removed, 20);
+
+keys = ht.keys();
+
+Assert.equals(keys.size(), 2);
+Assert.isTrue(keys.contains("a"));
+Assert.isTrue(!keys.contains("b"));
+Assert.isTrue(keys.contains("c"));
+
+println "keys after clear";
+
+ht.clear();
+
+keys = ht.keys();
+
+Assert.equals(keys.size(), 0);
+
+println "keys empty table";
+
+var emptyHt = new HashTable();
+
+keys = emptyHt.keys();
+
+Assert.equals(keys.size(), 0);
+
+println "-".repeat(50);
+
+println "HashTable core operations test successful";
+
+println "HashTable core operations test started";
+
+println "-".repeat(50);
+
+// -------------------- PUT --------------------
+println "put tests";
+
+var ht = new HashTable();
+
+var result = ht.put("a", 10);
+
+Assert.equals(result, 1);
+Assert.equals(ht.size(), 1);
+Assert.equals(ht.get("a"), 10);
+
+println "put multiple keys";
+
+result = ht.put("b", 20);
+
+Assert.equals(result, 2);
+Assert.equals(ht.size(), 2);
+Assert.equals(ht.get("b"), 20);
+
+result = ht.put("c", 30);
+
+Assert.equals(result, 3);
+Assert.equals(ht.size(), 3);
+Assert.equals(ht.get("c"), 30);
+
+println "put overwrite existing key";
+
+result = ht.put("a", 999);
+
+Assert.equals(result, 3);
+Assert.equals(ht.size(), 3);
+Assert.equals(ht.get("a"), 999);
+
+println "put different key types";
+
+result = ht.put(100, "number-key");
+
+Assert.equals(result, 4);
+Assert.equals(ht.size(), 4);
+Assert.equals(ht.get(100), "number-key");
+
+println "put after remove";
+
+var removed = ht.remove("b");
+
+Assert.equals(removed, 20);
+Assert.equals(ht.size(), 3);
+
+result = ht.put("d", 40);
+
+Assert.equals(result, 4);
+Assert.equals(ht.get("d"), 40);
+
+println "put after clear";
+
+ht.clear();
+
+Assert.equals(ht.size(), 0);
+
+result = ht.put("x", 100);
+
+Assert.equals(result, 1);
+Assert.equals(ht.size(), 1);
+Assert.equals(ht.get("x"), 100);
+
+println "-".repeat(50);
+
+println "HashTable core operations test successful";
+
+println "HashTable core operations test started";
+
+println "-".repeat(50);
+
+// -------------------- REMOVE --------------------
+println "remove tests";
+
+var ht = new HashTable();
+
+ht.put("a", 10);
+ht.put("b", 20);
+ht.put("c", 30);
+
+Assert.equals(ht.size(), 3);
+
+println "remove existing key";
+
+var removed = ht.remove("b");
+
+Assert.equals(removed, 20);
+Assert.equals(ht.size(), 2);
+Assert.equals(ht.get("b"), null);
+Assert.isTrue(!ht.containsKey("b"));
+
+println "remove non-existing key";
+
+removed = ht.remove("x");
+
+Assert.equals(removed, null);
+Assert.equals(ht.size(), 2);
+
+println "remove same key twice";
+
+removed = ht.remove("b");
+
+Assert.equals(removed, null);
+Assert.equals(ht.size(), 2);
+
+println "remove remaining keys";
+
+removed = ht.remove("a");
+
+Assert.equals(removed, 10);
+Assert.equals(ht.size(), 1);
+Assert.equals(ht.get("a"), null);
+Assert.isTrue(!ht.containsKey("a"));
+
+removed = ht.remove("c");
+
+Assert.equals(removed, 30);
+Assert.equals(ht.size(), 0);
+Assert.equals(ht.get("c"), null);
+Assert.isTrue(!ht.containsKey("c"));
+Assert.isTrue(ht.isEmpty());
+
+println "remove from empty table";
+
+removed = ht.remove("a");
+
+Assert.equals(removed, null);
+Assert.equals(ht.size(), 0);
+Assert.isTrue(ht.isEmpty());
+
+println "remove after re-put";
+
+ht.put("x", 100);
+ht.put("y", 200);
+
+Assert.equals(ht.size(), 2);
+
+removed = ht.remove("x");
+
+Assert.equals(removed, 100);
+Assert.equals(ht.size(), 1);
+Assert.equals(ht.get("x"), null);
+Assert.equals(ht.get("y"), 200);
+
+println "-".repeat(50);
+
+println "HashTable core operations test successful";
+
+
+println "HashTable core operations test started";
+
+println "-".repeat(50);
+
+// -------------------- SIZE --------------------
+println "size tests";
+
+var ht = new HashTable();
+
+Assert.equals(ht.size(), 0);
+Assert.isTrue(ht.isEmpty());
+
+println "size after put";
+
+var result = ht.put("a", 10);
+
+Assert.equals(result, 1);
+Assert.equals(ht.size(), 1);
+
+result = ht.put("b", 20);
+
+Assert.equals(result, 2);
+Assert.equals(ht.size(), 2);
+
+result = ht.put("c", 30);
+
+Assert.equals(result, 3);
+Assert.equals(ht.size(), 3);
+
+println "size after overwrite";
+
+result = ht.put("a", 999);
+
+Assert.equals(result, 3);
+Assert.equals(ht.size(), 3);
+Assert.equals(ht.get("a"), 999);
+
+println "size after remove";
+
+var removed = ht.remove("b");
+
+Assert.equals(removed, 20);
+Assert.equals(ht.size(), 2);
+
+println "size after remove non-existing key";
+
+removed = ht.remove("x");
+
+Assert.equals(removed, null);
+Assert.equals(ht.size(), 2);
+
+println "size after clear";
+
+ht.clear();
+
+Assert.equals(ht.size(), 0);
+Assert.isTrue(ht.isEmpty());
+
+println "size after clear empty table";
+
+ht.clear();
+
+Assert.equals(ht.size(), 0);
+Assert.isTrue(ht.isEmpty());
+
+println "size after re-put";
+
+ht.put("x", 100);
+ht.put("y", 200);
+
+Assert.equals(ht.size(), 2);
+Assert.isTrue(!ht.isEmpty());
+
+println "-".repeat(50);
+
+println "HashTable core operations test successful";
+
+println "HashTable core operations test started";
+
+println "-".repeat(50);
+
+// -------------------- TO STRING --------------------
+println "toString tests";
+
+var ht = new HashTable();
+
+var str = ht.toString();
+
+Assert.equals(str, "{}");
+
+println "toString with single entry";
+
+ht.put("a", 10);
+
+str = ht.toString();
+
+Assert.isTrue(str.contains("a"));
+Assert.isTrue(str.contains("10"));
+Assert.isTrue(str.contains("="));
+Assert.isTrue(str.startsWith("{"));
+Assert.isTrue(str.endsWith("}"));
+
+println "toString with multiple entries";
+
+ht.put("b", 20);
+ht.put("c", 30);
+
+str = ht.toString();
+
+Assert.isTrue(str.startsWith("{"));
+Assert.isTrue(str.endsWith("}"));
+
+Assert.isTrue(str.contains("a"));
+Assert.isTrue(str.contains("10"));
+
+Assert.isTrue(str.contains("b"));
+Assert.isTrue(str.contains("20"));
+
+Assert.isTrue(str.contains("c"));
+Assert.isTrue(str.contains("30"));
+
+Assert.isTrue(str.contains("="));
+Assert.isTrue(str.contains(","));
+
+println "toString after overwrite";
+
+ht.put("a", 999);
+
+str = ht.toString();
+
+Assert.isTrue(str.contains("a"));
+Assert.isTrue(str.contains("999"));
+Assert.isTrue(!str.contains("a=10"));
+
+println "toString after remove";
+
+ht.remove("b");
+
+str = ht.toString();
+
+Assert.isTrue(str.contains("a"));
+Assert.isTrue(str.contains("999"));
+
+Assert.isTrue(!str.contains("b"));
+Assert.isTrue(!str.contains("20"));
+
+Assert.isTrue(str.contains("c"));
+Assert.isTrue(str.contains("30"));
+
+println "toString after clear";
+
+ht.clear();
+
+str = ht.toString();
+
+Assert.equals(str, "{}");
+
+println "-".repeat(50);
+
+println "HashTable core operations test successful";
+
+println "HashTable core operations test started";
+
+println "-".repeat(50);
+
+// -------------------- VALUES --------------------
+println "values tests";
+
+var ht = new HashTable();
+
+ht.put("a", 10);
+ht.put("b", 20);
+ht.put("c", 30);
+
+var values = ht.values();
+
+Assert.equals(values.size(), 3);
+
+println "values contains existing values";
+
+Assert.isTrue(values.contains(10));
+Assert.isTrue(values.contains(20));
+Assert.isTrue(values.contains(30));
+
+println "values does not contain keys";
+
+Assert.isTrue(!values.contains("a"));
+Assert.isTrue(!values.contains("b"));
+Assert.isTrue(!values.contains("c"));
+
+println "values after overwrite";
+
+ht.put("a", 999);
+
+values = ht.values();
+
+Assert.equals(values.size(), 3);
+Assert.isTrue(values.contains(999));
+Assert.isTrue(!values.contains(10));
+Assert.isTrue(values.contains(20));
+Assert.isTrue(values.contains(30));
+
+println "values after remove";
+
+var removed = ht.remove("b");
+
+Assert.equals(removed, 20);
+
+values = ht.values();
+
+Assert.equals(values.size(), 2);
+Assert.isTrue(values.contains(999));
+Assert.isTrue(!values.contains(20));
+Assert.isTrue(values.contains(30));
+
+println "values after clear";
+
+ht.clear();
+
+values = ht.values();
+
+Assert.equals(values.size(), 0);
+
+println "values empty table";
+
+var emptyHt = new HashTable();
+
+values = emptyHt.values();
+
+Assert.equals(values.size(), 0);
+
+println "-".repeat(50);
+
+println "HashTable core operations test successful";
+
+println "HashTable core operations test successful";
