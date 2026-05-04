@@ -29,9 +29,9 @@ An iterable object must implement:
 
 The iterator object returned by `iter()` must implement:
 
-| Method      | Signature     | Return Type | Description                                                         |
-|-------------|---------------|-------------|---------------------------------------------------------------------|
-| `getNext`   | `getNext()`   | `any\|null` | Returns the next value in the sequence, or `null` when exhausted    |
+| Method     | Signature      | Return Type          | Description                                                      |
+|------------|----------------|----------------------|------------------------------------------------------------------|
+| `getNext`  | `getNext()`    | `any\null`           | Returns the next value in the sequence, or `null` when exhausted |
 
 > **Note:** Returning `null` from `getNext()` signals the end of iteration. The `foreach` loop will stop immediately when `null` is received.
 
@@ -50,9 +50,9 @@ The `VectorIterator` maintains an internal cursor. When all elements are consume
 The `foreach` loop automatically invokes the iterator protocol on the iterable expression.
 
 ```ysharp
-foreach var item in myCollection {
+foreach var item in myCollection do
     println(item);
-}
+end
 ```
 
 **What happens internally:**
@@ -69,9 +69,9 @@ foreach var item in myCollection {
 The loop variable can be optionally typed. If a type annotation is provided, the interpreter validates each value returned by `getNext()` against the declared type at runtime.
 
 ```ysharp
-foreach var item in numbers {
-    println(item);
-}
+foreach var item in numbers do
+    println item;
+end
 ```
 
 If the type does not match, a runtime error is thrown:

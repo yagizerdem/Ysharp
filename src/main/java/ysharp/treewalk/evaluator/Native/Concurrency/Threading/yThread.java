@@ -4,6 +4,7 @@ import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Native.Concurrency.Threading.function.instance.*;
 import ysharp.treewalk.evaluator.Native.Concurrency.Threading.function.statix.CurrentFn;
+import ysharp.treewalk.evaluator.Native.Concurrency.Threading.function.statix.SleepFn;
 import ysharp.treewalk.evaluator.Native.Concurrency.Threading.function.statix.YieldFn;
 
 import java.util.ArrayList;
@@ -77,8 +78,6 @@ public class yThread {
         yThread_Instance_Prototype.RegisterNativeFn(new SetDaemonFn());
         // thread.getState()
         yThread_Instance_Prototype.RegisterNativeFn(new GetStateFn());
-        // thread.yield()
-        yThread_Instance_Prototype.RegisterNativeFn(new YieldFn());
     }
 
 
@@ -129,7 +128,12 @@ public class yThread {
 
         public yThreadClass(){
             this.prototype = yClass.ClassPrototype;
+            // Thread.current()
             this.RegisterNativeFn(new CurrentFn());
+            // Thread.yield()
+            this.RegisterNativeFn(new YieldFn());
+            // Thread.sleep(ms)
+            this.RegisterNativeFn(new SleepFn());
         }
 
         @Override

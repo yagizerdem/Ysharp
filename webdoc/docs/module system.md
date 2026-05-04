@@ -37,9 +37,9 @@ export var PI = 3.14159;
 
 export const MAX_SIZE = 100;
 
-export class Vector do
+export class Vector {
     ...
-end
+}
 ```
 
 **Grammar:**

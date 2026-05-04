@@ -23,7 +23,7 @@ import ysharp.treewalk.evaluator.Native.Network.yHttp;
 import ysharp.treewalk.evaluator.Native.P5ys.yCanvas;
 import ysharp.treewalk.evaluator.Native.Range;
 import ysharp.treewalk.evaluator.Native.TUI.TUI;
-import ysharp.treewalk.evaluator.Native.Concurrency.ySemaphore;
+import ysharp.treewalk.evaluator.Native.Concurrency.Semaphore.ySemaphore;
 import ysharp.treewalk.evaluator.Native.Concurrency.Threading.yThread;
 import ysharp.treewalk.evaluator.Native.Util.*;
 import ysharp.treewalk.evaluator.Native.Util.Math.yMath;
