@@ -3,6 +3,8 @@ package ysharp.treewalk.evaluator.Native.Concurrency.Threading;
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Native.Concurrency.Threading.function.instance.*;
+import ysharp.treewalk.evaluator.Native.Concurrency.Threading.function.statix.CurrentFn;
+import ysharp.treewalk.evaluator.Native.Concurrency.Threading.function.statix.YieldFn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +61,24 @@ public class yThread {
         yThread_Instance_Prototype.RegisterNativeFn(new IsAliveFn());
         // thread.interrupt()
         yThread_Instance_Prototype.RegisterNativeFn(new InterruptFn());
+        // thread.isInterrupted();
+        yThread_Instance_Prototype.RegisterNativeFn(new IsInterruptedFn());
+        // thread.joinTimeout(ms)
+        yThread_Instance_Prototype.RegisterNativeFn(new JoinTimeoutFn());
+        // thread.getName(str)
+        yThread_Instance_Prototype.RegisterNativeFn(new GetNameFn());
+        // thread.setName(str)
+        yThread_Instance_Prototype.RegisterNativeFn(new SetNameFn());
+        // thread.getId()
+        yThread_Instance_Prototype.RegisterNativeFn(new GetIdFn());
+        // thread.isDaemon()
+        yThread_Instance_Prototype.RegisterNativeFn(new IsDaemonFn());
+        // thread.setDaemon()
+        yThread_Instance_Prototype.RegisterNativeFn(new SetDaemonFn());
+        // thread.getState()
+        yThread_Instance_Prototype.RegisterNativeFn(new GetStateFn());
+        // thread.yield()
+        yThread_Instance_Prototype.RegisterNativeFn(new YieldFn());
     }
 
 
@@ -70,6 +90,10 @@ public class yThread {
 
         public yThreadInstance(Callable callable) {
             this.callable = callable;
+            this.prototype = yThread_Instance_Prototype;
+        }
+
+        public yThreadInstance() {
             this.prototype = yThread_Instance_Prototype;
         }
 
@@ -102,6 +126,11 @@ public class yThread {
     }
 
     public static class yThreadClass extends yClass.SealedClassObject {
+
+        public yThreadClass(){
+            this.prototype = yClass.ClassPrototype;
+            this.RegisterNativeFn(new CurrentFn());
+        }
 
         @Override
         public int arity() {
