@@ -1,3 +1,7 @@
+---
+sidebar_position: 27
+---
+
 # multi threading
 
 Ysharp provides native `Thread` and `Semaphore` classes for concurrent execution of multiple tasks. These classes wrap Java's underlying `java.lang.Thread` and `java.util.concurrent.Semaphore` mechanisms.
@@ -15,22 +19,21 @@ Ysharp provides native `Thread` and `Semaphore` classes for concurrent execution
 let t = Thread(callable, ...args);
 ```
 
-| Parameter    | Type         | Description                                                     |
-|--------------|--------------|-----------------------------------------------------------------|
-| `callable`   | `function`   | The function or lambda to be called inside the new thread.      |
-| `...args`    | `any`        | Arguments passed to the `callable` function at invocation time. |
+| Parameter  | Type       | Description                                                     |
+| ---------- | ---------- | --------------------------------------------------------------- |
+| `callable` | `function` | The function or lambda to be called inside the new thread.      |
+| `...args`  | `any`      | Arguments passed to the `callable` function at invocation time. |
 
 > **Note** \
 > `Thread(...)` only creates the thread object. You must call `start()` to begin execution.
 
 ### Static Methods
 
-| Method     | Signature                  | Return Type | Description                                                                                                                                                 |
-|------------|----------------------------|-------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `current`  | `Thread.current()`         | `Thread`    | Returns a `Thread` object representing the currently running thread.                                                                                        |
-| `yield`    | `yield()`                  | `null`      | Suggests to the scheduler that the calling thread yield the CPU to other threads.                                                                           |
-| `sleep`    | `Thread.sleep(ms : int)`   | `null`      | Pauses the current thread for `ms` milliseconds. If the thread is interrupted while sleeping, a runtime error is thrown and the interrupt flag is restored. |
-
+| Method    | Signature                | Return Type | Description                                                                                                                                                 |
+| --------- | ------------------------ | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `current` | `Thread.current()`       | `Thread`    | Returns a `Thread` object representing the currently running thread.                                                                                        |
+| `yield`   | `yield()`                | `null`      | Suggests to the scheduler that the calling thread yield the CPU to other threads.                                                                           |
+| `sleep`   | `Thread.sleep(ms : int)` | `null`      | Pauses the current thread for `ms` milliseconds. If the thread is interrupted while sleeping, a runtime error is thrown and the interrupt flag is restored. |
 
 > **Warning** \
 > The thread obtained via `Thread.current()` is a wrapper around the currently running Java thread; `start()` cannot be called on it.
@@ -38,7 +41,7 @@ let t = Thread(callable, ...args);
 ### Instance Methods
 
 | Method          | Signature                 | Return Type | Description                                                                                                           |
-|-----------------|---------------------------|-------------|-----------------------------------------------------------------------------------------------------------------------|
+| --------------- | ------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------- |
 | `start`         | `start()`                 | `null`      | Starts the thread and runs the `callable` function inside the new thread.                                             |
 | `join`          | `join()`                  | `null`      | Blocks the calling thread until the target thread completes.                                                          |
 | `joinTimeout`   | `joinTimeout(ms : int)`   | `null`      | Waits at most `ms` milliseconds for the thread to complete.                                                           |
@@ -55,7 +58,7 @@ let t = Thread(callable, ...args);
 ### Thread Lifecycle States
 
 | State           | Description                                                    |
-|-----------------|----------------------------------------------------------------|
+| --------------- | -------------------------------------------------------------- |
 | `NEW`           | Thread has been created but `start()` has not been called yet. |
 | `RUNNABLE`      | Running or ready to run.                                       |
 | `BLOCKED`       | Waiting for a monitor lock.                                    |

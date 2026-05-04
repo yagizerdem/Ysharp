@@ -1,17 +1,4 @@
-function slow() do
-    try do
-        __sleep(5000);
-    end
-    catch(e) do
-        return null;
-    end
-end
-
-let t = new Thread(slow);
-t.start();
-
-t.joinTimeout(1000);
-if (t.isAlive()) then do
-    println "thread is still running, interrupting";
-    t.interrupt();
-end
+let s = new Semaphore(5, false);
+let taken = s.drainPermits();
+println "drained " + taken + " permits";
+println "available now = " + s.availablePermits(); // 0
