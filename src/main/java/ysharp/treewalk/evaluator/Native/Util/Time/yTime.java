@@ -2,6 +2,7 @@ package ysharp.treewalk.evaluator.Native.Util.Time;
 
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
+import ysharp.treewalk.evaluator.Native.Util.Time.DateTime.yDateTime;
 import ysharp.treewalk.evaluator.Native.Util.Time.function.statix.*;
 
 import java.text.Format;
@@ -36,6 +37,9 @@ public class yTime {
             this.RegisterNativeFn(new ParseFn());
             // Time.measure(fn)
             this.RegisterNativeFn(new MeasureFn());
+
+            // DateTime static class
+            this.RegisterClass(new yDateTime.yDateTimeClass());
         }
 
         @Override
@@ -61,7 +65,12 @@ public class yTime {
 
         @Override
         public String getType() {
-            return "Time";
+            return "_Time_";
+        }
+
+        @Override
+        public String toString() {
+            return "<class:Time>";
         }
     }
 
