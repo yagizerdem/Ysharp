@@ -1,24 +1,6 @@
-println Time.DateTime.getDate();
-println Time.DateTime.getTime();
-println Time.DateTime.getDateTime();
+let a = "2026-05-06T12:00:00";
+let b = "2026-05-10T12:00:00";
 
-println Time.DateTime.getYear();
-println Time.DateTime.getMonth();
-println Time.DateTime.getDayOfMonth();
-println Time.DateTime.getDayOfWeek();
-
-println Time.DateTime.getHour();
-println Time.DateTime.getMinute();
-println Time.DateTime.getSecond();
-
-var dt = Time.DateTime.getDateTime();
-
-println Time.DateTime.parse(dt);
-
-println Time.DateTime.format(dt, "yyyy-MM-dd HH:mm:ss");
-
-println Time.DateTime.plusDays(dt, 7);
-println Time.DateTime.minusDays(dt, 7);
-
-println Time.DateTime.isBefore("2026-05-06T10:00:00", "2026-05-07T10:00:00");
-println Time.DateTime.diffDays("2026-05-01T00:00:00", "2026-05-06T00:00:00");
+println Time.DateTime.isBefore(a, b); // true
+println Time.DateTime.diffDays(a, b); // 4
+println Time.DateTime.diffDays(b, a); // -4
