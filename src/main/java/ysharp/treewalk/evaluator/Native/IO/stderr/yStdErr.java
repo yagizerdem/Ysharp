@@ -36,8 +36,8 @@ public class yStdErr {
 
                     requireArity(arguments, arity(), getFnName());
 
-                    String value = requireString(arguments.getFirst(), getFnName(), 1);
-                    System.err.print(value);
+                    Variable.Variant var = arguments.getFirst();
+                    System.err.print(var.toString());
 
                     return new Variable.Variant(null);
                 }
@@ -61,8 +61,8 @@ public class yStdErr {
 
                     requireArity(arguments, arity(), getFnName());
 
-                    String value = requireString(arguments.getFirst(), getFnName(), 1);
-                    System.err.println(value);
+                    Variable.Variant var = arguments.getFirst();
+                    System.err.println(var.toString());
 
                     return new Variable.Variant(null);
                 }

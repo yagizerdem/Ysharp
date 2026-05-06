@@ -36,8 +36,8 @@ public class yStdOut {
 
                     requireArity(arguments, arity(), getFnName());
 
-                    String value = requireString(arguments.getFirst(), getFnName(), 1);
-                    System.out.print(value);
+                    Variable.Variant var = arguments.getFirst();
+                    System.out.print(var.toString());
 
                     return new Variable.Variant(null);
                 }
@@ -61,8 +61,8 @@ public class yStdOut {
 
                     requireArity(arguments, arity(), getFnName());
 
-                    String value = requireString(arguments.getFirst(), getFnName(), 1);
-                    System.out.println(value);
+                    Variable.Variant var = arguments.getFirst();
+                    System.out.println(var.toString());
 
                     return new Variable.Variant(null);
                 }
