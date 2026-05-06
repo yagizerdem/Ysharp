@@ -1408,7 +1408,7 @@ public class Interpreter implements
 
                 newEnv.define(
                         stmt.errIdentifier.lexeme,
-                        new Variable(new Variable.Variant(ex.getMessage()), true, "any")
+                        new Variable(new Variable.Variant(new yString.yStringInstance(ex.getMessage())), true, "any")
                 );
 
                 this.curEnv = newEnv;
@@ -1427,7 +1427,7 @@ public class Interpreter implements
 
                 newEnv.define(
                         stmt.errIdentifier.lexeme,
-                        new Variable(new Variable.Variant(ex.getMessage()), true, "any")
+                        new Variable(new Variable.Variant(new yString.yStringInstance(ex.getMessage())), true, "any")
                 );
 
                 this.curEnv = newEnv;
