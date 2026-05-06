@@ -1,4 +1,5 @@
-let s = new Semaphore(5, false);
-let taken = s.drainPermits();
-println "drained " + taken + " permits";
-println "available now = " + s.availablePermits(); // 0
+try do
+  let data = IO.File.read("missing.txt");
+end catch (err) do
+  IO.stderr.writeln("Could not read file: " + err);
+end
