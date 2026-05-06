@@ -5,13 +5,14 @@ import ysharp.treewalk.evaluator.Function;
 import ysharp.treewalk.evaluator.Interpreter;
 import ysharp.treewalk.evaluator.Variable;
 
+import java.time.Instant;
 import java.util.List;
 
-public class SecondsFn extends Function.NativeFunction {
+public class FormatEpochSecondsFn extends Function.NativeFunction {
 
     @Override
     public int arity() {
-        return 0;
+        return 1;
     }
 
     @Override
@@ -19,14 +20,18 @@ public class SecondsFn extends Function.NativeFunction {
                                  List<Variable.Variant> arguments)
             throws YsharpException {
 
-        double seconds = System.currentTimeMillis() / 1000.0;
+        requireArity(arguments, 1, getFnName());
 
-        return new Variable.Variant(seconds);
+        // seconds
+        double timestamp = requireNumber(arguments.getFirst(), getFnName(), 1);
+
+        Instant instant = Instant.ofEpochSecond((long) timestamp);
+
+        return new Variable.Variant(instant.toString());
     }
 
     @Override
     public String getFnName() {
-        return "seconds";
+        return "formatEpochSeconds";
     }
 }
-

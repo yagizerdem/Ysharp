@@ -8,7 +8,7 @@ import ysharp.treewalk.evaluator.Variable;
 import java.time.Instant;
 import java.util.List;
 
-public class FormatFn extends Function.NativeFunction {
+public class FormatEpochMillisFn extends Function.NativeFunction {
 
     @Override
     public int arity() {
@@ -22,15 +22,16 @@ public class FormatFn extends Function.NativeFunction {
 
         requireArity(arguments, 1, getFnName());
 
+        // milliseconds
         double timestamp = requireNumber(arguments.getFirst(), getFnName(), 1);
 
-        Instant instant = Instant.ofEpochSecond((long) timestamp);
+        Instant instant = Instant.ofEpochMilli((long) timestamp);
 
         return new Variable.Variant(instant.toString());
     }
 
     @Override
     public String getFnName() {
-        return "format";
+        return "formatEpochMillis";
     }
 }
