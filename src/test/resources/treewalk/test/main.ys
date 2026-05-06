@@ -1,4 +1,9 @@
-let p = "project/src/ysharp/util/Path.java";
+let elapsedMs = Time.measure(() => do
+    // some work...
+    let sum = 0;
+    for var i = 0; i < 1000000; i = i + 1 do
+        sum = sum + i;
+    end
+end);
 
-IO.stdout.writeln(Path.subPath(p, 0, 2));   // project\src
-IO.stdout.writeln(Path.subPath(p, 2, 4));   // ysharp\util
+println "took " + elapsedMs + " ms";

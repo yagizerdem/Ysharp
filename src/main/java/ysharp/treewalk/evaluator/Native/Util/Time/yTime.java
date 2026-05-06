@@ -17,19 +17,21 @@ public class yTime {
             this.prototype = yClass.ClassPrototype;
 
             // Time.now()  -> seconds
-            this.RegisterNativeFn(new NowFn());
+            this.RegisterNativeFn(new NowFn(), List.of("seconds"));
             // Time.nowMillis()
             this.RegisterNativeFn(new NowMillisFn());
             // Time.nano()
             this.RegisterNativeFn(new NanoFn());
             // Time.iso()
             this.RegisterNativeFn(new IsoFn());
-            // Time.seconds()
-            this.RegisterNativeFn(new SecondsFn());
             // Time.minutes()
             this.RegisterNativeFn(new MinutesFn());
-            // Time.format(timestamp)
-            this.RegisterNativeFn(new FormatFn());
+            // Time.hours()
+            this.RegisterNativeFn(new HoursFn());
+            // Time.formatEpochSeconds(timestamp)
+            this.RegisterNativeFn(new FormatEpochSecondsFn());
+            // Time.formatEpochMillis(timestamp)
+            this.RegisterNativeFn(new FormatEpochMillisFn());
             // Time.parse(iso)
             this.RegisterNativeFn(new ParseFn());
             // Time.measure(fn)
