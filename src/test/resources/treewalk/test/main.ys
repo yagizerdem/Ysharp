@@ -1,5 +1,4 @@
-try do
-  let data = IO.File.read("missing.txt");
-end catch (err) do
-  IO.stderr.writeln("Could not read file: " + err);
-end
+let p = "project/src/ysharp/util/Path.java";
+
+IO.stdout.writeln(Path.subPath(p, 0, 2));   // project\src
+IO.stdout.writeln(Path.subPath(p, 2, 4));   // ysharp\util

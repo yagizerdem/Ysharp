@@ -30,6 +30,7 @@ import ysharp.treewalk.evaluator.Native.Util.Math.yMath;
 import ysharp.treewalk.evaluator.Native.Util.Path.yPath;
 import ysharp.treewalk.evaluator.Native.Util.Random.yRandom;
 import ysharp.treewalk.evaluator.Native.Util.Regex.yNeedle;
+import ysharp.treewalk.evaluator.Native.Util.Time.yTime;
 import ysharp.treewalk.evaluator.Native.Util.Type.Type;
 import ysharp.treewalk.evaluator.Native.Util.UUID.yUUID;
 import ysharp.treewalk.evaluator.Native.YPF.YPF;
@@ -78,7 +79,6 @@ public class Registery {
         yUUID.Register(interpreter);
         yTime.Register(interpreter);
         yRandom.Register(interpreter);
-        yDateTime.Register(interpreter);
         yCrypto.Register(interpreter);
         Type.Register(interpreter);
 
