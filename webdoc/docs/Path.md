@@ -2,7 +2,7 @@
 sidebar_position: 39
 ---
 
-# path
+# Path
 
 The `Path` module provides utility functions for manipulating file system
 paths as strings: joining segments, splitting them apart, normalizing,
