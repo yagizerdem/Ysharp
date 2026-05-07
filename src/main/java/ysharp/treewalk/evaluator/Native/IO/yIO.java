@@ -2,6 +2,7 @@ package ysharp.treewalk.evaluator.Native.IO;
 
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
+import ysharp.treewalk.evaluator.Native.IO.Directory.yDirectory;
 import ysharp.treewalk.evaluator.Native.IO.File.yFile;
 import ysharp.treewalk.evaluator.Native.IO.stderr.yStdErr;
 import ysharp.treewalk.evaluator.Native.IO.stdin.yStdIn;
@@ -49,6 +50,7 @@ public class yIO {
             RegisterClass(new yStdOut.yStdOutClass());
             RegisterClass(new yStdIn.yStdInClass());
             RegisterClass(new yFile.yFileClass());
+            RegisterClass(new yDirectory.yDirectoryClass());
         }
 
         @Override

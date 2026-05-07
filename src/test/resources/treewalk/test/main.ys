@@ -1,6 +1,9 @@
-let a = "2026-05-06T12:00:00";
-let b = "2026-05-10T12:00:00";
-
-println Time.DateTime.isBefore(a, b); // true
-println Time.DateTime.diffDays(a, b); // 4
-println Time.DateTime.diffDays(b, a); // -4
+println IO.Directory.getHome();
+println IO.Directory.getCurrent();
+println IO.Directory.getTemp();
+println IO.Directory.getAppData();
+println IO.Directory.getConfig();
+println IO.Directory.getCache();
+println IO.Directory.getDocuments();
+println IO.Directory.getDesktop();
+println IO.Directory.getDownloads();

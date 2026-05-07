@@ -4,6 +4,7 @@ import ysharp.treewalk.evaluator.Native.YPF.Container.yContainer;
 
 import java.awt.*;
 
+// converts native object to ysharp compatible type
 public class JavaObjectWrapper {
 
     static public Object wrap(Object obj) {
@@ -37,7 +38,7 @@ public class JavaObjectWrapper {
             return new yContainer.yContainerInstance((Container) obj);
         }
 
-        // native java object
+        // fallback as native java object
         return obj;
 
     }
