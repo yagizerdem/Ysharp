@@ -11,7 +11,7 @@ another statement in the optional else clause will be executed.
 ### Syntax
 
 ```ysharp
-if condition do
+if condition then do
     // code executed if condition is truthy
 end else do
     // code executed if condition is falsy
@@ -21,10 +21,10 @@ end
 You can also chain multiple conditions using elif:
 
 ```ysharp
-if condition1 do
+if condition1 then do
     // executes if condition1 is true
 end 
-elif condition2 do
+elif condition2 then do
     // executes if condition2 is true
 end 
 else do
@@ -41,13 +41,13 @@ You should almost never have an if...else with an assignment like x = y as a con
 var x;
 
 // BAD
-if ((x = y)) do
+if ((x = y)) then do
   // …
 end
 
 // OK
 x = y;
-if x do
+if x then do
   // …
 end
 ````

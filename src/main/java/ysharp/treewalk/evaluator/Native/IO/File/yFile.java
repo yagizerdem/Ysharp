@@ -32,10 +32,10 @@ public class yFile {
         public yFileClass() {
             this.prototype = yClass.ClassPrototype;
 
-            this.prototype.RegisterNativeFn(new ReadFn());
-            this.prototype.RegisterNativeFn(new WriteFn());
-            this.prototype.RegisterNativeFn(new AppendFn());
-            this.prototype.RegisterNativeFn(new DeleteFn());
+            this.RegisterNativeFn(new ReadFn());
+            this.RegisterNativeFn(new WriteFn());
+            this.RegisterNativeFn(new AppendFn());
+            this.RegisterNativeFn(new DeleteFn());
         }
 
         @Override

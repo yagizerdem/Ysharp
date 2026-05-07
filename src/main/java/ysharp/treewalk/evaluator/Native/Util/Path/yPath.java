@@ -67,9 +67,7 @@ public class yPath {
                     return "join";
                 }
             }
-
-            JoinFn join = new JoinFn();
-            this.set(join.getFnName(), new Variable(new Variable.Variant(join), true, "function"));
+            this.RegisterNativeFn(new JoinFn());
 
             class IsDirExistFn extends Function.NativeFunction {
 
@@ -99,9 +97,7 @@ public class yPath {
                     return "isDirExist";
                 }
             }
-
-            IsDirExistFn isDirExist = new IsDirExistFn();
-            this.set(isDirExist.getFnName(), new Variable(new Variable.Variant(isDirExist), true, "function"));
+            this.RegisterNativeFn(new IsDirExistFn());
 
             class IsFileExistFn extends Function.NativeFunction {
 
@@ -131,9 +127,7 @@ public class yPath {
                     return "isFileExist";
                 }
             }
-
-            IsFileExistFn isFileExist = new IsFileExistFn();
-            this.set(isFileExist.getFnName(), new Variable(new Variable.Variant(isFileExist), true, "function"));
+            this.RegisterNativeFn(new IsFileExistFn());
 
             class IsAbsoluteFn extends Function.NativeFunction {
 
@@ -160,9 +154,7 @@ public class yPath {
                     return "isAbsolute";
                 }
             }
-
-            IsAbsoluteFn isAbsolute = new IsAbsoluteFn();
-            this.set(isAbsolute.getFnName(), new Variable(new Variable.Variant(isAbsolute), true, "function"));
+            this.RegisterNativeFn(new IsAbsoluteFn());
 
             class GetFileNameFn extends Function.NativeFunction {
 
@@ -195,10 +187,7 @@ public class yPath {
                     return "getFileName";
                 }
             }
-
-            GetFileNameFn getFileName = new GetFileNameFn();
-            this.set(getFileName.getFnName(), new Variable(new Variable.Variant(getFileName), true, "function"));
-
+            this.RegisterNativeFn(new GetFileNameFn());
 
             class GetParentFn extends Function.NativeFunction {
 
@@ -231,10 +220,7 @@ public class yPath {
                     return "getParent";
                 }
             }
-
-            GetParentFn getParent = new GetParentFn();
-            this.set(getParent.getFnName(), new Variable(new Variable.Variant(getParent), true, "function"));
-
+            this.RegisterNativeFn(new GetParentFn());
 
             class GetRootFn extends Function.NativeFunction {
 
@@ -267,9 +253,7 @@ public class yPath {
                     return "getRoot";
                 }
             }
-
-            GetRootFn getRoot = new GetRootFn();
-            this.set(getRoot.getFnName(), new Variable(new Variable.Variant(getRoot), true, "function"));
+            this.RegisterNativeFn(new GetRootFn());
 
             class GetNameCountFn extends Function.NativeFunction {
 
@@ -296,9 +280,7 @@ public class yPath {
                     return "getNameCount";
                 }
             }
-
-            GetNameCountFn getNameCount = new GetNameCountFn();
-            this.set(getNameCount.getFnName(), new Variable(new Variable.Variant(getNameCount), true, "function"));
+            this.RegisterNativeFn(new GetNameCountFn());
 
             class SubPathFn extends Function.NativeFunction {
 
@@ -367,8 +349,7 @@ public class yPath {
                     return "subPath";
                 }
             }
-            SubPathFn subPath = new SubPathFn();
-            this.set(subPath.getFnName(), new Variable(new Variable.Variant(subPath), true, "function"));
+            this.RegisterNativeFn(new SubPathFn());
 
             class GetExtensionFn extends Function.NativeFunction {
 
@@ -408,9 +389,7 @@ public class yPath {
                     return "getExtension";
                 }
             }
-
-            GetExtensionFn getExtension = new GetExtensionFn();
-            this.set(getExtension.getFnName(), new Variable(new Variable.Variant(getExtension), true, "function"));
+            this.RegisterNativeFn(new GetExtensionFn());
 
             class NormalizeFn extends Function.NativeFunction {
 
@@ -432,9 +411,7 @@ public class yPath {
                 @Override
                 public String getFnName() { return "normalize"; }
             }
-
-            NormalizeFn normalize = new NormalizeFn();
-            this.set(normalize.getFnName(), new Variable(new Variable.Variant(normalize), true, "function"));
+            this.RegisterNativeFn(new NormalizeFn());
 
             class ResolveFn extends Function.NativeFunction {
 
@@ -457,9 +434,7 @@ public class yPath {
                 @Override
                 public String getFnName() { return "resolve"; }
             }
-
-            ResolveFn resolve = new ResolveFn();
-            this.set(resolve.getFnName(), new Variable(new Variable.Variant(resolve), true, "function"));
+            this.RegisterNativeFn(new ResolveFn());
 
             class RelativizeFn extends Function.NativeFunction {
 
@@ -490,9 +465,7 @@ public class yPath {
                 @Override
                 public String getFnName() { return "relativize"; }
             }
-
-            RelativizeFn relativize = new RelativizeFn();
-            this.set(relativize.getFnName(), new Variable(new Variable.Variant(relativize), true, "function"));
+            this.RegisterNativeFn(new RelativizeFn());
 
         }
 

@@ -2,7 +2,7 @@
 sidebar_position: 40
 ---
 
-# io
+# IO
 
 The `IO` module groups together everything related to input and output:
 writing to the console, reading from the keyboard, reporting errors and

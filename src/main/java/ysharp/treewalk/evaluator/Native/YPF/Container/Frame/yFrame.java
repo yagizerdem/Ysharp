@@ -1,12 +1,20 @@
 package ysharp.treewalk.evaluator.Native.YPF.Container.Frame;
 
 
+import com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
+import com.googlecode.lanterna.terminal.swing.SwingTerminalFrame;
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -148,6 +156,29 @@ public class yFrame {
         public yFrameInstance() {
             this.frame = new JFrame();
             this.prototype = yFrame_Instance_Prototype;
+            try{
+                frame.setTitle("Ysharp YPF");
+                // load ysharp logo
+                URL logoUrl = getClass().getClassLoader().getResource("ysharplogo.png");
+
+                BufferedImage icon = null;
+
+                if (logoUrl != null) {
+                    icon = ImageIO.read(logoUrl);
+                }
+
+                if (icon != null) {
+                    frame.setIconImage(icon);
+                }
+
+                frame.setIconImage(icon);
+            }
+            catch (IOException ex) {
+                throw new YsharpException(YsharpException.YsharpErrorType.PROCESS,
+                        -1,
+                        "Failed to initialize terminal.");
+            }
+
         }
 
         @Override public boolean isTruthy() { return true; }
