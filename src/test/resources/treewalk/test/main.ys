@@ -1,9 +1,5 @@
-println IO.Directory.getHome();
-println IO.Directory.getCurrent();
-println IO.Directory.getTemp();
-println IO.Directory.getAppData();
-println IO.Directory.getConfig();
-println IO.Directory.getCache();
-println IO.Directory.getDocuments();
-println IO.Directory.getDesktop();
-println IO.Directory.getDownloads();
+try do
+    IO.Directory.list("nonexistent");
+end catch (err) do
+    IO.stderr.writeln("Could not list directory: " + err);
+end

@@ -20,7 +20,7 @@ public class GetTempFn extends Function.NativeFunction implements Callable {
 
         requireArity(arguments, arity(), getFnName());
 
-        return new Variable.Variant(System.getProperty("java.io.tmpdir"));
+        return new Variable.Variant(new yString.yStringInstance(System.getProperty("java.io.tmpdir")));
     }
 
     @Override

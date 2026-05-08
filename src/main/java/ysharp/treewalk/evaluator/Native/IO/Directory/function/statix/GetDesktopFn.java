@@ -22,7 +22,7 @@ public class GetDesktopFn extends Function.NativeFunction implements Callable {
         requireArity(arguments, arity(), getFnName());
 
         String home = System.getProperty("user.home");
-        return new Variable.Variant(Path.of(home, "Desktop").toString());
+        return new Variable.Variant(new yString.yStringInstance(Path.of(home, "Desktop").toString()));
     }
 
     @Override

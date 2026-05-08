@@ -2,6 +2,7 @@ package ysharp.treewalk.evaluator.Native.IO.Directory.function.statix;
 
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
+import ysharp.treewalk.evaluator.Native.Collections.Array.yArray;
 import ysharp.treewalk.evaluator.Native.IO.yIO;
 
 import java.nio.file.Files;
@@ -43,7 +44,10 @@ public class ListFn extends Function.NativeFunction implements Callable {
                 stream.forEach(path -> result.add(path.getFileName().toString()));
             }
 
-            return new Variable.Variant(JavaObjectWrapper.wrap(result));
+            yArray.yArrayInstance yArray = new yArray.yArrayInstance();
+            result.forEach(x -> yArray.data.add(new Variable.Variant(new yString.yStringInstance(x))));
+
+            return new Variable.Variant(yArray);
 
         } catch (Exception e) {
             throw new YsharpException(
