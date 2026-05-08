@@ -77,6 +77,7 @@ public class Interpreter implements
         newInterpreter.global = this.global;
         newInterpreter.locals = this.locals;
         newInterpreter.exports = this.exports;
+        newInterpreter.cwd = this.cwd;
 
         return newInterpreter;
     }

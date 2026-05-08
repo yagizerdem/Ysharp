@@ -162,9 +162,7 @@ public class yThread {
             }
 
              yThreadInstance thread = new yThreadInstance(fn);
-             Interpreter newInstance = new Interpreter();
-             newInstance.global = interpreter.global;
-             newInstance.curEnv = new Environment(interpreter.curEnv);
+             Interpreter newInstance = interpreter.copy();
              thread.setJavaThread(new ThreadWrapper(newInstance, fn, fnArgs));
 
             return new Variable.Variant(thread);
