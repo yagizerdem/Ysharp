@@ -46,7 +46,7 @@ public class GetAppDataFn extends Function.NativeFunction implements Callable {
             }
         }
 
-        return new Variable.Variant(path);
+        return new Variable.Variant(new yString.yStringInstance(path));
     }
 
     @Override

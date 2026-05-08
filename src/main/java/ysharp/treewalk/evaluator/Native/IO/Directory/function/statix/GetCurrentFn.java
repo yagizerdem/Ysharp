@@ -20,7 +20,7 @@ public class GetCurrentFn extends Function.NativeFunction implements Callable {
 
         requireArity(arguments, arity(), getFnName());
 
-        return new Variable.Variant(System.getProperty("user.dir"));
+        return new Variable.Variant(new yString.yStringInstance(System.getProperty("user.dir")));
     }
 
     @Override

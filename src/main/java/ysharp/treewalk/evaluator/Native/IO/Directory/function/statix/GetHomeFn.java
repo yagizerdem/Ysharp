@@ -20,7 +20,7 @@ public class GetHomeFn extends Function.NativeFunction implements Callable {
 
         requireArity(arguments, arity(), getFnName());
 
-        return new Variable.Variant(System.getProperty("user.home"));
+        return new Variable.Variant(new yString.yStringInstance(System.getProperty("user.home")));
     }
 
     @Override
