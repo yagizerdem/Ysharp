@@ -3,11 +3,14 @@ package ysharp.treewalk.evaluator.Native.YPF.TextBox;
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Function;
+import ysharp.treewalk.evaluator.Native.YPF.yComponent;
 
 import javax.swing.*;
+import java.awt.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
+import java.util.List;
 
 public class yTextBox {
 
@@ -44,7 +47,7 @@ public class yTextBox {
             @Override public String toString() { return "<prototype:TextBox>"; }
         };
 
-        yTextBox_Instance_Prototype.prototype = yClass.ClassPrototype;
+        yTextBox_Instance_Prototype.prototype = yComponent.yComponent_Instance_Prototype;
 
         Map<String, List<Method>> methodMap = new HashMap<>();
 
@@ -136,7 +139,7 @@ public class yTextBox {
         }
     }
 
-    public static class yTextBoxInstance extends yClass.ClassObjectInstance {
+    public static class yTextBoxInstance extends yClass.ClassObjectInstance implements yComponent.yBaseComponent {
 
         public final JTextField textField;
 
@@ -148,11 +151,10 @@ public class yTextBox {
         @Override public boolean isTruthy() { return true; }
         @Override public String getType() { return "TextBox"; }
         @Override public String toString() { return "<instance:TextBox>"; }
-
-        @Override
-        public Object getNativeJavaObject() {
+        @Override public Object getNativeJavaObject() {
             return this.textField;
         }
+        @Override public Component getComponent() { return this.textField; }
     }
 
     public static class yTextBoxClass extends yClass.SealedClassObject {

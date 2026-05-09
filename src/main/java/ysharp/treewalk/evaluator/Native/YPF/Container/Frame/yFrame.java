@@ -1,15 +1,11 @@
 package ysharp.treewalk.evaluator.Native.YPF.Container.Frame;
 
 
-import com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
-import com.googlecode.lanterna.terminal.swing.SwingTerminalFrame;
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.reflect.Method;

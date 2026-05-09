@@ -1,56 +1,29 @@
-const conn = SQLite.connect("./test.db");
 
-println conn;
-println conn.getType();
+YPF.invokeLater(() => do
+    var frame = new YPF.Frame();
 
-var stmt = conn.createStatement();
+    frame.show();
+    frame.setSize(400, 400);
+    frame.setLayout(new YPF.FlowLayout());
 
-stmt.execute("
-CREATE TABLE IF NOT EXISTS contacts (
-    contact_id INTEGER PRIMARY KEY,
-    first_name TEXT NOT NULL,
-    last_name TEXT NOT NULL,
-    email TEXT NOT NULL UNIQUE,
-    phone TEXT NOT NULL UNIQUE
-);
-");
+    var label = new YPF.Label();
+    label.setText("test");
 
-var ps = conn.prepareStatement("
-INSERT INTO contacts (
-    first_name,
-    last_name,
-    email,
-    phone
-) VALUES (?, ?, ?, ?);
-");
+    const font = YPF.Font.italic("test", 10);
 
-for var i = 0; i < 100; i = i + 1 do
-    ps.setString(1, "TempName" + i);
-    ps.setString(2, "TempSurname" + i);
-    ps.setString(3, "temp" + i + "@example.com");
-    ps.setString(4, "+90555000" + i);
+    println font;
 
-    ps.executeUpdate();
-end
+    label.setFont(font);
 
-println "100 temp rows inserted";
+    frame.add(label);
+    frame.setDefaultCloseOperation(YPF.Frame.EXIT_ON_CLOSE);
 
-var resultSet = stmt.executeQuery("SELECT * FROM contacts;");
+    var c = YPF.Color.blue;
 
-println resultSet;
-println resultSet.getType();
+    println c;
 
-while resultSet.next() do
-    var id = resultSet.getInt(1);
-    var firstName = resultSet.getString(2);
-    var lastName = resultSet.getString(3);
-    var email = resultSet.getString(4);
-    var phone = resultSet.getString(5);
+    label.onClick(() => do
+        println "lable cliecked";
+    end);
 
-    println id + " | " + firstName + " | " + lastName + " | " + email + " | " + phone;
-end
-
-resultSet.close();
-ps.close();
-stmt.close();
-conn.close();
+end);

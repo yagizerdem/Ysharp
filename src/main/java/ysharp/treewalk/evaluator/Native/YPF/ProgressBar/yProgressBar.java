@@ -3,11 +3,14 @@ package ysharp.treewalk.evaluator.Native.YPF.ProgressBar;
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Function;
+import ysharp.treewalk.evaluator.Native.YPF.yComponent;
 
 import javax.swing.*;
+import java.awt.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
+import java.util.List;
 
 public class yProgressBar {
 
@@ -43,8 +46,7 @@ public class yProgressBar {
             @Override public String getType() { return "__ProgressBar__"; }
             @Override public String toString() { return "<prototype:ProgressBar>"; }
         };
-
-        yProgressBar_Instance_Prototype.prototype = yClass.ClassPrototype;
+        yProgressBar_Instance_Prototype.prototype = yComponent.yComponent_Instance_Prototype;
 
         Map<String, List<Method>> methodMap = new HashMap<>();
 
@@ -136,7 +138,7 @@ public class yProgressBar {
         }
     }
 
-    public static class yProgressBarInstance extends yClass.ClassObjectInstance {
+    public static class yProgressBarInstance extends yClass.ClassObjectInstance implements yComponent.yBaseComponent {
 
         public final JProgressBar progressBar;
 
@@ -148,11 +150,10 @@ public class yProgressBar {
         @Override public boolean isTruthy() { return true; }
         @Override public String getType() { return "ProgressBar"; }
         @Override public String toString() { return "<instance:ProgressBar>"; }
-
-        @Override
-        public Object getNativeJavaObject() {
+        @Override public Object getNativeJavaObject() {
             return this.progressBar;
         }
+        @Override public Component getComponent() { return this.progressBar;}
     }
 
     public static class yProgressBarClass extends yClass.SealedClassObject {

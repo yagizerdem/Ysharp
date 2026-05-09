@@ -3,11 +3,14 @@ package ysharp.treewalk.evaluator.Native.YPF.Button;
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Function;
+import ysharp.treewalk.evaluator.Native.YPF.yComponent;
 
 import javax.swing.*;
+import java.awt.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
+import java.util.List;
 
 public class yRadioButton {
 
@@ -44,7 +47,7 @@ public class yRadioButton {
             @Override public String toString() { return "<prototype:RadioButton>"; }
         };
 
-        yRadioButton_Instance_Prototype.prototype = yClass.ClassPrototype;
+        yRadioButton_Instance_Prototype.prototype = yComponent.yComponent_Instance_Prototype;
 
         Map<String, List<Method>> methodMap = new HashMap<>();
 
@@ -136,7 +139,7 @@ public class yRadioButton {
         }
     }
 
-    public static class yRadioButtonInstance extends yClass.ClassObjectInstance {
+    public static class yRadioButtonInstance extends yClass.ClassObjectInstance implements yComponent.yBaseComponent{
 
         public final JRadioButton radioButton;
 
@@ -148,11 +151,11 @@ public class yRadioButton {
         @Override public boolean isTruthy() { return true; }
         @Override public String getType() { return "RadioButton"; }
         @Override public String toString() { return "<instance:RadioButton>"; }
-
-        @Override
-        public Object getNativeJavaObject() {
+        @Override public Object getNativeJavaObject() {
             return this.radioButton;
         }
+        @Override public Component getComponent() { return this.radioButton; }
+
     }
 
     public static class yRadioButtonClass extends yClass.SealedClassObject {

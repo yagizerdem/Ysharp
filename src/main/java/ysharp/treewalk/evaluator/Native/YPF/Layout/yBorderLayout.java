@@ -3,6 +3,7 @@ package ysharp.treewalk.evaluator.Native.YPF.Layout;
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Function;
+import ysharp.treewalk.evaluator.Native.YPF.yComponent;
 
 import java.awt.*;
 import java.lang.reflect.Method;
@@ -153,8 +154,7 @@ public class yBorderLayout {
         @Override public boolean isTruthy() { return true; }
         @Override public String getType() { return "BorderLayout"; }
         @Override public String toString() { return "<instance:BorderLayout>"; }
-        @Override
-        public Object getNativeJavaObject() { return this.layout;}
+        @Override public Object getNativeJavaObject() { return this.layout;}
     }
 
     public static class yBorderLayoutClass extends yClass.SealedClassObject {

@@ -3,11 +3,14 @@ package ysharp.treewalk.evaluator.Native.YPF.ComboBox;
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Function;
+import ysharp.treewalk.evaluator.Native.YPF.yComponent;
 
 import javax.swing.*;
+import java.awt.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
+import java.util.List;
 
 public class yComboBox {
 
@@ -44,7 +47,7 @@ public class yComboBox {
             @Override public String toString() { return "<prototype:ComboBox>"; }
         };
 
-        yComboBox_Instance_Prototype.prototype = yClass.ClassPrototype;
+        yComboBox_Instance_Prototype.prototype = yComponent.yComponent_Instance_Prototype;
 
         Map<String, List<Method>> methodMap = new HashMap<>();
 
@@ -136,7 +139,7 @@ public class yComboBox {
         }
     }
 
-    public static class yComboBoxInstance extends yClass.ClassObjectInstance {
+    public static class yComboBoxInstance extends yClass.ClassObjectInstance implements yComponent.yBaseComponent {
 
         public final JComboBox<Object> comboBox;
 
@@ -148,11 +151,10 @@ public class yComboBox {
         @Override public boolean isTruthy() { return true; }
         @Override public String getType() { return "ComboBox"; }
         @Override public String toString() { return "<instance:ComboBox>"; }
-
-        @Override
-        public Object getNativeJavaObject() {
+        @Override public Object getNativeJavaObject() {
             return this.comboBox;
         }
+        @Override public Component getComponent() { return this.comboBox; }
     }
 
     public static class yComboBoxClass extends yClass.SealedClassObject {
@@ -171,6 +173,6 @@ public class yComboBox {
         }
 
         @Override public String getClassName() { return "ComboBox"; }
-        @Override public String getType() { return "ComboBox"; }
+        @Override public String getType() { return "_ComboBox_"; }
     }
 }
