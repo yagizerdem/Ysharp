@@ -30,10 +30,10 @@ Writes text to the standard output stream (the terminal, by default).
 
 ### Static methods
 
-| Method      | Signature                  | Return Type   | Description                                                      |
-|-------------|----------------------------|---------------|------------------------------------------------------------------|
-| `write`     | `write(text : string)`     | `null`        | Writes `text` to standard output **without** a trailing newline. |
-| `writeln`   | `writeln(text : string)`   | `null`        | Writes `text` to standard output **with** a trailing newline.    |
+| Method    | Signature                | Return Type | Description                                                      |
+| --------- | ------------------------ | ----------- | ---------------------------------------------------------------- |
+| `write`   | `write(text : string)`   | `null`      | Writes `text` to standard output **without** a trailing newline. |
+| `writeln` | `writeln(text : string)` | `null`      | Writes `text` to standard output **with** a trailing newline.    |
 
 ```ysharp
 IO.stdout.write("Hello, ");
@@ -50,10 +50,10 @@ red by terminals/IDEs.
 
 ### Static methods
 
-| Method     | Signature                | Return Type  | Description                                                  |
-|------------|--------------------------|--------------|--------------------------------------------------------------|
-| `write`    | `write(text : string)`   | `null`       | Writes `text` to standard error without a trailing newline.  |
-| `writeln`  | `writeln(text : string)` | `null`       | Writes `text` to standard error with a trailing newline.     |
+| Method    | Signature                | Return Type | Description                                                 |
+| --------- | ------------------------ | ----------- | ----------------------------------------------------------- |
+| `write`   | `write(text : string)`   | `null`      | Writes `text` to standard error without a trailing newline. |
+| `writeln` | `writeln(text : string)` | `null`      | Writes `text` to standard error with a trailing newline.    |
 
 ```ysharp
 IO.stderr.writeln("Something went wrong!");
@@ -65,10 +65,10 @@ Reads input from the standard input stream (the keyboard, by default).
 
 ### Static methods
 
-| Method     | Signature    | Return Type  | Description                                                                                                   |
-|------------|--------------|--------------|---------------------------------------------------------------------------------------------------------------|
-| `readln`   | `readln()`   | `string`     | Reads a single line of text from standard input (up to the next newline). The newline character is stripped.  |
-| `readKey`  | `readKey()`  | `char`       | Reads a single character (one byte) from standard input.                                                      |
+| Method    | Signature   | Return Type | Description                                                                                                  |
+| --------- | ----------- | ----------- | ------------------------------------------------------------------------------------------------------------ |
+| `readln`  | `readln()`  | `string`    | Reads a single line of text from standard input (up to the next newline). The newline character is stripped. |
+| `readKey` | `readKey()` | `char`      | Reads a single character (one byte) from standard input.                                                     |
 
 ```ysharp
 IO.stdout.write("What is your name? ");
@@ -97,7 +97,7 @@ program was started.
 ### Static methods
 
 | Method   | Signature                                 | Return Type | Description                                                                                                          |
-|----------|-------------------------------------------|-------------|----------------------------------------------------------------------------------------------------------------------|
+| -------- | ----------------------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------- |
 | `read`   | `read(path : string)`                     | `string`    | Reads the entire content of the file at `path` and returns it as a string.                                           |
 | `write`  | `write(path : string, content : string)`  | `null`      | Writes `content` to the file at `path`, **creating** the file if missing and **truncating** it if it already exists. |
 | `append` | `append(path : string, content : string)` | `null`      | Appends `content` to the end of the file at `path`. Creates the file if it does not exist.                           |
@@ -136,12 +136,12 @@ IO.File.delete("output.txt");
 `File` operations raise a runtime error in the following cases. You can
 catch them with a `try / catch` block.
 
-| Method    | Possible errors                                                                |
-|-----------|--------------------------------------------------------------------------------|
-| `read`    | File not found, access denied, other I/O failure.                              |
-| `write`   | Parent directory does not exist, access denied, other I/O failure.             |
-| `append`  | Parent directory does not exist, access denied, other I/O failure.             |
-| `delete`  | File does not exist, directory is not empty, access denied, other I/O failure. |
+| Method   | Possible errors                                                                |
+| -------- | ------------------------------------------------------------------------------ |
+| `read`   | File not found, access denied, other I/O failure.                              |
+| `write`  | Parent directory does not exist, access denied, other I/O failure.             |
+| `append` | Parent directory does not exist, access denied, other I/O failure.             |
+| `delete` | File does not exist, directory is not empty, access denied, other I/O failure. |
 
 ```ysharp
 try do
@@ -165,7 +165,7 @@ against the **current working directory** of the running interpreter.
 #### Directory Operations
 
 | Method      | Signature                  | Return Type | Description                                                                         |
-|-------------|----------------------------|-------------|-------------------------------------------------------------------------------------|
+| ----------- | -------------------------- | ----------- | ----------------------------------------------------------------------------------- |
 | `create`    | `create(path : string)`    | `null`      | Creates a single directory at `path`. Fails if parent directory does not exist.     |
 | `createAll` | `createAll(path : string)` | `null`      | Creates a directory and all missing parent directories at `path` (like `mkdir -p`). |
 | `exists`    | `exists(path : string)`    | `boolean`   | Returns `true` if a directory exists at `path`, `false` otherwise.                  |
@@ -176,17 +176,17 @@ against the **current working directory** of the running interpreter.
 
 These methods return the path to system directories and require **no arguments**:
 
-| Method          | Return Type  | Description                                                                         |
-|-----------------|--------------|-------------------------------------------------------------------------------------|
-| `getHome`       | `string`     | Returns the path to the user's home directory (e.g. `/home/username` on Linux).     |
-| `getCurrent`    | `string`     | Returns the current working directory where the program is running.                 |
-| `getTemp`       | `string`     | Returns the system temporary directory (e.g. `/tmp` on Unix, `%TEMP%` on Windows).  |
-| `getDesktop`    | `string`     | Returns the path to the user's Desktop folder.                                      |
-| `getDocuments`  | `string`     | Returns the path to the user's Documents folder.                                    |
-| `getDownloads`  | `string`     | Returns the path to the user's Downloads folder.                                    |
-| `getAppData`    | `string`     | Returns the path to application data directory (OS-specific).                       |
-| `getConfig`     | `string`     | Returns the path to user config directory (OS-specific).                            |
-| `getCache`      | `string`     | Returns the path to user cache directory (OS-specific).                             |
+| Method         | Return Type | Description                                                                        |
+| -------------- | ----------- | ---------------------------------------------------------------------------------- |
+| `getHome`      | `string`    | Returns the path to the user's home directory (e.g. `/home/username` on Linux).    |
+| `getCurrent`   | `string`    | Returns the current working directory where the program is running.                |
+| `getTemp`      | `string`    | Returns the system temporary directory (e.g. `/tmp` on Unix, `%TEMP%` on Windows). |
+| `getDesktop`   | `string`    | Returns the path to the user's Desktop folder.                                     |
+| `getDocuments` | `string`    | Returns the path to the user's Documents folder.                                   |
+| `getDownloads` | `string`    | Returns the path to the user's Downloads folder.                                   |
+| `getAppData`   | `string`    | Returns the path to application data directory (OS-specific).                      |
+| `getConfig`    | `string`    | Returns the path to user config directory (OS-specific).                           |
+| `getCache`     | `string`    | Returns the path to user cache directory (OS-specific).                            |
 
 ### Examples
 
@@ -281,13 +281,13 @@ end
 `Directory` operations raise a runtime error in the following cases. You can
 catch them with a `try / catch` block.
 
-| Method       | Possible errors                                                      |
-|--------------|----------------------------------------------------------------------|
-| `create`     | Parent directory does not exist, access denied, path already exists. |
-| `createAll`  | Access denied, other I/O failure.                                    |
-| `exists`     | Access denied, invalid path.                                         |
-| `delete`     | Directory does not exist, directory is not empty, access denied.     |
-| `list`       | Directory does not exist, path is not a directory, access denied.    |
+| Method      | Possible errors                                                      |
+| ----------- | -------------------------------------------------------------------- |
+| `create`    | Parent directory does not exist, access denied, path already exists. |
+| `createAll` | Access denied, other I/O failure.                                    |
+| `exists`    | Access denied, invalid path.                                         |
+| `delete`    | Directory does not exist, directory is not empty, access denied.     |
+| `list`      | Directory does not exist, path is not a directory, access denied.    |
 
 ```ysharp
 try do
@@ -302,8 +302,8 @@ end
 The special directory accessors (`getAppData`, `getCache`, `getConfig`) return
 different paths depending on the operating system:
 
-| Method        | Windows           | macOS                            | Linux                                 |
-|---------------|-------------------|----------------------------------|---------------------------------------|
-| `getAppData`  | `%APPDATA%`       | `~/Library/Application Support`  | `$XDG_DATA_HOME` or `~/.local/share`  |
-| `getCache`    | `%LOCALAPPDATA%`  | `~/Library/Caches`               | `$XDG_CACHE_HOME` or `~/.cache`       |
-| `getConfig`   | `%APPDATA%`       | `~/Library/Preferences`          | `$XDG_CONFIG_HOME` or `~/.config`     |
+| Method       | Windows          | macOS                           | Linux                                |
+| ------------ | ---------------- | ------------------------------- | ------------------------------------ |
+| `getAppData` | `%APPDATA%`      | `~/Library/Application Support` | `$XDG_DATA_HOME` or `~/.local/share` |
+| `getCache`   | `%LOCALAPPDATA%` | `~/Library/Caches`              | `$XDG_CACHE_HOME` or `~/.cache`      |
+| `getConfig`  | `%APPDATA%`      | `~/Library/Preferences`         | `$XDG_CONFIG_HOME` or `~/.config`    |
