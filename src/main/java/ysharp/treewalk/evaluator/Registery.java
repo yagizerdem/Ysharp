@@ -22,6 +22,7 @@ import ysharp.treewalk.evaluator.Native.LINQ.Queryable;
 import ysharp.treewalk.evaluator.Native.Network.yHttp;
 import ysharp.treewalk.evaluator.Native.P5ys.yCanvas;
 import ysharp.treewalk.evaluator.Native.Range;
+import ysharp.treewalk.evaluator.Native.SQLite.ySQLite;
 import ysharp.treewalk.evaluator.Native.TUI.TUI;
 import ysharp.treewalk.evaluator.Native.Concurrency.Semaphore.ySemaphore;
 import ysharp.treewalk.evaluator.Native.Concurrency.Threading.yThread;
@@ -113,5 +114,8 @@ public class Registery {
 
         // Canvas
         yCanvas.Register(interpreter);
+
+        // SQLite
+        ySQLite.Register(interpreter);
     }
 }

@@ -135,6 +135,53 @@ public class yButton {
             ));
         }
 
+
+        class OnClickFn extends Function.NativeFunction {
+
+            @Override
+            public int arity() {
+                return 1;
+            }
+
+            @Override
+            public Variable.Variant call(Interpreter interpreter, List<Variable.Variant> args)
+                    throws YsharpException {
+
+                requireArity(args, 1, getFnName());
+
+                yButtonInstance buttonInstance =
+                        yButton.requireButtonThis(interpreter, getFnName());
+
+                Variable.Variant callbackVar = args.getFirst();
+
+                if (!callbackVar.isCallable()) {
+                    throw new YsharpException(
+                            YsharpException.YsharpErrorType.PROCESS,
+                            -1,
+                            "Button.onClick expects a function."
+                    );
+                }
+
+                Callable callback = callbackVar.asCallable();
+
+                buttonInstance.button.addActionListener(event -> {
+                    try {
+                        callback.call(interpreter.copy(), List.of());
+                    } catch (YsharpException e) {
+                        e.printStackTrace();
+                    }
+                });
+
+                return new Variable.Variant(null);
+            }
+
+            @Override
+            public String getFnName() {
+                return "onClick";
+            }
+        }
+
+        yButton_Instance_Prototype.RegisterNativeFn(new OnClickFn());
     }
 
     public static class yButtonInstance extends yClass.ClassObjectInstance  {

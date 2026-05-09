@@ -1,0 +1,146 @@
+
+var terminal = new TUI.YPFTerminal();
+
+var A = 0.0;
+var B = 0.0;
+var C = 0.0;
+
+var cubeWidth = 20.0;
+
+var width = 160;
+var height = 44;
+
+var background = " ";
+var distanceFromCam = 100.0;
+var horizontalOffset = 0.0;
+var K1 = 40.0;
+
+var incrementSpeed = 0.6;
+
+var x = 0.0;
+var y = 0.0;
+var z = 0.0;
+var ooz = 0.0;
+
+var xp = 0;
+var yp = 0;
+var idx = 0;
+
+var buffer = new Array();
+var zBuffer = new Array();
+
+var total = width * height;
+
+for var i = 0; i < total; i = i + 1 do
+    buffer.add(background);
+    zBuffer.add(0.0);
+end
+
+function resetBuffers() do
+    for var i = 0; i < total; i = i + 1 do
+        buffer.set(i, background);
+        zBuffer.set(i, 0.0);
+    end
+end
+
+function calculateX(i, j, k) do
+    return
+        j * Math.sin(A) * Math.sin(B) * Math.cos(C)
+        - k * Math.cos(A) * Math.sin(B) * Math.cos(C)
+        + j * Math.cos(A) * Math.sin(C)
+        + k * Math.sin(A) * Math.sin(C)
+        + i * Math.cos(B) * Math.cos(C);
+end
+
+function calculateY(i, j, k) do
+    return
+        j * Math.cos(A) * Math.cos(C)
+        + k * Math.sin(A) * Math.cos(C)
+        - j * Math.sin(A) * Math.sin(B) * Math.sin(C)
+        + k * Math.cos(A) * Math.sin(B) * Math.sin(C)
+        - i * Math.cos(B) * Math.sin(C);
+end
+
+function calculateZ(i, j, k) do
+    return
+        k * Math.cos(A) * Math.cos(B)
+        - j * Math.sin(A) * Math.cos(B)
+        + i * Math.sin(B);
+end
+
+function calculateForSurface(cubeX, cubeY, cubeZ, ch) do
+    x = calculateX(cubeX, cubeY, cubeZ);
+    y = calculateY(cubeX, cubeY, cubeZ);
+    z = calculateZ(cubeX, cubeY, cubeZ) + distanceFromCam;
+
+    ooz = 1.0 / z;
+
+    xp = Type.Converter.toInt(width / 2 + horizontalOffset + K1 * ooz * x * 2);
+    yp = Type.Converter.toInt(height / 2 + K1 * ooz * y);
+
+    idx = xp + yp * width;
+
+    if idx >= 0 && idx < total then do
+        if ooz > zBuffer.get(idx) then do
+            zBuffer.set(idx, ooz);
+            buffer.set(idx, ch);
+        end
+    end
+end
+
+function drawCube(size, offset) do
+    cubeWidth = size;
+    horizontalOffset = offset;
+
+    var cubeX = -cubeWidth;
+
+    while cubeX < cubeWidth do
+        var cubeY = -cubeWidth;
+
+        while cubeY < cubeWidth do
+            calculateForSurface(cubeX, cubeY, -cubeWidth, "@");
+            calculateForSurface(cubeWidth, cubeY, cubeX, "$");
+            calculateForSurface(-cubeWidth, cubeY, -cubeX, "~");
+            calculateForSurface(-cubeX, cubeY, cubeWidth, "#");
+            calculateForSurface(cubeX, -cubeWidth, -cubeY, ";");
+            calculateForSurface(cubeX, cubeWidth, cubeY, "+");
+
+            cubeY = cubeY + incrementSpeed;
+        end
+
+        cubeX = cubeX + incrementSpeed;
+    end
+end
+
+function renderFrame() do
+    var output = "";
+
+    for var k = 0; k < total; k = k + 1 do
+        if k % width == 0 then do
+            output = output + "\n";
+        end
+
+        output = output + buffer.get(k);
+    end
+
+    terminal.setCursorPosition(0,0);
+    terminal.clearScreen();
+    terminal.writeLine(output);
+    terminal.flush();
+    print output;
+end
+
+while true do
+    resetBuffers();
+
+    drawCube(20.0, -40.0);
+    drawCube(10.0, 10.0);
+    drawCube(5.0, 40.0);
+
+    renderFrame();
+
+    A = A + 0.05;
+    B = B + 0.05;
+    C = C + 0.01;
+
+end

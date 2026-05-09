@@ -38,6 +38,8 @@ public class ySwingTerminal {
             }
         };
         ySwingTerminal_Instance_Prototype.prototype = yBaseTerminal.yBaseTerminal_Instance_Prototype;
+
+
     }
 
     public static class ySwingTerminalInstance extends  yAbstractTerminal.AbstractTerminal {
