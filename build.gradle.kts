@@ -18,6 +18,7 @@ dependencies {
     implementation("com.formdev:flatlaf:3.5.4")
     implementation("org.processing:core:3.3.7")
     implementation("com.google.code.gson:gson:2.11.0")
+    implementation("org.xerial:sqlite-jdbc:3.30.1")
 }
 
 tasks.test {

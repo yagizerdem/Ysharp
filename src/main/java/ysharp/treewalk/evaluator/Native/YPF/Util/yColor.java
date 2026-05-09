@@ -64,7 +64,7 @@ public class yColor {
 
         @Override
         public String toString() {
-            return "<class:Array>";
+            return "<class:Color>";
         }
     }
 }
