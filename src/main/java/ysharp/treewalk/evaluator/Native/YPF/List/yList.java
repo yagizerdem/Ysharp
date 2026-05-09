@@ -3,11 +3,14 @@ package ysharp.treewalk.evaluator.Native.YPF.List;
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Function;
+import ysharp.treewalk.evaluator.Native.YPF.yComponent;
 
 import javax.swing.*;
+import java.awt.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
+import java.util.List;
 
 public class yList {
 
@@ -44,7 +47,7 @@ public class yList {
             @Override public String toString() { return "<prototype:List>"; }
         };
 
-        yList_Instance_Prototype.prototype = yClass.ClassPrototype;
+        yList_Instance_Prototype.prototype = yComponent.yComponent_Instance_Prototype;
 
         Map<String, List<Method>> methodMap = new HashMap<>();
 
@@ -136,7 +139,7 @@ public class yList {
         }
     }
 
-    public static class yListInstance extends yClass.ClassObjectInstance {
+    public static class yListInstance extends yClass.ClassObjectInstance implements yComponent.yBaseComponent {
 
         public final JList<Object> list;
 
@@ -148,11 +151,10 @@ public class yList {
         @Override public boolean isTruthy() { return true; }
         @Override public String getType() { return "List"; }
         @Override public String toString() { return "<instance:List>"; }
-
-        @Override
-        public Object getNativeJavaObject() {
+        @Override public Object getNativeJavaObject() {
             return this.list;
         }
+        @Override public Component getComponent() { return this.list; }
     }
 
     public static class yListClass extends yClass.SealedClassObject {

@@ -3,11 +3,14 @@ package ysharp.treewalk.evaluator.Native.YPF.Label;
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Function;
+import ysharp.treewalk.evaluator.Native.YPF.yComponent;
 
 import javax.swing.*;
+import java.awt.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
+import java.util.List;
 
 public class yLabel {
 
@@ -44,7 +47,7 @@ public class yLabel {
             @Override public String toString() { return "<prototype:Label>"; }
         };
 
-        yLabel_Instance_Prototype.prototype = yClass.ClassPrototype;
+        yLabel_Instance_Prototype.prototype = yComponent.yComponent_Instance_Prototype;
 
         Map<String, List<Method>> methodMap = new HashMap<>();
 
@@ -137,7 +140,7 @@ public class yLabel {
         }
     }
 
-    public static class yLabelInstance extends yClass.ClassObjectInstance {
+    public static class yLabelInstance extends yClass.ClassObjectInstance  implements yComponent.yBaseComponent {
 
         public final JLabel label;
 
@@ -150,6 +153,7 @@ public class yLabel {
         @Override public String getType() { return "Label"; }
         @Override public String toString() { return "<instance:Label>"; }
         @Override public Object getNativeJavaObject() { return this.label; }
+        @Override public Component getComponent() { return this.label; }
     }
 
     public static class yLabelClass extends yClass.SealedClassObject {
@@ -168,6 +172,6 @@ public class yLabel {
         }
 
         @Override public String getClassName() { return "Label"; }
-        @Override public String getType() { return "Label"; }
+        @Override public String getType() { return "_Label_"; }
     }
 }

@@ -3,12 +3,15 @@ package ysharp.treewalk.evaluator.Native.YPF.Table;
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Function;
+import ysharp.treewalk.evaluator.Native.YPF.yComponent;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
+import java.util.List;
 
 public class yTable {
 
@@ -44,8 +47,7 @@ public class yTable {
             @Override public String getType() { return "__Table__"; }
             @Override public String toString() { return "<prototype:Table>"; }
         };
-
-        yTable_Instance_Prototype.prototype = yClass.ClassPrototype;
+        yTable_Instance_Prototype.prototype = yComponent.yComponent_Instance_Prototype;
 
         Map<String, List<Method>> methodMap = new HashMap<>();
 
@@ -162,7 +164,7 @@ public class yTable {
         ));
     }
 
-    public static class yTableInstance extends yClass.ClassObjectInstance {
+    public static class yTableInstance extends yClass.ClassObjectInstance  implements yComponent.yBaseComponent {
 
         public final JTable table;
         public final DefaultTableModel model;
@@ -176,11 +178,10 @@ public class yTable {
         @Override public boolean isTruthy() { return true; }
         @Override public String getType() { return "Table"; }
         @Override public String toString() { return "<instance:Table>"; }
-
-        @Override
-        public Object getNativeJavaObject() {
+        @Override public Object getNativeJavaObject() {
             return this.table;
         }
+        @Override public Component getComponent() { return this.table;}
     }
 
     public static class yTableClass extends yClass.SealedClassObject {

@@ -4,6 +4,7 @@ YPF.invokeLater(() => do
 
     frame.show();
     frame.setSize(400, 400);
+    frame.setLayout(new YPF.FlowLayout());
 
     var label = new YPF.Label();
     label.setText("test");
@@ -15,9 +16,14 @@ YPF.invokeLater(() => do
     label.setFont(font);
 
     frame.add(label);
+    frame.setDefaultCloseOperation(YPF.Frame.EXIT_ON_CLOSE);
 
     var c = YPF.Color.blue;
 
     println c;
+
+    label.onClick(() => do
+        println "lable cliecked";
+    end);
 
 end);

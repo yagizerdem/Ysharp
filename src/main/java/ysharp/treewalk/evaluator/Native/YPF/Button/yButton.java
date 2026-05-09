@@ -3,8 +3,10 @@ package ysharp.treewalk.evaluator.Native.YPF.Button;
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Function;
+import ysharp.treewalk.evaluator.Native.YPF.yComponent;
 
 import javax.swing.*;
+import java.awt.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -47,7 +49,7 @@ public class yButton {
             @Override public String toString() { return "<prototype:Button>"; }
         };
 
-        yButton_Instance_Prototype.prototype = yButton_Instance_Prototype;
+        yButton_Instance_Prototype.prototype = yComponent.yComponent_Instance_Prototype;
 
 
         Map<String, List<Method>> methodMap = new HashMap<>();
@@ -184,7 +186,7 @@ public class yButton {
         yButton_Instance_Prototype.RegisterNativeFn(new OnClickFn());
     }
 
-    public static class yButtonInstance extends yClass.ClassObjectInstance  {
+    public static class yButtonInstance extends yClass.ClassObjectInstance implements yComponent.yBaseComponent  {
 
         public final JButton button;
 
@@ -197,6 +199,7 @@ public class yButton {
         @Override public String getType() { return "Button"; }
         @Override public String toString() { return "<instance:Button>"; }
         @Override public Object getNativeJavaObject() {return this.button; }
+        @Override public Component getComponent() { return this.button; }
     }
 
     public static class yButtonClass extends yClass.SealedClassObject {

@@ -3,11 +3,14 @@ package ysharp.treewalk.evaluator.Native.YPF.Button;
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Function;
+import ysharp.treewalk.evaluator.Native.YPF.yComponent;
 
 import javax.swing.*;
+import java.awt.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
+import java.util.List;
 
 public class yButtonGroup {
 
@@ -148,9 +151,7 @@ public class yButtonGroup {
         @Override public boolean isTruthy() { return true; }
         @Override public String getType() { return "ButtonGroup"; }
         @Override public String toString() { return "<instance:ButtonGroup>"; }
-
-        @Override
-        public Object getNativeJavaObject() {
+        @Override public Object getNativeJavaObject() {
             return this.group;
         }
     }

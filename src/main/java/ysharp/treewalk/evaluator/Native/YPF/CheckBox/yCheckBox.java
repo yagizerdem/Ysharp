@@ -3,11 +3,14 @@ package ysharp.treewalk.evaluator.Native.YPF.CheckBox;
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.*;
 import ysharp.treewalk.evaluator.Function;
+import ysharp.treewalk.evaluator.Native.YPF.yComponent;
 
 import javax.swing.*;
+import java.awt.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
+import java.util.List;
 
 public class yCheckBox {
 
@@ -44,7 +47,7 @@ public class yCheckBox {
             @Override public String toString() { return "<prototype:CheckBox>"; }
         };
 
-        yCheckBox_Instance_Prototype.prototype = yClass.ClassPrototype;
+        yCheckBox_Instance_Prototype.prototype = yComponent.yComponent_Instance_Prototype;
 
         Map<String, List<Method>> methodMap = new HashMap<>();
 
@@ -136,7 +139,7 @@ public class yCheckBox {
         }
     }
 
-    public static class yCheckBoxInstance extends yClass.ClassObjectInstance {
+    public static class yCheckBoxInstance extends yClass.ClassObjectInstance implements yComponent.yBaseComponent {
 
         public final JCheckBox checkBox;
 
@@ -148,11 +151,10 @@ public class yCheckBox {
         @Override public boolean isTruthy() { return true; }
         @Override public String getType() { return "CheckBox"; }
         @Override public String toString() { return "<instance:CheckBox>"; }
-
-        @Override
-        public Object getNativeJavaObject() {
+        @Override public Object getNativeJavaObject() {
             return this.checkBox;
         }
+        @Override public Component getComponent() {return this.checkBox; }
     }
 
     public static class yCheckBoxClass extends yClass.SealedClassObject {
@@ -171,6 +173,6 @@ public class yCheckBox {
         }
 
         @Override public String getClassName() { return "CheckBox"; }
-        @Override public String getType() { return "CheckBox"; }
+        @Override public String getType() { return "_CheckBox_"; }
     }
 }

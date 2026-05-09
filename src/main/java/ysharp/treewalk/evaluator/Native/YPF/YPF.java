@@ -11,6 +11,7 @@ import ysharp.treewalk.evaluator.Native.YPF.CheckBox.yCheckBox;
 import ysharp.treewalk.evaluator.Native.YPF.ComboBox.yComboBox;
 import ysharp.treewalk.evaluator.Native.YPF.Container.Frame.yFrame;
 import ysharp.treewalk.evaluator.Native.YPF.Container.yContainer;
+import ysharp.treewalk.evaluator.Native.YPF.FilePicker.yFilePicker;
 import ysharp.treewalk.evaluator.Native.YPF.Label.yLabel;
 import ysharp.treewalk.evaluator.Native.YPF.Layout.*;
 import ysharp.treewalk.evaluator.Native.YPF.List.yList;
@@ -235,6 +236,8 @@ public class YPF {
             this.RegisterClass(new yContainer.yContainerClass());
             // YPF.Table()
             this.RegisterClass(new yTable.yTableClass());
+            // YPF.FilePicker()
+            this.RegisterClass(new yFilePicker.yFilePickerClass());
 
 
             // layouts
