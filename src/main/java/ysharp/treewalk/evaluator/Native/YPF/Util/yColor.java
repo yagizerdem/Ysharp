@@ -3,6 +3,7 @@ package ysharp.treewalk.evaluator.Native.YPF.Util;
 import ysharp.treewalk.YsharpException;
 import ysharp.treewalk.evaluator.Interpreter;
 import ysharp.treewalk.evaluator.Native.Collections.Array.function.statix.RangeFn;
+import ysharp.treewalk.evaluator.RuntimeObject;
 import ysharp.treewalk.evaluator.Variable;
 import ysharp.treewalk.evaluator.yClass;
 
@@ -21,7 +22,6 @@ public class yColor {
 
         public yColorClass(){
             this.prototype = yClass.ClassPrototype;
-            this.RegisterNativeFn(new RangeFn());
 
             // add all java awt.Color's
             for (Field field : Color.class.getFields()) {
@@ -59,7 +59,7 @@ public class yColor {
 
         @Override
         public String getType() {
-            return "Color";
+            return "_Color_";
         }
 
         @Override

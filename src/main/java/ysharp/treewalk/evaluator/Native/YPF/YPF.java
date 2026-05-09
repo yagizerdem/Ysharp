@@ -23,6 +23,7 @@ import ysharp.treewalk.evaluator.Native.YPF.Table.yTable;
 import ysharp.treewalk.evaluator.Native.YPF.TextArea.yTextArea;
 import ysharp.treewalk.evaluator.Native.YPF.TextBox.yTextBox;
 import ysharp.treewalk.evaluator.Native.YPF.Util.yColor;
+import ysharp.treewalk.evaluator.Native.YPF.Util.yFont;
 import ysharp.treewalk.evaluator.Native.YPF.Util.yIcon;
 
 import javax.swing.*;
@@ -30,6 +31,11 @@ import java.util.List;
 
 public class YPF {
 
+    // register YPF related convertors
+    static {
+        JavaObjectWrapper.RegisterConvertorTypes(java.awt.Font.class, yFont.yFontInstance.class);
+        JavaObjectWrapper.RegisterConvertorTypes(java.awt.Container.class, yContainer.yContainerInstance.class);
+    }
 
     public static class YPFClass extends yClass.SealedClassObject {
 
@@ -229,8 +235,7 @@ public class YPF {
             this.RegisterClass(new yContainer.yContainerClass());
             // YPF.Table()
             this.RegisterClass(new yTable.yTableClass());
-            // YPF.Icon // static class
-            this.RegisterClass(new yIcon.yIconClass());
+
 
             // layouts
             this.RegisterClass(new yBorderLayout.yBorderLayoutClass());
@@ -239,8 +244,16 @@ public class YPF {
             this.RegisterClass(new yFlowLayout.yFlowLayoutClass());
             this.RegisterClass(new yGridLayout.yGridLayoutClass());
 
+            // utils
+
             // color
             this.RegisterClass(new yColor.yColorClass());
+
+            // YPF.Icon // static class
+            this.RegisterClass(new yIcon.yIconClass());
+
+            // YPF.Font // static class
+            this.RegisterClass(new yFont.yFontClass());
         }
 
         @Override

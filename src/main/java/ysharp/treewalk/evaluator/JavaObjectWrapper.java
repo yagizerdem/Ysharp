@@ -55,10 +55,6 @@ public class JavaObjectWrapper {
             return obj;
         }
 
-        if (obj instanceof Container) {
-            return new yContainer.yContainerInstance((Container) obj);
-        }
-
         ConverterEntry bestEntry = findBestConverter(obj.getClass());
 
         if (bestEntry != null) {
