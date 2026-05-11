@@ -2,6 +2,7 @@ use "piece.ys";
 use "board.ys";
 use "engine.ys";
 use "sd.ys";
+use "ai.ys";
 
 
 export const white_horse_icon = YPF.Icon.createBufferedImageIcon("./assets/solid/white-horse.png");
@@ -174,10 +175,34 @@ class ArenaGUI {
                 if mode == GameMode.HUMAN then do
                     movePiece([selectedRow, selectedCol], [toRow, toCol], board);
                     playerColor =  playerColor == Piece.RED ? Piece.BLUE : Piece.RED;
+                    println board.toString();
+                    this.renderBoard();
                 end
-                println board.toString();
-                this.renderBoard();
+                elif mode == GameMode.RANDOM then do
+                    movePiece([selectedRow, selectedCol], [toRow, toCol], board);
+
+                    const moves = generateAllValidMoves(board, playerColor == Piece.RED ? Piece.BLUE : Piece.RED);
+                    const random_move = moves.get(Random.nextInt(0, moves.size()));
+                    movePiece(random_move.get(0), random_move.get(1), board);
+
+                    println board.toString();
+                    this.renderBoard();
+                end
+                elif mode == GameMode.AI then do
+                    movePiece([selectedRow, selectedCol], [toRow, toCol], board);
+                    println board.toString();
+                    this.renderBoard();
+
+                    const bestMove = findBestMove(board, playerColor == Piece.RED ? Piece.BLUE : Piece.RED);
+                    if bestMove != null then do
+                        movePiece(bestMove.get(0), bestMove.get(1), board);
+                    end
+                      println board.toString();
+                      this.renderBoard();
+                end
+
             end
+
             shouldMove = false;
             selectedRow = null;
             selectedCol = null;

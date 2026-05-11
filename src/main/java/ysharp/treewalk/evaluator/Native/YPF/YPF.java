@@ -23,6 +23,7 @@ import ysharp.treewalk.evaluator.Native.YPF.ProgressBar.yProgressBar;
 import ysharp.treewalk.evaluator.Native.YPF.Table.yTable;
 import ysharp.treewalk.evaluator.Native.YPF.TextArea.yTextArea;
 import ysharp.treewalk.evaluator.Native.YPF.TextBox.yTextBox;
+import ysharp.treewalk.evaluator.Native.YPF.Util.yBox;
 import ysharp.treewalk.evaluator.Native.YPF.Util.yColor;
 import ysharp.treewalk.evaluator.Native.YPF.Util.yFont;
 import ysharp.treewalk.evaluator.Native.YPF.Util.yIcon;
@@ -36,6 +37,7 @@ public class YPF {
     static {
         JavaObjectWrapper.RegisterConvertorTypes(java.awt.Font.class, yFont.yFontInstance.class);
         JavaObjectWrapper.RegisterConvertorTypes(java.awt.Container.class, yContainer.yContainerInstance.class);
+        JavaObjectWrapper.RegisterConvertorTypes(javax.swing.Box.class , yBox.yBoxInstance.class);
     }
 
     public static class YPFClass extends yClass.SealedClassObject {
@@ -238,6 +240,8 @@ public class YPF {
             this.RegisterClass(new yTable.yTableClass());
             // YPF.FilePicker()
             this.RegisterClass(new yFilePicker.yFilePickerClass());
+            // YPF.Box
+            this.RegisterClass(new yBox.yBoxClass());
 
 
             // layouts

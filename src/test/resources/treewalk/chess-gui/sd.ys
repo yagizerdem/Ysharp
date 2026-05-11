@@ -22,4 +22,4 @@ export class GameMode {
        }
 
 
-export var mode = GameMode.HUMAN;
+export var mode = GameMode.AI;

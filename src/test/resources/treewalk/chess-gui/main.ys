@@ -3,7 +3,42 @@ use "ui.ys";
 
 YPF.invokeLater(() => do
     var frame = new YPF.Frame();
-    frame.setSize(600, 600);
-    frame.add(arenaGUI.panel);
+    frame.setSize(400, 400);
+    // frame.add(arenaGUI.panel);
     frame.setVisible(true);
+
+    // start panel
+    var panel = new YPF.Panel();
+    panel.setLayout(new YPF.BoxLayout(panel, YPF.BoxLayout.Y_AXIS));
+
+    // panel içeriğini dikeyde ortalamak için üst boşluk
+    panel.add(YPF.Box.createVerticalGlue());
+
+    var btn1 = new YPF.Button();
+    btn1.setText("Button 1");
+    btn1.setAlignmentX(0.5);
+
+    var btn2 = new YPF.Button();
+    btn2.setText("Button 2");
+    btn2.setAlignmentX(0.5);
+
+    var btn3 = new YPF.Button();
+    btn3.setText("Button 3");
+    btn3.setAlignmentX(0.5);
+
+    var btn4 = new YPF.Button();
+    btn4.setText("Button 4");
+    btn4.setAlignmentX(0.5);
+
+    panel.add(btn1);
+    panel.add(btn2);
+    panel.add(btn3);
+    panel.add(btn4);
+
+    // panel içeriğini dikeyde ortalamak için alt boşluk
+    panel.add(YPF.Box.createVerticalGlue());
+
+    frame.add(panel);
+
+
 end);
