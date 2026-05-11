@@ -1,0 +1,85 @@
+use "piece.ys";
+
+class Board {
+    let arena = [];
+
+    init() do
+        this.arena = [
+        [
+            Piece.init(0, 0,  Piece.ROOK, Piece.RED),
+            Piece.init(0, 1,  Piece.HORSE, Piece.RED),
+            Piece.init(0, 2,  Piece.BISHOP, Piece.RED),
+            Piece.init(0, 3,  Piece.QUEEN, Piece.RED),
+            Piece.init(0, 4,  Piece.KING, Piece.RED),
+            Piece.init(0, 5,  Piece.BISHOP, Piece.RED),
+            Piece.init(0, 6,  Piece.HORSE, Piece.RED),
+            Piece.init(0, 7,  Piece.ROOK, Piece.RED)
+        ],
+        [
+            Piece.init(1, 0,  Piece.PAWN, Piece.RED),
+            Piece.init(1, 1,  Piece.PAWN, Piece.RED),
+            Piece.init(1, 2,  Piece.PAWN, Piece.RED),
+            Piece.init(1, 3,  Piece.PAWN, Piece.RED),
+            Piece.init(1, 4,  Piece.PAWN, Piece.RED),
+            Piece.init(1, 5,  Piece.PAWN, Piece.RED),
+            Piece.init(1, 6,  Piece.PAWN, Piece.RED),
+            Piece.init(1, 7,  Piece.PAWN, Piece.RED)
+        ],
+        [null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null],
+        [
+            Piece.init(6, 0,  Piece.PAWN, Piece.BLUE),
+            Piece.init(6, 1,  Piece.PAWN, Piece.BLUE),
+            Piece.init(6, 2,  Piece.PAWN, Piece.BLUE),
+            Piece.init(6, 3,  Piece.PAWN, Piece.BLUE),
+            Piece.init(6, 4,  Piece.PAWN, Piece.BLUE),
+            Piece.init(6, 5,  Piece.PAWN, Piece.BLUE),
+            Piece.init(6, 6,  Piece.PAWN, Piece.BLUE),
+            Piece.init(6, 7,  Piece.PAWN, Piece.BLUE)
+        ],
+        [
+            Piece.init(7, 0,  Piece.ROOK, Piece.BLUE),
+            Piece.init(7, 1,  Piece.HORSE, Piece.BLUE),
+            Piece.init(7, 2,  Piece.BISHOP, Piece.BLUE),
+            Piece.init(7, 3,  Piece.QUEEN, Piece.BLUE),
+            Piece.init(7, 4,  Piece.KING, Piece.BLUE),
+            Piece.init(7, 5,  Piece.BISHOP, Piece.BLUE),
+            Piece.init(7, 6,  Piece.HORSE, Piece.BLUE),
+            Piece.init(7, 7,  Piece.ROOK, Piece.BLUE)
+        ]
+    ];
+    end
+
+    getPiece(row, col) do
+        return this.arena.get(row).get(col);
+    end
+
+    containsPiece(row, col) do
+        return this.getPiece(row, col) != null;
+    end
+
+    toString() do
+        var sb = new StringBuilder();
+
+        for var row in 0..7 do
+            var str = "";
+            for var col in 0..7 do
+                const p = this.arena.get(row).get(col);
+                if p != null then do
+                    str += p.printType() + "  ";
+                end
+                else do
+                    str += ".  ";
+                end
+            end
+            sb.appendLine(str);
+        end
+        return sb.toString();
+    end
+
+}
+
+export const board = new Board();
+board.init();

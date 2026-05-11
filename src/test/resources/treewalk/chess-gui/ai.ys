@@ -1,0 +1,230 @@
+use "engine.ys";
+use "piece.ys";
+use "sd.ys";
+
+const KING_TABLE_WHITE = [
+    [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+    [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+    [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+    [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+    [-2.0, -3.0, -3.0, -4.0, -4.0, -3.0, -3.0, -2.0],
+    [-1.0, -2.0, -2.0, -2.0, -2.0, -2.0, -2.0, -1.0],
+    [ 2.0,  2.0,  0.0,  0.0,  0.0,  0.0,  2.0,  2.0],
+    [ 2.0,  3.0,  1.0,  0.0,  0.0,  1.0,  3.0,  2.0]
+];
+
+const KING_TABLE_BLACK = [
+    [-2.0, -3.0, -1.0, -0.0, -0.0, -1.0, -3.0, -2.0],
+    [-2.0, -2.0, -0.0, -0.0, -0.0, -0.0, -2.0, -2.0],
+    [ 1.0,  2.0,  2.0,  2.0,  2.0,  2.0,  2.0,  1.0],
+    [ 2.0,  3.0,  3.0,  4.0,  4.0,  3.0,  3.0,  2.0],
+    [ 3.0,  4.0,  4.0,  5.0,  5.0,  4.0,  4.0,  3.0],
+    [ 3.0,  4.0,  4.0,  5.0,  5.0,  4.0,  4.0,  3.0],
+    [ 3.0,  4.0,  4.0,  5.0,  5.0,  4.0,  4.0,  3.0],
+    [ 3.0,  4.0,  4.0,  5.0,  5.0,  4.0,  4.0,  3.0]
+];
+
+const QUEEN_TABLE_WHITE = [
+    [-2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0],
+    [-1.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -1.0],
+    [-1.0,  0.0,  0.5,  0.5,  0.5,  0.5,  0.0, -1.0],
+    [-0.5,  0.0,  0.5,  0.5,  0.5,  0.5,  0.0, -0.5],
+    [ 0.0,  0.0,  0.5,  0.5,  0.5,  0.5,  0.0, -0.5],
+    [-1.0,  0.5,  0.5,  0.5,  0.5,  0.5,  0.0, -1.0],
+    [-1.0,  0.0,  0.5,  0.0,  0.0,  0.0,  0.0, -1.0],
+    [-2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0]
+];
+
+
+const QUEEN_TABLE_BLACK = [
+    [ 2.0,  1.0,  1.0,  0.5,  0.5,  1.0,  1.0,  2.0],
+    [ 1.0, -0.0, -0.5, -0.0, -0.0, -0.0, -0.0,  1.0],
+    [ 1.0, -0.5, -0.5, -0.5, -0.5, -0.5, -0.0,  1.0],
+    [-0.0, -0.0, -0.5, -0.5, -0.5, -0.5, -0.0,  0.5],
+    [ 0.5, -0.0, -0.5, -0.5, -0.5, -0.5, -0.0,  0.5],
+    [ 1.0, -0.0, -0.5, -0.5, -0.5, -0.5, -0.0,  1.0],
+    [ 1.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0,  1.0],
+    [ 2.0,  1.0,  1.0,  0.5,  0.5,  1.0,  1.0,  2.0]
+];
+
+
+const ROOK_TABLE_WHITE = [
+    [ 0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0],
+    [ 0.5,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  0.5],
+    [-0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+    [-0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+    [-0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+    [-0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+    [-0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+    [ 0.0,  0.0,  0.0,  0.5,  0.5,  0.0,  0.0,  0.0]
+];
+
+const ROOK_TABLE_BLACK = [
+    [ 0.0,  0.0,  0.0, -0.5, -0.5,  0.0,  0.0,  0.0],
+    [ 0.5, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0,  0.5],
+    [ 0.5, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0,  0.5],
+    [ 0.5, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0,  0.5],
+    [ 0.5, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0,  0.5],
+    [ 0.5, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0,  0.5],
+    [-0.5, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -0.5],
+    [-0.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0]
+];
+
+const BISHOP_TABLE_WHITE = [
+    [-2.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -2.0],
+    [-1.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -1.0],
+    [-1.0,  0.0,  0.5,  1.0,  1.0,  0.5,  0.0, -1.0],
+    [-1.0,  0.5,  0.5,  1.0,  1.0,  0.5,  0.5, -1.0],
+    [-1.0,  0.0,  1.0,  1.0,  1.0,  1.0,  0.0, -1.0],
+    [-1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0, -1.0],
+    [-1.0,  0.5,  0.0,  0.0,  0.0,  0.0,  0.5, -1.0],
+    [-2.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -2.0]
+];
+
+const BISHOP_TABLE_BLACK = [
+    [ 2.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  2.0],
+    [ 1.0, -0.5, -0.0, -0.0, -0.0, -0.0, -0.5,  1.0],
+    [ 1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0,  1.0],
+    [ 1.0, -0.0, -1.0, -1.0, -1.0, -1.0, -0.0,  1.0],
+    [ 1.0, -0.5, -0.5, -1.0, -1.0, -0.5, -0.5,  1.0],
+    [ 1.0, -0.0, -0.5, -1.0, -1.0, -0.5, -0.0,  1.0],
+    [ 1.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0,  1.0],
+    [ 2.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  2.0]
+];
+
+const KNIGHT_TABLE_WHITE = [
+    [-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0],
+    [-4.0, -2.0,  0.0,  0.0,  0.0,  0.0, -2.0, -4.0],
+    [-3.0,  0.0,  1.0,  1.5,  1.5,  1.0,  0.0, -3.0],
+    [-3.0,  0.5,  1.5,  2.0,  2.0,  1.5,  0.5, -3.0],
+    [-3.0,  0.0,  1.5,  2.0,  2.0,  1.5,  0.0, -3.0],
+    [-3.0,  0.5,  1.0,  1.5,  1.5,  1.0,  0.5, -3.0],
+    [-4.0, -2.0,  0.0,  0.5,  0.5,  0.0, -2.0, -4.0],
+    [-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0]
+];
+
+const KNIGHT_TABLE_BLACK = [
+    [ 5.0,  4.0,  3.0,  3.0,  3.0,  3.0,  4.0,  5.0],
+    [ 4.0,  2.0, -0.0, -0.5, -0.5, -0.0,  2.0,  4.0],
+    [ 3.0, -0.5, -1.0, -1.5, -1.5, -1.0, -0.5,  3.0],
+    [ 3.0, -0.0, -1.5, -2.0, -2.0, -1.5, -0.0,  3.0],
+    [ 3.0, -0.5, -1.5, -2.0, -2.0, -1.5, -0.5,  3.0],
+    [ 3.0, -0.0, -1.0, -1.5, -1.5, -1.0, -0.0,  3.0],
+    [ 4.0,  2.0, -0.0, -0.0, -0.0, -0.0,  2.0,  4.0],
+    [ 5.0,  4.0,  3.0,  3.0,  3.0,  3.0,  4.0,  5.0]
+];
+
+const PAWN_TABLE_WHITE = [
+    [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+    [5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0],
+    [1.0, 1.0, 2.0, 3.0, 3.0, 2.0, 1.0, 1.0],
+    [0.5, 0.5, 1.0, 2.5, 2.5, 1.0, 0.5, 0.5],
+    [0.0, 0.0, 0.0, 2.0, 2.0, 0.0, 0.0, 0.0],
+    [0.5, -0.5, -1.0, 0.0, 0.0, -1.0, -0.5, 0.5],
+    [0.5, 1.0, 1.0, -2.0, -2.0, 1.0, 1.0, 0.5],
+    [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+];
+
+const PAWN_TABLE_BLACK = [
+    [-0.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0],
+    [-0.5, -1.0, -1.0,  2.0,  2.0, -1.0, -1.0, -0.5],
+    [-0.5,  0.5,  1.0, -0.0, -0.0,  1.0,  0.5, -0.5],
+    [-0.0, -0.0, -0.0, -2.0, -2.0, -0.0, -0.0, -0.0],
+    [-0.5, -0.5, -1.0, -2.5, -2.5, -1.0, -0.5, -0.5],
+    [-1.0, -1.0, -2.0, -3.0, -3.0, -2.0, -1.0, -1.0],
+    [-5.0, -5.0, -5.0, -5.0, -5.0, -5.0, -5.0, -5.0],
+    [-0.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0]
+];
+
+export function findBestMove(board, aiColor) do
+    var bestMove = null;
+    var bestEval = 99999999.0;  // RED minimizer
+
+    const moves = generateAllValidMoves(board, aiColor);
+    foreach var move in moves do
+        var dto = movePiece(move.get(0), move.get(1), board);
+        var point = minimax(board, Piece.BLUE, 1, true);  // BLUE maximize eder
+        removePiece(dto, board);
+        if point < bestEval then do
+            bestEval = point;
+            bestMove = move;
+        end
+    end
+    return bestMove;
+end
+
+// RED - minimizer
+// BLUE - maximizer
+
+function minimax(board, aiColor, depth, isMaximizing) do
+    if depth == MAX_DEPTH then do
+        return eval(board);
+    end
+
+    if isMaximizing then do
+        var max_eval = -99999999.0;
+        const moves = generateAllValidMoves(board, aiColor);
+        if moves.size() == 0 then do
+            return max_eval;
+        end
+        foreach var move in moves do
+            var dto = movePiece(move.get(0), move.get(1), board);
+            var point = minimax(board, aiColor == Piece.BLUE ? Piece.RED : Piece.BLUE, depth + 1, !isMaximizing);
+            max_eval = Math.max(max_eval, point);
+            removePiece(dto, board);
+        end
+        return max_eval;
+    end
+    else do
+        var min_eval = 99999999.0;
+        const moves = generateAllValidMoves(board, aiColor);
+        if moves.size() == 0 then do
+            return min_eval;
+        end
+        foreach var move in moves do
+            var dto = movePiece(move.get(0), move.get(1), board);
+            var point = minimax(board, aiColor == Piece.BLUE ? Piece.RED : Piece.BLUE, depth + 1, !isMaximizing);
+            min_eval = Math.min(min_eval, point);
+            removePiece(dto, board);
+        end
+        return min_eval;
+    end
+
+end
+
+function tableDispatcher(p : Piece) do
+    if p.type == Piece.PAWN then do
+        return p.color == Piece.BLUE ? PAWN_TABLE_WHITE : PAWN_TABLE_BLACK;
+    end
+    elif p.type == Piece.HORSE then do
+        return p.color == Piece.BLUE ? KNIGHT_TABLE_WHITE : KNIGHT_TABLE_BLACK;
+    end
+    elif p.type == Piece.BISHOP then do
+        return p.color == Piece.BLUE ? BISHOP_TABLE_WHITE : BISHOP_TABLE_BLACK;
+    end
+    elif p.type == Piece.ROOK then do
+        return p.color == Piece.BLUE ? ROOK_TABLE_WHITE : ROOK_TABLE_BLACK;
+    end
+    elif p.type == Piece.QUEEN then do
+        return p.color == Piece.BLUE ? QUEEN_TABLE_WHITE : QUEEN_TABLE_BLACK;
+    end
+    elif p.type == Piece.KING then do
+        return p.color == Piece.BLUE ? KING_TABLE_WHITE : KING_TABLE_BLACK;
+    end
+    return null;
+end
+
+// board evaluation function
+function eval(board : Board) do
+    var point = 0;
+    for var i in 0..7 do
+        for var j in 0..7 do
+            const p = board.arena.get(i).get(j);
+            if p != null then do
+                point += p.getPoint();
+                point += tableDispatcher(p).get(i).get(j);
+            end
+        end
+    end
+    return point;
+end

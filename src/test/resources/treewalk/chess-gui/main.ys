@@ -1,0 +1,9 @@
+use "ui.ys";
+
+
+YPF.invokeLater(() => do
+    var frame = new YPF.Frame();
+    frame.setSize(600, 600);
+    frame.add(arenaGUI.panel);
+    frame.setVisible(true);
+end);
