@@ -1,42 +1,75 @@
 use "ui.ys";
+use "sd.ys";
 
 
 YPF.invokeLater(() => do
     var frame = new YPF.Frame();
     frame.setSize(400, 400);
-    // frame.add(arenaGUI.panel);
     frame.setVisible(true);
+
+    frame.setDefaultCloseOperation(YPF.Frame.EXIT_ON_CLOSE);
 
     // start panel
     var panel = new YPF.Panel();
-    panel.setLayout(new YPF.BoxLayout(panel, YPF.BoxLayout.Y_AXIS));
 
-    // panel içeriğini dikeyde ortalamak için üst boşluk
-    panel.add(YPF.Box.createVerticalGlue());
+    panel.setLayout(null);
+
+    panel.setBounds(0, 0, 400, 400);
 
     var btn1 = new YPF.Button();
-    btn1.setText("Button 1");
-    btn1.setAlignmentX(0.5);
+    btn1.setText("Play as human");
+    btn1.setBounds(100, 100, 200, 30);
 
     var btn2 = new YPF.Button();
-    btn2.setText("Button 2");
-    btn2.setAlignmentX(0.5);
+    btn2.setText("Random moves");
+    btn2.setBounds(100, 140, 200, 30);
 
     var btn3 = new YPF.Button();
-    btn3.setText("Button 3");
-    btn3.setAlignmentX(0.5);
+    btn3.setText("Depth 2");
+    btn3.setBounds(100, 180, 200, 30);
 
     var btn4 = new YPF.Button();
-    btn4.setText("Button 4");
-    btn4.setAlignmentX(0.5);
+    btn4.setText("Depth 3");
+    btn4.setBounds(100, 220, 200, 30);
 
     panel.add(btn1);
     panel.add(btn2);
     panel.add(btn3);
     panel.add(btn4);
 
-    // panel içeriğini dikeyde ortalamak için alt boşluk
-    panel.add(YPF.Box.createVerticalGlue());
+    btn1.onClick(() => do
+        frame.remove(panel);
+        mode = GameMode.HUMAN;
+        frame.add(arenaGUI.panel);
+        frame.revalidate();
+        frame.repaint();
+    end);
+
+    btn2.onClick(() => do
+        frame.remove(panel);
+         mode = GameMode.RANDOM;
+        frame.add(arenaGUI.panel);
+        frame.revalidate();
+        frame.repaint();
+    end);
+
+    btn3.onClick(() => do
+        frame.remove(panel);
+        mode = GameMode.AI;
+        frame.add(arenaGUI.panel);
+        MAX_DEPTH = 2;
+        frame.revalidate();
+        frame.repaint();
+    end);
+
+    btn4.onClick(() => do
+        frame.remove(panel);
+         mode = GameMode.AI;
+        frame.add(arenaGUI.panel);
+        MAX_DEPTH = 3;
+        frame.revalidate();
+        frame.repaint();
+    end);
 
     frame.add(panel);
 
