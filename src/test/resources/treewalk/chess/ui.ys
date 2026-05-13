@@ -13,10 +13,10 @@ export function printBoard(board : Board) do
                 // adjust color here
 
                 if p.isRed() then do
-                    terminal.setForegroundColor(TUI.TextColor.ANSI.BRIGHT_RED);
+                    terminal.setForegroundColor(TUI.TextColor.ANSI.RED_BRIGHT);
                 end
                 else do
-                    terminal.setForegroundColor(TUI.TextColor.ANSI.BRIGHT_BLUE);
+                    terminal.setForegroundColor(TUI.TextColor.ANSI.BLUE_BRIGHT);
                 end
 
                 if row == selectedRow && col == selectedCol then do
@@ -67,7 +67,7 @@ export function printPanel(cy : int) do
     terminal.writeLine("AI depth 3");
 
     terminal.setCursorPosition(2, cy);
-    terminal.setForegroundColor(TUI.TextColor.ANSI.BRIGHT_RED);
+    terminal.setForegroundColor(TUI.TextColor.ANSI.RED_BRIGHT);
     terminal.write("> ");
     terminal.setForegroundColor(TUI.TextColor.ANSI.WHITE);
     terminal.flush();

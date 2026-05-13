@@ -1,0 +1,261 @@
+use "piece.ys";
+use "board.ys";
+use "engine.ys";
+use "sd.ys";
+use "ai.ys";
+
+
+export const white_horse_icon = YPF.Icon.createBufferedImageIcon("./assets/solid/white-horse.png");
+export const black_horse_icon = YPF.Icon.createBufferedImageIcon("./assets/solid/black-horse.png");
+
+export const white_pawn_icon = YPF.Icon.createBufferedImageIcon("./assets/solid/white-pawn.png");
+export const black_pawn_icon = YPF.Icon.createBufferedImageIcon("./assets/solid/black-pawn.png");
+
+export const white_bishop_icon = YPF.Icon.createBufferedImageIcon("./assets/solid/white-bishop.png");
+export const black_bishop_icon = YPF.Icon.createBufferedImageIcon("./assets/solid/black-bishop.png");
+
+export const white_rook_icon = YPF.Icon.createBufferedImageIcon("./assets/solid/white-rook.png");
+export const black_rook_icon = YPF.Icon.createBufferedImageIcon("./assets/solid/black-rook.png");
+
+export const white_queen_icon = YPF.Icon.createBufferedImageIcon("./assets/solid/white-queen.png");
+export const black_queen_icon = YPF.Icon.createBufferedImageIcon("./assets/solid/black-queen.png");
+
+export const white_king_icon = YPF.Icon.createBufferedImageIcon("./assets/solid/white-king.png");
+export const black_king_icon = YPF.Icon.createBufferedImageIcon("./assets/solid/black-king.png");
+
+class ArenaGUI {
+
+    var panel;
+    var buttons = [];
+
+    constructor() do
+        this.panel = new YPF.Panel();
+        this.panel.setSize(400, 400);
+
+        this.panel.setLayout(new YPF.GridLayout(8, 8));
+
+        for var i = 0; i < 64; i = i + 1 do
+            var button = new YPF.Button();
+
+            var row = Type.Converter.toInt(i / 8);
+            var col = i % 8;
+
+            var icon = null;
+
+            // black back rank
+            if row == 0 then do
+                if col == 0 then do
+                    icon = black_rook_icon;
+                end
+                if col == 1 then do
+                    icon = black_horse_icon;
+                end
+                if col == 2 then do
+                    icon = black_bishop_icon;
+                end
+                if col == 3 then do
+                    icon = black_queen_icon;
+                end
+                if col == 4 then do
+                    icon = black_king_icon;
+                end
+                if col == 5 then do
+                    icon = black_bishop_icon;
+                end
+                if col == 6 then do
+                    icon = black_horse_icon;
+                end
+                if col == 7 then do
+                    icon = black_rook_icon;
+                end
+            end
+
+            // black pawns
+            if row == 1 then do
+                icon = black_pawn_icon;
+            end
+
+            // white pawns
+            if row == 6 then do
+                icon = white_pawn_icon;
+            end
+
+            // white back rank
+            if row == 7 then do
+                if col == 0 then do
+                    icon = white_rook_icon;
+                end
+                if col == 1 then do
+                    icon = white_horse_icon;
+                end
+                if col == 2 then do
+                    icon = white_bishop_icon;
+                end
+                if col == 3 then do
+                    icon = white_queen_icon;
+                end
+                if col == 4 then do
+                    icon = white_king_icon;
+                end
+                if col == 5 then do
+                    icon = white_bishop_icon;
+                end
+                if col == 6 then do
+                    icon = white_horse_icon;
+                end
+                if col == 7 then do
+                    icon = white_rook_icon;
+                end
+            end
+
+            if icon != null then do
+                button.setIcon(icon);
+            end
+
+            this.panel.add(button);
+            this.buttons.push(button);
+
+            button.onClick(() => do
+                this.onClickHandler(row, col);
+            end);
+
+        end
+
+        this.panel.setVisible(true);
+    end
+
+    renderBoard() do
+        // delete icons from buttons
+        for var i = 0; i < 64; i = i + 1 do
+            var button = this.buttons.get(i);
+            button.setIcon(null);
+        end
+
+        for var row = 0; row < 8; row = row + 1 do
+            for var col = 0; col < 8; col = col + 1 do
+
+                if board.containsPiece(row, col) then do
+                    var piece = board.getPiece(row, col);
+                    var icon = this.getIconForPiece(piece);
+
+                    var index = row * 8 + col;
+                    var button = this.buttons.get(index);
+
+                    if icon != null then do
+                        button.setIcon(icon);
+                    end
+                end
+
+            end
+        end
+
+    end
+
+    onClickHandler(row, col) do
+        println row + " " + col;
+        // check should move or or not
+        if
+            board.containsPiece(row, col) &&
+            playerColor == board.getPiece(row, col).color
+         then do
+            selectedRow = row;
+            selectedCol = col;
+            // re render the board to display selected piece color change
+        end
+        elif  selectedRow != null then do
+            toRow = row;
+            toCol = col;
+            shouldMove = true;
+        end
+
+     if shouldMove then do
+            // execute engine to check valid move or not
+
+            if checkMoveIsValid([selectedRow, selectedCol], [toRow, toCol], board) then do
+                if mode == GameMode.HUMAN then do
+                    movePiece([selectedRow, selectedCol], [toRow, toCol], board);
+                    playerColor =  playerColor == Piece.RED ? Piece.BLUE : Piece.RED;
+                    println board.toString();
+                    this.renderBoard();
+                end
+                elif mode == GameMode.RANDOM then do
+                    movePiece([selectedRow, selectedCol], [toRow, toCol], board);
+
+                    const moves = generateAllValidMoves(board, playerColor == Piece.RED ? Piece.BLUE : Piece.RED);
+                    const random_move = moves.get(Random.nextInt(0, moves.size()));
+                    movePiece(random_move.get(0), random_move.get(1), board);
+
+                    println board.toString();
+                    this.renderBoard();
+                end
+                elif mode == GameMode.AI then do
+                    movePiece([selectedRow, selectedCol], [toRow, toCol], board);
+                    println board.toString();
+                    this.renderBoard();
+
+                    const bestMove = findBestMove(board, playerColor == Piece.RED ? Piece.BLUE : Piece.RED);
+                    if bestMove != null then do
+                        movePiece(bestMove.get(0), bestMove.get(1), board);
+                    end
+                      println board.toString();
+                      this.renderBoard();
+                end
+
+            end
+
+            shouldMove = false;
+            selectedRow = null;
+            selectedCol = null;
+
+        end
+    end
+
+    getIconForPiece(piece) do
+        if piece.color == Piece.RED then do
+            if piece.type == Piece.PAWN then do
+                return black_pawn_icon;
+            end
+            if piece.type == Piece.ROOK then do
+                return black_rook_icon;
+            end
+            if piece.type == Piece.HORSE then do
+                return black_horse_icon;
+            end
+            if piece.type == Piece.BISHOP then do
+                return black_bishop_icon;
+            end
+            if piece.type == Piece.QUEEN then do
+                return black_queen_icon;
+            end
+            if piece.type == Piece.KING then do
+                return black_king_icon;
+            end
+        end
+
+        if piece.color == Piece.BLUE then do
+            if piece.type == Piece.PAWN then do
+                return white_pawn_icon;
+            end
+            if piece.type == Piece.ROOK then do
+                return white_rook_icon;
+            end
+            if piece.type == Piece.HORSE then do
+                return white_horse_icon;
+            end
+            if piece.type == Piece.BISHOP then do
+                return white_bishop_icon;
+            end
+            if piece.type == Piece.QUEEN then do
+                return white_queen_icon;
+            end
+            if piece.type == Piece.KING then do
+                return white_king_icon;
+            end
+        end
+
+        return null;
+    end
+
+}
+
+export const arenaGUI = new ArenaGUI();

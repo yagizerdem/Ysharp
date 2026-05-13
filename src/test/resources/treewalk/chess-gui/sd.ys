@@ -1,0 +1,25 @@
+use "piece.ys";
+
+export var cx = 0;
+export var cy = 0;
+
+export var selectedRow = null;
+export var selectedCol = null;
+
+export var toRow = null;
+export var toCol = null;
+
+export var playerColor = Piece.BLUE; // may change to red after 1st move
+
+export var MAX_DEPTH = 2;
+
+export var shouldMove = false;
+
+export class GameMode {
+           static const HUMAN = 0;
+           static const RANDOM = 1;
+           static const AI = 2;
+       }
+
+
+export var mode = GameMode.AI;

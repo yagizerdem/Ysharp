@@ -1,0 +1,113 @@
+export class Piece {
+    var row;
+    var col;
+    var type;
+    var color;
+    var isMoved : bool = false;
+
+    static const RED = 0;
+    static const BLUE = 1;
+
+    static const PAWN   = 0;
+    static const HORSE = 1;
+    static const BISHOP = 2;
+    static const ROOK   = 3;
+    static const QUEEN  = 4;
+    static const KING   = 5;
+
+    static init(row, col, type, color) : Piece do
+        const p = new Piece();
+        p.row = row;
+        p.col = col;
+        p.type = type;
+        p.color = color;
+        return p;
+    end
+
+    isRed() : bool do
+        return this.color == Piece.RED;
+    end
+
+    isHorse() : bool do
+        return this.type == Piece.HORSE;
+    end
+
+    isKing() : bool do
+        return this.type == Piece.KING;
+    end
+
+    isPawn() : bool do
+        return this.type == Piece.PAWN;
+    end
+
+    getPoint() do
+       var k = this.color == Piece.BLUE ? 1 : -1;
+
+       switch this.type do
+           case Piece.PAWN : do
+                return 10 * k;
+           end
+           case Piece.HORSE : do
+                return 30 * k;
+           end
+           case Piece.BISHOP : do
+                return 30 * k;
+           end
+           case Piece.ROOK : do
+                return 50 * k;
+           end
+           case Piece.QUEEN : do
+                return 90 * k;
+           end
+           case Piece.KING : do
+                return 900 * k;
+           end
+
+       end
+    end
+
+    // util
+
+    toString() do
+        var sb = new StringBuilder();
+        sb.append(" col : " + this.col);
+        sb.append(" row : " + this.row);
+        sb.append(" color : " + this.color + " (" + this.printColor() + ")");
+        sb.append(" type : " + this.type  + " (" + this.printType() + ")");
+        return sb.toString();
+    end
+
+    printColor() : string do
+        switch this.color do
+            case Piece.RED : do
+                return "RED";
+            end
+            default : do
+                return "BLUE";
+            end
+        end
+    end
+
+    printType() : string do
+        switch this.type do
+            case Piece.PAWN : do
+                return "P";
+            end
+            case Piece.HORSE : do
+                return "H";
+            end
+            case Piece.BISHOP : do
+                return "B";
+            end
+            case Piece.ROOK : do
+                return "R";
+            end
+            case Piece.QUEEN : do
+                return "Q";
+            end
+            case Piece.KING : do
+                return "K";
+            end
+        end
+    end
+}

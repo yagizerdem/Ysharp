@@ -1,0 +1,263 @@
+use "piece.ys";
+
+export function checkMoveIsValid(from : Array, to : Array, board : Board) do
+    var p = board.arena.get(from.get(0)).get(from.get(1));
+
+    var flag = checkMoveIsValidBackend(from, to, board);
+    if !flag then do return false; end
+
+        // temp move
+
+        const dto = movePiece(from, to, board);
+
+        var kingSquare = getKingSquare(p.color, board);
+
+        var flag = isSquareSafe(kingSquare, board, p.color == Piece.BLUE ? Piece.RED  : Piece.BLUE );
+
+        removePiece(dto, board);
+
+        if !flag then do return false; end
+
+
+    return true;
+end
+
+function checkMoveIsValidBackend(from : Array, to : Array, board : Board) do
+    var from_p = board.getPiece(from.get(0), from.get(1));
+    if from_p == null then do return false; end
+    if from.get(0) == to.get(0) && from.get(1)  == to.get(1) then do
+        return false;
+    end
+
+    var dest_p = board.getPiece(to.get(0), to.get(1));
+    if dest_p != null && from_p.color == dest_p.color then do
+        return false;
+    end
+
+    if !checkDirection(from, to, from_p) then do
+        return false;
+    end
+
+    // there is a blocking piece on the way
+    if !from_p.isHorse() && !checkNonBlocking(from, to, board) then do
+        return false;
+    end
+
+    // king can only move 1 sqr
+    if from_p.isKing() then do
+        if __abs(from.get(0) - to.get(0)) > 1 then do return false; end
+        if __abs(from.get(1) - to.get(1)) > 1 then do return false; end
+    end
+
+    if from_p.isPawn() then do
+        var row_diff = from.get(0) - to.get(0);
+        var col_diff = from.get(1) - to.get(1);
+        if from_p.color == Piece.RED && row_diff > 0 then do
+            return false;
+        end
+        if from_p.color == Piece.BLUE && row_diff < 0 then do
+            return false;
+        end
+
+        if __abs(row_diff) > 2 then do return false; end
+        elif __abs(row_diff) == 2 then do
+            if from_p.color == Piece.RED && from.get(0) != 1 then do return false; end
+            if from_p.color == Piece.BLUE && from.get(0) != 6 then do return false; end
+            if !isVertical(from, to) then do return false; end
+        end
+        elif __abs(row_diff) == 0 then do return false; end
+
+        if isVertical(from, to) && dest_p != null then do
+            return false;
+        end
+
+        if isDiagonal(from, to) then do
+            if dest_p == null then do return false; end
+            if dest_p.color == from_p.color then do return false; end
+            if __abs(row_diff) != 1 || __abs(col_diff) != 1 then do return false; end
+        end
+
+    end
+
+
+    return true;
+end
+
+function checkNonBlocking(from : Array, to : Array, board : Board) do
+    var row_dir = to.get(0) - from.get(0) < 0 ?  -1 : 1;
+    if to.get(0) == from.get(0) then do row_dir = 0; end
+
+    var col_dir = to.get(1) - from.get(1) < 0 ?  -1 : 1;
+    if to.get(1) == from.get(1) then do col_dir = 0; end
+
+
+    var cur_row = from.get(0) + row_dir;
+    var cur_col = from.get(1) + col_dir;
+
+    while cur_row != to.get(0) ||
+        cur_col != to.get(1) do
+
+        if cur_row < 0 || cur_row > 7 || cur_col < 0 || cur_col > 7 then do
+            return false;
+        end
+
+        if board.arena.get(cur_row).get(cur_col) != null then do
+            return false;
+        end
+
+       cur_row += row_dir;
+       cur_col += col_dir;
+    end
+
+    return true;
+end
+
+function isDiagonal(from : Array, to : Array) do
+    return Type.Converter.toInt(Math.abs(from.get(0)- to.get(0))) ==
+        Type.Converter.toInt(Math.abs(from.get(1)- to.get(1)));
+end
+
+function isHorizontal(from : Array, to : Array) do
+    return Type.Converter.toInt(from.get(0)) ==
+           Type.Converter.toInt(to.get(0));
+end
+
+function isVertical(from : Array, to : Array) do
+    return Type.Converter.toInt(from.get(1)) ==
+           Type.Converter.toInt(to.get(1));
+end
+
+
+function checkDirection(from : Array, to : Array, p : Piece) do
+
+    switch p.type do
+        case Piece.BISHOP : do
+            if !isDiagonal(from, to) then do
+                return false;
+            end
+            break;
+        end
+        case Piece.ROOK : do
+            if !(isHorizontal(from, to) || isVertical(from, to)) then do
+                return false;
+            end
+            break;
+        end
+        case Piece.QUEEN : do
+            if !(isHorizontal(from, to) || isVertical(from, to) || isDiagonal(from, to)) then do
+                return false;
+            end
+            break;
+        end
+        case Piece.KING : do
+            if !(isHorizontal(from, to) || isVertical(from, to) || isDiagonal(from, to)) then do
+                return false;
+            end
+            break;
+        end
+       case Piece.PAWN : do
+            if !(isVertical(from, to) || isDiagonal(from, to)) then do
+                return false;
+            end
+            break;
+        end
+       case Piece.HORSE : do
+            var row_diff = from.get(0) - to.get(0);
+            var col_diff = from.get(1) - to.get(1);
+
+
+            if __int(Math.pow(row_diff, 2) + Math.pow(col_diff, 2)) != 5 then do
+                return false;
+            end
+
+            break;
+        end
+    end
+    return true;
+end
+
+// attacker color is Piece.RED | Piece.BLUE
+function isSquareSafe(square : Array, board : Board, attackerColor : int) do
+    for var row in 0..7 do
+        for var col in 0..7 do
+            var piece = board.arena.get(row).get(col);
+            if piece == null then do continue; end
+            if piece.color == attackerColor then do
+                if checkMoveIsValidBackend([row, col], square, board) then do
+                    return false;
+                end
+            end
+        end
+    end
+    return true;
+end
+
+function getKingSquare(color : int , board : Board)  do
+    for var i in 0..7 do
+        for var j in 0..7 do
+            const p = board.arena.get(i).get(j);
+            if p != null && p.type == Piece.KING then do
+                if p.color == color then do return [i, j]; end
+            end
+        end
+    end
+    throw "there must be a piece type of king";
+end
+
+class MoveDTO {
+    var from : Array;
+    var to : Array;
+    var movedPiece : Piece;
+    var capturedPiece : Piece;
+    var isSmallCastle : bool;
+    var isBigCastle : bool;
+    var hadPieceMovedBefore : bool;
+}
+
+export function movePiece(from : Array, to : Array, board : Board) : MoveDTO do
+        const p = board.arena.get(from.get(0)).get(from.get(1));
+
+
+        const dto : MoveDTO = new MoveDTO();
+        dto.from = [from.get(0), from.get(1)];
+        dto.to = [to.get(0), to.get(1)];
+        dto.movedPiece = p;
+        dto.capturedPiece = board.arena.get(to.get(0)).get(to.get(1));
+        dto.hadPieceMovedBefore = p.isMoved;
+
+        p.isMoved = true;
+        p.row = to.get(0);
+        p.col = to.get(1);
+
+        board.arena.get(to.get(0)).set(to.get(1), p);
+        board.arena.get(from.get(0)).set(from.get(1), null);
+
+        return dto;
+end
+
+export function removePiece(dto : MoveDTO, board : Board) do
+    board.arena.get(dto.to.get(0)).set(dto.to.get(1), dto.capturedPiece);
+    board.arena.get(dto.from.get(0)).set(dto.from.get(1), dto.movedPiece);
+    dto.movedPiece.isMoved = dto.hadPieceMovedBefore;
+end
+
+export function generateAllValidMoves(board : Board, color : int) do
+    var moves = [];
+    for var i in 0..7 do
+        for var j in 0..7 do
+            var p = board.arena.get(i).get(j);
+            if p != null && p.color == color then do
+                for var x in 0..7 do
+                    for var y in 0..7 do
+                        var flag = checkMoveIsValid([i, j], [x, y], board);
+                        if flag then do
+                            moves.push([[i, j], [x, y]]);
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    return moves;
+end
