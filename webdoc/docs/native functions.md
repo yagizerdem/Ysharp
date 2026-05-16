@@ -45,7 +45,7 @@ They are used for:
 
 
 
-### now
+### __now
 
 - Returns the current time as epoch milliseconds
 

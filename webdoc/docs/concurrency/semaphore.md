@@ -226,21 +226,21 @@ println "result = " + result;
 
 ### Multi-permit acquire
 
-`acquireN` / `releaseN` are useful when a single task consumes multiple units
+`acquire` / `release` are useful when a single task consumes multiple units
 of a bounded resource:
 
 ```ysharp
 let bandwidth = new Semaphore(10, false);
 
 function sendLargeMessage() do
-    bandwidth.acquireN(4); // this message uses 4 units
+    bandwidth.acquire(4); // this message uses 4 units
     try do
         println "sending...";
         sleep(300);
     end
     catch(e) do end
     finally do
-        bandwidth.releaseN(4);
+        bandwidth.release(4);
     end
 end
 ```
