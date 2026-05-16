@@ -1,0 +1,43 @@
+const connection = SQLite.connect("database.db");
+const statement = connection.createStatement();
+
+statement.executeUpdate("DROP TABLE IF EXISTS users");
+
+statement.executeUpdate(
+    "CREATE TABLE users (" +
+    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+    "name TEXT NOT NULL, " +
+    "age INTEGER NOT NULL" +
+    ")"
+);
+
+statement.executeUpdate(
+    "INSERT INTO users (name, age) VALUES ('Alice', 25)"
+);
+
+statement.executeUpdate(
+    "INSERT INTO users (name, age) VALUES ('Bob', 30)"
+);
+
+const userId = 1;
+
+const preparedStmt = connection.prepareStatement(
+    "SELECT * FROM users WHERE id = ?"
+);
+
+preparedStmt.setInt(1, userId);
+
+const resultSet = preparedStmt.executeQuery();
+
+if resultSet.next() then do
+    const name = resultSet.getString("name");
+
+    IO.stdout.writeln("Found user: " + name);
+end else do
+    IO.stdout.writeln("User not found");
+end
+
+resultSet.close();
+preparedStmt.close();
+statement.close();
+connection.close();

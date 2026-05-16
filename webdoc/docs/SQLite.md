@@ -12,12 +12,12 @@ To use SQLite in your Ysharp program, you need to import and establish a connect
 
 ```ysharp
 // Connect to a database file
-connection = SQLite.connect("mydata.db")
+const connection = SQLite.connect("mydata.db");
 
 // Use the connection...
 
 // Always close the connection when done
-connection.close()
+connection.close();
 ```
 
 The `connect()` function takes a path to the database file. If the file doesn't exist, it will be created automatically.
@@ -33,44 +33,44 @@ Represents a connection to a SQLite database. This is created using `SQLite.conn
 #### Creating a Connection
 
 ```ysharp
-connection = SQLite.connect("database.db")
+const connection = SQLite.connect("database.db");
 ```
 
 #### Common Connection Methods
 
-| Method                                  | Description                                           |
-| --------------------------------------- | ----------------------------------------------------- |
-| `createStatement()`                     | Creates a new Statement for executing SQL queries     |
-| `prepareStatement(sql)`                 | Creates a PreparedStatement for parameterized queries |
-| `setAutoCommit(boolean)`                | Enable/disable automatic transaction commits          |
-| `commit()`                              | Commits the current transaction                       |
-| `rollback()`                            | Rolls back the current transaction                    |
-| `isValid(timeout)`                      | Validates if the connection is still active           |
-| `isReadOnly()` / `setReadOnly(boolean)` | Gets/sets read-only mode                              |
-| `close()`                               | Closes the connection and releases resources          |
+| Method                                   | Description                                           |
+|------------------------------------------|-------------------------------------------------------|
+| `createStatement()`                      | Creates a new Statement for executing SQL queries     |
+| `prepareStatement(sql)`                  | Creates a PreparedStatement for parameterized queries |
+| `setAutoCommit(boolean)`                 | Enable/disable automatic transaction commits          |
+| `commit()`                               | Commits the current transaction                       |
+| `rollback()`                             | Rolls back the current transaction                    |
+| `isValid(timeout)`                       | Validates if the connection is still active           |
+| `isReadOnly()` / `setReadOnly(boolean)`  | Gets/sets read-only mode                              |
+| `close()`                                | Closes the connection and releases resources          |
 
 #### Transaction Control
 
 ```ysharp
-connection = SQLite.connect("database.db")
+const connection = SQLite.connect("database.db");
 
 // Disable auto-commit for transaction control
-connection.setAutoCommit(false)
+connection.setAutoCommit(false);
 
-try {
+try do
     // Your database operations here
-    statement = connection.createStatement()
-    statement.executeUpdate("INSERT INTO users VALUES (1, 'John')")
+    const statement = connection.createStatement();
+    statement.executeUpdate("INSERT INTO users VALUES (1, 'John')");
 
     // Commit if successful
-    connection.commit()
-} catch error {
+    connection.commit();
+end catch (err) do
     // Rollback on error
-    connection.rollback()
-    output(error)
-} finally {
-    connection.close()
-}
+    connection.rollback();
+    IO.stderr.writeln(err);
+end finally do
+    connection.close();
+end
 ```
 
 ### SQLite.Statement
@@ -80,43 +80,69 @@ Represents an SQL statement. Use this for executing queries and updates.
 #### Creating a Statement
 
 ```ysharp
-statement = connection.createStatement()
+const statement = connection.createStatement();
 ```
 
 #### Common Statement Methods
 
-| Method                     | Parameters | Returns   | Description                                             |
-| -------------------------- | ---------- | --------- | ------------------------------------------------------- |
-| `executeQuery(sql)`        | SQL string | ResultSet | Executes a SELECT query                                 |
-| `executeUpdate(sql)`       | SQL string | Integer   | Executes INSERT/UPDATE/DELETE, returns affected rows    |
-| `execute(sql)`             | SQL string | Boolean   | Executes any SQL, returns true if ResultSet is returned |
-| `getResultSet()`           | -          | ResultSet | Gets the current ResultSet                              |
-| `getUpdateCount()`         | -          | Integer   | Gets number of rows affected by last update             |
-| `setMaxRows(max)`          | Integer    | -         | Sets maximum number of rows to fetch                    |
-| `setQueryTimeout(seconds)` | Integer    | -         | Sets query timeout in seconds                           |
-| `close()`                  | -          | -         | Closes the statement                                    |
+| Method                     | Parameters | Returns    | Description                                             |
+|----------------------------|------------|------------|---------------------------------------------------------|
+| `executeQuery(sql)`        | SQL string | ResultSet  | Executes a SELECT query                                 |
+| `executeUpdate(sql)`       | SQL string | Integer    | Executes INSERT/UPDATE/DELETE, returns affected rows    |
+| `execute(sql)`             | SQL string | Boolean    | Executes any SQL, returns true if ResultSet is returned |
+| `getResultSet()`           | -          | ResultSet  | Gets the current ResultSet                              |
+| `getUpdateCount()`         | -          | Integer    | Gets number of rows affected by last update             |
+| `setMaxRows(max)`          | Integer    | -          | Sets maximum number of rows to fetch                    |
+| `setQueryTimeout(seconds)` | Integer    | -          | Sets query timeout in seconds                           |
+| `close()`                  | -          | -          | Closes the statement                                    |
 
 #### Using Statements
 
 ```ysharp
-connection = SQLite.connect("database.db")
-statement = connection.createStatement()
+const connection = SQLite.connect("database.db");
+const statement = connection.createStatement();
+
+// Create users table first
+statement.executeUpdate(
+    "CREATE TABLE IF NOT EXISTS users (" +
+    "id INTEGER PRIMARY KEY, " +
+    "name TEXT NOT NULL, " +
+    "age INTEGER NOT NULL" +
+    ")"
+);
+
+// Optional: clean old test data
+statement.executeUpdate("DELETE FROM users");
+
+// Insert temp data
+statement.executeUpdate("INSERT INTO users VALUES (1, 'Alice', 25)");
+statement.executeUpdate("INSERT INTO users VALUES (2, 'Bob', 17)");
+statement.executeUpdate("INSERT INTO users VALUES (3, 'Charlie', 31)");
+statement.executeUpdate("INSERT INTO users VALUES (4, 'Diana', 19)");
+statement.executeUpdate("INSERT INTO users VALUES (5, 'Eve', 15)");
 
 // Execute a SELECT query
-resultSet = statement.executeQuery("SELECT * FROM users WHERE age > 18")
-while resultSet.next() {
-    id = resultSet.getInt("id")
-    name = resultSet.getString("name")
-    age = resultSet.getInt("age")
-    output(name, " is ", age, " years old")
-}
-resultSet.close()
+const resultSet = statement.executeQuery("SELECT * FROM users WHERE age > 18");
+
+while resultSet.next() do
+    const id = resultSet.getInt("id");
+    const name = resultSet.getString("name");
+    const age = resultSet.getInt("age");
+
+    IO.stdout.writeln(id + " - " + name + " is " + age + " years old");
+end
+
+resultSet.close();
 
 // Execute an INSERT, UPDATE, or DELETE
-rowsAffected = statement.executeUpdate("INSERT INTO users VALUES (1, 'Alice', 25)")
-output("Inserted ", rowsAffected, " row(s)")
+const rowsAffected = statement.executeUpdate(
+    "INSERT INTO users VALUES (6, 'Frank', 28)"
+);
 
-statement.close()
+IO.stdout.writeln("Inserted "+ rowsAffected + " row(s)");
+
+statement.close();
+connection.close();
 ```
 
 ### SQLite.PreparedStatement
@@ -126,56 +152,85 @@ A more secure way to execute SQL queries with parameters. PreparedStatements pre
 #### Creating a PreparedStatement
 
 ```ysharp
-preparedStmt = connection.prepareStatement("SELECT * FROM users WHERE name = ?")
+const preparedStmt = connection.prepareStatement("SELECT * FROM users WHERE name = ?");
 ```
 
 #### Parameter Setting Methods
 
 Use these methods to set parameter values. The `?` in the SQL string represents each parameter (indexed from 1).
 
-| Method                     | Parameter Index | Value Type | Description                 |
-| -------------------------- | --------------- | ---------- | --------------------------- |
-| `setString(index, value)`  | 1-based         | String     | Sets a string parameter     |
-| `setInt(index, value)`     | 1-based         | Integer    | Sets an integer parameter   |
-| `setLong(index, value)`    | 1-based         | Long       | Sets a long parameter       |
-| `setDouble(index, value)`  | 1-based         | Double     | Sets a double parameter     |
-| `setFloat(index, value)`   | 1-based         | Float      | Sets a float parameter      |
-| `setBoolean(index, value)` | 1-based         | Boolean    | Sets a boolean parameter    |
-| `setObject(index, value)`  | 1-based         | Any        | Sets an object parameter    |
-| `setNull(index, sqlType)`  | 1-based         | -          | Sets a NULL parameter       |
-| `clearParameters()`        | -               | -          | Clears all parameter values |
+| Method                     | Parameter Index  | Value Type  | Description                 |
+|----------------------------|------------------|-------------|-----------------------------|
+| `setString(index, value)`  | 1-based          | String      | Sets a string parameter     |
+| `setInt(index, value)`     | 1-based          | Integer     | Sets an integer parameter   |
+| `setLong(index, value)`    | 1-based          | Long        | Sets a long parameter       |
+| `setDouble(index, value)`  | 1-based          | Double      | Sets a double parameter     |
+| `setFloat(index, value)`   | 1-based          | Float       | Sets a float parameter      |
+| `setBoolean(index, value)` | 1-based          | Boolean     | Sets a boolean parameter    |
+| `setObject(index, value)`  | 1-based          | Any         | Sets an object parameter    |
+| `setNull(index, sqlType)`  | 1-based          | -           | Sets a NULL parameter       |
+| `clearParameters()`        | -                | -           | Clears all parameter values |
 
 #### Execution Methods
 
 PreparedStatement inherits all execution methods from Statement:
 
-| Method            | Returns   | Description                                |
-| ----------------- | --------- | ------------------------------------------ |
-| `executeQuery()`  | ResultSet | Executes the prepared SELECT query         |
-| `executeUpdate()` | Integer   | Executes the prepared INSERT/UPDATE/DELETE |
-| `execute()`       | Boolean   | Executes the prepared statement            |
+| Method              | Returns    | Description                                |
+|---------------------|------------|--------------------------------------------|
+| `executeQuery()`    | ResultSet  | Executes the prepared SELECT query         |
+| `executeUpdate()`   | Integer    | Executes the prepared INSERT/UPDATE/DELETE |
+| `execute()`         | Boolean    | Executes the prepared statement            |
 
 #### Using PreparedStatements
 
 ```ysharp
-connection = SQLite.connect("database.db")
+const connection = SQLite.connect("database.db");
+const statement = connection.createStatement();
+
+// Create table first
+statement.executeUpdate(
+    "CREATE TABLE IF NOT EXISTS users (" +
+    "id INTEGER PRIMARY KEY, " +
+    "name TEXT NOT NULL, " +
+    "age INTEGER NOT NULL" +
+    ")"
+);
+
+// Clean old test data
+statement.executeUpdate("DELETE FROM users");
+
+// Insert temp data
+statement.executeUpdate("INSERT INTO users VALUES (1, 'Alice', 25)");
+statement.executeUpdate("INSERT INTO users VALUES (2, 'Bob', 17)");
+statement.executeUpdate("INSERT INTO users VALUES (3, 'Charlie', 31)");
+statement.executeUpdate("INSERT INTO users VALUES (4, 'Diana', 19)");
+
+// Close normal statement
+statement.close();
+
 
 // Create a prepared statement with a parameter placeholder
-preparedStmt = connection.prepareStatement("SELECT * FROM users WHERE name = ?")
+const preparedStmt = connection.prepareStatement(
+    "SELECT * FROM users WHERE name = ?"
+);
 
 // Set the parameter value
-preparedStmt.setString(1, "Alice")
+preparedStmt.setString(1, "Alice");
 
 // Execute the query
-resultSet = preparedStmt.executeQuery()
+const resultSet = preparedStmt.executeQuery();
 
-if resultSet.next() {
-    output("Found user: ", resultSet.getString("name"))
-}
+if resultSet.next() then do
+    IO.stdout.writeln("Found user: " + resultSet.getString("name"));
+    IO.stdout.writeln("Id: " + resultSet.getInt("id"));
+    IO.stdout.writeln("Age: " + resultSet.getInt("age"));
+end else do
+    IO.stdout.writeln("User not found.");
+end
 
-resultSet.close()
-preparedStmt.close()
-connection.close()
+resultSet.close();
+preparedStmt.close();
+connection.close();
 ```
 
 #### Batch Operations
@@ -183,28 +238,49 @@ connection.close()
 Execute multiple statements efficiently:
 
 ```ysharp
-connection = SQLite.connect("database.db")
-preparedStmt = connection.prepareStatement("INSERT INTO users (name, age) VALUES (?, ?)")
+const connection = SQLite.connect("database.db");
+const statement = connection.createStatement();
+
+// Create table first
+statement.executeUpdate(
+    "CREATE TABLE IF NOT EXISTS users (" +
+    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+    "name TEXT NOT NULL, " +
+    "age INTEGER NOT NULL" +
+    ")"
+);
+
+// Optional: clean old test data
+statement.executeUpdate("DELETE FROM users");
+
+statement.close();
+
+
+// Prepared INSERT statement
+const preparedStmt = connection.prepareStatement(
+    "INSERT INTO users (name, age) VALUES (?, ?)"
+);
 
 // Add multiple batches
-preparedStmt.setString(1, "Bob")
-preparedStmt.setInt(2, 30)
-preparedStmt.addBatch()
+preparedStmt.setString(1, "Bob");
+preparedStmt.setInt(2, 30);
+preparedStmt.addBatch();
 
-preparedStmt.setString(1, "Carol")
-preparedStmt.setInt(2, 28)
-preparedStmt.addBatch()
+preparedStmt.setString(1, "Carol");
+preparedStmt.setInt(2, 28);
+preparedStmt.addBatch();
 
-preparedStmt.setString(1, "David")
-preparedStmt.setInt(2, 35)
-preparedStmt.addBatch()
+preparedStmt.setString(1, "David");
+preparedStmt.setInt(2, 35);
+preparedStmt.addBatch();
 
 // Execute all batches at once
-results = preparedStmt.executeBatch()
-output("Inserted ", results.length, " rows")
+const results = preparedStmt.executeBatch();
 
-preparedStmt.close()
-connection.close()
+IO.stdout.writeln("Inserted " + 3 + " rows");
+
+preparedStmt.close();
+connection.close();
 ```
 
 ### SQLite.ResultSet
@@ -213,64 +289,92 @@ Represents the results of a SELECT query. Use this to iterate through and retrie
 
 #### Cursor Navigation
 
-| Method       | Returns | Description                                             |
-| ------------ | ------- | ------------------------------------------------------- |
-| `next()`     | Boolean | Moves cursor to next row, returns false if no more rows |
-| `previous()` | Boolean | Moves cursor to previous row                            |
-| `first()`    | Boolean | Moves cursor to first row                               |
-| `last()`     | Boolean | Moves cursor to last row                                |
-| `isFirst()`  | Boolean | Checks if cursor is on first row                        |
-| `isLast()`   | Boolean | Checks if cursor is on last row                         |
-| `close()`    | -       | Closes the ResultSet                                    |
+| Method         | Returns | Description                                             |
+|----------------| ------- |---------------------------------------------------------|
+| `next()`       | Boolean | Moves cursor to next row, returns false if no more rows |
+| `previous()`   | Boolean | Moves cursor to previous row                            |
+| `first()`      | Boolean | Moves cursor to first row                               |
+| `last()`       | Boolean | Moves cursor to last row                                |
+| `isFirst()`    | Boolean | Checks if cursor is on first row                        |
+| `isLast()`     | Boolean | Checks if cursor is on last row                         |
+| `close()`      | -       | Closes the ResultSet                                    |
 
 #### Data Retrieval Methods
 
 Get column values by index (1-based) or column name:
 
-| Method                    | Parameters        | Returns           | Description                    |
-| ------------------------- | ----------------- | ----------------- | ------------------------------ |
-| `getString(index\|name)`  | Integer or String | String            | Retrieves a string value       |
-| `getInt(index\|name)`     | Integer or String | Integer           | Retrieves an integer value     |
-| `getLong(index\|name)`    | Integer or String | Long              | Retrieves a long value         |
-| `getDouble(index\|name)`  | Integer or String | Double            | Retrieves a double value       |
-| `getFloat(index\|name)`   | Integer or String | Float             | Retrieves a float value        |
-| `getBoolean(index\|name)` | Integer or String | Boolean           | Retrieves a boolean value      |
-| `getObject(index\|name)`  | Integer or String | Object            | Retrieves any object value     |
-| `getMetaData()`           | -                 | ResultSetMetaData | Gets information about columns |
+| Method                     | Parameters         | Returns           | Description                    |
+|----------------------------|--------------------|-------------------|--------------------------------|
+| `getString(index\|name)`   | Integer or String  | String            | Retrieves a string value       |
+| `getInt(index\|name)`      | Integer or String  | Integer           | Retrieves an integer value     |
+| `getLong(index\|name)`     | Integer or String  | Long              | Retrieves a long value         |
+| `getDouble(index\|name)`   | Integer or String  | Double            | Retrieves a double value       |
+| `getFloat(index\|name)`    | Integer or String  | Float             | Retrieves a float value        |
+| `getBoolean(index\|name)`  | Integer or String  | Boolean           | Retrieves a boolean value      |
+| `getObject(index\|name)`   | Integer or String  | Object            | Retrieves any object value     |
+| `getMetaData()`            | -                  | ResultSetMetaData | Gets information about columns |
 
 #### Iterating Through Results
 
 ```ysharp
-connection = SQLite.connect("database.db")
-statement = connection.createStatement()
+const connection = SQLite.connect("database.db");
+const statement = connection.createStatement();
 
-resultSet = statement.executeQuery("SELECT id, name, email FROM users")
+statement.executeUpdate(
+    "CREATE TABLE IF NOT EXISTS users (" +
+    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+    "name TEXT NOT NULL, " +
+    "age INTEGER NOT NULL, " +
+    "email TEXT NOT NULL" +
+    ")"
+);
 
-while resultSet.next() {
-    // Access columns by index (1-based)
-    id = resultSet.getInt(1)
-    name = resultSet.getString(2)
-    email = resultSet.getString(3)
+statement.executeUpdate("DELETE FROM users");
 
-    output("ID: ", id, ", Name: ", name, ", Email: ", email)
-}
+statement.executeUpdate(
+    "INSERT INTO users (name, age, email) VALUES ('Alice', 25, 'alice@example.com')"
+);
 
-resultSet.close()
-statement.close()
-connection.close()
+statement.executeUpdate(
+    "INSERT INTO users (name, age, email) VALUES ('Bob', 30, 'bob@example.com')"
+);
+
+statement.executeUpdate(
+    "INSERT INTO users (name, age, email) VALUES ('Carol', 28, 'carol@example.com')"
+);
+
+const resultSet = statement.executeQuery(
+    "SELECT id, name, email FROM users"
+);
+
+while resultSet.next() do
+    const id = resultSet.getInt(1);
+    const name = resultSet.getString(2);
+    const email = resultSet.getString(3);
+
+    IO.stdout.writeln(
+        "ID: " + id + ", Name: " + name + ", Email: " + email
+    );
+end
+
+resultSet.close();
+statement.close();
+connection.close();
 ```
 
 Alternatively, use column names:
 
 ```ysharp
-while resultSet.next() {
+while resultSet.next() do
     // Access columns by name
-    id = resultSet.getInt("id")
-    name = resultSet.getString("name")
-    email = resultSet.getString("email")
+    const id = resultSet.getInt("id");
+    const name = resultSet.getString("name");
+    const email = resultSet.getString("email");
 
-    output("ID: ", id, ", Name: ", name, ", Email: ", email)
-}
+    IO.stdout.writeline(
+        "ID: " + id + ", Name: " + name + ", Email: " + email
+    );
+end
 ```
 
 ## Complete Examples
@@ -278,116 +382,149 @@ while resultSet.next() {
 ### Creating and Populating a Table
 
 ```ysharp
-connection = SQLite.connect("myapp.db")
-statement = connection.createStatement()
+const connection = SQLite.connect("myapp.db");
+const statement = connection.createStatement();
 
 // Create table
 statement.executeUpdate(
     "CREATE TABLE IF NOT EXISTS products (" +
-    "id INTEGER PRIMARY KEY," +
-    "name TEXT NOT NULL," +
-    "price REAL NOT NULL," +
+    "id INTEGER PRIMARY KEY, " +
+    "name TEXT NOT NULL, " +
+    "price REAL NOT NULL, " +
     "quantity INTEGER" +
     ")"
-)
+);
+
+// Clean old test data
+statement.executeUpdate("DELETE FROM products");
 
 // Insert data
-statement.executeUpdate("INSERT INTO products VALUES (1, 'Laptop', 999.99, 5)")
-statement.executeUpdate("INSERT INTO products VALUES (2, 'Mouse', 29.99, 50)")
-statement.executeUpdate("INSERT INTO products VALUES (3, 'Keyboard', 79.99, 30)")
+statement.executeUpdate(
+    "INSERT INTO products VALUES (1, 'Laptop', 999.99, 5)"
+);
 
-output("Products created successfully")
+statement.executeUpdate(
+    "INSERT INTO products VALUES (2, 'Mouse', 29.99, 50)"
+);
 
-statement.close()
-connection.close()
+statement.executeUpdate(
+    "INSERT INTO products VALUES (3, 'Keyboard', 79.99, 30)"
+);
+
+IO.stdout.writeln("Products created successfully");
+
+statement.close();
+connection.close();
 ```
 
 ### Querying with WHERE Clause
 
 ```ysharp
-connection = SQLite.connect("myapp.db")
-statement = connection.createStatement()
+const connection = SQLite.connect("myapp.db");
+const statement = connection.createStatement();
 
 // Find all products under $100
-resultSet = statement.executeQuery(
+const resultSet = statement.executeQuery(
     "SELECT name, price FROM products WHERE price < 100 ORDER BY price DESC"
-)
+);
 
-while resultSet.next() {
-    name = resultSet.getString("name")
-    price = resultSet.getDouble("price")
-    output(name, ": $", price)
-}
+while resultSet.next() do
+    const name = resultSet.getString("name");
+    const price = resultSet.getDouble("price");
 
-resultSet.close()
-statement.close()
-connection.close()
+    IO.stdout.writeln(name + ": $" + price);
+end
+
+resultSet.close();
+statement.close();
+connection.close();
 ```
 
 ### Updating with Conditions
 
 ```ysharp
-connection = SQLite.connect("myapp.db")
-statement = connection.createStatement()
+const connection = SQLite.connect("myapp.db");
+const statement = connection.createStatement();
 
-// Update a product's quantity
-rowsAffected = statement.executeUpdate(
-    "UPDATE products SET quantity = 10 WHERE name = 'Laptop'"
-)
+statement.executeUpdate("DROP TABLE IF EXISTS products");
 
-output("Updated ", rowsAffected, " row(s)")
+statement.executeUpdate(
+    "CREATE TABLE products (" +
+    "id INTEGER PRIMARY KEY, " +
+    "name TEXT NOT NULL, " +
+    "price REAL NOT NULL, " +
+    "quantity INTEGER" +
+    ")"
+);
 
-statement.close()
-connection.close()
+statement.executeUpdate(
+    "INSERT INTO products VALUES (1, 'Laptop', 999.99, 5)"
+);
+
+statement.executeUpdate(
+    "INSERT INTO products VALUES (2, 'Mouse', 29.99, 50)"
+);
+
+statement.executeUpdate(
+    "INSERT INTO products VALUES (3, 'Keyboard', 79.99, 30)"
+);
+
+IO.stdout.writeln("Products created successfully");
+
+statement.close();
+connection.close();
 ```
 
 ### Using Parameters for Safety
 
 ```ysharp
-connection = SQLite.connect("myapp.db")
+const connection = SQLite.connect("myapp.db");
 
 // Prepare a statement with parameters
-query = "SELECT * FROM products WHERE name = ? AND price > ?"
-preparedStmt = connection.prepareStatement(query)
+const query = "SELECT * FROM products WHERE name = ? AND price > ?";
+const preparedStmt = connection.prepareStatement(query);
 
 // Set parameters
-preparedStmt.setString(1, "Keyboard")
-preparedStmt.setDouble(2, 50.0)
+preparedStmt.setString(1, "Keyboard");
+preparedStmt.setDouble(2, 50.0);
 
 // Execute
-resultSet = preparedStmt.executeQuery()
+const resultSet = preparedStmt.executeQuery();
 
-if resultSet.next() {
-    output("Found: ", resultSet.getString("name"))
-    output("Price: $", resultSet.getDouble("price"))
-}
+if resultSet.next() then do
+    IO.stdout.writeln("Found: " + resultSet.getString("name"));
+    IO.stdout.writeln("Price: $" + resultSet.getDouble("price"));
+end else do
+    IO.stdout.writeln("Product not found.");
+end
 
-resultSet.close()
-preparedStmt.close()
-connection.close()
+resultSet.close();
+preparedStmt.close();
+connection.close();
 ```
 
 ### Aggregation and Grouping
 
 ```ysharp
-connection = SQLite.connect("myapp.db")
-statement = connection.createStatement()
+const connection = SQLite.connect("myapp.db");
+const statement = connection.createStatement();
 
 // Get product count and average price
-resultSet = statement.executeQuery(
+const resultSet = statement.executeQuery(
     "SELECT COUNT(*) as total, AVG(price) as avg_price FROM products"
-)
+);
 
-if resultSet.next() {
-    total = resultSet.getInt("total")
-    avgPrice = resultSet.getDouble("avg_price")
-    output("Total products: ", total)
-    output("Average price: $", avgPrice)
-}
+if resultSet.next() then do
+    const total = resultSet.getInt("total");
+    const avgPrice = resultSet.getDouble("avg_price");
 
-resultSet.close()
-statement.close()
-connection.close()
+    IO.stdout.writeln("Total products: " + total);
+    IO.stdout.writeln("Average price: $" + avgPrice);
+end
+
+resultSet.close();
+statement.close();
+connection.close();
 ```
 
 ## Error Handling
@@ -434,15 +571,42 @@ Common errors:
 Always close ResultSet, Statement, and Connection objects in the reverse order they were created:
 
 ```ysharp
-try {
-    // Use resources
-} catch error {
-    output("Error: ", error)
-} finally {
-    if resultSet != null { resultSet.close() }
-    if statement != null { statement.close() }
-    if connection != null { connection.close() }
-}
+var connection = null;
+var statement = null;
+var resultSet = null;
+
+try do
+    connection = SQLite.connect("database.db");
+    statement = connection.createStatement();
+
+    resultSet = statement.executeQuery("SELECT * FROM users");
+
+    while resultSet.next() do
+        const id = resultSet.getInt("id");
+        const name = resultSet.getString("name");
+        const age = resultSet.getInt("age");
+
+        IO.stdout.writeln(
+            "ID: " + id + ", Name: " + name + ", Age: " + age
+        );
+    end
+
+end catch (error) do
+    IO.stdout.writeln("Database error: " + error);
+
+end finally do
+    if resultSet != null then do
+        resultSet.close();
+    end
+
+    if statement != null then do
+        statement.close();
+    end
+
+    if connection != null then do
+        connection.close();
+    end
+end
 ```
 
 ### 2. Use PreparedStatements for User Input
@@ -450,12 +614,53 @@ try {
 Always use PreparedStatements when incorporating user input to prevent SQL injection:
 
 ```ysharp
-// GOOD - Uses PreparedStatement
-prepared = connection.prepareStatement("SELECT * FROM users WHERE email = ?")
-prepared.setString(1, userEmail)
+const connection = SQLite.connect("database.db");
+const statement = connection.createStatement();
 
-// DANGEROUS - String concatenation allows SQL injection
-resultSet = statement.executeQuery("SELECT * FROM users WHERE email = '" + userEmail + "'")
+statement.executeUpdate("DROP TABLE IF EXISTS users");
+
+statement.executeUpdate(
+    "CREATE TABLE users (" +
+    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+    "name TEXT NOT NULL, " +
+    "age INTEGER NOT NULL, " +
+    "email TEXT NOT NULL" +
+    ")"
+);
+
+statement.executeUpdate(
+    "INSERT INTO users (name, age, email) VALUES ('Alice', 25, 'alice@example.com')"
+);
+
+statement.executeUpdate(
+    "INSERT INTO users (name, age, email) VALUES ('Bob', 30, 'bob@example.com')"
+);
+
+const userEmail = "alice@example.com";
+
+// GOOD - Safe query with PreparedStatement
+const prepared = connection.prepareStatement(
+    "SELECT * FROM users WHERE email = ?"
+);
+
+prepared.setString(1, userEmail);
+
+const resultSet = prepared.executeQuery();
+
+while resultSet.next() do
+    const id = resultSet.getInt("id");
+    const name = resultSet.getString("name");
+    const email = resultSet.getString("email");
+
+    IO.stdout.writeln(
+        "ID: " + id + ", Name: " + name + ", Email: " + email
+    );
+end
+
+resultSet.close();
+prepared.close();
+statement.close();
+connection.close();
 ```
 
 ### 3. Use Transactions for Multiple Operations
@@ -463,23 +668,66 @@ resultSet = statement.executeQuery("SELECT * FROM users WHERE email = '" + userE
 Wrap multiple related operations in transactions:
 
 ```ysharp
-connection = SQLite.connect("database.db")
-connection.setAutoCommit(false)
+var connection = null;
+var statement = null;
+var resultSet = null;
 
-try {
-    statement = connection.createStatement()
+try do
+    connection = SQLite.connect("database.db");
+    connection.setAutoCommit(false);
 
-    statement.executeUpdate("INSERT INTO accounts (name) VALUES ('Checking')")
-    statement.executeUpdate("INSERT INTO accounts (name) VALUES ('Savings')")
+    statement = connection.createStatement();
 
-    connection.commit()
-} catch error {
-    connection.rollback()
-    output("Transaction failed: ", error)
-} finally {
-    statement.close()
-    connection.close()
-}
+    statement.executeUpdate(
+        "CREATE TABLE IF NOT EXISTS accounts (" +
+        "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        "name TEXT NOT NULL" +
+        ")"
+    );
+
+    statement.executeUpdate("DELETE FROM accounts");
+
+    statement.executeUpdate(
+        "INSERT INTO accounts (name) VALUES ('Checking')"
+    );
+
+    statement.executeUpdate(
+        "INSERT INTO accounts (name) VALUES ('Savings')"
+    );
+
+    connection.commit();
+
+    IO.stdout.writeline("Transaction committed successfully.");
+
+    resultSet = statement.executeQuery("SELECT * FROM accounts");
+
+    while resultSet.next() do
+        const id = resultSet.getInt("id");
+        const name = resultSet.getString("name");
+
+        IO.stdout.writeln("ID: " + id + ", Name: " + name);
+    end
+
+end catch (error) do
+    if connection != null then do
+        connection.rollback();
+    end
+
+    IO.stdout.writeln("Transaction failed: " + error);
+
+end finally do
+    if resultSet != null then do
+        resultSet.close();
+    end
+
+    if statement != null then do
+        statement.close();
+    end
+
+    if connection != null then do
+        connection.close();
+    end
+end
 ```
 
 ### 4. Check Results Before Accessing
@@ -487,15 +735,49 @@ try {
 Always verify that a row exists before accessing data:
 
 ```ysharp
-resultSet = statement.executeQuery("SELECT * FROM users WHERE id = ?")
+const connection = SQLite.connect("database.db");
+const statement = connection.createStatement();
 
-if resultSet.next() {
-    // Row exists, safe to access
-    name = resultSet.getString("name")
-} else {
-    // Row not found
-    output("User not found")
-}
+statement.executeUpdate("DROP TABLE IF EXISTS users");
+
+statement.executeUpdate(
+    "CREATE TABLE users (" +
+    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+    "name TEXT NOT NULL, " +
+    "age INTEGER NOT NULL" +
+    ")"
+);
+
+statement.executeUpdate(
+    "INSERT INTO users (name, age) VALUES ('Alice', 25)"
+);
+
+statement.executeUpdate(
+    "INSERT INTO users (name, age) VALUES ('Bob', 30)"
+);
+
+const userId = 1;
+
+const preparedStmt = connection.prepareStatement(
+    "SELECT * FROM users WHERE id = ?"
+);
+
+preparedStmt.setInt(1, userId);
+
+const resultSet = preparedStmt.executeQuery();
+
+if resultSet.next() then do
+    const name = resultSet.getString("name");
+
+    IO.stdout.writeln("Found user: " + name);
+end else do
+    IO.stdout.writeln("User not found");
+end
+
+resultSet.close();
+preparedStmt.close();
+statement.close();
+connection.close();
 ```
 
 ### 5. Use Connection Pooling for Applications
@@ -507,7 +789,7 @@ For applications with multiple concurrent database operations, consider implemen
 For frequently queried columns, create indexes to improve performance:
 
 ```ysharp
-statement.executeUpdate("CREATE INDEX idx_users_email ON users(email)")
+statement.executeUpdate("CREATE INDEX idx_users_email ON users(email)");
 ```
 
 ## SQLite SQL Reference
