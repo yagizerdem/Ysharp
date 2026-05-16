@@ -532,27 +532,42 @@ connection.close();
 SQLite operations can throw exceptions. Always handle errors appropriately:
 
 ```ysharp
-try {
-    connection = SQLite.connect("database.db")
-    statement = connection.createStatement()
+var connection = null;
+var statement = null;
+var resultSet = null;
 
-    resultSet = statement.executeQuery("SELECT * FROM users")
+try do
+    connection = SQLite.connect("database.db");
+    statement = connection.createStatement();
 
-    while resultSet.next() {
-        // Process results
-    }
+    resultSet = statement.executeQuery("SELECT * FROM users");
 
-    resultSet.close()
-} catch error {
-    output("Database error: ", error)
-} finally {
-    if statement != null {
-        statement.close()
-    }
-    if connection != null {
-        connection.close()
-    }
-}
+    while resultSet.next() do
+        const id = resultSet.getInt("id");
+        const name = resultSet.getString("name");
+        const age = resultSet.getInt("age");
+
+        IO.stdout.writeln(
+            "ID: " + id + ", Name: " + name + ", Age: " + age
+        );
+    end
+
+end  catch (error) do
+    IO.stdout.writeln("Database error: " + error);
+
+end finally do
+    if resultSet != null then do
+        resultSet.close();
+    end
+
+    if statement != null then do
+        statement.close();
+    end
+
+    if connection != null then do
+        connection.close();
+    end
+end
 ```
 
 Common errors:
