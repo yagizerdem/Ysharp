@@ -29,6 +29,7 @@ IDENTIFIER |
 DECIMAL_NUMBER |
 HEX_NUMBER |
 STRING |
+RAW_STRING |
 CHAR |
 true |
 false |
@@ -145,6 +146,7 @@ IDENTIFIER = [class name]
 
 HEX_NUMBER &rarr; 0x[0-9A-Fa-f]+
 DECIMAL_NUMBER &rarr; [0-9]+
+RAW_STRING &rarr; any character sequence that does not contain '"""'
 
 ### program
 ``this is the start point of program``

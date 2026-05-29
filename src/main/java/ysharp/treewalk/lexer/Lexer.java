@@ -302,6 +302,57 @@ public class Lexer {
         tokens.add(token);
     }
 
+    private void collectRawString() throws YsharpException  {
+        boolean terminated = false;
+
+        while (Cursor.peekChar(source, cursor.current) != Cursor.END) {
+            Cursor.Pchar curChar = Cursor.peek(source, cursor.current);
+            Cursor.Pchar nextChar = Cursor.peek(source, cursor.current + 1);
+            Cursor.Pchar nextNextChar = Cursor.peek(source, cursor.current + 2);
+
+            if (
+                    Cursor.stopSet(curChar, Cursor.CharMask.DoubleQuote)
+                            && Cursor.stopSet(nextChar, Cursor.CharMask.DoubleQuote)
+                            && Cursor.stopSet(nextNextChar, Cursor.CharMask.DoubleQuote)
+                            && !Cursor.isEscapedBackslash(source, cursor.current)
+                            && !Cursor.isEscapedBackslash(source, cursor.current + 1)
+                            && !Cursor.isEscapedBackslash(source, cursor.current + 2)
+            ) {
+                Cursor.advance(source, cursor); // "
+                Cursor.advance(source, cursor); // "
+                Cursor.advance(source, cursor); // "
+
+                terminated = true;
+                break;
+            }
+
+            Cursor.advance(source, cursor);
+        }
+
+        if (!terminated) {
+            throw new YsharpException(YsharpException.YsharpErrorType.SYNTAX, this.line, "Unterminated string literal");
+        }
+
+        StringBuilder sb = new StringBuilder();
+        int i = start + 2;
+        while (i < cursor.current -2) {
+            char c = source.get(i).c;
+            sb.append(source.get(i).c);
+            i++;
+        }
+
+        String sub = sb.toString();
+
+        Token token = new Token(
+                Token.TokenType.STRING,
+                sub,
+                new Token.Literal.Str(sub.substring(1, sub.length() - 1)),
+                this.line,
+                true
+        );
+        tokens.add(token);
+    }
+
     private void collectChar() throws YsharpException {
         boolean terminated = false;
 
@@ -456,7 +507,18 @@ public class Lexer {
                 } else if (Cursor.stopSet(c, Cursor.CharMask.DoubleQuote)) {
                     int charIdx = Math.max(cursor.current - 1, 0);
                     if (!Cursor.isEscapedBackslash(source, charIdx)) {
-                        collectString();
+
+                        char next = Cursor.peekChar(source, cursor.current);
+                        char nextNext = Cursor.peekChar(source, cursor.current + 1);
+
+                        if (next == '"' && nextNext == '"') {
+                            Cursor.advance(source, cursor); // "
+                            Cursor.advance(source, cursor); // "
+                            collectRawString();
+                        }else {
+                            collectString();
+                        }
+
                     } else {
                         collectIdentifier();
                     }

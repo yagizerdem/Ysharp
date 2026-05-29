@@ -115,6 +115,7 @@ public class Token {
     public final String    lexeme;
     public final Literal   literal;
     public final int       line;
+    public final boolean   isRaw;
 
 
     public Token(TokenType type, String lexeme, Literal literal, int line) {
@@ -122,6 +123,15 @@ public class Token {
         this.lexeme  = lexeme;
         this.literal = literal;
         this.line    = line;
+        this.isRaw = false;
+    }
+
+    public Token(TokenType type, String lexeme, Literal literal, int line, boolean isRaw) {
+        this.type    = type;
+        this.lexeme  = lexeme;
+        this.literal = literal;
+        this.line    = line;
+        this.isRaw = isRaw;
     }
 
     public Token() {

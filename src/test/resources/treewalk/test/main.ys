@@ -1,0 +1,6 @@
+function test(arg : string) do
+    println arg;
+end
+
+
+test("""echo "hit" && set a=10; echo "yagiz erdem" """);
